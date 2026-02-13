@@ -20,6 +20,22 @@ description: Rules for using the Common library in the project.
     - **Heroes & Skill Tree**: 영구적인 성장을 지원하는 영웅 및 스킬 시스템 설계 반영.
 - 게임 로직 구현 시 위 노트북의 분석 데이터를 바탕으로 밸런스와 아키텍처를 결정할 것.
 
+## 리소스 폴더 구조 (Resource Folder Structure)
+- UI 프리팹은 `Assets/Resources/UI/` 폴더에 클래스명과 동일한 이름으로 저장한다. (UIManager가 `Resources/UI/{ClassName}`으로 자동 로드)
+- 스프라이트/이미지 에셋은 `Assets/Resources/UI/Sprites/{씬 또는 기능명}/` 하위에 저장한다.
+- 폰트 에셋은 `Assets/Resources/UI/Fonts/`에 저장한다.
+- 폴더 구조 예시:
+  ```
+  Assets/Resources/UI/
+  ├── TitleView.prefab        ← UI 프리팹 (클래스명 = 파일명)
+  ├── GameView.prefab
+  ├── Sprites/                ← 이미지 에셋
+  │   ├── Title/              ← 씬별 하위 폴더
+  │   ├── Game/
+  │   └── Common/             ← 공용 아이콘 등
+  └── Fonts/                  ← 폰트 에셋
+  ```
+
 ## 작업 흐름 자동화 (Workflow Automation)
 - **Disposable Tools**: 반복적이지 않은 에셋 생성/설정 작업은 `Assets/Scripts/Kingdom/Editor` (또는 해당 모듈 Editor 폴더)에 일회성 스크립트(예: `*Generator.cs`, `*Maker.cs`)를 작성하여 수행하고, 작업 완료 후 즉시 삭제한다.
 - **MCP 활용**: 복잡한 씬 조작이나 에셋 설정은 MCP로 개별 조작하기보다, Unity Editor Script API를 활용한 툴을 작성하여 일괄 처리함으로써 안정성을 확보한다.

@@ -7,7 +7,7 @@ import os
 import random
 
 COMFY_URL = "http://127.0.0.1:8188"
-OUTPUT_DIR = "Assets/Resources/UI/Title"
+OUTPUT_DIR = "Assets/Resources/UI/Sprites/Title"
 
 def get_model_name():
     try:

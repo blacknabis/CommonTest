@@ -15,7 +15,7 @@ namespace Kingdom.Editor
         [MenuItem("Tools/Generators/Force Assign Title Assets")]
         public static void ForceAssign()
         {
-            string folder = "Assets/Resources/UI/Title";
+            string folder = "Assets/Resources/UI/Sprites/Title";
             string prefabPath = "Assets/Resources/UI/TitleView.prefab";
 
             // 1. 텍스처 임포트 설정
