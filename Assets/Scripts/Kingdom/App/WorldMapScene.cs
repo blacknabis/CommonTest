@@ -1,38 +1,95 @@
-using Common.UI;
+﻿using Common.UI;
 using Common.App;
 using UnityEngine;
+using Kingdom.WorldMap;
+using Kingdom.Save;
 
 namespace Kingdom.App
 {
     /// <summary>
-    /// 월드맵 씬 컨트롤러.
-    /// 스테이지 선택, 영웅 관리, 타워/스킬 업그레이드를 담당합니다.
+    /// ?붾뱶留???而⑦듃濡ㅻ윭.
+    /// ?ㅽ뀒?댁? ?좏깮, ?곸썒 愿由? ????ㅽ궗 ?낃렇?덉씠?쒕? ?대떦?⑸땲??
     /// </summary>
     public class WorldMapScene : SceneBase<SCENES>
     {
+        public static int SelectedStageId { get; private set; } = -1;
+        public static StageDifficulty SelectedDifficulty { get; private set; } = StageDifficulty.Normal;
+
+        private UserSaveData _userSaveData;
+
         public override bool OnInit()
         {
             Debug.Log("[WorldMapScene] Initialized.");
             MainUI = UIHelper.GetOrCreate<WorldMapView>();
+
+            _userSaveData = new UserSaveData();
+
             return true;
         }
 
         public override bool OnStartScene()
         {
             Debug.Log("[WorldMapScene] Started. Showing world map.");
+
+            if (WorldMapManager.Instance != null)
+            {
+                WorldMapManager.Instance.StageNodeClicked -= OnStageNodeClicked;
+                WorldMapManager.Instance.StageNodeClicked += OnStageNodeClicked;
+            }
+
             return true;
         }
 
         public override void OnEndScene()
         {
+            if (WorldMapManager.Instance != null)
+            {
+                WorldMapManager.Instance.StageNodeClicked -= OnStageNodeClicked;
+            }
+
             Debug.Log("[WorldMapScene] Ended.");
         }
 
         public override bool ProcessBackKey()
         {
-            // 월드맵에서 뒤로가기 → 타이틀로 복귀
+            // ?붾뱶留듭뿉???ㅻ줈媛湲?????댄?濡?蹂듦?
             KingdomAppManager.Instance.ChangeScene(SCENES.TitleScene);
             return true;
         }
+
+        private void OnStageNodeClicked(int stageId)
+        {
+            if (WorldMapManager.Instance == null || WorldMapManager.Instance.CurrentStageConfig == null)
+            {
+                return;
+            }
+
+            var stageList = WorldMapManager.Instance.CurrentStageConfig.Stages;
+            for (int i = 0; i < stageList.Count; i++)
+            {
+                if (stageList[i].StageId != stageId)
+                {
+                    continue;
+                }
+
+                var progress = _userSaveData != null
+                    ? _userSaveData.GetStageProgress(stageId)
+                    : UserSaveData.StageProgressData.CreateDefault(stageId);
+
+                var payload = new StageInfoPopup.StageInfoPayload(stageList[i], progress, HandleStartStage);
+                UIHelper.ShowPopup<StageInfoPopup>(new object[] { payload });
+                return;
+            }
+        }
+
+        private void HandleStartStage(int stageId, StageDifficulty difficulty)
+        {
+            SelectedStageId = stageId;
+            SelectedDifficulty = difficulty;
+
+            Debug.Log($"[WorldMapScene] Start Stage: {stageId}, Difficulty: {difficulty}");
+            KingdomAppManager.Instance.ChangeScene(SCENES.GameScene);
+        }
     }
 }
+

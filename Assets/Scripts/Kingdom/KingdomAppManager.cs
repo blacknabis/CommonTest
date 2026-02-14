@@ -1,4 +1,6 @@
 using Common;
+using Common;
+using Common.Utils;
 using Kingdom.App;
 using UnityEngine;
 
@@ -18,6 +20,10 @@ namespace Kingdom.App
         protected override void OnInitializeManagers()
         {
             Debug.Log("[KingdomAppManager] Initializing project specific managers...");
+            // SoundManager 초기화
+            var soundManager = SoundManager.Instance;
+            Debug.Log($"[KingdomAppManager] SoundManager initialized: {soundManager.name}");
+
             // TODO: GameManager, GoldManager, TowerManager 등을 여기서 초기화
         }
 

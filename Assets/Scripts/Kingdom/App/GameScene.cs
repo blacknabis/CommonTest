@@ -20,6 +20,14 @@ namespace Kingdom.App
         public override bool OnStartScene()
         {
             Debug.Log("[GameScene] Started.");
+
+            // [Test] Mock Controller 추가
+            if (FindFirstObjectByType<GameMockController>() == null)
+            {
+                GameObject mockGo = new GameObject("GameMockController");
+                mockGo.AddComponent<GameMockController>();
+            }
+
             return true;
         }
 
