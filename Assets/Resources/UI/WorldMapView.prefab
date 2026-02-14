@@ -1036,8 +1036,8 @@ MonoBehaviour:
   btnHeroRoom: {fileID: 6818400574550614774}
   btnUpgrades: {fileID: 2219198110973720009}
   stageNodes: []
-  bgmClip: {fileID: 8300000, guid: 8b932a1736c62f54db463558a3156474, type: 3}
-  clickClip: {fileID: 8300000, guid: 97b27ad33acec164286c76f3887262c4, type: 3}
+  bgmClip: {fileID: 8300000, guid: 4e32bf146cb4a0c439fb9491251e5fbd, type: 3}
+  clickClip: {fileID: 8300000, guid: c6265127c12eb234d99d66b7ef9a61a0, type: 3}
   clickVolumeScale: 0.9
 --- !u!114 &1981743224028408999
 MonoBehaviour:

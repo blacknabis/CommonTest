@@ -19,7 +19,7 @@ namespace Kingdom.App
         private const string WorldMapBackgroundResourcePath = "UI/Sprites/WorldMap/WorldMap_Background";
         private const string LegacyWorldMapBackgroundResourcePath = "UI/Sprites/WorldMap_BG";
         private const string WorldMapBgmResourcePath = "Audio/WorldMap/WorldMap_BGM";
-        private const string WorldMapClickResourcePath = "Audio/WorldMap/WorldMap_Click";
+        private const string WorldMapClickResourcePath = "Audio/WorldMap/WorldMap_Click_UI";
         private const string WorldMapButtonCatalogResourcePath = "Data/UI/WorldMapButtonCatalog";
         private const string WorldMapStageConfigResourcePath = "Data/StageConfigs/World1_StageConfig";
         private const string HeroRoomActionId = "hero_room";
@@ -363,14 +363,14 @@ namespace Kingdom.App
         {
             PlayClickSfx();
             Debug.Log("[WorldMapView] Hero Room clicked (Not implemented).");
-            UIHelper.ShowToast("\uC601\uC6C5 \uAD00\uB9AC\uC18C\uB294 \uC900\uBE44 \uC911\uC785\uB2C8\uB2E4!");
+            Debug.Log("[WorldMapView] 영웅 관리소는 준비 중입니다!");
         }
 
         private void OnClickUpgrades()
         {
             PlayClickSfx();
             Debug.Log("[WorldMapView] Upgrades clicked (Not implemented).");
-            UIHelper.ShowToast("\uC5C5\uADF8\uB808\uC774\uB4DC \uAE30\uB2A5\uC740 \uC900\uBE44 \uC911\uC785\uB2C8\uB2E4!");
+            Debug.Log("[WorldMapView] 업그레이드 기능은 준비 중입니다!");
         }
 
         private void OnClickBack()
@@ -876,7 +876,8 @@ namespace Kingdom.App
                 return;
             }
 
-            Debug.LogWarning($"[WorldMap] WorldMapManager missing. Fallback loading GameScene for stage {stageId}.");
+            WorldMapScene.SetSelectedStageContext(stageId, StageDifficulty.Normal);
+            Debug.LogWarning($"[WorldMap] WorldMapManager missing. Fallback loading GameScene for stage {stageId} with default difficulty.");
             KingdomAppManager.Instance.ChangeScene(SCENES.GameScene);
         }
 

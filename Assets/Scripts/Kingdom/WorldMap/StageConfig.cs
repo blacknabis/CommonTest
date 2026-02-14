@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Kingdom.Game;
 
 namespace Kingdom.WorldMap
 {
@@ -16,6 +17,7 @@ namespace Kingdom.WorldMap
     {
         public int StageId;
         public string StageName;
+        public WaveConfig WaveConfig;
         public StageDifficulty Difficulty;
         public Vector2 Position;
         public List<int> NextStageIds;

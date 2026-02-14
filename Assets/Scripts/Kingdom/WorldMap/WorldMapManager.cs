@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,7 +12,7 @@ namespace Kingdom.WorldMap
     }
 
     /// <summary>
-    /// 월드맵의 스테이지 노드를 생성/관리하고 선택 이벤트를 중계합니다.
+    /// 월드맵 스테이지 노드를 생성/관리하고, 선택 이벤트를 중계합니다.
     /// </summary>
     public class WorldMapManager : MonoBehaviour
     {
@@ -34,6 +34,7 @@ namespace Kingdom.WorldMap
         public event UnityAction<int> StageNodeClicked;
 
         private readonly Dictionary<int, GameObject> nodeInstances = new Dictionary<int, GameObject>();
+        private readonly HashSet<GameObject> spawnedNodes = new HashSet<GameObject>();
 
         public int CurrentWorldId => currentWorldId;
         public StageConfig CurrentStageConfig => stageConfig;
@@ -78,13 +79,13 @@ namespace Kingdom.WorldMap
 
             if (stageConfig == null || stageConfig.Stages == null)
             {
-                Debug.LogWarning("[WorldMapManager] StageConfig가 비어 있어 노드 생성이 스킵됩니다.");
+                Debug.LogWarning("[WorldMapManager] StageConfig is empty. Node build skipped.");
                 return;
             }
 
             if (nodePrefab == null || nodeRoot == null)
             {
-                Debug.LogWarning("[WorldMapManager] nodePrefab 또는 nodeRoot가 없어 노드 생성이 스킵됩니다.");
+                RegisterSceneNodesAsFallback();
                 return;
             }
 
@@ -95,11 +96,16 @@ namespace Kingdom.WorldMap
                 node.name = $"StageNode_{stageData.StageId}";
                 node.transform.localPosition = new Vector3(stageData.Position.x, stageData.Position.y, 0f);
 
-                RegisterNode(stageData.StageId, node);
+                RegisterNodeInternal(stageData.StageId, node, true);
             }
         }
 
         public void RegisterNode(int stageId, GameObject node)
+        {
+            RegisterNodeInternal(stageId, node, false);
+        }
+
+        private void RegisterNodeInternal(int stageId, GameObject node, bool spawnedByManager)
         {
             if (node == null)
             {
@@ -107,6 +113,10 @@ namespace Kingdom.WorldMap
             }
 
             nodeInstances[stageId] = node;
+            if (spawnedByManager)
+            {
+                spawnedNodes.Add(node);
+            }
 
             Button button = node.GetComponent<Button>();
             if (button != null)
@@ -133,13 +143,38 @@ namespace Kingdom.WorldMap
         {
             foreach (var pair in nodeInstances)
             {
-                if (pair.Value != null)
+                GameObject node = pair.Value;
+                if (node != null && spawnedNodes.Contains(node))
                 {
-                    Destroy(pair.Value);
+                    Destroy(node);
                 }
             }
 
             nodeInstances.Clear();
+            spawnedNodes.Clear();
+        }
+
+        private void RegisterSceneNodesAsFallback()
+        {
+            UIStageNode[] sceneNodes = FindObjectsByType<UIStageNode>(FindObjectsSortMode.None);
+            if (sceneNodes == null || sceneNodes.Length == 0)
+            {
+                Debug.LogWarning("[WorldMapManager] nodePrefab/nodeRoot missing and no UIStageNode found. Node registration skipped.");
+                return;
+            }
+
+            for (int i = 0; i < sceneNodes.Length; i++)
+            {
+                UIStageNode stageNode = sceneNodes[i];
+                if (stageNode == null)
+                {
+                    continue;
+                }
+
+                RegisterNodeInternal(stageNode.StageId, stageNode.gameObject, false);
+            }
+
+            Debug.Log($"[WorldMapManager] Registered scene UIStageNode fallback count={nodeInstances.Count}");
         }
     }
 }

@@ -6,6 +6,7 @@ using Kingdom.WorldMap;
 
 namespace Kingdom.App
 {
+#if DEV_MOCK
     /// <summary>
     /// GameScene에서 임시로 승리/패배를 시뮬레이션하기 위한 Mock 컨트롤러.
     /// 실제 게임 로직이 구현되기 전까지 월드맵 연동 테스트용으로 사용됩니다.
@@ -92,15 +93,16 @@ namespace Kingdom.App
                 if (currentStageId < 0) currentStageId = 1; // 기본값
 
                 // 데이터 저장
-                UserSaveData saveData = new UserSaveData();
+                UserSaveData saveData = SaveManager.Instance.SaveData;
                 saveData.SetStageCleared(currentStageId, stars, Random.Range(60f, 180f), WorldMapScene.SelectedDifficulty);
 
                 // 월드맵 복귀 연출 설정
                 WorldMapReturnAnimator.SetPendingReturnData(currentStageId, true, 120f, WorldMapScene.SelectedDifficulty);
             }
 
-            // 타이틀(월드맵) 씬으로 복귀
-            KingdomAppManager.Instance.ChangeScene(SCENES.TitleScene);
+            // 월드맵 씬으로 복귀
+            KingdomAppManager.Instance.ChangeScene(SCENES.WorldMapScene);
         }
     }
+#endif
 }

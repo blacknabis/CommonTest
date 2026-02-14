@@ -19,7 +19,7 @@ namespace Kingdom.App
             Debug.Log("[InitScene] App initializing complete. Moving to Title.");
             
             // 초기화 작업이 끝난 후 타이틀 씬으로 전환
-            KingdomAppManager.Instance.ChangeScene(SCENES.TitleScene);
+            KingdomAppManager.Instance.ChangeScene(SCENES.TitleScene, useFade: false);
             return true;
         }
     }

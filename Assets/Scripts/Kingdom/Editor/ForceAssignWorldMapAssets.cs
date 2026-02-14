@@ -14,7 +14,7 @@ namespace Kingdom.Editor
         private const string PrefabPath = "Assets/Resources/UI/WorldMapView.prefab";
         private const string BackgroundPath = "Assets/Resources/UI/Sprites/WorldMap/WorldMap_Background.png";
         private const string BgmPath = "Assets/Resources/Audio/WorldMap/WorldMap_BGM.wav";
-        private const string ClickPath = "Assets/Resources/Audio/WorldMap/WorldMap_Click.wav";
+        private const string ClickPath = "Assets/Resources/Audio/WorldMap/WorldMap_Click_UI.mp3";
 
         [MenuItem("Tools/Generators/Force Assign WorldMap Assets")]
         public static void ForceAssign()

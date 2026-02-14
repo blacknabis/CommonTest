@@ -22,7 +22,7 @@ namespace Kingdom.App
             Debug.Log("[WorldMapScene] Initialized.");
             MainUI = UIHelper.GetOrCreate<WorldMapView>();
 
-            _userSaveData = new UserSaveData();
+            _userSaveData = SaveManager.Instance.SaveData;
 
             return true;
         }
@@ -30,6 +30,7 @@ namespace Kingdom.App
         public override bool OnStartScene()
         {
             Debug.Log("[WorldMapScene] Started. Showing world map.");
+            EnsureWorldMapManager();
 
             if (WorldMapManager.Instance != null)
             {
@@ -77,18 +78,44 @@ namespace Kingdom.App
                     : UserSaveData.StageProgressData.CreateDefault(stageId);
 
                 var payload = new StageInfoPopup.StageInfoPayload(stageList[i], progress, HandleStartStage);
-                UIHelper.ShowPopup<StageInfoPopup>(new object[] { payload });
+                StageInfoPopup popupPrefab = Resources.Load<StageInfoPopup>("UI/StageInfoPopup");
+                if (popupPrefab != null)
+                {
+                    UIHelper.ShowPopup<StageInfoPopup>(new object[] { payload });
+                }
+                else
+                {
+                    Debug.LogWarning("[WorldMapScene] StageInfoPopup prefab missing. Start stage directly.");
+                    HandleStartStage(stageId, stageList[i].Difficulty);
+                }
                 return;
             }
         }
 
         private void HandleStartStage(int stageId, StageDifficulty difficulty)
         {
-            SelectedStageId = stageId;
-            SelectedDifficulty = difficulty;
+            SetSelectedStageContext(stageId, difficulty);
 
             Debug.Log($"[WorldMapScene] Start Stage: {stageId}, Difficulty: {difficulty}");
             KingdomAppManager.Instance.ChangeScene(SCENES.GameScene);
+        }
+
+        public static void SetSelectedStageContext(int stageId, StageDifficulty difficulty)
+        {
+            SelectedStageId = stageId;
+            SelectedDifficulty = difficulty;
+        }
+
+        private static void EnsureWorldMapManager()
+        {
+            if (WorldMapManager.Instance != null)
+            {
+                return;
+            }
+
+            GameObject managerGo = new GameObject("WorldMapManager");
+            managerGo.AddComponent<WorldMapManager>();
+            Debug.Log("[WorldMapScene] WorldMapManager was missing. Created runtime instance.");
         }
     }
 }

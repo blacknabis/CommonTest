@@ -1,7 +1,7 @@
 using Common;
-using Common;
 using Common.Utils;
 using Kingdom.App;
+using Kingdom.Save;
 using UnityEngine;
 
 namespace Kingdom.App
@@ -20,6 +20,9 @@ namespace Kingdom.App
         protected override void OnInitializeManagers()
         {
             Debug.Log("[KingdomAppManager] Initializing project specific managers...");
+            var saveManager = SaveManager.Instance;
+            Debug.Log($"[KingdomAppManager] SaveManager initialized: {saveManager.name}");
+
             // SoundManager 초기화
             var soundManager = SoundManager.Instance;
             Debug.Log($"[KingdomAppManager] SoundManager initialized: {soundManager.name}");
