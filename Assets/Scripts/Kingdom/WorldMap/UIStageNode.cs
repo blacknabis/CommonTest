@@ -24,7 +24,15 @@ namespace Kingdom.WorldMap
         [Header("Visual Style")]
         [SerializeField] private Color unlockedColor = Color.white;
         [SerializeField] private Color lockedColor = new Color(0.58f, 0.58f, 0.58f, 1f);
+        [SerializeField] private Color selectedColor = new Color(1f, 0.96f, 0.78f, 1f);
+        [SerializeField] private Color stageLabelUnlockedColor = Color.white;
+        [SerializeField] private Color stageLabelLockedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+        [SerializeField] private Color stageLabelClearedColor = new Color(0.92f, 0.98f, 0.92f, 1f);
+        [SerializeField] private Color stageLabelSelectedColor = new Color(1f, 0.98f, 0.86f, 1f);
+        [SerializeField] private Color starOnColor = Color.white;
+        [SerializeField] private Color starOffColor = new Color(1f, 1f, 1f, 0.3f);
         [SerializeField, Range(0.2f, 1f)] private float lockedAlpha = 0.9f;
+        [SerializeField] private bool hideStarsWhenLocked = true;
 
         public int StageId => stageId;
         public event Action<int> OnNodeClicked;
@@ -40,7 +48,7 @@ namespace Kingdom.WorldMap
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            // 프리팹 편집 중에도 참조를 최대한 자동 보정합니다.
+            // 프리팹 편집 중 참조가 비어 있으면 가능한 범위에서 자동 복구한다.
             TryAutoWire();
         }
 #endif
@@ -75,9 +83,14 @@ namespace Kingdom.WorldMap
                 button.interactable = vm.IsUnlocked;
             }
 
-            if (stageNumberText != null && !string.IsNullOrWhiteSpace(vm.StageLabel))
+            if (stageNumberText != null)
             {
-                stageNumberText.text = vm.StageLabel;
+                if (!string.IsNullOrWhiteSpace(vm.StageLabel))
+                {
+                    stageNumberText.text = vm.StageLabel;
+                }
+
+                stageNumberText.color = ResolveStageLabelColor(vm);
             }
 
             if (iconImage != null)
@@ -87,8 +100,8 @@ namespace Kingdom.WorldMap
                     iconImage.sprite = vm.IconSprite;
                 }
 
-                Color tint = vm.IsUnlocked ? unlockedColor : lockedColor;
-                tint.a = vm.IsUnlocked ? unlockedColor.a : Mathf.Clamp01(lockedAlpha);
+                Color tint = ResolveIconColor(vm);
+                tint.a = vm.IsUnlocked ? tint.a : Mathf.Clamp01(lockedAlpha);
                 iconImage.color = tint;
             }
 
@@ -109,6 +122,7 @@ namespace Kingdom.WorldMap
 
             if (starImages != null && starImages.Length > 0)
             {
+                bool starVisible = vm.IsUnlocked || !hideStarsWhenLocked;
                 int stars = Mathf.Clamp(vm.EarnedStars, 0, starImages.Length);
                 for (int i = 0; i < starImages.Length; i++)
                 {
@@ -117,9 +131,14 @@ namespace Kingdom.WorldMap
                         continue;
                     }
 
+                    starImages[i].enabled = starVisible;
+                    if (!starVisible)
+                    {
+                        continue;
+                    }
+
                     bool isOn = i < stars;
-                    starImages[i].enabled = isOn;
-                    starImages[i].color = isOn ? Color.white : new Color(1f, 1f, 1f, 0.3f);
+                    starImages[i].color = isOn ? starOnColor : starOffColor;
                 }
             }
         }
@@ -168,7 +187,7 @@ namespace Kingdom.WorldMap
 
             if (iconImage == null)
             {
-                // 우선순위: Button TargetGraphic -> Button Image -> 자기 자신 Image
+                // 우선순위: Button TargetGraphic -> Button Image -> 자기 자신의 Image
                 if (button != null && button.targetGraphic is Image targetGraphicImage)
                 {
                     iconImage = targetGraphicImage;
@@ -185,8 +204,13 @@ namespace Kingdom.WorldMap
 
             if (stageNumberText == null)
             {
-                // 계층이 복잡해져도 라벨 이름 우선으로 안정적으로 찾습니다.
+                // 이름 기반 탐색 후, 실패하면 하위 TMP 전체 탐색으로 보정한다.
                 Transform label = transform.Find("lblStage");
+                if (label == null)
+                {
+                    label = transform.Find("StageLabelRoot/lblStage");
+                }
+
                 if (label != null)
                 {
                     stageNumberText = label.GetComponent<TextMeshProUGUI>();
@@ -195,6 +219,42 @@ namespace Kingdom.WorldMap
                 if (stageNumberText == null)
                 {
                     stageNumberText = GetComponentInChildren<TextMeshProUGUI>(true);
+                }
+            }
+
+            if (lockIcon == null)
+            {
+                Transform lockTransform = transform.Find("LockIcon");
+                if (lockTransform != null)
+                {
+                    lockIcon = lockTransform.gameObject;
+                }
+            }
+
+            if (selectedHighlight == null)
+            {
+                Transform selectedTransform = transform.Find("SelectedHighlight");
+                if (selectedTransform != null)
+                {
+                    selectedHighlight = selectedTransform.gameObject;
+                }
+            }
+
+            if (notificationDot == null)
+            {
+                Transform notificationTransform = transform.Find("NotificationDot");
+                if (notificationTransform != null)
+                {
+                    notificationDot = notificationTransform.gameObject;
+                }
+            }
+
+            if (starImages == null || starImages.Length == 0)
+            {
+                Transform starContainer = transform.Find("StarContainer");
+                if (starContainer != null)
+                {
+                    starImages = starContainer.GetComponentsInChildren<Image>(true);
                 }
             }
         }
@@ -210,6 +270,33 @@ namespace Kingdom.WorldMap
             {
                 Debug.LogError($"[StageNode] Invalid StageId on {name}. StageId must be >= 1.", this);
             }
+        }
+
+        // 아이콘은 선택 상태를 가장 우선해서 강조하고, 잠금 상태는 별도 톤을 사용한다.
+        private Color ResolveIconColor(in StageNodeViewModel vm)
+        {
+            if (!vm.IsUnlocked)
+            {
+                return lockedColor;
+            }
+
+            return vm.IsSelected ? selectedColor : unlockedColor;
+        }
+
+        // 라벨 색상은 선택 > 잠금 > 클리어 > 기본 순서로 결정한다.
+        private Color ResolveStageLabelColor(in StageNodeViewModel vm)
+        {
+            if (vm.IsSelected)
+            {
+                return stageLabelSelectedColor;
+            }
+
+            if (!vm.IsUnlocked)
+            {
+                return stageLabelLockedColor;
+            }
+
+            return vm.IsCleared ? stageLabelClearedColor : stageLabelUnlockedColor;
         }
     }
 }
