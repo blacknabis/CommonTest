@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 5840212615319728387}
   - component: {fileID: 2955027546367569150}
   - component: {fileID: 8749278627560224457}
+  - component: {fileID: 8536607977119674537}
   m_Layer: 0
   m_Name: TitleView
   m_TagString: Untagged
@@ -283,6 +284,23 @@ MonoBehaviour:
   txtTitle: {fileID: 0}
   backgroundImage: {fileID: 6116539735100239309}
   bgmSource: {fileID: 0}
+--- !u!114 &8536607977119674537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4107985794294605936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6fdbf9335225f40b9f6b2ea13c8f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.App.ViewportSafeAreaLayout
+  safeAreaTarget: {fileID: 5840212615319728387}
+  applySafeArea: 1
+  applyToDirectChildrenIfNoTarget: 1
+  bottomLiftTargets: []
+  bottomLift: 0
 --- !u!1 &8902366429308193265
 GameObject:
   m_ObjectHideFlags: 0

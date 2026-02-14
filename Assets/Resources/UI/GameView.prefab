@@ -664,6 +664,7 @@ GameObject:
   - component: {fileID: 3120060589395161715}
   - component: {fileID: 6647170058182106042}
   - component: {fileID: 5906636863807307016}
+  - component: {fileID: 3597444041929468437}
   m_Layer: 0
   m_Name: GameView
   m_TagString: Untagged
@@ -721,6 +722,23 @@ MonoBehaviour:
   btnDefeat: {fileID: 0}
   btnPause: {fileID: 0}
   txtWaveInfo: {fileID: 0}
+--- !u!114 &3597444041929468437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6753324573079148497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6fdbf9335225f40b9f6b2ea13c8f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.App.ViewportSafeAreaLayout
+  safeAreaTarget: {fileID: 0}
+  applySafeArea: 1
+  applyToDirectChildrenIfNoTarget: 1
+  bottomLiftTargets: []
+  bottomLift: 0
 --- !u!1 &7896634144660149597
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,7 +807,7 @@ MonoBehaviour:
   m_text: WAVE 1 / 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials:
   - {fileID: 0}
   m_fontMaterial: {fileID: 0}

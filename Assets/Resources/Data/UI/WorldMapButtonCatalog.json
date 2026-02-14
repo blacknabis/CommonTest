@@ -1,0 +1,14 @@
+{
+  "entries": [
+    {
+      "actionId": "hero_room",
+      "labelText": "\uC601\uC6C5 \uAD00\uB9AC\uC18C",
+      "iconResourcePath": "UI/Sprites/WorldMap/Icon_Hero"
+    },
+    {
+      "actionId": "upgrades",
+      "labelText": "\uC5C5\uADF8\uB808\uC774\uB4DC",
+      "iconResourcePath": "UI/Sprites/WorldMap/Icon_Upgrade"
+    }
+  ]
+}
