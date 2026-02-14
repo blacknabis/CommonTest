@@ -12,7 +12,7 @@ using Kingdom.WorldMap;
 namespace Kingdom.App
 {
     /// <summary>
-    /// World map main view. Binds world-map visuals and audio assets from Resources.
+    /// 월드맵 뷰. Resources의 UI/오디오 리소스를 바인딩하고 노드 상태를 반영한다.
     /// </summary>
     public class WorldMapView : BaseView
     {
@@ -34,9 +34,17 @@ namespace Kingdom.App
         [Header("Containers")]
         [SerializeField] private Transform bottomBar;
         [SerializeField] private RectTransform safeAreaTarget;
+        [SerializeField] private RectTransform safeAreaContent;
         [SerializeField] private bool useSafeArea = true;
         [SerializeField, Range(0f, 64f)] private float bottomBarLift = 10f;
         [SerializeField] private ViewportSafeAreaLayout viewportLayout;
+
+        [Header("Side Border")]
+        [SerializeField] private RectTransform sideBordersRoot;
+        [SerializeField] private float sideBorderWidth = 280f;
+        [SerializeField] private float minSideBorderWidth = 220f;
+        [SerializeField] private float maxSideBorderWidth = 340f;
+        [SerializeField] private bool autoSideBorderWidthFromBackground = true;
 
         [SerializeField] UIActionButtonItem btnHeroRoom;
         [SerializeField] UIActionButtonItem btnUpgrades;
@@ -69,19 +77,253 @@ namespace Kingdom.App
         private void Awake()
         {
             if (backgroundImage == null && transform.Find("imgBackground"))
+            {
                 backgroundImage = transform.Find("imgBackground").GetComponent<Image>();
+            }
 
-            if (bottomBar == null) bottomBar = transform.Find("BottomBar");
+            TryApplyWorldMapStructureFixup();
 
-            if (btnBack == null && transform.Find("btnBack")) btnBack = transform.Find("btnBack").GetComponent<Button>();
-            if (safeAreaTarget == null) safeAreaTarget = transform as RectTransform;
-            if (viewportLayout == null) viewportLayout = GetComponent<ViewportSafeAreaLayout>();
+            if (safeAreaContent == null)
+            {
+                safeAreaContent = transform.Find("SafeAreaContent") as RectTransform;
+            }
+
+            if (bottomBar == null)
+            {
+                bottomBar = transform.Find("BottomBar");
+            }
+
+            if (btnBack == null && transform.Find("btnBack"))
+            {
+                btnBack = transform.Find("btnBack").GetComponent<Button>();
+            }
+
+            if (safeAreaTarget == null)
+            {
+                safeAreaTarget = transform as RectTransform;
+            }
+
+            if (viewportLayout == null)
+            {
+                viewportLayout = GetComponent<ViewportSafeAreaLayout>();
+            }
+
+            if (viewportLayout != null)
+            {
+                viewportLayout.SetSafeAreaTarget(safeAreaContent.IsNotNull() ? safeAreaContent : safeAreaTarget);
+            }
 
             EnsureBackgroundImage();
+            ApplySideBorderWidth();
             CacheBottomBarBasePosition();
             ApplyViewportLayout();
         }
 
+        // 레거시 프리팹 구조에서도 런타임 시작 시 안전하게 월드맵 레이아웃을 보정한다.
+        // 배경 이미지와 사이드보더는 safeAreaTarget에서 제외한다.
+        private void TryApplyWorldMapStructureFixup()
+        {
+            EnsureSideBorders();
+            ApplySideBorderWidth();
+            EnsureSafeAreaContent();
+        }
+
+        private void EnsureSideBorders()
+        {
+            var root = transform as RectTransform;
+            if (root == null)
+            {
+                return;
+            }
+
+            if (sideBordersRoot == null)
+            {
+                sideBordersRoot = transform.Find("SideBorders") as RectTransform;
+            }
+
+            if (sideBordersRoot == null)
+            {
+                var sideRoot = new GameObject("SideBorders", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                sideBordersRoot = sideRoot.GetComponent<RectTransform>();
+                sideBordersRoot.SetParent(root, false);
+                sideBordersRoot.SetSiblingIndex(1);
+            }
+
+            var sideImage = sideBordersRoot.GetComponent<Image>();
+            if (sideImage == null)
+            {
+                sideImage = sideBordersRoot.gameObject.AddComponent<Image>();
+            }
+
+            sideImage.raycastTarget = false;
+            sideImage.color = Color.clear;
+            sideBordersRoot.anchorMin = Vector2.zero;
+            sideBordersRoot.anchorMax = Vector2.one;
+            sideBordersRoot.offsetMin = Vector2.zero;
+            sideBordersRoot.offsetMax = Vector2.zero;
+
+            EnsureSideBorderChild("LeftBorder", true);
+            EnsureSideBorderChild("RightBorder", false);
+        }
+
+        private void EnsureSideBorderChild(string name, bool isLeft)
+        {
+            if (sideBordersRoot == null)
+            {
+                return;
+            }
+
+            var child = sideBordersRoot.Find(name);
+            if (child == null)
+            {
+                var border = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+                child = border.transform;
+                child.SetParent(sideBordersRoot, false);
+            }
+
+            var borderRect = child.GetComponent<RectTransform>();
+            var borderImage = child.GetComponent<Image>();
+            borderImage.raycastTarget = false;
+            borderImage.color = borderImage.sprite != null ? Color.white : Color.clear;
+
+            borderRect.anchorMin = isLeft ? new Vector2(0f, 0f) : new Vector2(1f, 0f);
+            borderRect.anchorMax = isLeft ? new Vector2(0f, 1f) : new Vector2(1f, 1f);
+            borderRect.pivot = isLeft ? new Vector2(0f, 0.5f) : new Vector2(1f, 0.5f);
+            borderRect.sizeDelta = new Vector2(Mathf.Max(0f, sideBorderWidth), 0f);
+            borderRect.anchoredPosition = Vector2.zero;
+        }
+
+        private void ApplySideBorderWidth()
+        {
+            if (sideBordersRoot == null)
+            {
+                return;
+            }
+
+            if (minSideBorderWidth < 0f)
+            {
+                minSideBorderWidth = 0f;
+            }
+
+            if (maxSideBorderWidth < minSideBorderWidth)
+            {
+                maxSideBorderWidth = minSideBorderWidth;
+            }
+
+            float width = sideBorderWidth;
+            if (autoSideBorderWidthFromBackground)
+            {
+                width = EstimateSideBorderWidth();
+            }
+
+            float clampedWidth = Mathf.Clamp(width, minSideBorderWidth, maxSideBorderWidth);
+            SetSideBorderWidth(clampedWidth);
+            sideBorderWidth = clampedWidth;
+        }
+
+        private float EstimateSideBorderWidth()
+        {
+            if (backgroundImage == null || backgroundImage.sprite == null)
+            {
+                return sideBorderWidth;
+            }
+
+            float screenWidth = Mathf.Max(1f, Screen.width);
+            float screenHeight = Mathf.Max(1f, Screen.height);
+            float screenAspect = screenWidth / screenHeight;
+
+            float bgWidth = backgroundImage.sprite.rect.width;
+            float bgHeight = Mathf.Max(1f, backgroundImage.sprite.rect.height);
+            float backgroundAspect = bgWidth / bgHeight;
+
+            if (backgroundAspect <= 0f || screenAspect <= backgroundAspect)
+            {
+                return sideBorderWidth;
+            }
+
+            float sideAreaPixel = screenWidth - (screenHeight * backgroundAspect);
+            return sideAreaPixel * 0.5f;
+        }
+
+        private void SetSideBorderWidth(float width)
+        {
+            Transform leftBorder = sideBordersRoot.Find("LeftBorder");
+            if (leftBorder != null)
+            {
+                RectTransform leftRect = leftBorder.GetComponent<RectTransform>();
+                if (leftRect != null)
+                {
+                    Vector2 leftSize = leftRect.sizeDelta;
+                    leftRect.sizeDelta = new Vector2(width, leftSize.y);
+                }
+            }
+
+            Transform rightBorder = sideBordersRoot.Find("RightBorder");
+            if (rightBorder != null)
+            {
+                RectTransform rightRect = rightBorder.GetComponent<RectTransform>();
+                if (rightRect != null)
+                {
+                    Vector2 rightSize = rightRect.sizeDelta;
+                    rightRect.sizeDelta = new Vector2(width, rightSize.y);
+                }
+            }
+        }
+
+        private void EnsureSafeAreaContent()
+        {
+            var root = transform as RectTransform;
+            if (root == null)
+            {
+                return;
+            }
+
+            if (safeAreaContent == null)
+            {
+                safeAreaContent = transform.Find("SafeAreaContent") as RectTransform;
+            }
+
+            if (safeAreaContent == null)
+            {
+                var content = new GameObject("SafeAreaContent", typeof(RectTransform));
+                safeAreaContent = content.GetComponent<RectTransform>();
+                safeAreaContent.SetParent(root, false);
+                safeAreaContent.SetSiblingIndex(root.childCount > 1 ? root.childCount - 1 : 0);
+            }
+
+            safeAreaContent.anchorMin = Vector2.zero;
+            safeAreaContent.anchorMax = Vector2.one;
+            safeAreaContent.offsetMin = Vector2.zero;
+            safeAreaContent.offsetMax = Vector2.zero;
+
+            if (sideBordersRoot == null)
+            {
+                sideBordersRoot = transform.Find("SideBorders") as RectTransform;
+            }
+
+            Transform background = transform.Find("imgBackground");
+            for (int i = root.childCount - 1; i >= 0; i--)
+            {
+                Transform child = root.GetChild(i);
+
+                if (child == null || child == safeAreaContent)
+                {
+                    continue;
+                }
+
+                if (sideBordersRoot != null && child == sideBordersRoot)
+                {
+                    continue;
+                }
+
+                if (background != null && child == background)
+                {
+                    continue;
+                }
+
+                child.SetParent(safeAreaContent, false);
+            }
+        }
         private void OnEnable()
         {
             ApplyViewportLayout();
@@ -97,6 +339,7 @@ namespace Kingdom.App
 
         private void OnRectTransformDimensionsChange()
         {
+            ApplySideBorderWidth();
             ApplyViewportLayout();
         }
 
@@ -669,14 +912,14 @@ namespace Kingdom.App
 
         private void CreateBottomButtons()
         {
-            // Hero Room
+            // 영웅 방
             if (btnHeroRoom.IsNotNull() && bottomBar.IsNotNull())
             {
                 UIActionButtonItemConfig config = BuildButtonConfig(HeroRoomActionId, HeroRoomLabel, "UI/Sprites/WorldMap/Icon_Hero");
                 btnHeroRoom.Init(config, OnClickHeroRoom);
             }
 
-            // Upgrades
+            // 업그레이드
             if (btnUpgrades.IsNotNull() && bottomBar.IsNotNull())
             {
                 UIActionButtonItemConfig config = BuildButtonConfig(UpgradesActionId, UpgradeLabel, "UI/Sprites/WorldMap/Icon_Upgrade");
@@ -721,4 +964,6 @@ namespace Kingdom.App
         }
     }
 }
+
+
 

@@ -48,6 +48,17 @@ namespace Kingdom.App
             ApplyBottomLift();
         }
 
+        public void SetSafeAreaTarget(RectTransform target)
+        {
+            safeAreaTarget = target;
+            _lastSafeArea = Rect.zero;
+        }
+
+        public void SetBottomLiftTargets(RectTransform[] targets)
+        {
+            bottomLiftTargets = targets;
+            _cachedBasePositions = false;
+        }
         private void CacheBasePositions()
         {
             if (_cachedBasePositions)
@@ -221,3 +232,4 @@ namespace Kingdom.App
         }
     }
 }
+
