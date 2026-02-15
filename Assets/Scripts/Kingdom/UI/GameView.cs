@@ -15,6 +15,10 @@ namespace Kingdom.App
     public class GameView : BaseView
     {
         private const float HudMargin = 24f;
+        private const string HeroPortraitWidgetResourcePath = "UI/Widgets/HeroPortraitWidget";
+        private static readonly Color TopLeftBackdropColor = new(0f, 0f, 0f, 0.32f);
+        private static readonly Color BottomLeftBackdropColor = new(0f, 0f, 0f, 0.30f);
+        private static readonly Color RightBackdropColor = new(0f, 0f, 0f, 0.28f);
 
         [Header("Debug Buttons")]
         [SerializeField] private Button btnVictory;
@@ -22,6 +26,7 @@ namespace Kingdom.App
 
         [Header("Top HUD")]
         [SerializeField] private Button btnPause;
+        [SerializeField] private Button btnSpeed;
         [SerializeField] private Button btnNextWave;
         [SerializeField] private TextMeshProUGUI txtWaveInfo;
         [SerializeField] private TextMeshProUGUI txtStateInfo;
@@ -30,10 +35,25 @@ namespace Kingdom.App
 
         [Header("Hero / Spell")]
         [SerializeField] private Image imgHeroPortrait;
+        [SerializeField] private HeroPortraitWidget heroPortraitWidget;
+        [SerializeField] private Button btnBuildTower;
+        [SerializeField] private GameObject towerRingRoot;
+        [SerializeField] private Button btnTowerArcher;
+        [SerializeField] private Button btnTowerBarracks;
+        [SerializeField] private Button btnTowerMage;
+        [SerializeField] private Button btnTowerArtillery;
+        [SerializeField] private Button btnTowerCancel;
+        [SerializeField] private GameObject towerActionRoot;
+        [SerializeField] private TextMeshProUGUI txtTowerActionInfo;
+        [SerializeField] private Button btnTowerUpgrade;
+        [SerializeField] private Button btnTowerSell;
+        [SerializeField] private Button btnTowerRally;
+        [SerializeField] private Button btnTowerActionClose;
         [SerializeField] private Button btnSpellReinforce;
         [SerializeField] private Button btnSpellRain;
         [SerializeField] private Image imgSpellReinforceCooldown;
         [SerializeField] private Image imgSpellRainCooldown;
+        [SerializeField] private TextMeshProUGUI txtTowerInfo;
 
         [Header("Result UI")]
         [SerializeField] private GameObject resultRoot;
@@ -44,11 +64,28 @@ namespace Kingdom.App
 
         private GameStateController _stateController;
         private RectTransform _hudRoot;
+        private Image _topLeftBackdrop;
+        private Image _bottomLeftBackdrop;
+        private Image _rightBackdrop;
         private bool _isPausedVisual;
+        private int _ringGold;
+        private int _ringRemainingSlots;
+        private int _costArcher;
+        private int _costBarracks;
+        private int _costMage;
+        private int _costArtillery;
 
         public event Action NextWaveRequested;
+        public event Action SpeedToggleRequested;
+        public event Action BuildTowerRequested;
+        public event Action<TowerType> TowerBuildTypeRequested;
+        public event Action TowerUpgradeRequested;
+        public event Action TowerSellRequested;
+        public event Action TowerRallyRequested;
         public event Action SpellReinforceRequested;
         public event Action SpellRainRequested;
+        public bool IsTowerRingMenuOpen => towerRingRoot != null && towerRingRoot.activeSelf;
+        public bool IsTowerActionMenuOpen => towerActionRoot != null && towerActionRoot.activeSelf;
 
         private void Awake()
         {
@@ -56,6 +93,7 @@ namespace Kingdom.App
             EnsureHudRoot();
             CleanupLegacyRootChildren();
             EnsureCoreSlots();
+            EnsureHudBackdrops();
             NormalizeLayout();
             EnsureResultSlot();
         }
@@ -65,7 +103,18 @@ namespace Kingdom.App
             BindButton(btnVictory, OnVictory);
             BindButton(btnDefeat, OnDefeat);
             BindPauseButton(btnPause, OnPause);
+            BindButton(btnSpeed, OnSpeedToggle);
             BindButton(btnNextWave, OnNextWave);
+            BindButton(btnBuildTower, OnBuildTower);
+            BindButton(btnTowerArcher, () => OnTowerTypeSelected(TowerType.Archer));
+            BindButton(btnTowerBarracks, () => OnTowerTypeSelected(TowerType.Barracks));
+            BindButton(btnTowerMage, () => OnTowerTypeSelected(TowerType.Mage));
+            BindButton(btnTowerArtillery, () => OnTowerTypeSelected(TowerType.Artillery));
+            BindButton(btnTowerCancel, HideTowerRingMenu);
+            BindButton(btnTowerUpgrade, OnTowerUpgrade);
+            BindButton(btnTowerSell, OnTowerSell);
+            BindButton(btnTowerRally, OnTowerRally);
+            BindButton(btnTowerActionClose, HideTowerActionMenu);
             BindButton(btnSpellReinforce, OnSpellReinforce);
             BindButton(btnSpellRain, OnSpellRain);
             BindButton(btnRetry, OnRetry);
@@ -73,11 +122,16 @@ namespace Kingdom.App
 
             HideResult();
             SetPauseVisual(false);
+            SetSpeedVisual(false);
             UpdateWaveInfo(1, 1);
             UpdateResourceInfo(20, 100);
             SetHeroPortrait(null);
             SetSpellCooldown("reinforce", 0f);
             SetSpellCooldown("rain", 0f);
+            SetTowerInfo(0, 0);
+            SetTowerRingMenuAvailability(100, 0, 70, 77, 84, 95);
+            HideTowerRingMenu();
+            HideTowerActionMenu();
         }
 
         protected override void OnEnter(object[] data)
@@ -136,8 +190,15 @@ namespace Kingdom.App
 
         public void SetHeroPortrait(Sprite portrait)
         {
-            if (imgHeroPortrait == null)
+            if (heroPortraitWidget == null && imgHeroPortrait == null)
             {
+                return;
+            }
+
+            if (heroPortraitWidget != null)
+            {
+                heroPortraitWidget.SetPortrait(portrait);
+                imgHeroPortrait = heroPortraitWidget.PortraitImage;
                 return;
             }
 
@@ -168,6 +229,36 @@ namespace Kingdom.App
             ApplyCooldownVisual(imgSpellRainCooldown, clamped);
         }
 
+        public void SetTowerInfo(int builtCount, int remainSlots)
+        {
+            if (txtTowerInfo != null)
+            {
+                txtTowerInfo.text = $"TOWER {Mathf.Max(0, builtCount)} / SLOT {Mathf.Max(0, remainSlots)}";
+            }
+        }
+
+        public void SetTowerRingMenuAvailability(
+            int gold,
+            int remainingSlots,
+            int archerCost,
+            int barracksCost,
+            int mageCost,
+            int artilleryCost)
+        {
+            _ringGold = Mathf.Max(0, gold);
+            _ringRemainingSlots = Mathf.Max(0, remainingSlots);
+            _costArcher = Mathf.Max(1, archerCost);
+            _costBarracks = Mathf.Max(1, barracksCost);
+            _costMage = Mathf.Max(1, mageCost);
+            _costArtillery = Mathf.Max(1, artilleryCost);
+
+            bool hasSlot = _ringRemainingSlots > 0;
+            UpdateTowerRingButton(btnTowerArcher, "Archer", _costArcher, hasSlot && _ringGold >= _costArcher, new Color(0.22f, 0.42f, 0.72f, 0.95f));
+            UpdateTowerRingButton(btnTowerBarracks, "Barracks", _costBarracks, hasSlot && _ringGold >= _costBarracks, new Color(0.35f, 0.55f, 0.22f, 0.95f));
+            UpdateTowerRingButton(btnTowerMage, "Mage", _costMage, hasSlot && _ringGold >= _costMage, new Color(0.45f, 0.3f, 0.72f, 0.95f));
+            UpdateTowerRingButton(btnTowerArtillery, "Artillery", _costArtillery, hasSlot && _ringGold >= _costArtillery, new Color(0.68f, 0.42f, 0.2f, 0.95f));
+        }
+
         public void ShowResult(bool isVictory, string message = null)
         {
             if (resultRoot != null) resultRoot.SetActive(true);
@@ -196,6 +287,20 @@ namespace Kingdom.App
             SetPauseButtonLabel(isPaused ? "Resume" : "Pause");
         }
 
+        public void SetSpeedVisual(bool isFastForward)
+        {
+            if (btnSpeed == null)
+            {
+                return;
+            }
+
+            var text = btnSpeed.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.text = isFastForward ? "x2" : "x1";
+            }
+        }
+
         private void OnVictory()
         {
             ShowResult(true);
@@ -220,6 +325,43 @@ namespace Kingdom.App
         private void OnNextWave()
         {
             NextWaveRequested?.Invoke();
+        }
+
+        private void OnSpeedToggle()
+        {
+            SpeedToggleRequested?.Invoke();
+        }
+
+        private void OnBuildTower()
+        {
+            if (towerRingRoot == null || btnTowerArcher == null || btnTowerBarracks == null || btnTowerMage == null || btnTowerArtillery == null)
+            {
+                BuildTowerRequested?.Invoke();
+                return;
+            }
+
+            OpenTowerRingMenuAtLocalPosition(new Vector2(HudMargin + 390f, HudMargin + 150f));
+        }
+
+        private void OnTowerTypeSelected(TowerType towerType)
+        {
+            HideTowerRingMenu();
+            TowerBuildTypeRequested?.Invoke(towerType);
+        }
+
+        private void OnTowerUpgrade()
+        {
+            TowerUpgradeRequested?.Invoke();
+        }
+
+        private void OnTowerSell()
+        {
+            TowerSellRequested?.Invoke();
+        }
+
+        private void OnTowerRally()
+        {
+            TowerRallyRequested?.Invoke();
         }
 
         private void OnSpellReinforce()
@@ -316,7 +458,18 @@ namespace Kingdom.App
             btnVictory = btnVictory != null ? btnVictory : FindButton("btnVictory");
             btnDefeat = btnDefeat != null ? btnDefeat : FindButton("btnDefeat");
             btnPause = btnPause != null ? btnPause : FindButton("btnPause");
+            btnSpeed = btnSpeed != null ? btnSpeed : FindButton("btnSpeed");
             btnNextWave = btnNextWave != null ? btnNextWave : FindButton("btnNextWave");
+            btnBuildTower = btnBuildTower != null ? btnBuildTower : FindButton("btnBuildTower");
+            btnTowerArcher = btnTowerArcher != null ? btnTowerArcher : FindButton("TowerRingMenuRoot/btnTowerArcher");
+            btnTowerBarracks = btnTowerBarracks != null ? btnTowerBarracks : FindButton("TowerRingMenuRoot/btnTowerBarracks");
+            btnTowerMage = btnTowerMage != null ? btnTowerMage : FindButton("TowerRingMenuRoot/btnTowerMage");
+            btnTowerArtillery = btnTowerArtillery != null ? btnTowerArtillery : FindButton("TowerRingMenuRoot/btnTowerArtillery");
+            btnTowerCancel = btnTowerCancel != null ? btnTowerCancel : FindButton("TowerRingMenuRoot/btnTowerCancel");
+            btnTowerUpgrade = btnTowerUpgrade != null ? btnTowerUpgrade : FindButton("TowerActionMenuRoot/btnTowerUpgrade");
+            btnTowerSell = btnTowerSell != null ? btnTowerSell : FindButton("TowerActionMenuRoot/btnTowerSell");
+            btnTowerRally = btnTowerRally != null ? btnTowerRally : FindButton("TowerActionMenuRoot/btnTowerRally");
+            btnTowerActionClose = btnTowerActionClose != null ? btnTowerActionClose : FindButton("TowerActionMenuRoot/btnTowerActionClose");
             btnSpellReinforce = btnSpellReinforce != null ? btnSpellReinforce : FindButton("btnSpellReinforce");
             btnSpellRain = btnSpellRain != null ? btnSpellRain : FindButton("btnSpellRain");
             btnRetry = btnRetry != null ? btnRetry : FindButton("ResultRoot/btnRetry");
@@ -326,10 +479,30 @@ namespace Kingdom.App
             txtStateInfo = txtStateInfo != null ? txtStateInfo : FindText("txtStateInfo");
             txtLives = txtLives != null ? txtLives : FindText("txtLives");
             txtGold = txtGold != null ? txtGold : FindText("txtGold");
+            txtTowerInfo = txtTowerInfo != null ? txtTowerInfo : FindText("txtTowerInfo");
             txtResultTitle = txtResultTitle != null ? txtResultTitle : FindText("ResultRoot/txtResultTitle");
             txtResultMessage = txtResultMessage != null ? txtResultMessage : FindText("ResultRoot/txtResultMessage");
+            txtTowerActionInfo = txtTowerActionInfo != null ? txtTowerActionInfo : FindText("TowerActionMenuRoot/txtTowerActionInfo");
 
             imgHeroPortrait = imgHeroPortrait != null ? imgHeroPortrait : FindImage("imgHeroPortrait");
+            if (heroPortraitWidget == null)
+            {
+                var tr = transform.Find("HeroPortraitWidget");
+                if (tr != null)
+                {
+                    heroPortraitWidget = tr.GetComponent<HeroPortraitWidget>();
+                }
+            }
+
+            if (heroPortraitWidget == null)
+            {
+                heroPortraitWidget = GetComponentInChildren<HeroPortraitWidget>(true);
+            }
+
+            if (imgHeroPortrait == null && heroPortraitWidget != null)
+            {
+                imgHeroPortrait = heroPortraitWidget.PortraitImage;
+            }
             imgSpellReinforceCooldown = imgSpellReinforceCooldown != null
                 ? imgSpellReinforceCooldown
                 : FindImage("btnSpellReinforce/CooldownFill");
@@ -341,6 +514,18 @@ namespace Kingdom.App
             {
                 var tr = transform.Find("ResultRoot");
                 if (tr != null) resultRoot = tr.gameObject;
+            }
+
+            if (towerRingRoot == null)
+            {
+                var tr = transform.Find("TowerRingMenuRoot");
+                if (tr != null) towerRingRoot = tr.gameObject;
+            }
+
+            if (towerActionRoot == null)
+            {
+                var tr = transform.Find("TowerActionMenuRoot");
+                if (tr != null) towerActionRoot = tr.gameObject;
             }
         }
 
@@ -369,22 +554,21 @@ namespace Kingdom.App
             txtGold ??= CreateText("txtGold");
 
             btnPause ??= CreateButton("btnPause", "Pause");
+            btnSpeed ??= CreateButton("btnSpeed", "x1");
             btnNextWave ??= CreateButton("btnNextWave", "Next Wave");
+            btnBuildTower ??= CreateButton("btnBuildTower", "Build Tower");
             btnVictory ??= CreateButton("btnVictory", "Victory");
             btnDefeat ??= CreateButton("btnDefeat", "Defeat");
             btnSpellReinforce ??= CreateButton("btnSpellReinforce", "Reinforce");
             btnSpellRain ??= CreateButton("btnSpellRain", "Rain");
 
-            if (imgHeroPortrait == null)
-            {
-                var go = new GameObject("imgHeroPortrait", typeof(RectTransform), typeof(Image));
-                go.transform.SetParent(_hudRoot, false);
-                imgHeroPortrait = go.GetComponent<Image>();
-                imgHeroPortrait.color = new Color(1f, 1f, 1f, 0.18f);
-            }
+            EnsureHeroPortraitWidget();
 
             EnsureCooldownOverlay(btnSpellReinforce, ref imgSpellReinforceCooldown);
             EnsureCooldownOverlay(btnSpellRain, ref imgSpellRainCooldown);
+            txtTowerInfo ??= CreateText("txtTowerInfo");
+            EnsureTowerRingMenu();
+            EnsureTowerActionMenu();
         }
 
         private void NormalizeLayout()
@@ -392,14 +576,24 @@ namespace Kingdom.App
             Reparent(btnVictory);
             Reparent(btnDefeat);
             Reparent(btnPause);
+            Reparent(btnSpeed);
             Reparent(btnNextWave);
+            Reparent(btnBuildTower);
             Reparent(btnSpellReinforce);
             Reparent(btnSpellRain);
             Reparent(txtWaveInfo);
             Reparent(txtStateInfo);
             Reparent(txtLives);
             Reparent(txtGold);
-            Reparent(imgHeroPortrait);
+            Reparent(txtTowerInfo);
+            if (heroPortraitWidget != null)
+            {
+                Reparent(heroPortraitWidget);
+            }
+            else
+            {
+                Reparent(imgHeroPortrait);
+            }
 
             PlaceTextTopLeft(txtWaveInfo, new Vector2(HudMargin, -HudMargin), 40);
             PlaceTextTopLeft(txtStateInfo, new Vector2(HudMargin, -HudMargin - 50f), 30);
@@ -407,21 +601,37 @@ namespace Kingdom.App
             PlaceTextTopLeft(txtGold, new Vector2(HudMargin, -HudMargin - 135f), 28);
 
             PlaceButton(btnPause, new Vector2(1f, 1f), new Vector2(-HudMargin, -HudMargin), new Vector2(120f, 56f), new Color(0.18f, 0.2f, 0.25f, 0.9f), "Pause");
+            PlaceButton(btnSpeed, new Vector2(1f, 1f), new Vector2(-HudMargin - 132f, -HudMargin), new Vector2(120f, 56f), new Color(0.16f, 0.24f, 0.36f, 0.9f), "x1");
             PlaceButton(btnNextWave, new Vector2(1f, 1f), new Vector2(-HudMargin, -HudMargin - 66f), new Vector2(180f, 56f), new Color(0.45f, 0.2f, 0.2f, 0.9f), "Next Wave");
             PlaceButton(btnVictory, new Vector2(1f, 0f), new Vector2(-HudMargin, HudMargin + 70f), new Vector2(150f, 56f), new Color(0.2f, 0.55f, 0.2f, 0.9f), "Victory");
             PlaceButton(btnDefeat, new Vector2(1f, 0f), new Vector2(-HudMargin, HudMargin), new Vector2(150f, 56f), new Color(0.65f, 0.2f, 0.2f, 0.9f), "Defeat");
             PlaceButton(btnSpellReinforce, new Vector2(0f, 0f), new Vector2(HudMargin, HudMargin), new Vector2(160f, 56f), new Color(0.2f, 0.35f, 0.6f, 0.9f), "Reinforce");
             PlaceButton(btnSpellRain, new Vector2(0f, 0f), new Vector2(HudMargin + 170f, HudMargin), new Vector2(140f, 56f), new Color(0.55f, 0.35f, 0.2f, 0.9f), "Rain");
+            PlaceButton(btnBuildTower, new Vector2(0f, 0f), new Vector2(HudMargin + 320f, HudMargin), new Vector2(170f, 56f), new Color(0.25f, 0.55f, 0.35f, 0.9f), "Build");
+            PlaceTextTopLeft(txtTowerInfo, new Vector2(HudMargin, -HudMargin - 175f), 24);
+            LayoutTowerRingMenu();
+            LayoutTowerActionMenu();
 
-            if (imgHeroPortrait != null)
+            RectTransform portraitRect = null;
+            if (heroPortraitWidget != null)
             {
-                var rect = imgHeroPortrait.GetComponent<RectTransform>();
-                rect.anchorMin = new Vector2(0f, 0f);
-                rect.anchorMax = new Vector2(0f, 0f);
-                rect.pivot = new Vector2(0f, 0f);
-                rect.anchoredPosition = new Vector2(HudMargin, HudMargin + 72f);
-                rect.sizeDelta = new Vector2(84f, 84f);
+                portraitRect = heroPortraitWidget.transform as RectTransform;
             }
+            else if (imgHeroPortrait != null)
+            {
+                portraitRect = imgHeroPortrait.GetComponent<RectTransform>();
+            }
+
+            if (portraitRect != null)
+            {
+                portraitRect.anchorMin = new Vector2(0f, 0f);
+                portraitRect.anchorMax = new Vector2(0f, 0f);
+                portraitRect.pivot = new Vector2(0f, 0f);
+                portraitRect.anchoredPosition = new Vector2(HudMargin, HudMargin + 72f);
+                portraitRect.sizeDelta = new Vector2(84f, 84f);
+            }
+
+            LayoutHudBackdrops();
         }
 
         private void EnsureResultSlot()
@@ -467,10 +677,28 @@ namespace Kingdom.App
             text.text = label;
             text.alignment = TextAlignmentOptions.Center;
             text.fontSize = 28;
-            text.color = Color.black;
+            text.color = Color.white;
 
             var txtRect = txtGo.GetComponent<RectTransform>();
             Stretch(txtRect);
+            return button;
+        }
+
+        private Button CreateButton(Transform parent, string name, string label)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            go.transform.SetParent(parent, false);
+            var button = go.GetComponent<Button>();
+
+            var txtGo = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+            txtGo.transform.SetParent(go.transform, false);
+            var text = txtGo.GetComponent<TextMeshProUGUI>();
+            text.text = label;
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontSize = 22;
+            text.color = Color.white;
+
+            Stretch(txtGo.GetComponent<RectTransform>());
             return button;
         }
 
@@ -528,6 +756,33 @@ namespace Kingdom.App
         {
             if (component == null) return;
             component.transform.SetParent(_hudRoot, false);
+        }
+
+        private void EnsureHeroPortraitWidget()
+        {
+            if (_hudRoot == null)
+            {
+                return;
+            }
+
+            if (heroPortraitWidget == null)
+            {
+                GameObject prefab = Resources.Load<GameObject>(HeroPortraitWidgetResourcePath);
+                if (prefab != null)
+                {
+                    GameObject instance = Instantiate(prefab, _hudRoot, false);
+                    instance.name = "HeroPortraitWidget";
+                    heroPortraitWidget = instance.GetComponent<HeroPortraitWidget>();
+                }
+            }
+
+            if (heroPortraitWidget == null)
+            {
+                heroPortraitWidget = HeroPortraitWidget.CreateFallback(_hudRoot);
+            }
+
+            heroPortraitWidget.EnsureRuntimeDefaults();
+            imgHeroPortrait = heroPortraitWidget.PortraitImage;
         }
 
         private static void PlaceTextTopLeft(TextMeshProUGUI text, Vector2 pos, float fontSize)
@@ -591,6 +846,247 @@ namespace Kingdom.App
             cooldownImage.gameObject.SetActive(false);
         }
 
+        private void EnsureTowerRingMenu()
+        {
+            if (towerRingRoot == null)
+            {
+                var go = new GameObject("TowerRingMenuRoot", typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(_hudRoot, false);
+                towerRingRoot = go;
+
+                var bg = go.GetComponent<Image>();
+                bg.color = new Color(0f, 0f, 0f, 0.45f);
+            }
+
+            var rootRect = towerRingRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0f, 0f);
+            rootRect.anchorMax = new Vector2(0f, 0f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.sizeDelta = new Vector2(260f, 260f);
+
+            btnTowerArcher ??= CreateButton(towerRingRoot.transform, "btnTowerArcher", "Archer");
+            btnTowerBarracks ??= CreateButton(towerRingRoot.transform, "btnTowerBarracks", "Barracks");
+            btnTowerMage ??= CreateButton(towerRingRoot.transform, "btnTowerMage", "Mage");
+            btnTowerArtillery ??= CreateButton(towerRingRoot.transform, "btnTowerArtillery", "Artillery");
+            btnTowerCancel ??= CreateButton(towerRingRoot.transform, "btnTowerCancel", "X");
+        }
+
+        private void EnsureTowerActionMenu()
+        {
+            if (towerActionRoot == null)
+            {
+                var go = new GameObject("TowerActionMenuRoot", typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(_hudRoot, false);
+                towerActionRoot = go;
+
+                var bg = go.GetComponent<Image>();
+                bg.color = new Color(0f, 0f, 0f, 0.52f);
+            }
+
+            var rootRect = towerActionRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.sizeDelta = new Vector2(260f, 180f);
+
+            if (txtTowerActionInfo == null)
+            {
+                var go = new GameObject("txtTowerActionInfo", typeof(RectTransform), typeof(TextMeshProUGUI));
+                go.transform.SetParent(towerActionRoot.transform, false);
+                txtTowerActionInfo = go.GetComponent<TextMeshProUGUI>();
+                txtTowerActionInfo.alignment = TextAlignmentOptions.Center;
+                txtTowerActionInfo.fontSize = 20f;
+                txtTowerActionInfo.color = Color.white;
+            }
+
+            btnTowerUpgrade ??= CreateButton(towerActionRoot.transform, "btnTowerUpgrade", "Upgrade");
+            btnTowerSell ??= CreateButton(towerActionRoot.transform, "btnTowerSell", "Sell");
+            btnTowerRally ??= CreateButton(towerActionRoot.transform, "btnTowerRally", "Rally");
+            btnTowerActionClose ??= CreateButton(towerActionRoot.transform, "btnTowerActionClose", "X");
+        }
+
+        private void LayoutTowerRingMenu()
+        {
+            if (towerRingRoot == null)
+            {
+                return;
+            }
+
+            towerRingRoot.transform.SetParent(_hudRoot, false);
+            var rootRect = towerRingRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = new Vector2(-320f, -180f);
+            rootRect.sizeDelta = new Vector2(260f, 260f);
+
+            PlaceRingButton(btnTowerArcher, new Vector2(0f, 1f), new Vector2(60f, -130f), new Vector2(120f, 52f), new Color(0.22f, 0.42f, 0.72f, 0.95f));
+            PlaceRingButton(btnTowerBarracks, new Vector2(0.5f, 0f), new Vector2(0f, 36f), new Vector2(120f, 52f), new Color(0.35f, 0.55f, 0.22f, 0.95f));
+            PlaceRingButton(btnTowerMage, new Vector2(1f, 1f), new Vector2(-60f, -130f), new Vector2(120f, 52f), new Color(0.45f, 0.3f, 0.72f, 0.95f));
+            PlaceRingButton(btnTowerArtillery, new Vector2(0.5f, 1f), new Vector2(0f, -36f), new Vector2(120f, 52f), new Color(0.68f, 0.42f, 0.2f, 0.95f));
+            PlaceRingButton(btnTowerCancel, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(58f, 58f), new Color(0.12f, 0.12f, 0.12f, 0.95f));
+            SetTowerRingMenuAvailability(_ringGold, _ringRemainingSlots, _costArcher, _costBarracks, _costMage, _costArtillery);
+
+            HideTowerRingMenu();
+        }
+
+        private void LayoutTowerActionMenu()
+        {
+            if (towerActionRoot == null)
+            {
+                return;
+            }
+
+            towerActionRoot.transform.SetParent(_hudRoot, false);
+            var rootRect = towerActionRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = new Vector2(-120f, -80f);
+            rootRect.sizeDelta = new Vector2(260f, 180f);
+
+            if (txtTowerActionInfo != null)
+            {
+                var textRect = txtTowerActionInfo.GetComponent<RectTransform>();
+                textRect.anchorMin = new Vector2(0.5f, 1f);
+                textRect.anchorMax = new Vector2(0.5f, 1f);
+                textRect.pivot = new Vector2(0.5f, 1f);
+                textRect.anchoredPosition = new Vector2(0f, -14f);
+                textRect.sizeDelta = new Vector2(220f, 54f);
+            }
+
+            PlaceRingButton(btnTowerUpgrade, new Vector2(0.5f, 0f), new Vector2(-84f, 12f), new Vector2(80f, 44f), new Color(0.23f, 0.52f, 0.33f, 0.95f));
+            PlaceRingButton(btnTowerRally, new Vector2(0.5f, 0f), new Vector2(0f, 12f), new Vector2(80f, 44f), new Color(0.24f, 0.45f, 0.72f, 0.95f));
+            PlaceRingButton(btnTowerSell, new Vector2(0.5f, 0f), new Vector2(84f, 12f), new Vector2(80f, 44f), new Color(0.62f, 0.34f, 0.21f, 0.95f));
+            PlaceRingButton(btnTowerActionClose, new Vector2(1f, 1f), new Vector2(-18f, -16f), new Vector2(34f, 34f), new Color(0.2f, 0.2f, 0.2f, 0.95f));
+
+            HideTowerActionMenu();
+        }
+
+        public void OpenTowerRingMenuAtScreenPosition(Vector2 screenPosition)
+        {
+            if (towerRingRoot == null || _hudRoot == null)
+            {
+                return;
+            }
+
+            Camera camera = null;
+            Canvas canvas = GetComponentInParent<Canvas>();
+            if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                camera = canvas.worldCamera;
+            }
+
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_hudRoot, screenPosition, camera, out Vector2 localPoint))
+            {
+                return;
+            }
+
+            OpenTowerRingMenuAtLocalPosition(localPoint);
+        }
+
+        public void OpenTowerRingMenuAtWorldPosition(Vector3 worldPosition)
+        {
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return;
+            }
+
+            OpenTowerRingMenuAtScreenPosition(camera.WorldToScreenPoint(worldPosition));
+        }
+
+        public void OpenTowerActionMenuAtWorldPosition(Vector3 worldPosition, string infoText, bool canUpgrade, int upgradeCost, int sellRefund, bool canRally)
+        {
+            if (towerActionRoot == null || _hudRoot == null)
+            {
+                return;
+            }
+
+            Camera camera = Camera.main;
+            if (camera == null)
+            {
+                return;
+            }
+
+            Vector2 screen = camera.WorldToScreenPoint(worldPosition);
+            Canvas canvas = GetComponentInParent<Canvas>();
+            Camera uiCamera = null;
+            if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            {
+                uiCamera = canvas.worldCamera;
+            }
+
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_hudRoot, screen, uiCamera, out Vector2 localPoint))
+            {
+                return;
+            }
+
+            var rootRect = towerActionRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = localPoint + new Vector2(0f, 120f);
+            towerActionRoot.SetActive(true);
+
+            if (txtTowerActionInfo != null)
+            {
+                txtTowerActionInfo.text = $"{infoText}\nUP {upgradeCost}G / SELL {sellRefund}G";
+            }
+
+            if (btnTowerUpgrade != null)
+            {
+                btnTowerUpgrade.interactable = canUpgrade;
+            }
+
+            if (btnTowerRally != null)
+            {
+                btnTowerRally.gameObject.SetActive(canRally);
+                btnTowerRally.interactable = canRally;
+            }
+        }
+
+        public void HideTowerRingMenuPublic()
+        {
+            HideTowerRingMenu();
+        }
+
+        public void HideTowerActionMenuPublic()
+        {
+            HideTowerActionMenu();
+        }
+
+        private void OpenTowerRingMenuAtLocalPosition(Vector2 localPosition)
+        {
+            if (towerRingRoot == null)
+            {
+                return;
+            }
+
+            var rootRect = towerRingRoot.GetComponent<RectTransform>();
+            rootRect.anchorMin = new Vector2(0.5f, 0.5f);
+            rootRect.anchorMax = new Vector2(0.5f, 0.5f);
+            rootRect.pivot = new Vector2(0.5f, 0.5f);
+            rootRect.anchoredPosition = localPosition;
+            towerRingRoot.SetActive(true);
+        }
+
+        private void HideTowerRingMenu()
+        {
+            if (towerRingRoot != null)
+            {
+                towerRingRoot.SetActive(false);
+            }
+        }
+
+        private void HideTowerActionMenu()
+        {
+            if (towerActionRoot != null)
+            {
+                towerActionRoot.SetActive(false);
+            }
+        }
+
         private static void SetupResultRootRect(RectTransform rect)
         {
             if (rect == null) return;
@@ -608,6 +1104,116 @@ namespace Kingdom.App
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
             rect.pivot = new Vector2(0.5f, 0.5f);
+        }
+
+        private void EnsureHudBackdrops()
+        {
+            EnsureBackdrop(ref _topLeftBackdrop, "HUDBackdropTopLeft", TopLeftBackdropColor);
+            EnsureBackdrop(ref _bottomLeftBackdrop, "HUDBackdropBottomLeft", BottomLeftBackdropColor);
+            EnsureBackdrop(ref _rightBackdrop, "HUDBackdropRight", RightBackdropColor);
+        }
+
+        private void EnsureBackdrop(ref Image image, string name, Color color)
+        {
+            if (_hudRoot == null)
+            {
+                return;
+            }
+
+            if (image == null)
+            {
+                var found = _hudRoot.Find(name);
+                if (found != null)
+                {
+                    image = found.GetComponent<Image>();
+                }
+            }
+
+            if (image == null)
+            {
+                var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+                go.transform.SetParent(_hudRoot, false);
+                image = go.GetComponent<Image>();
+            }
+
+            image.color = color;
+            image.raycastTarget = false;
+            image.transform.SetAsFirstSibling();
+        }
+
+        private void LayoutHudBackdrops()
+        {
+            LayoutBackdrop(_topLeftBackdrop, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0f, 0f), new Vector2(610f, 232f));
+            LayoutBackdrop(_bottomLeftBackdrop, new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(530f, 196f));
+            LayoutBackdrop(_rightBackdrop, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(-10f, 0f), new Vector2(230f, 370f));
+        }
+
+        private static void LayoutBackdrop(
+            Image image,
+            Vector2 anchorMin,
+            Vector2 anchorMax,
+            Vector2 pivot,
+            Vector2 anchoredPosition,
+            Vector2 size)
+        {
+            if (image == null)
+            {
+                return;
+            }
+
+            var rect = image.GetComponent<RectTransform>();
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.pivot = pivot;
+            rect.anchoredPosition = anchoredPosition;
+            rect.sizeDelta = size;
+        }
+
+        private static void PlaceRingButton(Button button, Vector2 anchor, Vector2 pos, Vector2 size, Color color)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            var rect = button.GetComponent<RectTransform>();
+            rect.anchorMin = anchor;
+            rect.anchorMax = anchor;
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = pos;
+            rect.sizeDelta = size;
+
+            var image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = color;
+            }
+        }
+
+        private static void UpdateTowerRingButton(Button button, string name, int cost, bool interactable, Color activeColor)
+        {
+            if (button == null)
+            {
+                return;
+            }
+
+            button.interactable = interactable;
+            Image image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = interactable
+                    ? activeColor
+                    : new Color(0.25f, 0.25f, 0.25f, 0.9f);
+            }
+
+            TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null)
+            {
+                text.text = $"{name}\n{cost}G";
+                text.fontSize = 18f;
+                text.alignment = TextAlignmentOptions.Center;
+                text.color = interactable ? Color.white : new Color(1f, 0.45f, 0.45f, 1f);
+            }
         }
 
         private Button FindButton(string path)
@@ -635,12 +1241,16 @@ namespace Kingdom.App
                 "btnVictory",
                 "btnDefeat",
                 "btnPause",
+                "btnSpeed",
                 "btnNextWave",
+                "btnBuildTower",
                 "txtWaveInfo",
                 "txtStateInfo",
                 "txtLives",
                 "txtGold",
+                "txtTowerInfo",
                 "imgHeroPortrait",
+                "HeroPortraitWidget",
                 "btnSpellReinforce",
                 "btnSpellRain"
             };
@@ -673,12 +1283,16 @@ namespace Kingdom.App
             return tr == GetTransform(btnVictory)
                 || tr == GetTransform(btnDefeat)
                 || tr == GetTransform(btnPause)
+                || tr == GetTransform(btnSpeed)
                 || tr == GetTransform(btnNextWave)
+                || tr == GetTransform(btnBuildTower)
                 || tr == GetTransform(txtWaveInfo)
                 || tr == GetTransform(txtStateInfo)
                 || tr == GetTransform(txtLives)
                 || tr == GetTransform(txtGold)
+                || tr == GetTransform(txtTowerInfo)
                 || tr == GetTransform(imgHeroPortrait)
+                || tr == GetTransform(heroPortraitWidget)
                 || tr == GetTransform(btnSpellReinforce)
                 || tr == GetTransform(btnSpellRain);
         }

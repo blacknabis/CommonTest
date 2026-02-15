@@ -28,6 +28,8 @@ namespace Kingdom.Game
         public int CurrentWave { get; private set; }
         public int TotalWaves => Mathf.Max(1, totalWaves);
         public bool IsPaused => CurrentState == GameFlowState.Pause;
+        public float WaveDuration => Mathf.Max(0f, waveDuration);
+        public float StateElapsedUnscaled => Mathf.Max(0f, Time.unscaledTime - _stateStartedAtUnscaledTime);
 
         public event Action<GameFlowState> StateChanged;
         public event Action<int, int> WaveChanged;
@@ -139,6 +141,23 @@ namespace Kingdom.Game
         {
             Time.timeScale = 1f;
             ChangeState(GameFlowState.Result);
+        }
+
+        public bool TryEarlyCallNextWave()
+        {
+            if (CurrentState != GameFlowState.WaveRunning)
+            {
+                return false;
+            }
+
+            if (CurrentWave >= TotalWaves)
+            {
+                ChangeState(GameFlowState.Result);
+                return true;
+            }
+
+            ChangeState(GameFlowState.WaveBreak);
+            return true;
         }
 
         public void SetTotalWaves(int waveCount)

@@ -32,6 +32,11 @@ namespace Kingdom.App
             Debug.Log("[WorldMapScene] Started. Showing world map.");
             EnsureWorldMapManager();
 
+            if (MainUI is WorldMapView worldMapView)
+            {
+                worldMapView.RefreshStageNodeProgress();
+            }
+
             if (WorldMapManager.Instance != null)
             {
                 WorldMapManager.Instance.StageNodeClicked -= OnStageNodeClicked;

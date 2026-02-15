@@ -21,6 +21,13 @@ namespace Kingdom.Save
         }
 
         [Serializable]
+        private class LegacySaveDataContainerV1
+        {
+            public List<StageProgressData> StageProgress;
+            public List<StageProgressData> Stages;
+        }
+
+        [Serializable]
         public class StageProgressData
         {
             public int StageId;
@@ -43,6 +50,8 @@ namespace Kingdom.Save
         }
 
         private const string FileName = "kingdom_user_save.json";
+        private const string CorruptBackupPrefix = "kingdom_user_save.corrupt_";
+        private const string CorruptBackupSuffix = ".json";
 
         private readonly Dictionary<int, StageProgressData> _stageProgressMap = new();
 
@@ -114,17 +123,21 @@ namespace Kingdom.Save
                 return;
             }
 
+            string json = null;
             try
             {
-                var json = File.ReadAllText(SaveFilePath);
+                json = File.ReadAllText(SaveFilePath);
                 if (string.IsNullOrWhiteSpace(json))
                 {
+                    BackupCorruptSaveFile("empty");
+                    Save();
                     return;
                 }
 
-                var container = JsonUtility.FromJson<SaveDataContainer>(json);
-                if (container == null || container.StageProgressList == null)
+                if (!TryDeserializeContainer(json, out SaveDataContainer container) || container == null || container.StageProgressList == null)
                 {
+                    BackupCorruptSaveFile("invalid_schema");
+                    Save();
                     return;
                 }
 
@@ -136,12 +149,21 @@ namespace Kingdom.Save
                         continue;
                     }
 
+                    if (data.StageId <= 0)
+                    {
+                        continue;
+                    }
+
+                    data.BestStars = Mathf.Clamp(data.BestStars, 0, 3);
+                    data.BestClearTimeSeconds = Mathf.Max(0f, data.BestClearTimeSeconds);
                     _stageProgressMap[data.StageId] = data;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogError($"[UserSaveData] Load failed: {e}");
+                BackupCorruptSaveFile("exception");
+                Save();
             }
         }
 
@@ -160,6 +182,173 @@ namespace Kingdom.Save
             {
                 Debug.LogError($"[UserSaveData] Reset failed: {e}");
             }
+        }
+
+        private void BackupCorruptSaveFile(string reason)
+        {
+            try
+            {
+                if (!File.Exists(SaveFilePath))
+                {
+                    return;
+                }
+
+                string directory = Path.GetDirectoryName(SaveFilePath);
+                if (string.IsNullOrWhiteSpace(directory))
+                {
+                    return;
+                }
+
+                string stamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+                string backupPath = Path.Combine(directory, $"{CorruptBackupPrefix}{stamp}_{reason}{CorruptBackupSuffix}");
+                File.Move(SaveFilePath, backupPath);
+                Debug.LogWarning($"[UserSaveData] Corrupt save file moved to backup: {backupPath}");
+            }
+            catch (Exception backupException)
+            {
+                Debug.LogError($"[UserSaveData] Corrupt backup failed: {backupException}");
+            }
+        }
+
+        private static bool TryDeserializeContainer(string rawJson, out SaveDataContainer container)
+        {
+            container = null;
+            if (string.IsNullOrWhiteSpace(rawJson))
+            {
+                return false;
+            }
+
+            string trimmed = rawJson.Trim();
+            bool hasCurrentKey = rawJson.IndexOf("\"StageProgressList\"", StringComparison.Ordinal) >= 0;
+            bool hasLegacyStageProgressKey = rawJson.IndexOf("\"StageProgress\"", StringComparison.Ordinal) >= 0;
+            bool hasLegacyStagesKey = rawJson.IndexOf("\"Stages\"", StringComparison.Ordinal) >= 0;
+
+            // Current schema (object only).
+            if (!trimmed.StartsWith("[", StringComparison.Ordinal))
+            {
+                if (TryParseJson(rawJson, out SaveDataContainer current) &&
+                    current != null &&
+                    current.StageProgressList != null &&
+                    (hasCurrentKey || current.StageProgressList.Count > 0))
+                {
+                    container = current;
+                    return true;
+                }
+            }
+
+            // Legacy schema: { "StageProgress": [...] } or { "Stages": [...] }
+            LegacySaveDataContainerV1 legacy = null;
+            if (!trimmed.StartsWith("[", StringComparison.Ordinal))
+            {
+                TryParseJson(rawJson, out legacy);
+            }
+
+            if (legacy != null)
+            {
+                if (legacy.StageProgress != null && (hasLegacyStageProgressKey || legacy.StageProgress.Count > 0))
+                {
+                    container = new SaveDataContainer
+                    {
+                        StageProgressList = legacy.StageProgress,
+                        LastSavedUtcTicks = DateTime.UtcNow.Ticks
+                    };
+                    return true;
+                }
+
+                if (legacy.Stages != null && (hasLegacyStagesKey || legacy.Stages.Count > 0))
+                {
+                    container = new SaveDataContainer
+                    {
+                        StageProgressList = legacy.Stages,
+                        LastSavedUtcTicks = DateTime.UtcNow.Ticks
+                    };
+                    return true;
+                }
+            }
+
+            // Legacy raw array schema: [ { ...stageProgressData... } ]
+            if (trimmed.StartsWith("[", StringComparison.Ordinal))
+            {
+                string wrapped = "{\"StageProgressList\":" + trimmed + "}";
+                if (TryParseJson(wrapped, out SaveDataContainer wrappedContainer) &&
+                    wrappedContainer != null &&
+                    wrappedContainer.StageProgressList != null)
+                {
+                    container = wrappedContainer;
+                    return true;
+                }
+            }
+
+            // Try common camelCase legacy keys.
+            string normalized = NormalizeLegacyJsonKeys(rawJson);
+            if (!string.Equals(normalized, rawJson, StringComparison.Ordinal))
+            {
+                string normalizedTrimmed = normalized.Trim();
+                bool normalizedHasCurrentKey = normalized.IndexOf("\"StageProgressList\"", StringComparison.Ordinal) >= 0;
+                if (!normalizedTrimmed.StartsWith("[", StringComparison.Ordinal))
+                {
+                    if (TryParseJson(normalized, out SaveDataContainer normalizedCurrent) &&
+                        normalizedCurrent != null &&
+                        normalizedCurrent.StageProgressList != null &&
+                        (normalizedHasCurrentKey || normalizedCurrent.StageProgressList.Count > 0))
+                    {
+                        container = normalizedCurrent;
+                        return true;
+                    }
+                }
+
+                if (!normalizedTrimmed.StartsWith("[", StringComparison.Ordinal))
+                {
+                    TryParseJson(normalized, out legacy);
+                }
+
+                if (legacy != null && legacy.StageProgress != null)
+                {
+                    container = new SaveDataContainer
+                    {
+                        StageProgressList = legacy.StageProgress,
+                        LastSavedUtcTicks = DateTime.UtcNow.Ticks
+                    };
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool TryParseJson<T>(string json, out T result) where T : class
+        {
+            result = null;
+            try
+            {
+                result = JsonUtility.FromJson<T>(json);
+                return result != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static string NormalizeLegacyJsonKeys(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return json;
+            }
+
+            // Minimal key normalization for known legacy variants.
+            string normalized = json
+                .Replace("\"stageProgressList\"", "\"StageProgressList\"")
+                .Replace("\"stageProgress\"", "\"StageProgress\"")
+                .Replace("\"stages\"", "\"Stages\"")
+                .Replace("\"lastSavedUtcTicks\"", "\"LastSavedUtcTicks\"")
+                .Replace("\"stageId\"", "\"StageId\"")
+                .Replace("\"isCleared\"", "\"IsCleared\"")
+                .Replace("\"bestStars\"", "\"BestStars\"")
+                .Replace("\"bestClearTimeSeconds\"", "\"BestClearTimeSeconds\"")
+                .Replace("\"bestDifficulty\"", "\"BestDifficulty\"");
+            return normalized;
         }
     }
 }

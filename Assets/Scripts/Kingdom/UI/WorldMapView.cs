@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Common.UI.Components;
 using Kingdom.WorldMap;
+using Kingdom.Save;
 
 namespace Kingdom.App
 {
@@ -359,6 +360,12 @@ namespace Kingdom.App
                 btnBack.SetOnClickWithCooldown(OnClickBack);
         }
 
+        protected override void OnEnter(object[] data)
+        {
+            base.OnEnter(data);
+            RefreshStageNodeProgress();
+        }
+
         private void OnClickHeroRoom()
         {
             PlayClickSfx();
@@ -689,11 +696,39 @@ namespace Kingdom.App
 
             _stagePresenter = new WorldMapPresenter(
                 stageDataList,
-                new UserSaveStageProgressRepository(),
+                BuildProgressRepository(),
                 new DefaultStageUnlockPolicy());
 
             BindPresenterEvents();
             BindStageNodeEvents();
+            RebindAllStageNodes();
+        }
+
+        public void RefreshStageNodeProgress()
+        {
+            if (stageNodes == null || stageNodes.Count == 0)
+            {
+                CollectStageNodes();
+            }
+
+            if (stageNodes == null || stageNodes.Count == 0)
+            {
+                return;
+            }
+
+            List<StageData> stageDataList = LoadStageData();
+            if (stageDataList.Count == 0)
+            {
+                return;
+            }
+
+            UnbindPresenterEvents();
+            _stagePresenter = new WorldMapPresenter(
+                stageDataList,
+                BuildProgressRepository(),
+                new DefaultStageUnlockPolicy());
+
+            BindPresenterEvents();
             RebindAllStageNodes();
         }
 
@@ -879,6 +914,17 @@ namespace Kingdom.App
             WorldMapScene.SetSelectedStageContext(stageId, StageDifficulty.Normal);
             Debug.LogWarning($"[WorldMap] WorldMapManager missing. Fallback loading GameScene for stage {stageId} with default difficulty.");
             KingdomAppManager.Instance.ChangeScene(SCENES.GameScene);
+        }
+
+        private static IStageProgressRepository BuildProgressRepository()
+        {
+            UserSaveData saveData = null;
+            if (SaveManager.Instance != null)
+            {
+                saveData = SaveManager.Instance.SaveData;
+            }
+
+            return new UserSaveStageProgressRepository(saveData);
         }
 
         private void RebindAllStageNodes()

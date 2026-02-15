@@ -13,14 +13,32 @@ namespace Kingdom.Game
         [SerializeField] private SpriteRenderer backgroundRenderer;
         [SerializeField] private Transform pathRoot;
         [SerializeField] private Transform enemyRoot;
+        [SerializeField] private Transform towerRoot;
         [SerializeField] private List<Transform> pathPoints = new();
+        [SerializeField] private List<Transform> towerSlots = new();
 
         public Transform EnemyRoot => enemyRoot;
+        public Transform TowerRoot => towerRoot;
 
         public IReadOnlyList<Transform> GetPathPoints()
         {
             RebuildPathPointsIfNeeded();
             return pathPoints;
+        }
+
+        public List<Vector3> GetTowerSlotPositions()
+        {
+            RebuildTowerSlotsIfNeeded();
+            var positions = new List<Vector3>(towerSlots.Count);
+            for (int i = 0; i < towerSlots.Count; i++)
+            {
+                if (towerSlots[i] != null)
+                {
+                    positions.Add(towerSlots[i].position);
+                }
+            }
+
+            return positions;
         }
 
         public void EnsureRuntimeDefaults()
@@ -46,13 +64,25 @@ namespace Kingdom.Game
                 enemyRoot.SetParent(transform, false);
             }
 
+            if (towerRoot == null)
+            {
+                towerRoot = new GameObject("TowerRoot").transform;
+                towerRoot.SetParent(transform, false);
+            }
+
             if (pathRoot.childCount == 0)
             {
                 CreateDefaultPathPoints(pathRoot);
             }
 
+            if (towerRoot.childCount == 0)
+            {
+                CreateDefaultTowerSlots(towerRoot);
+            }
+
             ApplyBackgroundSprite();
             RebuildPathPointsIfNeeded();
+            RebuildTowerSlotsIfNeeded();
         }
 
         public static GameBattlefield CreateFallbackRuntime()
@@ -112,6 +142,29 @@ namespace Kingdom.Game
             }
         }
 
+        private void RebuildTowerSlotsIfNeeded()
+        {
+            if (towerSlots != null && towerSlots.Count > 0)
+            {
+                return;
+            }
+
+            towerSlots = new List<Transform>();
+            if (towerRoot == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < towerRoot.childCount; i++)
+            {
+                Transform child = towerRoot.GetChild(i);
+                if (child != null)
+                {
+                    towerSlots.Add(child);
+                }
+            }
+        }
+
         private static void CreateDefaultPathPoints(Transform root)
         {
             Vector3[] points =
@@ -130,6 +183,23 @@ namespace Kingdom.Game
                 var point = new GameObject($"P{i:00}").transform;
                 point.SetParent(root, false);
                 point.localPosition = points[i];
+            }
+        }
+
+        private static void CreateDefaultTowerSlots(Transform root)
+        {
+            Vector3[] slots =
+            {
+                new Vector3(-3f, -1.4f, 0f),
+                new Vector3(-0.4f, -1.3f, 0f),
+                new Vector3(2.2f, -1.2f, 0f)
+            };
+
+            for (int i = 0; i < slots.Length; i++)
+            {
+                var point = new GameObject($"T{i:00}").transform;
+                point.SetParent(root, false);
+                point.localPosition = slots[i];
             }
         }
 

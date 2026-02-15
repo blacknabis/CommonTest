@@ -203,19 +203,36 @@ namespace Kingdom.Game
                     continue;
                 }
 
-                if (stage.WaveConfig != null)
+                WaveConfig resolved = TryResolveWaveConfig(stage);
+                if (resolved != null)
                 {
-                    return stage.WaveConfig;
+                    return resolved;
                 }
             }
 
             for (int i = 0; i < manager.CurrentStageConfig.Stages.Count; i++)
             {
                 StageData stage = manager.CurrentStageConfig.Stages[i];
-                if (stage.WaveConfig != null)
+                WaveConfig resolved = TryResolveWaveConfig(stage);
+                if (resolved != null)
                 {
-                    return stage.WaveConfig;
+                    return resolved;
                 }
+            }
+
+            return null;
+        }
+
+        private static WaveConfig TryResolveWaveConfig(StageData stage)
+        {
+            if (stage.WaveConfig != null)
+            {
+                return stage.WaveConfig;
+            }
+
+            if (stage.StageId > 0)
+            {
+                return Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{stage.StageId}_WaveConfig");
             }
 
             return null;
