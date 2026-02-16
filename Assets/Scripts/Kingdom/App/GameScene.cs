@@ -23,6 +23,7 @@ namespace Kingdom.App
         private const string SpellRainConfigResourcePath = "Data/SpellConfigs/RainSpell";
         private const float EarlyCallGoldPerSecond = 2.0f;
         private const float FastForwardTimeScale = 2f;
+        private const int DebugGrantGoldAmount = 500;
 
         private GameStateController _stateController;
         private PathManager _pathManager;
@@ -30,6 +31,7 @@ namespace Kingdom.App
         private WaveManager _waveManager;
         private InGameEconomyManager _economyManager;
         private TowerManager _towerManager;
+        private ProjectileManager _projectileManager;
         private HeroController _heroController;
         private GameBattlefield _battlefield;
         private WaveConfig _activeWaveConfig;
@@ -117,6 +119,12 @@ namespace Kingdom.App
                 _towerManager = new GameObject("TowerManager").AddComponent<TowerManager>();
             }
 
+            _projectileManager = FindFirstObjectByType<ProjectileManager>();
+            if (_projectileManager == null)
+            {
+                _projectileManager = new GameObject("ProjectileManager").AddComponent<ProjectileManager>();
+            }
+
             _heroController = FindFirstObjectByType<HeroController>();
             if (_heroController == null)
             {
@@ -184,6 +192,8 @@ namespace Kingdom.App
 
         private void Update()
         {
+            HandleDebugGrantGoldInput();
+
             if (_towerManager == null || MainUI is not GameView gameView)
             {
                 return;
@@ -269,6 +279,24 @@ namespace Kingdom.App
             }
 
             TickSpellCooldowns();
+        }
+
+        private void HandleDebugGrantGoldInput()
+        {
+#if UNITY_EDITOR
+            if (_economyManager == null)
+            {
+                return;
+            }
+
+            if (!Input.GetKeyDown(KeyCode.F6))
+            {
+                return;
+            }
+
+            _economyManager.AddGold(DebugGrantGoldAmount);
+            Debug.Log($"[GameScene] Debug grant gold +{DebugGrantGoldAmount}");
+#endif
         }
 
         private static WaveConfig ResolveStageWaveConfig()
@@ -398,7 +426,8 @@ namespace Kingdom.App
             _rainSpellConfig = ResolveSpellConfig(SpellRainConfigResourcePath, "rain", "Rain", 30f, 4f);
             var towerSlots = _battlefield != null ? _battlefield.GetTowerSlotPositions() : null;
             Transform towerRoot = _battlefield != null ? _battlefield.TowerRoot : null;
-            _towerManager.Configure(_spawnManager, _economyManager, towerRoot, towerSlots, towerConfig);
+            _projectileManager.Configure(_spawnManager, towerRoot);
+            _towerManager.Configure(_spawnManager, _economyManager, _projectileManager, towerRoot, towerSlots, towerConfig);
             ConfigureHeroController(towerSlots);
 
             if (MainUI is not GameView gameView)
@@ -457,11 +486,8 @@ namespace Kingdom.App
                 return;
             }
 
-            Vector3 heroSpawn = new Vector3(-2.6f, -0.6f, 0f);
-            if (towerSlots != null && towerSlots.Count > 0)
-            {
-                heroSpawn = towerSlots[0] + new Vector3(0.35f, 0.55f, 0f);
-            }
+            // Start at safe position (bottom-left) instead of near first tower slot
+            Vector3 heroSpawn = new Vector3(-6.5f, -3.5f, 0f);
 
             _heroController.Configure(_spawnManager, _heroConfig, heroSpawn);
         }

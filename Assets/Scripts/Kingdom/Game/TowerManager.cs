@@ -50,6 +50,7 @@ namespace Kingdom.Game
 
         private SpawnManager _spawnManager;
         private InGameEconomyManager _economyManager;
+        private ProjectileManager _projectileManager;
         private Transform _towerRoot;
         // private TowerConfig _towerConfig; // Removed in favor of dictionary
         private readonly Dictionary<TowerType, TowerConfig> _towerConfigs = new();
@@ -95,12 +96,14 @@ namespace Kingdom.Game
         public void Configure(
             SpawnManager spawnManager,
             InGameEconomyManager economyManager,
+            ProjectileManager projectileManager,
             Transform towerRoot,
             IReadOnlyList<Vector3> towerSlots,
             TowerConfig /*unused legacy param*/ _ = null)
         {
             _spawnManager = spawnManager;
             _economyManager = economyManager;
+            _projectileManager = projectileManager;
             _towerRoot = towerRoot;
             
             // Load tower configs for each type
@@ -111,8 +114,16 @@ namespace Kingdom.Game
                 var loaded = Resources.Load<TowerConfig>($"Data/TowerConfigs/{type}");
                 if (loaded != null)
                 {
-                    if (loaded.Levels == null || loaded.Levels.Length == 0)
+                    bool isInvalid = false;
+                    if (loaded.Levels != null && loaded.Levels.Length > 0)
                     {
+                        // Check if data is essentially empty (Range ~ 0)
+                        if (loaded.Levels[0].Range < 0.1f) isInvalid = true;
+                    }
+
+                    if (loaded.Levels == null || loaded.Levels.Length == 0 || isInvalid)
+                    {
+                        Debug.LogWarning($"[TowerManager] Config for {type} has invalid data (Range=0 or empty). Repopulating defaults.");
                         PopulateDefaultData(loaded, type);
                     }
                     _towerConfigs[type] = loaded;
@@ -259,9 +270,13 @@ namespace Kingdom.Game
                 return false;
             }
 
-            float range = Mathf.Max(0.6f, _towerConfig != null && _towerConfig.BarracksData.RallyRange > 0.05f
-                ? _towerConfig.BarracksData.RallyRange
-                : (_towerConfig != null ? _towerConfig.AttackRange : 1.6f));
+            float range = 1.6f;
+            if (_towerConfigs.TryGetValue(TowerType.Barracks, out var barracksConfig) && barracksConfig != null)
+            {
+                range = Mathf.Max(0.6f, barracksConfig.BarracksData.RallyRange > 0.05f
+                    ? barracksConfig.BarracksData.RallyRange
+                    : barracksConfig.AttackRange);
+            }
 
             Vector3 origin = tower.Transform.position;
             Vector3 offset = worldPoint - origin;
@@ -375,7 +390,7 @@ namespace Kingdom.Game
 
         private void Update()
         {
-            if (_towers.Count == 0 || _aliveEnemies.Count == 0 || _towerConfig == null)
+            if (_towers.Count == 0 || _aliveEnemies.Count == 0 || _towerConfigs.Count == 0)
             {
                 return;
             }
@@ -383,7 +398,12 @@ namespace Kingdom.Game
             float dt = Time.deltaTime;
             for (int i = 0; i < _towers.Count; i++)
             {
-                _towers[i].Tick(dt, _aliveEnemies, _towerConfig);
+                var tower = _towers[i];
+                if (tower == null) continue;
+                if (_towerConfigs.TryGetValue(tower.TowerType, out var config) && config != null)
+                {
+                    tower.Tick(dt, _aliveEnemies, config);
+                }
             }
         }
 
@@ -463,7 +483,7 @@ namespace Kingdom.Game
             sr.sortingOrder = 30;
             go.transform.localScale = new Vector3(initialScale, initialScale, 1f);
 
-            return new TowerRuntime(towerId, slotIndex, go.transform, towerType, config, initialSpendGold);
+            return new TowerRuntime(towerId, slotIndex, go.transform, towerType, config, _projectileManager, initialSpendGold);
         }
 
         private static TowerConfig CreateFallbackTowerConfig(TowerType type)
@@ -504,6 +524,14 @@ namespace Kingdom.Game
                     Damage = damage * statMultiplier,
                     Cooldown = Mathf.Max(0.2f, cooldown * cooldownReduc),
                     Range = baseRange + (i * 0.2f),
+                    AttackDeliveryType = type == TowerType.Barracks
+                        ? AttackDeliveryType.Melee
+                        : (type == TowerType.Mage ? AttackDeliveryType.Projectile : AttackDeliveryType.Projectile),
+                    ProjectileProfileId = type == TowerType.Archer
+                        ? "Archer_Arrow"
+                        : (type == TowerType.Mage
+                            ? "Mage_Bolt"
+                            : (type == TowerType.Artillery ? "Artillery_Shell" : string.Empty)),
                     SpriteOverride = null,
                     VisualScale = baseScale + (i * 0.1f)
                 };
@@ -587,6 +615,7 @@ namespace Kingdom.Game
             private readonly Transform _transform;
             private readonly TowerType _towerType;
             private readonly TowerConfig _config;
+            private readonly ProjectileManager _projectileManager;
             private int _level = 1;
             private int _totalSpendGold;
             private float _cooldownLeft;
@@ -607,13 +636,21 @@ namespace Kingdom.Game
             public bool CanUpgrade => _config != null && _config.Levels != null && _level < _config.Levels.Length;
             public Vector3 RallyPoint => _rallyPoint;
 
-            public TowerRuntime(int towerId, int slotIndex, Transform transform, TowerType towerType, TowerConfig config, int initialSpendGold)
+            public TowerRuntime(
+                int towerId,
+                int slotIndex,
+                Transform transform,
+                TowerType towerType,
+                TowerConfig config,
+                ProjectileManager projectileManager,
+                int initialSpendGold)
             {
                 TowerId = towerId;
                 SlotIndex = slotIndex;
                 _transform = transform;
                 _towerType = towerType;
                 _config = config;
+                _projectileManager = projectileManager;
                 _totalSpendGold = Mathf.Max(0, initialSpendGold);
                 _rallyPoint = _transform != null ? _transform.position : Vector3.zero;
                 
@@ -655,22 +692,34 @@ namespace Kingdom.Game
                 }
 
                 float baseDamage = levelData.Damage;
-                // Multipliers are now likely baked into data, but keeping method for safety if fallback used
-                if (config.TowerId.StartsWith("Fallback_"))
-                {
-                     // Fallback config already has baked multipliers, so we might double apply if we are not careful
-                     // But CreateFallbackTowerConfig logic above applies logic. 
-                     // Let's assume Data has FINAL values.
-                }
-
                 DamageType damageType = ResolveDamageType(config, _towerType);
                 bool halfPhysicalPen = config.HalfPhysicalArmorPenetration || _towerType == TowerType.Artillery;
-                
-                target.ApplyDamage(
-                    baseDamage,
+                AttackDeliveryType deliveryType = ResolveAttackDeliveryType(levelData, _towerType, levelIndex);
+
+                if (deliveryType == AttackDeliveryType.HitScan || _projectileManager == null)
+                {
+                    Debug.Log($"[Tower] HitScan towerType={_towerType} level={_level} damage={baseDamage:0.0} type={damageType}");
+                    target.ApplyDamage(baseDamage, damageType, halfPhysicalPen);
+                    _cooldownLeft = Mathf.Max(0.1f, levelData.Cooldown);
+                    return;
+                }
+
+                string projectileProfileId = ResolveProjectileProfileId(levelData, _towerType);
+                bool useTargetPoint = _towerType == TowerType.Artillery;
+                Vector3 targetPoint = target.transform.position;
+                var spawnData = new ProjectileSpawnData(
+                    _transform.position,
+                    target,
+                    targetPoint,
+                    useTargetPoint,
+                    _towerType,
                     damageType,
-                    halfPhysicalPen);
-                
+                    baseDamage,
+                    halfPhysicalPen,
+                    canTargetAir,
+                    levelData.Range + 1f,
+                    projectileProfileId);
+                _projectileManager.SpawnProjectile(spawnData);
                 _cooldownLeft = Mathf.Max(0.1f, levelData.Cooldown);
             }
 
@@ -735,23 +784,49 @@ namespace Kingdom.Game
                 return best;
             }
 
-            private static float ResolveDamageMultiplier(TowerType towerType)
-            {
-                return towerType switch
-                {
-                    TowerType.Barracks => 0.65f,
-                    TowerType.Mage => 0.9f,
-                    TowerType.Artillery => 1.2f,
-                    _ => 1f
-                };
-            }
-
             private static DamageType ResolveDamageType(TowerConfig config, TowerType towerType)
             {
                 return towerType switch
                 {
                     TowerType.Mage => DamageType.Magic,
                     _ => config.DamageType
+                };
+            }
+
+            private static AttackDeliveryType ResolveAttackDeliveryType(TowerLevelData levelData, TowerType towerType, int levelIndex)
+            {
+                if (towerType == TowerType.Barracks)
+                {
+                    return AttackDeliveryType.Melee;
+                }
+
+                // 최소 특수 경로: Mage Lv3는 즉시 판정(HitScan) 허용.
+                if (towerType == TowerType.Mage && levelIndex >= 2)
+                {
+                    return AttackDeliveryType.HitScan;
+                }
+
+                if (levelData.AttackDeliveryType != AttackDeliveryType.Melee)
+                {
+                    return levelData.AttackDeliveryType;
+                }
+
+                return towerType == TowerType.Mage ? AttackDeliveryType.Projectile : AttackDeliveryType.Projectile;
+            }
+
+            private static string ResolveProjectileProfileId(TowerLevelData levelData, TowerType towerType)
+            {
+                if (!string.IsNullOrWhiteSpace(levelData.ProjectileProfileId))
+                {
+                    return levelData.ProjectileProfileId;
+                }
+
+                return towerType switch
+                {
+                    TowerType.Archer => "Archer_Arrow",
+                    TowerType.Mage => "Mage_Bolt",
+                    TowerType.Artillery => "Artillery_Shell",
+                    _ => string.Empty
                 };
             }
 

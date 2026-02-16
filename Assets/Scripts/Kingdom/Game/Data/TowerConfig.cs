@@ -18,6 +18,20 @@ namespace Kingdom.Game
         True = 2
     }
 
+    public enum AttackDeliveryType
+    {
+        Projectile = 0,
+        HitScan = 1,
+        Melee = 2
+    }
+
+    public enum ProjectileMoveType
+    {
+        Homing = 0,
+        Ballistic = 1,
+        Linear = 2
+    }
+
     public static class DamageCalculator
     {
         public static float CalculateFinalDamage(
@@ -69,8 +83,23 @@ namespace Kingdom.Game
         public float Damage;
         public float Cooldown;
         public float Range;
+        public AttackDeliveryType AttackDeliveryType;
+        public string ProjectileProfileId;
         public Sprite SpriteOverride;
         public float VisualScale;
+    }
+
+    [CreateAssetMenu(fileName = "ProjectileProfile", menuName = "Kingdom/Game/Projectile Profile")]
+    public class ProjectileProfile : ScriptableObject
+    {
+        public string ProjectileId = "Projectile_Default";
+        public ProjectileMoveType MoveType = ProjectileMoveType.Homing;
+        public float Speed = 10f;
+        public float MaxLifetime = 1.8f;
+        public float HitRadius = 0.12f;
+        public float ExplosionRadius = 0f;
+        public bool CanPierce;
+        public int MaxHitCount = 1;
     }
 
     [CreateAssetMenu(fileName = "TowerConfig", menuName = "Kingdom/Game/Tower Config")]
