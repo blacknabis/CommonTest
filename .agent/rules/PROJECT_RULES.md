@@ -1,7 +1,7 @@
 ---
 trigger: always_on
-glob: "**/*.cs"
-description: Rules for using the Common library in the project.
+glob: "**/*"
+description: 프로젝트 전반에 항상 적용되는 공통 작업 규칙.
 ---
 
 # Common Library & Project Guidelines
@@ -110,3 +110,6 @@ public bool TakeDamage(float amount)
     // ...
 }
 ```
+
+## 개발 환경 (Environment)
+- **ComfyUI 설치 경로**: `C:\Stability\Data\Packages\ComfyUI`

@@ -3,6 +3,16 @@
 킹덤러쉬 스타일 2D 타워디펜스 프로토타입(Unity) 프로젝트입니다.  
 `Common`(공용 프레임워크)와 `Kingdom`(게임 로직)을 분리해서 개발 중입니다.
 
+## 최근 업데이트 (2026-02-18)
+- 전투 시작 직후 몬스터 웨이브가 즉시 출현하던 흐름을 개선하여 준비 시간 기반 전투 루프를 반영했습니다.
+- AI 스프라이트 후처리 도구 [`Assets/Scripts/Common/Editor/AISpriteProcessor.cs`](Assets/Scripts/Common/Editor/AISpriteProcessor.cs) 고도화:
+  - 프리셋 Save/Load/Delete
+  - 입력값 검증(잘못된 Rows/Cols/패딩 방지)
+  - 선택 영역 Crop 저장
+  - SmartSlice(알파 아일랜드 감지) + 프리뷰 시각화
+  - 프리뷰에서 전처리(제거 색상/허용 오차) 반영
+  - 슬라이스 애니메이션 프리뷰 재생
+
 ## 프로젝트 상태
 - 씬 흐름: `InitScene -> TitleScene -> WorldMapScene -> GameScene`
 - 월드맵/스테이지 선택/저장 연동 동작
@@ -52,9 +62,14 @@
 
 - 구현 명세: `문서/진행/게임씬_구현명세서.md`
 - 작업 체크리스트: `문서/진행/task.md`
-- 작업 상세 로그(일자별): `문서/진행/작업상세로그_2026_02_15.md`
+- 작업 상세 로그(최신): `문서/진행/작업상세로그_2026_02_18.md`
 - 개발일지: `문서/개발일지/DevLog_2026_02_15_1.md`
 - 이미지 프롬프트(나노바나나): `문서/이미지프롬프트/StageInfoPopup_이미지프롬프트_나노바나나.md`
+
+### AI Sprite Processor 관련 문서
+- 작업 계획/인수인계: `문서/진행/AISpriteProcessor_작업계획_및_인수인계서_2026_02_18.md`
+- 진행 체크: `문서/진행/task.md`
+- 작업 로그: `문서/진행/작업상세로그_2026_02_18.md`
 
 ## 참고
 - 공용 라이브러리 문서: `Assets/Scripts/Common/README.md`

@@ -1,0 +1,26 @@
+{
+    "removeBackground": true,
+    "keyColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "tolerance": 0.25,
+    "slicingMode": 1,
+    "rows": 2,
+    "cols": 2,
+    "innerPadding": 5,
+    "offset": {
+        "x": 378.0,
+        "y": 385.0
+    },
+    "cellSize": {
+        "x": 144.0,
+        "y": 170.0
+    },
+    "spacing": {
+        "x": 4.0,
+        "y": 4.0
+    }
+}

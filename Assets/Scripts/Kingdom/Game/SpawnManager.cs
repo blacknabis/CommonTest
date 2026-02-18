@@ -222,6 +222,8 @@ namespace Kingdom.Game
         private bool _useAnimatedSprites;
         private HeroVisualState _visualState = HeroVisualState.Idle;
 
+        public string CurrentHeroId => heroConfig != null ? heroConfig.HeroId : string.Empty;
+
         public void Configure(SpawnManager spawnManager, HeroConfig config, Vector3 spawnPosition)
         {
             _spawnManager = spawnManager;

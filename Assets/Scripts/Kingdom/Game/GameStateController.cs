@@ -6,6 +6,7 @@ namespace Kingdom.Game
     public enum GameFlowState
     {
         Prepare,
+        WaveReady,
         WaveRunning,
         WaveBreak,
         Result,
@@ -21,6 +22,7 @@ namespace Kingdom.Game
         [SerializeField] private bool autoStart = true;
         [SerializeField] private int totalWaves = 3;
         [SerializeField] private float prepareDuration = 1.0f;
+        [SerializeField] private float waveReadyDuration = 3.0f;
         [SerializeField] private float waveDuration = 8.0f;
         [SerializeField] private float waveBreakDuration = 2.0f;
 
@@ -28,14 +30,23 @@ namespace Kingdom.Game
         public int CurrentWave { get; private set; }
         public int TotalWaves => Mathf.Max(1, totalWaves);
         public bool IsPaused => CurrentState == GameFlowState.Pause;
+        public float WaveReadyDuration => Mathf.Max(0f, waveReadyDuration);
         public float WaveDuration => Mathf.Max(0f, waveDuration);
+        public float StateElapsedScaled => Mathf.Max(0f, Time.time - _stateStartedAtScaledTime);
         public float StateElapsedUnscaled => Mathf.Max(0f, Time.unscaledTime - _stateStartedAtUnscaledTime);
+        public float WaveReadyRemaining => CurrentState == GameFlowState.WaveReady
+            ? Mathf.Max(0f, WaveReadyDuration - StateElapsedScaled)
+            : 0f;
 
         public event Action<GameFlowState> StateChanged;
         public event Action<int, int> WaveChanged;
+        public event Action<float> WaveReadyTimeChanged;
 
         private GameFlowState _stateBeforePause = GameFlowState.Prepare;
+        private float _stateStartedAtScaledTime;
         private float _stateStartedAtUnscaledTime;
+        private float _pausedStateElapsedScaled;
+        private float _pausedStateElapsedUnscaled;
 
         private void Start()
         {
@@ -52,7 +63,7 @@ namespace Kingdom.Game
                 return;
             }
 
-            float elapsed = Time.unscaledTime - _stateStartedAtUnscaledTime;
+            float elapsed = Time.time - _stateStartedAtScaledTime;
 
             switch (CurrentState)
             {
@@ -61,6 +72,14 @@ namespace Kingdom.Game
                     {
                         CurrentWave = 1;
                         WaveChanged?.Invoke(CurrentWave, TotalWaves);
+                        ChangeState(GameFlowState.WaveReady);
+                    }
+                    break;
+
+                case GameFlowState.WaveReady:
+                    WaveReadyTimeChanged?.Invoke(WaveReadyRemaining);
+                    if (elapsed >= waveReadyDuration)
+                    {
                         ChangeState(GameFlowState.WaveRunning);
                     }
                     break;
@@ -84,7 +103,7 @@ namespace Kingdom.Game
                     {
                         CurrentWave++;
                         WaveChanged?.Invoke(CurrentWave, TotalWaves);
-                        ChangeState(GameFlowState.WaveRunning);
+                        ChangeState(GameFlowState.WaveReady);
                     }
                     break;
             }
@@ -121,6 +140,8 @@ namespace Kingdom.Game
                 return;
             }
 
+            _pausedStateElapsedScaled = StateElapsedScaled;
+            _pausedStateElapsedUnscaled = StateElapsedUnscaled;
             _stateBeforePause = CurrentState;
             Time.timeScale = 0f;
             ChangeState(GameFlowState.Pause);
@@ -135,6 +156,8 @@ namespace Kingdom.Game
 
             Time.timeScale = 1f;
             ChangeState(_stateBeforePause);
+            _stateStartedAtScaledTime = Time.time - Mathf.Max(0f, _pausedStateElapsedScaled);
+            _stateStartedAtUnscaledTime = Time.unscaledTime - Mathf.Max(0f, _pausedStateElapsedUnscaled);
         }
 
         public void ForceResult()
@@ -144,6 +167,17 @@ namespace Kingdom.Game
         }
 
         public bool TryEarlyCallNextWave()
+        {
+            if (CurrentState != GameFlowState.WaveReady)
+            {
+                return false;
+            }
+
+            ChangeState(GameFlowState.WaveRunning);
+            return true;
+        }
+
+        public bool TryCompleteCurrentWave()
         {
             if (CurrentState != GameFlowState.WaveRunning)
             {
@@ -168,10 +202,15 @@ namespace Kingdom.Game
         private void ChangeState(GameFlowState next)
         {
             CurrentState = next;
+            _stateStartedAtScaledTime = Time.time;
             _stateStartedAtUnscaledTime = Time.unscaledTime;
 
             Debug.Log($"[GameStateController] State -> {CurrentState} (Wave {CurrentWave}/{TotalWaves})");
             StateChanged?.Invoke(CurrentState);
+            if (CurrentState == GameFlowState.WaveReady)
+            {
+                WaveReadyTimeChanged?.Invoke(WaveReadyDuration);
+            }
         }
     }
 }

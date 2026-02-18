@@ -29,6 +29,7 @@ namespace Kingdom.App
         [SerializeField] private Button btnSpeed;
         [SerializeField] private Button btnNextWave;
         [SerializeField] private TextMeshProUGUI txtWaveInfo;
+        [SerializeField] private TextMeshProUGUI txtWaveTimer;
         [SerializeField] private TextMeshProUGUI txtStateInfo;
         [SerializeField] private TextMeshProUGUI txtLives;
         [SerializeField] private TextMeshProUGUI txtGold;
@@ -124,6 +125,7 @@ namespace Kingdom.App
             SetPauseVisual(false);
             SetSpeedVisual(false);
             UpdateWaveInfo(1, 1);
+            HideWaveReadyCountdown();
             UpdateResourceInfo(20, 100);
             SetHeroPortrait(null);
             SetSpellCooldown("reinforce", 0f);
@@ -217,6 +219,30 @@ namespace Kingdom.App
             }
         }
 
+        public void SetWaveReadyCountdown(float remainingSeconds)
+        {
+            int seconds = Mathf.CeilToInt(Mathf.Max(0f, remainingSeconds));
+            if (txtWaveTimer != null)
+            {
+                txtWaveTimer.gameObject.SetActive(true);
+                txtWaveTimer.text = $"NEXT WAVE IN {seconds}";
+                return;
+            }
+
+            if (txtStateInfo != null && !_isPausedVisual)
+            {
+                txtStateInfo.text = $"WaveReady {seconds}";
+            }
+        }
+
+        public void HideWaveReadyCountdown()
+        {
+            if (txtWaveTimer != null)
+            {
+                txtWaveTimer.gameObject.SetActive(false);
+            }
+        }
+
         public void SetSpellCooldown(string spellId, float normalized01)
         {
             float clamped = Mathf.Clamp01(normalized01);
@@ -253,10 +279,14 @@ namespace Kingdom.App
             _costArtillery = Mathf.Max(1, artilleryCost);
 
             bool hasSlot = _ringRemainingSlots > 0;
-            UpdateTowerRingButton(btnTowerArcher, "Archer", _costArcher, hasSlot && _ringGold >= _costArcher, new Color(0.22f, 0.42f, 0.72f, 0.95f));
-            UpdateTowerRingButton(btnTowerBarracks, "Barracks", _costBarracks, hasSlot && _ringGold >= _costBarracks, new Color(0.35f, 0.55f, 0.22f, 0.95f));
-            UpdateTowerRingButton(btnTowerMage, "Mage", _costMage, hasSlot && _ringGold >= _costMage, new Color(0.45f, 0.3f, 0.72f, 0.95f));
-            UpdateTowerRingButton(btnTowerArtillery, "Artillery", _costArtillery, hasSlot && _ringGold >= _costArtillery, new Color(0.68f, 0.42f, 0.2f, 0.95f));
+            bool archerAffordable = _ringGold >= _costArcher;
+            bool barracksAffordable = _ringGold >= _costBarracks;
+            bool mageAffordable = _ringGold >= _costMage;
+            bool artilleryAffordable = _ringGold >= _costArtillery;
+            UpdateTowerRingButton(btnTowerArcher, "Archer", _costArcher, hasSlot, archerAffordable, new Color(0.22f, 0.42f, 0.72f, 0.95f));
+            UpdateTowerRingButton(btnTowerBarracks, "Barracks", _costBarracks, hasSlot, barracksAffordable, new Color(0.35f, 0.55f, 0.22f, 0.95f));
+            UpdateTowerRingButton(btnTowerMage, "Mage", _costMage, hasSlot, mageAffordable, new Color(0.45f, 0.3f, 0.72f, 0.95f));
+            UpdateTowerRingButton(btnTowerArtillery, "Artillery", _costArtillery, hasSlot, artilleryAffordable, new Color(0.68f, 0.42f, 0.2f, 0.95f));
         }
 
         public void ShowResult(bool isVictory, string message = null)
@@ -340,6 +370,12 @@ namespace Kingdom.App
                 return;
             }
 
+            if (_ringRemainingSlots <= 0)
+            {
+                SetStateText("No Slot");
+                return;
+            }
+
             OpenTowerRingMenuAtLocalPosition(new Vector2(HudMargin + 390f, HudMargin + 150f));
         }
 
@@ -393,6 +429,11 @@ namespace Kingdom.App
         {
             SetPauseVisual(state == GameFlowState.Pause);
             SetStateText(state.ToString());
+
+            if (state != GameFlowState.WaveReady)
+            {
+                HideWaveReadyCountdown();
+            }
 
             if (state == GameFlowState.Result)
             {
@@ -476,6 +517,7 @@ namespace Kingdom.App
             btnExit = btnExit != null ? btnExit : FindButton("ResultRoot/btnExit");
 
             txtWaveInfo = txtWaveInfo != null ? txtWaveInfo : FindText("txtWaveInfo");
+            txtWaveTimer = txtWaveTimer != null ? txtWaveTimer : FindText("txtWaveTimer");
             txtStateInfo = txtStateInfo != null ? txtStateInfo : FindText("txtStateInfo");
             txtLives = txtLives != null ? txtLives : FindText("txtLives");
             txtGold = txtGold != null ? txtGold : FindText("txtGold");
@@ -1058,16 +1100,20 @@ namespace Kingdom.App
 
         private void OpenTowerRingMenuAtLocalPosition(Vector2 localPosition)
         {
-            if (towerRingRoot == null)
+            if (towerRingRoot == null || _hudRoot == null)
             {
                 return;
             }
 
             var rootRect = towerRingRoot.GetComponent<RectTransform>();
+            Rect hudRect = _hudRoot.rect;
+            Vector2 half = rootRect.sizeDelta * 0.5f;
+            float clampedX = Mathf.Clamp(localPosition.x, -hudRect.width * 0.5f + half.x, hudRect.width * 0.5f - half.x);
+            float clampedY = Mathf.Clamp(localPosition.y, -hudRect.height * 0.5f + half.y, hudRect.height * 0.5f - half.y);
             rootRect.anchorMin = new Vector2(0.5f, 0.5f);
             rootRect.anchorMax = new Vector2(0.5f, 0.5f);
             rootRect.pivot = new Vector2(0.5f, 0.5f);
-            rootRect.anchoredPosition = localPosition;
+            rootRect.anchoredPosition = new Vector2(clampedX, clampedY);
             towerRingRoot.SetActive(true);
         }
 
@@ -1190,13 +1236,14 @@ namespace Kingdom.App
             }
         }
 
-        private static void UpdateTowerRingButton(Button button, string name, int cost, bool interactable, Color activeColor)
+        private static void UpdateTowerRingButton(Button button, string name, int cost, bool hasSlot, bool enoughGold, Color activeColor)
         {
             if (button == null)
             {
                 return;
             }
 
+            bool interactable = hasSlot && enoughGold;
             button.interactable = interactable;
             Image image = button.GetComponent<Image>();
             if (image != null)
@@ -1209,10 +1256,12 @@ namespace Kingdom.App
             TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>();
             if (text != null)
             {
-                text.text = $"{name}\n{cost}G";
+                text.text = hasSlot ? $"{name}\n{cost}G" : $"{name}\nNO SLOT";
                 text.fontSize = 18f;
                 text.alignment = TextAlignmentOptions.Center;
-                text.color = interactable ? Color.white : new Color(1f, 0.45f, 0.45f, 1f);
+                text.color = interactable
+                    ? Color.white
+                    : (hasSlot ? new Color(1f, 0.45f, 0.45f, 1f) : new Color(0.75f, 0.75f, 0.75f, 1f));
             }
         }
 

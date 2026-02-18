@@ -16,6 +16,7 @@ namespace Kingdom.Game
 
         private int _aliveEnemyCount;
         private bool _spawnCompletedForCurrentWave;
+        private int _spawnStartedWaveIndex;
         private SpawnManager _subscribedSpawnManager;
         private static bool _fallbackConfigLogged;
 
@@ -59,6 +60,11 @@ namespace Kingdom.Game
             {
                 _spawnCompletedForCurrentWave = false;
                 Debug.Log($"[WaveManager] Wave {stateController.CurrentWave} all enemies removed.");
+
+                if (stateController != null)
+                {
+                    stateController.TryCompleteCurrentWave();
+                }
             }
         }
 
@@ -79,6 +85,10 @@ namespace Kingdom.Game
         {
             if (state != GameFlowState.WaveRunning)
             {
+                if (state == GameFlowState.Prepare || state == GameFlowState.Result)
+                {
+                    _spawnStartedWaveIndex = 0;
+                }
                 return;
             }
 
@@ -92,6 +102,11 @@ namespace Kingdom.Game
             }
 
             int waveIndex = Mathf.Max(1, stateController.CurrentWave) - 1;
+            if (_spawnStartedWaveIndex == waveIndex + 1)
+            {
+                return;
+            }
+
             if (waveConfig.Waves == null || waveIndex >= waveConfig.Waves.Count)
             {
                 Debug.LogWarning($"[WaveManager] Wave index out of range: {waveIndex}. Force result.");
@@ -100,6 +115,7 @@ namespace Kingdom.Game
             }
 
             _spawnCompletedForCurrentWave = false;
+            _spawnStartedWaveIndex = waveIndex + 1;
             spawnManager.SpawnWave(waveConfig.Waves[waveIndex], pathManager);
             Debug.Log($"[WaveManager] Spawn started for wave {waveIndex + 1}.");
         }

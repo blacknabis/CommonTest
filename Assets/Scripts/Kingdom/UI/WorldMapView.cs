@@ -23,6 +23,8 @@ namespace Kingdom.App
         private const string WorldMapClickResourcePath = "Audio/WorldMap/WorldMap_Click_UI";
         private const string WorldMapButtonCatalogResourcePath = "Data/UI/WorldMapButtonCatalog";
         private const string WorldMapStageConfigResourcePath = "Data/StageConfigs/World1_StageConfig";
+        private const string UpgradesPopupResourcePath = "UI/WorldMap/UpgradesPopup";
+        private const string HeroRoomPopupResourcePath = "UI/WorldMap/HeroRoomPopup";
         private const string HeroRoomActionId = "hero_room";
         private const string UpgradesActionId = "upgrades";
         private const string HeroRoomLabel = "\uC601\uC6C5 \uAD00\uB9AC\uC18C";
@@ -51,6 +53,12 @@ namespace Kingdom.App
         [SerializeField] UIActionButtonItem btnUpgrades;
         [SerializeField] private List<UIStageNode> stageNodes = new List<UIStageNode>();
 
+        [Header("Overlay / Popup Routing")]
+        [SerializeField] private GameObject overlayContainer;
+        [SerializeField] private Button overlayDimButton;
+        [SerializeField] private GameObject upgradesPopupRoot;
+        [SerializeField] private GameObject heroRoomPopupRoot;
+
         [Header("WorldMap Audio")]
         [SerializeField] private AudioClip bgmClip;
         [SerializeField] private AudioClip clickClip;
@@ -60,6 +68,8 @@ namespace Kingdom.App
         private Vector2 bottomBarBaseAnchoredPosition;
         private readonly Dictionary<string, WorldMapButtonCatalogEntry> _buttonCatalogEntries = new Dictionary<string, WorldMapButtonCatalogEntry>(StringComparer.Ordinal);
         private WorldMapPresenter _stagePresenter;
+        private GameObject _currentOverlayPopup;
+        private readonly List<Button> _overlayCloseButtons = new List<Button>();
 
         [Serializable]
         private struct WorldMapButtonCatalogEntry
@@ -118,6 +128,7 @@ namespace Kingdom.App
             ApplySideBorderWidth();
             CacheBottomBarBasePosition();
             ApplyViewportLayout();
+            EnsureOverlayRoutingBindings();
         }
 
         // 레거시 프리팹 구조에서도 런타임 시작 시 안전하게 월드맵 레이아웃을 보정한다.
@@ -336,6 +347,7 @@ namespace Kingdom.App
         {
             UnbindStageNodeEvents();
             UnbindPresenterEvents();
+            ReleaseOverlayRoutingBindings();
         }
 
         private void OnRectTransformDimensionsChange()
@@ -369,15 +381,13 @@ namespace Kingdom.App
         private void OnClickHeroRoom()
         {
             PlayClickSfx();
-            Debug.Log("[WorldMapView] Hero Room clicked (Not implemented).");
-            Debug.Log("[WorldMapView] 영웅 관리소는 준비 중입니다!");
+            OpenHeroRoomPopup();
         }
 
         private void OnClickUpgrades()
         {
             PlayClickSfx();
-            Debug.Log("[WorldMapView] Upgrades clicked (Not implemented).");
-            Debug.Log("[WorldMapView] 업그레이드 기능은 준비 중입니다!");
+            OpenUpgradesPopup();
         }
 
         private void OnClickBack()
@@ -389,8 +399,392 @@ namespace Kingdom.App
 
         public override bool OnBackKey()
         {
+            if (CloseOverlay())
+            {
+                return true;
+            }
+
             OnClickBack();
             return true;
+        }
+
+        public void OpenUpgradesPopup()
+        {
+            EnsureUpgradesPopupRoot();
+            OpenOverlayPopup(upgradesPopupRoot, "Upgrades");
+        }
+
+        public void OpenHeroRoomPopup()
+        {
+            EnsureHeroRoomPopupRoot();
+            OpenOverlayPopup(heroRoomPopupRoot, "HeroRoom");
+        }
+
+        private void EnsureUpgradesPopupRoot()
+        {
+            if (upgradesPopupRoot != null)
+            {
+                return;
+            }
+
+            GameObject prefab = Resources.Load<GameObject>(UpgradesPopupResourcePath);
+            if (prefab != null)
+            {
+                EnsureOverlayContainer();
+                Transform parent = overlayContainer != null ? overlayContainer.transform : transform;
+                upgradesPopupRoot = Instantiate(prefab, parent, false);
+                upgradesPopupRoot.name = "UpgradesPopup";
+                return;
+            }
+
+            upgradesPopupRoot = CreateFallbackUpgradesPopup();
+        }
+
+        public bool CloseOverlay()
+        {
+            if (_currentOverlayPopup == null)
+            {
+                return false;
+            }
+
+            _currentOverlayPopup.SetActive(false);
+            _currentOverlayPopup = null;
+
+            if (overlayContainer != null)
+            {
+                overlayContainer.SetActive(false);
+            }
+
+            return true;
+        }
+
+        private void OpenOverlayPopup(GameObject popupRoot, string popupName)
+        {
+            EnsureOverlayRoutingBindings();
+
+            if (popupRoot == null)
+            {
+                Debug.LogWarning($"[WorldMapView] {popupName} popup root is not assigned.");
+                UIHelper.ShowToast($"{popupName} popup is not ready.");
+                return;
+            }
+
+            if (overlayContainer != null)
+            {
+                overlayContainer.SetActive(true);
+            }
+
+            if (_currentOverlayPopup != null && _currentOverlayPopup != popupRoot)
+            {
+                _currentOverlayPopup.SetActive(false);
+            }
+
+            popupRoot.SetActive(true);
+            _currentOverlayPopup = popupRoot;
+        }
+
+        private void EnsureOverlayRoutingBindings()
+        {
+            EnsureOverlayContainer();
+
+            if (overlayContainer != null && overlayDimButton == null)
+            {
+                Transform dim = overlayContainer.transform.Find("OverlayDimButton");
+                if (dim != null)
+                {
+                    overlayDimButton = dim.GetComponent<Button>();
+                }
+            }
+
+            if (overlayContainer != null)
+            {
+                overlayContainer.SetActive(false);
+            }
+
+            if (overlayDimButton != null)
+            {
+                overlayDimButton.onClick.RemoveListener(OnOverlayDimClicked);
+                overlayDimButton.onClick.AddListener(OnOverlayDimClicked);
+            }
+
+            if (upgradesPopupRoot != null)
+            {
+                upgradesPopupRoot.SetActive(false);
+                BindOverlayCloseButtons(upgradesPopupRoot);
+            }
+
+            if (heroRoomPopupRoot != null)
+            {
+                heroRoomPopupRoot.SetActive(false);
+                BindOverlayCloseButtons(heroRoomPopupRoot);
+            }
+        }
+
+        private void ReleaseOverlayRoutingBindings()
+        {
+            for (int i = 0; i < _overlayCloseButtons.Count; i++)
+            {
+                Button closeButton = _overlayCloseButtons[i];
+                if (closeButton == null)
+                {
+                    continue;
+                }
+
+                closeButton.onClick.RemoveListener(OnOverlayCloseButtonClicked);
+            }
+
+            _overlayCloseButtons.Clear();
+
+            if (overlayDimButton != null)
+            {
+                overlayDimButton.onClick.RemoveListener(OnOverlayDimClicked);
+            }
+        }
+
+        private void OnOverlayDimClicked()
+        {
+            CloseOverlay();
+        }
+
+        private void OnOverlayCloseButtonClicked()
+        {
+            CloseOverlay();
+        }
+
+        private void EnsureOverlayContainer()
+        {
+            if (overlayContainer != null)
+            {
+                return;
+            }
+
+            Transform container = transform.Find("OverlayContainer");
+            if (container == null && safeAreaContent != null)
+            {
+                container = safeAreaContent.Find("OverlayContainer");
+            }
+
+            if (container != null)
+            {
+                overlayContainer = container.gameObject;
+                return;
+            }
+
+            Transform parent = safeAreaContent != null ? safeAreaContent : transform;
+            GameObject containerObject = new GameObject("OverlayContainer", typeof(RectTransform));
+            RectTransform containerRect = containerObject.GetComponent<RectTransform>();
+            containerRect.SetParent(parent, false);
+            containerRect.anchorMin = Vector2.zero;
+            containerRect.anchorMax = Vector2.one;
+            containerRect.offsetMin = Vector2.zero;
+            containerRect.offsetMax = Vector2.zero;
+            containerRect.SetAsLastSibling();
+            overlayContainer = containerObject;
+
+            GameObject dimObject = new GameObject("OverlayDimButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            RectTransform dimRect = dimObject.GetComponent<RectTransform>();
+            dimRect.SetParent(containerRect, false);
+            dimRect.anchorMin = Vector2.zero;
+            dimRect.anchorMax = Vector2.one;
+            dimRect.offsetMin = Vector2.zero;
+            dimRect.offsetMax = Vector2.zero;
+
+            Image dimImage = dimObject.GetComponent<Image>();
+            dimImage.color = new Color(0f, 0f, 0f, 0.45f);
+            dimImage.raycastTarget = true;
+
+            overlayDimButton = dimObject.GetComponent<Button>();
+            overlayContainer.SetActive(false);
+        }
+
+        private void BindOverlayCloseButtons(GameObject popupRoot)
+        {
+            if (popupRoot == null)
+            {
+                return;
+            }
+
+            Button[] buttons = popupRoot.GetComponentsInChildren<Button>(true);
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                Button button = buttons[i];
+                if (button == null)
+                {
+                    continue;
+                }
+
+                string buttonName = button.name;
+                if (!buttonName.Contains("Close", StringComparison.OrdinalIgnoreCase) &&
+                    !buttonName.Contains("Back", StringComparison.OrdinalIgnoreCase) &&
+                    !buttonName.Contains("Exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                button.onClick.RemoveListener(OnOverlayCloseButtonClicked);
+                button.onClick.AddListener(OnOverlayCloseButtonClicked);
+
+                if (!_overlayCloseButtons.Contains(button))
+                {
+                    _overlayCloseButtons.Add(button);
+                }
+            }
+        }
+
+        private GameObject CreateFallbackUpgradesPopup()
+        {
+            EnsureOverlayContainer();
+            Transform parent = overlayContainer != null ? overlayContainer.transform : transform;
+
+            GameObject popupRoot = new GameObject("UpgradesPopup", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            RectTransform popupRect = popupRoot.GetComponent<RectTransform>();
+            popupRect.SetParent(parent, false);
+            popupRect.anchorMin = new Vector2(0.5f, 0.5f);
+            popupRect.anchorMax = new Vector2(0.5f, 0.5f);
+            popupRect.pivot = new Vector2(0.5f, 0.5f);
+            popupRect.sizeDelta = new Vector2(980f, 720f);
+            popupRect.anchoredPosition = Vector2.zero;
+            popupRect.SetAsLastSibling();
+
+            Image bgImage = popupRoot.GetComponent<Image>();
+            bgImage.color = new Color(0.08f, 0.1f, 0.14f, 0.97f);
+            bgImage.raycastTarget = true;
+
+            GameObject titleObject = new GameObject("txtTitle", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform titleRect = titleObject.GetComponent<RectTransform>();
+            titleRect.SetParent(popupRect, false);
+            titleRect.anchorMin = new Vector2(0.5f, 1f);
+            titleRect.anchorMax = new Vector2(0.5f, 1f);
+            titleRect.pivot = new Vector2(0.5f, 1f);
+            titleRect.sizeDelta = new Vector2(420f, 64f);
+            titleRect.anchoredPosition = new Vector2(0f, -20f);
+
+            TextMeshProUGUI titleText = titleObject.GetComponent<TextMeshProUGUI>();
+            titleText.text = "업그레이드";
+            titleText.alignment = TextAlignmentOptions.Center;
+            titleText.fontSize = 42f;
+            titleText.color = Color.white;
+
+            GameObject closeButtonObject = new GameObject("btnClose", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            RectTransform closeRect = closeButtonObject.GetComponent<RectTransform>();
+            closeRect.SetParent(popupRect, false);
+            closeRect.anchorMin = new Vector2(1f, 1f);
+            closeRect.anchorMax = new Vector2(1f, 1f);
+            closeRect.pivot = new Vector2(1f, 1f);
+            closeRect.sizeDelta = new Vector2(88f, 56f);
+            closeRect.anchoredPosition = new Vector2(-16f, -16f);
+
+            Image closeImage = closeButtonObject.GetComponent<Image>();
+            closeImage.color = new Color(0.6f, 0.2f, 0.2f, 0.95f);
+
+            GameObject closeLabelObject = new GameObject("txtLabel", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform closeLabelRect = closeLabelObject.GetComponent<RectTransform>();
+            closeLabelRect.SetParent(closeRect, false);
+            closeLabelRect.anchorMin = Vector2.zero;
+            closeLabelRect.anchorMax = Vector2.one;
+            closeLabelRect.offsetMin = Vector2.zero;
+            closeLabelRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI closeLabel = closeLabelObject.GetComponent<TextMeshProUGUI>();
+            closeLabel.text = "X";
+            closeLabel.alignment = TextAlignmentOptions.Center;
+            closeLabel.fontSize = 30f;
+            closeLabel.color = Color.white;
+
+            SkillTreeUI skillTree = popupRoot.AddComponent<SkillTreeUI>();
+            skillTree.enabled = true;
+
+            popupRoot.SetActive(false);
+            BindOverlayCloseButtons(popupRoot);
+            return popupRoot;
+        }
+
+        private void EnsureHeroRoomPopupRoot()
+        {
+            if (heroRoomPopupRoot != null)
+            {
+                return;
+            }
+
+            GameObject prefab = Resources.Load<GameObject>(HeroRoomPopupResourcePath);
+            if (prefab != null)
+            {
+                EnsureOverlayContainer();
+                Transform parent = overlayContainer != null ? overlayContainer.transform : transform;
+                heroRoomPopupRoot = Instantiate(prefab, parent, false);
+                heroRoomPopupRoot.name = "HeroRoomPopup";
+                return;
+            }
+
+            heroRoomPopupRoot = CreateFallbackHeroRoomPopup();
+        }
+
+        private GameObject CreateFallbackHeroRoomPopup()
+        {
+            EnsureOverlayContainer();
+            Transform parent = overlayContainer != null ? overlayContainer.transform : transform;
+
+            GameObject popupRoot = new GameObject("HeroRoomPopup", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+            RectTransform popupRect = popupRoot.GetComponent<RectTransform>();
+            popupRect.SetParent(parent, false);
+            popupRect.anchorMin = new Vector2(0.5f, 0.5f);
+            popupRect.anchorMax = new Vector2(0.5f, 0.5f);
+            popupRect.pivot = new Vector2(0.5f, 0.5f);
+            popupRect.sizeDelta = new Vector2(980f, 720f);
+            popupRect.anchoredPosition = Vector2.zero;
+            popupRect.SetAsLastSibling();
+
+            Image bgImage = popupRoot.GetComponent<Image>();
+            bgImage.color = new Color(0.08f, 0.1f, 0.14f, 0.97f);
+            bgImage.raycastTarget = true;
+
+            GameObject titleObject = new GameObject("txtTitle", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform titleRect = titleObject.GetComponent<RectTransform>();
+            titleRect.SetParent(popupRect, false);
+            titleRect.anchorMin = new Vector2(0.5f, 1f);
+            titleRect.anchorMax = new Vector2(0.5f, 1f);
+            titleRect.pivot = new Vector2(0.5f, 1f);
+            titleRect.sizeDelta = new Vector2(420f, 64f);
+            titleRect.anchoredPosition = new Vector2(0f, -20f);
+
+            TextMeshProUGUI titleText = titleObject.GetComponent<TextMeshProUGUI>();
+            titleText.text = "영웅 관리소";
+            titleText.alignment = TextAlignmentOptions.Center;
+            titleText.fontSize = 42f;
+            titleText.color = Color.white;
+
+            GameObject closeButtonObject = new GameObject("btnClose", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            RectTransform closeRect = closeButtonObject.GetComponent<RectTransform>();
+            closeRect.SetParent(popupRect, false);
+            closeRect.anchorMin = new Vector2(1f, 1f);
+            closeRect.anchorMax = new Vector2(1f, 1f);
+            closeRect.pivot = new Vector2(1f, 1f);
+            closeRect.sizeDelta = new Vector2(88f, 56f);
+            closeRect.anchoredPosition = new Vector2(-16f, -16f);
+
+            Image closeImage = closeButtonObject.GetComponent<Image>();
+            closeImage.color = new Color(0.6f, 0.2f, 0.2f, 0.95f);
+
+            GameObject closeLabelObject = new GameObject("txtLabel", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform closeLabelRect = closeLabelObject.GetComponent<RectTransform>();
+            closeLabelRect.SetParent(closeRect, false);
+            closeLabelRect.anchorMin = Vector2.zero;
+            closeLabelRect.anchorMax = Vector2.one;
+            closeLabelRect.offsetMin = Vector2.zero;
+            closeLabelRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI closeLabel = closeLabelObject.GetComponent<TextMeshProUGUI>();
+            closeLabel.text = "X";
+            closeLabel.alignment = TextAlignmentOptions.Center;
+            closeLabel.fontSize = 30f;
+            closeLabel.color = Color.white;
+
+            HeroSelectionUI heroSelection = popupRoot.AddComponent<HeroSelectionUI>();
+            heroSelection.enabled = true;
+
+            popupRoot.SetActive(false);
+            BindOverlayCloseButtons(popupRoot);
+            return popupRoot;
         }
 
         public void SetBackgroundImage(Sprite sprite)
@@ -447,7 +841,7 @@ namespace Kingdom.App
             }
             else
             {
-                Debug.LogWarning("[WorldMapView] World map background sprite not found in Resources.");
+                Debug.Log("[WorldMapView] World map background sprite not found in Resources. Using existing background.");
             }
         }
 
@@ -644,12 +1038,12 @@ namespace Kingdom.App
 
             if (bgmClip == null)
             {
-                Debug.LogWarning($"[WorldMapView] BGM clip not found at Resources/{WorldMapBgmResourcePath}");
+                Debug.Log($"[WorldMapView] BGM clip not found at Resources/{WorldMapBgmResourcePath}. Audio fallback: silent.");
             }
 
             if (clickClip == null)
             {
-                Debug.LogWarning($"[WorldMapView] Click clip not found at Resources/{WorldMapClickResourcePath}");
+                Debug.Log($"[WorldMapView] Click clip not found at Resources/{WorldMapClickResourcePath}. Audio fallback: silent.");
             }
         }
 

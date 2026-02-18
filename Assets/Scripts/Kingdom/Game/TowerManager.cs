@@ -8,6 +8,8 @@ namespace Kingdom.Game
     /// </summary>
     public class TowerManager : MonoBehaviour
     {
+        private const string SkillLevelKeyPrefix = "Kingdom.SkillTree.SkillLevel.";
+
         public readonly struct TowerActionInfo
         {
             public readonly int TowerId;
@@ -114,24 +116,31 @@ namespace Kingdom.Game
                 var loaded = Resources.Load<TowerConfig>($"Data/TowerConfigs/{type}");
                 if (loaded != null)
                 {
+                    TowerConfig runtimeConfig = Instantiate(loaded);
+                    runtimeConfig.hideFlags = HideFlags.DontSave;
+
                     bool isInvalid = false;
-                    if (loaded.Levels != null && loaded.Levels.Length > 0)
+                    if (runtimeConfig.Levels != null && runtimeConfig.Levels.Length > 0)
                     {
                         // Check if data is essentially empty (Range ~ 0)
-                        if (loaded.Levels[0].Range < 0.1f) isInvalid = true;
+                        if (runtimeConfig.Levels[0].Range < 0.1f) isInvalid = true;
                     }
 
-                    if (loaded.Levels == null || loaded.Levels.Length == 0 || isInvalid)
+                    if (runtimeConfig.Levels == null || runtimeConfig.Levels.Length == 0 || isInvalid)
                     {
-                        Debug.LogWarning($"[TowerManager] Config for {type} has invalid data (Range=0 or empty). Repopulating defaults.");
-                        PopulateDefaultData(loaded, type);
+                        Debug.Log($"[TowerManager] Config for {type} has invalid data (Range=0 or empty). Repopulating defaults.");
+                        PopulateDefaultData(runtimeConfig, type);
                     }
-                    _towerConfigs[type] = loaded;
+
+                    ApplyWorldMapMetaUpgrades(runtimeConfig, type);
+                    _towerConfigs[type] = runtimeConfig;
                 }
                 else
                 {
                     // Fallback generator
-                    _towerConfigs[type] = CreateFallbackTowerConfig(type);
+                    TowerConfig fallback = CreateFallbackTowerConfig(type);
+                    ApplyWorldMapMetaUpgrades(fallback, type);
+                    _towerConfigs[type] = fallback;
                 }
             }
 
@@ -544,6 +553,61 @@ namespace Kingdom.Game
             config.DamageType = type == TowerType.Mage ? DamageType.Magic : DamageType.Physical;
             config.HalfPhysicalArmorPenetration = type == TowerType.Artillery;
             config.CanTargetAir = type != TowerType.Barracks && type != TowerType.Artillery;
+        }
+
+        private static void ApplyWorldMapMetaUpgrades(TowerConfig config, TowerType towerType)
+        {
+            if (config == null || config.Levels == null || config.Levels.Length <= 0)
+            {
+                return;
+            }
+
+            int categoryLevel = GetMetaCategoryLevel(towerType);
+            if (categoryLevel <= 0)
+            {
+                return;
+            }
+
+            float damageFactor = 1f + (0.04f * categoryLevel);
+            float rangeFactor = 1f + (0.03f * categoryLevel);
+            float cooldownFactor = Mathf.Clamp(1f - (0.02f * categoryLevel), 0.5f, 1f);
+
+            for (int i = 0; i < config.Levels.Length; i++)
+            {
+                TowerLevelData level = config.Levels[i];
+                level.Damage = Mathf.Max(1f, level.Damage * damageFactor);
+                level.Range = Mathf.Max(0.4f, level.Range * rangeFactor);
+                level.Cooldown = Mathf.Max(0.08f, level.Cooldown * cooldownFactor);
+                config.Levels[i] = level;
+            }
+
+            Debug.Log($"[TowerManager] Meta upgrade applied. type={towerType}, categoryLevel={categoryLevel}, dmgX={damageFactor:0.00}, rangeX={rangeFactor:0.00}, cdX={cooldownFactor:0.00}");
+        }
+
+        private static int GetMetaCategoryLevel(TowerType towerType)
+        {
+            string categoryPrefix = towerType switch
+            {
+                TowerType.Archer => "archers_",
+                TowerType.Barracks => "barracks_",
+                TowerType.Mage => "mages_",
+                TowerType.Artillery => "artillery_",
+                _ => string.Empty
+            };
+
+            if (string.IsNullOrEmpty(categoryPrefix))
+            {
+                return 0;
+            }
+
+            int total = 0;
+            for (int i = 1; i <= 10; i++)
+            {
+                string key = $"{SkillLevelKeyPrefix}{categoryPrefix}t{i}";
+                total += Mathf.Max(0, PlayerPrefs.GetInt(key, 0));
+            }
+
+            return total;
         }
 
         private static Sprite CreateFallbackTowerSprite()

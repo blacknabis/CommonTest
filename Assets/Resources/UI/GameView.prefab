@@ -2781,6 +2781,7 @@ MonoBehaviour:
   btnSpeed: {fileID: 0}
   btnNextWave: {fileID: 5861119520636926026}
   txtWaveInfo: {fileID: 4351310451676606493}
+  txtWaveTimer: {fileID: 0}
   txtStateInfo: {fileID: 2540012112027922880}
   txtLives: {fileID: 8352327135430823736}
   txtGold: {fileID: 2319059011129259123}

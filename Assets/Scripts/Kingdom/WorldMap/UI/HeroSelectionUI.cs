@@ -70,6 +70,10 @@ namespace Kingdom.WorldMap
         [SerializeField] private float highlightDuration = 0.25f;
         [SerializeField] private Color highlightColor = new Color(1f, 0.95f, 0.5f, 1f);
 
+        private const string SelectedHeroIdKey = "Kingdom.Hero.SelectedHeroId";
+        private const string PartyKeyPrefix = "Kingdom.Hero.Party.";
+        private const int DefaultPartySlots = 3;
+
         private readonly List<string> _partyHeroIds = new List<string>();
         private readonly Dictionary<string, HeroData> _heroMap = new Dictionary<string, HeroData>();
         private readonly Dictionary<string, HeroSlotView> _heroViewMap = new Dictionary<string, HeroSlotView>();
@@ -78,6 +82,7 @@ namespace Kingdom.WorldMap
 
         private void Awake()
         {
+            EnsureRuntimeFallbackUi();
             _heroMap.Clear();
             for (int i = 0; i < heroRoster.Count; i++)
             {
@@ -103,16 +108,24 @@ namespace Kingdom.WorldMap
                 btnRemoveFromParty.onClick.RemoveAllListeners();
                 btnRemoveFromParty.onClick.AddListener(OnClickRemove);
             }
+
+            LoadSelectionFromPrefs();
         }
 
         private void OnEnable()
         {
+            LoadSelectionFromPrefs();
             if (string.IsNullOrWhiteSpace(_selectedHeroId))
             {
                 SelectFirstOwnedHero();
             }
 
             RefreshAll();
+        }
+
+        private void OnDisable()
+        {
+            SaveSelectionToPrefs();
         }
 
         public IReadOnlyList<string> GetPartyHeroIds()
@@ -362,6 +375,7 @@ namespace Kingdom.WorldMap
             }
 
             _selectedHeroId = heroId;
+            SaveSelectionToPrefs();
             RefreshAll();
 
             if (_heroViewMap.TryGetValue(heroId, out HeroSlotView view) && view != null && view.SelectButton != null)
@@ -390,7 +404,273 @@ namespace Kingdom.WorldMap
             }
 
             _partyHeroIds.Add(_selectedHeroId);
+            SaveSelectionToPrefs();
             RefreshAll();
+        }
+
+        private void EnsureRuntimeFallbackUi()
+        {
+            EnsureDefaultRoster();
+
+            if (heroSlotViews != null && heroSlotViews.Count > 0 && imgSelectedPortrait != null && btnAssignToParty != null && btnRemoveFromParty != null)
+            {
+                return;
+            }
+
+            RectTransform root = transform as RectTransform;
+            if (root == null)
+            {
+                return;
+            }
+
+            Image rootImage = GetComponent<Image>();
+            if (rootImage == null)
+            {
+                rootImage = gameObject.AddComponent<Image>();
+            }
+
+            rootImage.color = new Color(0.1f, 0.12f, 0.16f, 0.96f);
+            rootImage.raycastTarget = true;
+
+            RectTransform listRoot = CreatePanel(root, "HeroListRoot", new Vector2(0f, 0f), new Vector2(0.38f, 1f), new Vector2(24f, 80f), new Vector2(-8f, -24f));
+            RectTransform detailRoot = CreatePanel(root, "HeroDetailRoot", new Vector2(0.38f, 0f), new Vector2(1f, 1f), new Vector2(8f, 80f), new Vector2(-24f, -24f));
+            RectTransform partyRoot = CreatePanel(root, "PartyRoot", new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(24f, 24f), new Vector2(-24f, 68f));
+
+            VerticalLayoutGroup listLayout = listRoot.gameObject.AddComponent<VerticalLayoutGroup>();
+            listLayout.spacing = 6f;
+            listLayout.padding = new RectOffset(8, 8, 8, 8);
+            listLayout.childControlHeight = true;
+            listLayout.childControlWidth = true;
+            listLayout.childForceExpandHeight = false;
+            listLayout.childForceExpandWidth = true;
+
+            heroSlotViews = new List<HeroSlotView>();
+            for (int i = 0; i < heroRoster.Count; i++)
+            {
+                HeroData hero = heroRoster[i];
+                if (hero == null)
+                {
+                    continue;
+                }
+
+                heroSlotViews.Add(CreateHeroSlot(listRoot, hero));
+            }
+
+            BuildDetailUi(detailRoot);
+            BuildPartyUi(partyRoot);
+            BuildActionButtons(detailRoot);
+        }
+
+        private void EnsureDefaultRoster()
+        {
+            if (heroRoster != null && heroRoster.Count > 0)
+            {
+                return;
+            }
+
+            heroRoster = new List<HeroData>
+            {
+                new HeroData { HeroId = "DefaultHero", DisplayName = "Knight", Level = 1, Attack = 16, Defense = 8, Health = 120, IsOwned = true },
+                new HeroData { HeroId = "ArcherHero", DisplayName = "Ranger", Level = 1, Attack = 14, Defense = 5, Health = 95, IsOwned = true },
+                new HeroData { HeroId = "MageHero", DisplayName = "Mage", Level = 1, Attack = 20, Defense = 3, Health = 80, IsOwned = true }
+            };
+        }
+
+        private static RectTransform CreatePanel(RectTransform parent, string name, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax)
+        {
+            GameObject panel = new GameObject(name, typeof(RectTransform), typeof(Image));
+            RectTransform rect = panel.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = offsetMin;
+            rect.offsetMax = offsetMax;
+
+            Image image = panel.GetComponent<Image>();
+            image.color = new Color(1f, 1f, 1f, 0.05f);
+            image.raycastTarget = false;
+            return rect;
+        }
+
+        private HeroSlotView CreateHeroSlot(RectTransform parent, HeroData hero)
+        {
+            GameObject slot = new GameObject($"HeroSlot_{hero.HeroId}", typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
+            RectTransform slotRect = slot.GetComponent<RectTransform>();
+            slotRect.SetParent(parent, false);
+            slot.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+            slot.GetComponent<LayoutElement>().preferredHeight = 72f;
+
+            HorizontalLayoutGroup layout = slot.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 8f;
+            layout.padding = new RectOffset(8, 8, 8, 8);
+            layout.childControlWidth = false;
+            layout.childControlHeight = true;
+            layout.childForceExpandHeight = true;
+            layout.childForceExpandWidth = false;
+
+            Image portrait = CreateImageChild(slotRect, "Portrait", new Vector2(52f, 52f), new Color(1f, 1f, 1f, 0.35f));
+            TextMeshProUGUI txtName = CreateTextChild(slotRect, "TxtName", hero.DisplayName, 20f, TextAlignmentOptions.MidlineLeft, 210f);
+            TextMeshProUGUI txtLevel = CreateTextChild(slotRect, "TxtLevel", $"Lv.{hero.Level}", 18f, TextAlignmentOptions.MidlineRight, 90f);
+
+            return new HeroSlotView
+            {
+                SelectButton = slot.GetComponent<Button>(),
+                Portrait = portrait,
+                TxtName = txtName,
+                TxtLevel = txtLevel
+            };
+        }
+
+        private void BuildDetailUi(RectTransform detailRoot)
+        {
+            imgSelectedPortrait = CreateImageChild(detailRoot, "imgSelectedPortrait", new Vector2(160f, 160f), new Color(1f, 1f, 1f, 0.25f));
+            RectTransform portraitRect = imgSelectedPortrait.rectTransform;
+            portraitRect.anchorMin = new Vector2(0f, 1f);
+            portraitRect.anchorMax = new Vector2(0f, 1f);
+            portraitRect.pivot = new Vector2(0f, 1f);
+            portraitRect.anchoredPosition = new Vector2(12f, -12f);
+
+            txtSelectedName = CreateAnchoredText(detailRoot, "txtSelectedName", "영웅 미선택", 26f, new Vector2(190f, -18f));
+            txtSelectedLevel = CreateAnchoredText(detailRoot, "txtSelectedLevel", "레벨: -", 20f, new Vector2(190f, -58f));
+            txtSelectedAttack = CreateAnchoredText(detailRoot, "txtSelectedAttack", "공격력: -", 20f, new Vector2(190f, -90f));
+            txtSelectedDefense = CreateAnchoredText(detailRoot, "txtSelectedDefense", "방어력: -", 20f, new Vector2(190f, -122f));
+            txtSelectedHealth = CreateAnchoredText(detailRoot, "txtSelectedHealth", "체력: -", 20f, new Vector2(190f, -154f));
+            txtHint = CreateAnchoredText(detailRoot, "txtHint", "영웅을 선택하세요.", 18f, new Vector2(12f, -220f));
+        }
+
+        private void BuildPartyUi(RectTransform partyRoot)
+        {
+            HorizontalLayoutGroup layout = partyRoot.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 10f;
+            layout.padding = new RectOffset(8, 8, 8, 8);
+            layout.childControlHeight = true;
+            layout.childControlWidth = false;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = true;
+
+            partySlotViews = new List<PartySlotView>();
+            int slots = Mathf.Max(DefaultPartySlots, maxPartySize);
+            for (int i = 0; i < slots; i++)
+            {
+                partySlotViews.Add(CreatePartySlot(partyRoot, i));
+            }
+
+            txtPartyCount = CreateAnchoredText(partyRoot, "txtPartyCount", $"파티: 0/{Mathf.Max(1, maxPartySize)}", 18f, new Vector2(8f, -8f));
+        }
+
+        private PartySlotView CreatePartySlot(RectTransform parent, int index)
+        {
+            GameObject slot = new GameObject($"PartySlot_{index}", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            RectTransform slotRect = slot.GetComponent<RectTransform>();
+            slotRect.SetParent(parent, false);
+            slot.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+            slot.GetComponent<LayoutElement>().preferredWidth = 170f;
+
+            VerticalLayoutGroup layout = slot.AddComponent<VerticalLayoutGroup>();
+            layout.spacing = 4f;
+            layout.padding = new RectOffset(6, 6, 6, 6);
+            layout.childControlWidth = true;
+            layout.childControlHeight = true;
+            layout.childForceExpandHeight = false;
+            layout.childForceExpandWidth = true;
+
+            Image portrait = CreateImageChild(slotRect, "Portrait", new Vector2(64f, 64f), new Color(1f, 1f, 1f, 0.25f));
+            TextMeshProUGUI txtName = CreateTextChild(slotRect, "TxtName", "빈 슬롯", 16f, TextAlignmentOptions.Center, 120f);
+            TextMeshProUGUI txtLevel = CreateTextChild(slotRect, "TxtLevel", "-", 14f, TextAlignmentOptions.Center, 120f);
+
+            return new PartySlotView
+            {
+                Portrait = portrait,
+                TxtName = txtName,
+                TxtLevel = txtLevel
+            };
+        }
+
+        private void BuildActionButtons(RectTransform detailRoot)
+        {
+            btnAssignToParty = CreateButton(detailRoot, "btnAssignToParty", "Assign", new Vector2(0f, 0f), new Vector2(0.5f, 0f), new Vector2(12f, 12f), new Vector2(-6f, 56f), new Color(0.2f, 0.52f, 0.31f, 0.95f));
+            btnRemoveFromParty = CreateButton(detailRoot, "btnRemoveFromParty", "Remove", new Vector2(0.5f, 0f), new Vector2(1f, 0f), new Vector2(6f, 12f), new Vector2(-12f, 56f), new Color(0.5f, 0.23f, 0.23f, 0.95f));
+        }
+
+        private static Button CreateButton(RectTransform parent, string name, string label, Vector2 anchorMin, Vector2 anchorMax, Vector2 offsetMin, Vector2 offsetMax, Color color)
+        {
+            GameObject buttonObject = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+            RectTransform rect = buttonObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            rect.anchorMin = anchorMin;
+            rect.anchorMax = anchorMax;
+            rect.offsetMin = offsetMin;
+            rect.offsetMax = offsetMax;
+
+            Image image = buttonObject.GetComponent<Image>();
+            image.color = color;
+
+            GameObject textObject = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform textRect = textObject.GetComponent<RectTransform>();
+            textRect.SetParent(rect, false);
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
+            text.text = label;
+            text.color = Color.white;
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontSize = 20f;
+
+            return buttonObject.GetComponent<Button>();
+        }
+
+        private static Image CreateImageChild(RectTransform parent, string name, Vector2 size, Color color)
+        {
+            GameObject imageObject = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            RectTransform rect = imageObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+
+            LayoutElement layout = imageObject.GetComponent<LayoutElement>();
+            layout.preferredWidth = size.x;
+            layout.preferredHeight = size.y;
+
+            Image image = imageObject.GetComponent<Image>();
+            image.color = color;
+            return image;
+        }
+
+        private static TextMeshProUGUI CreateTextChild(RectTransform parent, string name, string value, float fontSize, TextAlignmentOptions align, float preferredWidth)
+        {
+            GameObject textObject = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
+            RectTransform rect = textObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+
+            LayoutElement layout = textObject.GetComponent<LayoutElement>();
+            layout.preferredWidth = preferredWidth;
+
+            TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
+            text.text = value;
+            text.fontSize = fontSize;
+            text.alignment = align;
+            text.color = Color.white;
+            return text;
+        }
+
+        private static TextMeshProUGUI CreateAnchoredText(RectTransform parent, string name, string value, float fontSize, Vector2 anchoredPos)
+        {
+            GameObject textObject = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+            RectTransform rect = textObject.GetComponent<RectTransform>();
+            rect.SetParent(parent, false);
+            rect.anchorMin = new Vector2(0f, 1f);
+            rect.anchorMax = new Vector2(0f, 1f);
+            rect.pivot = new Vector2(0f, 1f);
+            rect.sizeDelta = new Vector2(560f, 30f);
+            rect.anchoredPosition = anchoredPos;
+
+            TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
+            text.text = value;
+            text.fontSize = fontSize;
+            text.alignment = TextAlignmentOptions.MidlineLeft;
+            text.color = Color.white;
+            return text;
         }
 
         private void OnClickRemove()
@@ -402,8 +682,47 @@ namespace Kingdom.WorldMap
 
             if (_partyHeroIds.Remove(_selectedHeroId))
             {
+                SaveSelectionToPrefs();
                 RefreshAll();
             }
+        }
+
+        private void LoadSelectionFromPrefs()
+        {
+            string selected = PlayerPrefs.GetString(SelectedHeroIdKey, string.Empty);
+            _selectedHeroId = selected;
+
+            _partyHeroIds.Clear();
+            int partySlots = Mathf.Max(1, maxPartySize);
+            for (int i = 0; i < partySlots; i++)
+            {
+                string heroId = PlayerPrefs.GetString(PartyKeyPrefix + i, string.Empty);
+                if (string.IsNullOrWhiteSpace(heroId))
+                {
+                    continue;
+                }
+
+                if (_heroMap.TryGetValue(heroId, out HeroData hero) && hero != null && hero.IsOwned && !_partyHeroIds.Contains(heroId))
+                {
+                    _partyHeroIds.Add(heroId);
+                }
+            }
+
+            Debug.Log($"[HeroSelectionUI] Selection loaded. selected={_selectedHeroId}, partyCount={_partyHeroIds.Count}");
+        }
+
+        private void SaveSelectionToPrefs()
+        {
+            PlayerPrefs.SetString(SelectedHeroIdKey, string.IsNullOrWhiteSpace(_selectedHeroId) ? string.Empty : _selectedHeroId);
+            int partySlots = Mathf.Max(1, maxPartySize);
+            for (int i = 0; i < partySlots; i++)
+            {
+                string heroId = i < _partyHeroIds.Count ? _partyHeroIds[i] : string.Empty;
+                PlayerPrefs.SetString(PartyKeyPrefix + i, heroId);
+            }
+
+            PlayerPrefs.Save();
+            Debug.Log($"[HeroSelectionUI] Selection saved. selected={_selectedHeroId}, partyCount={_partyHeroIds.Count}");
         }
 
         private void SelectFirstOwnedHero()

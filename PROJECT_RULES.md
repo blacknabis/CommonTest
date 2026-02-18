@@ -1,9 +1,3 @@
----
-trigger: always_on
-glob: "**/*.cs"
-description: Rules for using the Common library in the project.
----
-
 # Common Library & Project Guidelines
 
 ## 공용 라이브러리 (Common)

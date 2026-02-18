@@ -17,11 +17,14 @@ namespace Kingdom.App
     {
         private const string BattlefieldPrefabResourcePath = "Prefabs/Game/GameBattlefield";
         private const string TowerConfigResourcePath = "Data/TowerConfigs/BasicTower";
-        private const string HeroConfigResourcePath = "Data/HeroConfigs/DefaultHero";
+        private const string HeroConfigResourcePathPrefix = "Data/HeroConfigs/";
+        private const string DefaultHeroId = "DefaultHero";
+        private const string SelectedHeroIdPlayerPrefsKey = "Kingdom.Hero.SelectedHeroId";
         private const string HeroPortraitSpriteResourcePathPrefix = "UI/Sprites/Heroes/Portraits/";
         private const string SpellReinforceConfigResourcePath = "Data/SpellConfigs/ReinforceSpell";
         private const string SpellRainConfigResourcePath = "Data/SpellConfigs/RainSpell";
         private const float EarlyCallGoldPerSecond = 2.0f;
+        private const float EarlyCallCooldownMinRatio = 0.35f;
         private const float FastForwardTimeScale = 2f;
         private const int DebugGrantGoldAmount = 500;
 
@@ -180,6 +183,7 @@ namespace Kingdom.App
             {
                 _stateController.StateChanged -= OnStateChangedForHud;
                 _stateController.WaveChanged -= OnWaveChangedForKpi;
+                _stateController.WaveReadyTimeChanged -= OnWaveReadyTimeChanged;
             }
 
             if (_spawnManager != null)
@@ -421,7 +425,7 @@ namespace Kingdom.App
             _economyManager.Configure(initialGold, initialLives, _spawnManager, _stateController);
 
             var towerConfig = Resources.Load<TowerConfig>(TowerConfigResourcePath);
-            _heroConfig = ResolveHeroConfig(HeroConfigResourcePath);
+            _heroConfig = ResolveSelectedHeroConfig();
             _reinforceSpellConfig = ResolveSpellConfig(SpellReinforceConfigResourcePath, "reinforce", "Reinforce", 20f, 4f);
             _rainSpellConfig = ResolveSpellConfig(SpellRainConfigResourcePath, "rain", "Rain", 30f, 4f);
             var towerSlots = _battlefield != null ? _battlefield.GetTowerSlotPositions() : null;
@@ -460,6 +464,8 @@ namespace Kingdom.App
             _stateController.StateChanged += OnStateChangedForHud;
             _stateController.WaveChanged -= OnWaveChangedForKpi;
             _stateController.WaveChanged += OnWaveChangedForKpi;
+            _stateController.WaveReadyTimeChanged -= OnWaveReadyTimeChanged;
+            _stateController.WaveReadyTimeChanged += OnWaveReadyTimeChanged;
             _spawnManager.EnemyReachedGoal -= OnEnemyReachedGoalForKpi;
             _spawnManager.EnemyReachedGoal += OnEnemyReachedGoalForKpi;
 
@@ -472,7 +478,7 @@ namespace Kingdom.App
                 _towerManager.GetBuildCost(TowerType.Barracks),
                 _towerManager.GetBuildCost(TowerType.Mage),
                 _towerManager.GetBuildCost(TowerType.Artillery));
-            gameView.SetNextWaveInteractable(_stateController.CurrentState == GameFlowState.WaveRunning);
+            gameView.SetNextWaveInteractable(_stateController.CurrentState == GameFlowState.WaveReady);
             gameView.SetSpeedVisual(_isFastForward);
             gameView.SetSpellCooldown("reinforce", 0f);
             gameView.SetSpellCooldown("rain", 0f);
@@ -609,6 +615,7 @@ namespace Kingdom.App
                 return;
             }
 
+            float remainingReadySeconds = _stateController.WaveReadyRemaining;
             _waveEarlyCallAttempts++;
             // NOTE:
             // TryEarlyCallNextWave() 내부에서 상태 전이가 즉시 발생하고,
@@ -621,7 +628,7 @@ namespace Kingdom.App
                 return;
             }
 
-            ApplyEarlyCallReward();
+            ApplyEarlyCallReward(remainingReadySeconds);
             if (MainUI is GameView gameView)
             {
                 gameView.SetNextWaveInteractable(false);
@@ -642,7 +649,7 @@ namespace Kingdom.App
             Debug.Log($"[KPI] SpeedToggle speed={_activeTimeScale:0.0}x paused={(_stateController != null && _stateController.IsPaused)}");
         }
 
-        private void ApplyEarlyCallReward()
+        private void ApplyEarlyCallReward(float remainingReadySeconds)
         {
             if (_economyManager == null || _stateController == null)
             {
@@ -656,7 +663,7 @@ namespace Kingdom.App
                 baseBonus = Mathf.Max(0, _activeWaveConfig.Waves[waveIndex].BonusGoldOnEarlyCall);
             }
 
-            float remain = Mathf.Max(0f, _stateController.WaveDuration - _stateController.StateElapsedUnscaled);
+            float remain = Mathf.Max(0f, remainingReadySeconds);
             int timeBonus = Mathf.RoundToInt(remain * EarlyCallGoldPerSecond);
             int totalBonus = Mathf.Max(0, baseBonus + timeBonus);
             if (totalBonus > 0)
@@ -664,10 +671,13 @@ namespace Kingdom.App
                 _economyManager.AddGold(totalBonus);
             }
 
-            _reinforceCooldownLeft = Mathf.Max(0f, _reinforceCooldownLeft - GetEarlyCallCooldownReduction(_reinforceSpellConfig));
-            _rainCooldownLeft = Mathf.Max(0f, _rainCooldownLeft - GetEarlyCallCooldownReduction(_rainSpellConfig));
+            float readyDuration = _stateController.WaveReadyDuration;
+            float reinforceReduction = GetScaledEarlyCallCooldownReduction(_reinforceSpellConfig, remainingReadySeconds, readyDuration);
+            float rainReduction = GetScaledEarlyCallCooldownReduction(_rainSpellConfig, remainingReadySeconds, readyDuration);
+            _reinforceCooldownLeft = Mathf.Max(0f, _reinforceCooldownLeft - reinforceReduction);
+            _rainCooldownLeft = Mathf.Max(0f, _rainCooldownLeft - rainReduction);
             TickSpellCooldowns();
-            Debug.Log($"[GameScene] EarlyCall reward applied. base={baseBonus} time={timeBonus} total={totalBonus}");
+            Debug.Log($"[GameScene] EarlyCall reward applied. base={baseBonus} time={timeBonus} total={totalBonus} remain={remainingReadySeconds:0.00}s cdReduce(reinforce={reinforceReduction:0.00}, rain={rainReduction:0.00})");
         }
 
         private void OnStateChangedForHud(GameFlowState state)
@@ -681,8 +691,12 @@ namespace Kingdom.App
 
             if (MainUI is GameView gameView)
             {
-                bool canEarlyCall = state == GameFlowState.WaveRunning;
+                bool canEarlyCall = state == GameFlowState.WaveReady;
                 gameView.SetNextWaveInteractable(canEarlyCall);
+                if (state != GameFlowState.WaveReady)
+                {
+                    gameView.HideWaveReadyCountdown();
+                }
 
                 if (state == GameFlowState.Result)
                 {
@@ -693,6 +707,22 @@ namespace Kingdom.App
                     gameView.HideResult();
                 }
             }
+        }
+
+        private void OnWaveReadyTimeChanged(float remainingSeconds)
+        {
+            if (MainUI is not GameView gameView)
+            {
+                return;
+            }
+
+            if (_stateController == null || _stateController.CurrentState != GameFlowState.WaveReady)
+            {
+                gameView.HideWaveReadyCountdown();
+                return;
+            }
+
+            gameView.SetWaveReadyCountdown(remainingSeconds);
         }
 
         private void PresentBattleResult(GameView gameView)
@@ -910,6 +940,31 @@ namespace Kingdom.App
             return fallback;
         }
 
+        private static HeroConfig ResolveSelectedHeroConfig()
+        {
+            string selectedHeroId = PlayerPrefs.GetString(SelectedHeroIdPlayerPrefsKey, DefaultHeroId);
+            if (string.IsNullOrWhiteSpace(selectedHeroId))
+            {
+                selectedHeroId = DefaultHeroId;
+            }
+
+            string selectedPath = HeroConfigResourcePathPrefix + selectedHeroId;
+            HeroConfig selectedConfig = Resources.Load<HeroConfig>(selectedPath);
+            if (selectedConfig != null)
+            {
+                Debug.Log($"[GameScene] Hero config resolved from selected id. heroId={selectedConfig.HeroId}, path={selectedPath}");
+                return selectedConfig;
+            }
+
+            string defaultPath = HeroConfigResourcePathPrefix + DefaultHeroId;
+            if (!selectedHeroId.Equals(DefaultHeroId))
+            {
+                Debug.Log($"[GameScene] Selected hero config missing: {selectedPath}. Fallback to {defaultPath}.");
+            }
+
+            return ResolveHeroConfig(defaultPath);
+        }
+
         private static Sprite ResolveHeroPortraitSprite(HeroConfig config)
         {
             if (config == null || string.IsNullOrWhiteSpace(config.HeroId))
@@ -938,6 +993,27 @@ namespace Kingdom.App
             }
 
             return Mathf.Max(0f, config.EarlyCallCooldownReductionSeconds);
+        }
+
+        private static float GetScaledEarlyCallCooldownReduction(
+            SpellConfig config,
+            float remainingReadySeconds,
+            float waveReadyDuration)
+        {
+            float baseReduction = GetEarlyCallCooldownReduction(config);
+            if (baseReduction <= 0f)
+            {
+                return 0f;
+            }
+
+            if (waveReadyDuration <= 0.0001f)
+            {
+                return baseReduction;
+            }
+
+            float t = Mathf.Clamp01(Mathf.Max(0f, remainingReadySeconds) / waveReadyDuration);
+            float ratio = Mathf.Lerp(EarlyCallCooldownMinRatio, 1f, t);
+            return baseReduction * ratio;
         }
 
         private void OnTowerUpgradeRequested()
