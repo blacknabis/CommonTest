@@ -2,11 +2,18 @@
     "removeBackground": true,
     "keyColor": {
         "r": 1.0,
-        "g": 1.0,
+        "g": 0.0,
         "b": 1.0,
         "a": 1.0
     },
     "tolerance": 0.25,
+    "useRgbRangeFilter": false,
+    "thresholdR": 150,
+    "thresholdG": 50,
+    "thresholdB": 150,
+    "compareR": 1,
+    "compareG": 2,
+    "compareB": 1,
     "slicingMode": 1,
     "rows": 2,
     "cols": 2,
@@ -22,5 +29,10 @@
     "spacing": {
         "x": 4.0,
         "y": 4.0
-    }
+    },
+    "smartSliceAlphaThreshold": 0.10000000149011612,
+    "smartSliceMinPixels": 64,
+    "smartSliceOuterPadding": 2,
+    "useManualActionGroup": true,
+    "singleSourceActionGroup": 3
 }

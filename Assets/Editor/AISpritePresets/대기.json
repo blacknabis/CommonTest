@@ -2,12 +2,12 @@
     "removeBackground": true,
     "keyColor": {
         "r": 1.0,
-        "g": 0.0,
+        "g": 1.0,
         "b": 1.0,
         "a": 1.0
     },
     "tolerance": 0.25,
-    "useRgbRangeFilter": false,
+    "useRgbRangeFilter": true,
     "thresholdR": 150,
     "thresholdG": 50,
     "thresholdB": 150,
@@ -19,11 +19,11 @@
     "cols": 2,
     "innerPadding": 5,
     "offset": {
-        "x": 40.0,
+        "x": 710.0,
         "y": 38.0
     },
     "cellSize": {
-        "x": 144.0,
+        "x": 141.0,
         "y": 170.0
     },
     "spacing": {
@@ -34,5 +34,5 @@
     "smartSliceMinPixels": 64,
     "smartSliceOuterPadding": 2,
     "useManualActionGroup": true,
-    "singleSourceActionGroup": 2
+    "singleSourceActionGroup": 1
 }

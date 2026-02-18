@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: aee6cf046150a1a4cb60284a5bb1a60c
+guid: 616ef9276876c6b469d445e3c8432b79
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 64928613333042813
-    second: Change_the_background_202602181938_0
+      213: -6808086191293989462
+    second: attack_Change_the_background_202602182330_Processed_0
+  - first:
+      213: 3633325923275469947
+    second: attack_Change_the_background_202602182330_Processed_0_0
+  - first:
+      213: 6893153206946682126
+    second: attack_Change_the_background_202602182330_Processed_0_1
+  - first:
+      213: 6243956834604417322
+    second: attack_Change_the_background_202602182330_Processed_1_0
+  - first:
+      213: 831577804344806683
+    second: attack_Change_the_background_202602182330_Processed_1_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Change_the_background_202602181938_0
+      name: attack_Change_the_background_202602182330_Processed_0_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1376
-        height: 768
+        x: 5
+        y: 179
+        width: 134
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +140,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d768975da3ca6e000800000000000000
-      internalID: 64928613333042813
+      spriteID: b747d025daa2c6230800000000000000
+      internalID: 3633325923275469947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_Change_the_background_202602182330_Processed_0_1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 179
+        width: 134
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e05d66af15669af50800000000000000
+      internalID: 6893153206946682126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_Change_the_background_202602182330_Processed_1_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 5
+        width: 134
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a21087fb8adf6a650800000000000000
+      internalID: 6243956834604417322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_Change_the_background_202602182330_Processed_1_1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 5
+        width: 134
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1d421f6b9b5a8b00800000000000000
+      internalID: 831577804344806683
       vertices: []
       indices: 
       edges: []
@@ -148,7 +226,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Change_the_background_202602181938_0: 64928613333042813
+      attack_Change_the_background_202602182330_Processed_0: -6808086191293989462
+      attack_Change_the_background_202602182330_Processed_0_0: 3633325923275469947
+      attack_Change_the_background_202602182330_Processed_0_1: 6893153206946682126
+      attack_Change_the_background_202602182330_Processed_1_0: 6243956834604417322
+      attack_Change_the_background_202602182330_Processed_1_1: 831577804344806683
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
