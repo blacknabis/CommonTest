@@ -10,8 +10,17 @@
   - 입력값 검증(잘못된 Rows/Cols/패딩 방지)
   - 선택 영역 Crop 저장
   - SmartSlice(알파 아일랜드 감지) + 프리뷰 시각화
-  - 프리뷰에서 전처리(제거 색상/허용 오차) 반영
   - 슬라이스 애니메이션 프리뷰 재생
+  - 배경제거 2모드 지원
+    - 모드 A: 제거 색상 + 허용 오차(Chroma Key)
+    - 모드 B: RGB 채널 조건식(채널별 `>=` / `<=` / `Ignore`)
+    - 예시 프리셋: `R>=150`, `G<=50`, `B>=150`
+  - 단일 Source Texture 처리 정책
+    - 다중 입력 대신 단일 입력 1개 기준 처리
+    - 액션 그룹 수동 지정 우선(`Unknown/Idle/Walk/Attack/Die`)
+    - 자동 파일명 분류는 fallback으로만 사용
+  - 프리뷰에서 전처리 반영(모드 A/B 모두)
+  - 줌아웃 시 Grid/영역 오버레이 좌표 어긋남 보정 반영
 
 ## 프로젝트 상태
 - 씬 흐름: `InitScene -> TitleScene -> WorldMapScene -> GameScene`
