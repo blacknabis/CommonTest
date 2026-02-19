@@ -62,7 +62,7 @@ namespace Kingdom.WorldMap
         private const string CloseButtonSpriteResourcePath = "UI/Sprites/WorldMap/StageInfoPopup/StageInfoPopup_Button_Close";
         private const string LegacyPanelSpriteResourcePath = "UI/Sprites/WorldMap/ico_stage_bg";
         private const string LegacyButtonSpriteResourcePath = "UI/Sprites/WorldMap/ico_text_bg";
-        private const string PopupClickAudioResourcePath = "Audio/WorldMap/WorldMap_Click_UI";
+        private const string PopupClickAudioResourcePath = "Audio/SFX/UI_Common_Click";
 
         private StageInfoPayload _payload;
         private StageDifficulty _selectedDifficulty = StageDifficulty.Normal;

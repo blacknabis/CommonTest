@@ -1,10 +1,32 @@
 ﻿# Kingdom 작업 Task (정리본)
 
 > 기준 문서: `문서/완료/2026_02_16/월드맵_업그레이드_영웅관리소_플랜_2026_02_16.md`
-> 마지막 갱신: 2026-02-19 (오디오 옵션창 1차 반영)
+> 마지막 갱신: 2026-02-19 (적 유닛 구현 시작)
 
-## 현재 메인 트랙: 환경설정 오디오 옵션창
-> 기준 문서: `문서/진행/환경설정_오디오옵션창_작업계획_2026_02_19.md`
+## 현재 메인 트랙: 적 유닛 구현 (Enemy Implementation)
+> 기준 문서: `문서/분석/적_유닛_상세_분석.md`
+> 구현 계획: `문서/진행/적_유닛_구현_계획_2026_02_19.md`
+
+### Phase 1. 데이터 구조 및 P0 메커니즘
+- [ ] `DamageCalculator` 분리 및 Armor/MagicResist 공식 개선
+- [ ] `EnemyConfig` 스키마 확장 (Min/Max Dmg, AtkSpd, Bounty 등)
+- [ ] `EnemyRuntime` P0 로직 (Physics Layer, Flying Block Ignore)
+
+### Phase 2. 적 행동 로직 (Behaviors)
+- [ ] 공격 상태(Attacking) 구현 (대기 -> 타격)
+- [ ] 회피(Dodge) 이펙트 및 확률 로직
+- [ ] 재생(Regen) 및 자폭(Death Burst) 로직
+
+### Phase 3. 데이터 에셋 (18종)
+- [ ] 적 유닛 SO 생성 (Tier 1~5, Boss)
+- [ ] 밸런스 수치 입력 (NotebookLM 기준)
+
+### Phase 4. 웨이브 검증
+- [ ] Placeholder 프리팹 제작 (Color Variant)
+- [ ] 웨이브 템플릿(A/B/C/D) 구성 및 테스트
+
+## 완료 트랙: 환경설정 오디오 옵션창 (마감)
+> 기준 문서: `문서/완료/2026_02_19/환경설정_오디오옵션창_작업계획_2026_02_19.md`
 
 ### Phase 1. 서비스/저장 기반
 - [x] `AudioSettingsKeys` 추가 (`Kingdom.Audio.*` 키/기본값)
@@ -26,6 +48,7 @@
 - [x] `UserSaveData` 직렬화 타이밍 `persistentDataPath` 접근 예외 방어 반영
 - [x] 오디오 설정 자동 회귀 러너 추가 (`KingdomRegressionMenu/ContextMenu`)
 - [x] `task.md` / 작업로그 동기화
+- [x] 오디오 옵션창 트랙 마감 처리 (추가 수동 QA 미진행, 사용자 승인 기준)
 
 ## 운영 원칙
 - [x] 완료된 상세 문서는 `문서/완료/2026_02_16`로 이관 완료

@@ -124,24 +124,4 @@ namespace Kingdom.Game
         public float AttackDamage => Levels != null && Levels.Length > 0 ? Levels[0].Damage : 34f;
     }
 
-    [CreateAssetMenu(fileName = "HeroConfig", menuName = "Kingdom/Game/Hero Config")]
-    public class HeroConfig : ScriptableObject
-    {
-        public string HeroId = "DefaultHero";
-        public string DisplayName = "Hero";
-        public float MaxHp = 500f;
-        public float MoveSpeed = 3.2f;
-        public float AttackDamage = 30f;
-        public float AttackCooldown = 0.8f;
-        public float AttackRange = 1.8f;
-    }
-
-    [CreateAssetMenu(fileName = "SpellConfig", menuName = "Kingdom/Game/Spell Config")]
-    public class SpellConfig : ScriptableObject
-    {
-        public string SpellId = "spell";
-        public string DisplayName = "Spell";
-        [Min(0f)] public float CooldownSeconds = 20f;
-        [Min(0f)] public float EarlyCallCooldownReductionSeconds = 4f;
-    }
 }

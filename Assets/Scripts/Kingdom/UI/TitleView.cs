@@ -1,5 +1,6 @@
 using Common.UI;
 using Common.Extensions;
+using Common.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -36,6 +37,7 @@ namespace Kingdom.App
         protected override void OnEnter(object[] data)
         {
             Debug.Log("[TitleView] Shown.");
+            AudioHelper.Instance.PlayBGM("BGM_IntroScene");
         }
 
         private void OnClickStart()

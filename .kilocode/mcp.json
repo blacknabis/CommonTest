@@ -1,3 +1,1 @@
-{
-    "mcpServers": {}
-}
+{"mcpServers":{"unityMCP":{"command":"C:/Users/black/.local/bin/uvx.exe","args":["--prerelease","explicit","--from","mcpforunityserver>=0.0.0a0","mcp-for-unity","--transport","stdio"],"type":"stdio","disabled":true,"alwaysAllow":[]}}}
