@@ -8,22 +8,22 @@
 > 구현 계획: `문서/진행/적_유닛_구현_계획_2026_02_19.md`
 
 ### Phase 1. 데이터 구조 및 P0 메커니즘
-- [ ] `DamageCalculator` 분리 및 Armor/MagicResist 공식 개선
-- [ ] `EnemyConfig` 스키마 확장 (Min/Max Dmg, AtkSpd, Bounty 등)
-- [ ] `EnemyRuntime` P0 로직 (Physics Layer, Flying Block Ignore)
+- [x] `DamageCalculator` 분리 및 Armor/MagicResist 공식 개선
+- [x] `EnemyConfig` 스키마 확장 (Min/Max Dmg, AtkSpd, Bounty 등)
+- [x] `EnemyRuntime` P0 로직 (Physics Layer, Flying Block Ignore)
 
 ### Phase 2. 적 행동 로직 (Behaviors)
-- [ ] 공격 상태(Attacking) 구현 (대기 -> 타격)
-- [ ] 회피(Dodge) 이펙트 및 확률 로직
-- [ ] 재생(Regen) 및 자폭(Death Burst) 로직
+- [x] 공격 상태(Attacking) 구현 (대기 -> 타격)
+- [x] 회피(Dodge) 이펙트 및 확률 로직
+- [x] 재생(Regen) 및 자폭(Death Burst) 로직
 
 ### Phase 3. 데이터 에셋 (18종)
-- [ ] 적 유닛 SO 생성 (Tier 1~5, Boss)
-- [ ] 밸런스 수치 입력 (NotebookLM 기준)
+- [x] 적 유닛 SO 생성 (Tier 1~5, Boss)
+- [x] 밸런스 수치 입력 (NotebookLM 기준)
 
 ### Phase 4. 웨이브 검증
-- [ ] Placeholder 프리팹 제작 (Color Variant)
-- [ ] 웨이브 템플릿(A/B/C/D) 구성 및 테스트
+- [x] Placeholder 프리팹 제작 (Color Variant) - 런타임 Placeholder(`SpawnManager` Sprite/Tint) 적용
+- [x] 웨이브 템플릿(A/B/C/D) 구성 및 테스트
 
 ## 완료 트랙: 환경설정 오디오 옵션창 (마감)
 > 기준 문서: `문서/완료/2026_02_19/환경설정_오디오옵션창_작업계획_2026_02_19.md`
@@ -130,6 +130,7 @@
 - [x] 월드맵 메타 UI 및 데이터 연동 완료 (Phase A~E)
 - [x] 웨이브 준비시간 고도화 문서 실행형 스펙으로 보강 (2026-02-18)
 - [x] WaveReady 기반 상태 전이/스폰/NextWave/카운트다운 1차 코드 반영 (2026-02-18)
+- [x] ComfyUI 워크플로우/스크립트 `CommonTest`로 이관 (2026-02-19)
 
 ## 현재 서브 트랙: AI Sprite Processor 고도화 (Solo Friendly v4)
 - [x] `AISpriteProcessor.cs` 기본 구현 (ChromaKey, AutoDivide)

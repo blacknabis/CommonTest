@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc68120465f0514cb71a99c1c78bf8f, type: 3}
+  m_Name: Shaman
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.EnemyConfig
+  EnemyId: Shaman
+  DisplayName: Shaman
+  EnemyType: 0
+  Sprite: {fileID: 0}
+  Tint: {r: 1, g: 1, b: 1, a: 1}
+  VisualScale: 0.6
+  MaxHp: 170
+  ArmorPercent: 0
+  MagicResistPercent: 0.35
+  AttackDamageMin: 8
+  AttackDamageMax: 11
+  AttackCooldownSec: 1.2
+  AttackRange: 1
+  ArmorPhysical: 0
+  ArmorMagic: 35
+  MoveSpeed: 2.3
+  BountyGold: 8
+  DamageToBase: 1
+  CanBeBlockedByBarracks: 1
+  DodgeChance: 0
+  RegenHpPerSec: 2
+  DeathExplosionRadius: 0
+  DeathExplosionDamage: 0
+  IsFlying: 0
+  IsBoss: 0
+  IsInstaKillImmune: 0

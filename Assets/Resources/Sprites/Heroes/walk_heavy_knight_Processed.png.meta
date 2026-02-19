@@ -1,0 +1,340 @@
+fileFormatVersion: 2
+guid: a95e5af487f87f947bbc06036323fb1f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8234381506471151390
+    second: walk_heavy_knight_Processed_0
+  - first:
+      213: -9064589222762415123
+    second: walk_heavy_knight_Processed_1
+  - first:
+      213: -4471870821023175414
+    second: walk_heavy_knight_Processed_2
+  - first:
+      213: 7886459637739574513
+    second: walk_heavy_knight_Processed_3
+  - first:
+      213: -5481775467599108424
+    second: walk_heavy_knight_Processed_4
+  - first:
+      213: -7025360551462024345
+    second: walk_heavy_knight_Processed_5
+  - first:
+      213: -5836015715807008302
+    second: walk_heavy_knight_Processed_6
+  - first:
+      213: 3016530906330845500
+    second: walk_heavy_knight_Processed_0_0
+  - first:
+      213: 3042232387193970828
+    second: walk_heavy_knight_Processed_0_1
+  - first:
+      213: 4016973894946850213
+    second: walk_heavy_knight_Processed_0_2
+  - first:
+      213: 3607184920119168907
+    second: walk_heavy_knight_Processed_0_3
+  - first:
+      213: 4943917374471830620
+    second: walk_heavy_knight_Processed_0_4
+  - first:
+      213: -8785041597364890643
+    second: walk_heavy_knight_Processed_0_5
+  - first:
+      213: -3516418408315412658
+    second: walk_heavy_knight_Processed_0_6
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3156d580eedcd920800000000000000
+      internalID: 3016530906330845500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_1
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c80a2eadc3e283a20800000000000000
+      internalID: 3042232387193970828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_2
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a5035089782fb730800000000000000
+      internalID: 4016973894946850213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_3
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8f49dab29b4f0230800000000000000
+      internalID: 3607184920119168907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_4
+      rect:
+        serializedVersion: 2
+        x: 777
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5c764878a25c9440800000000000000
+      internalID: 4943917374471830620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_5
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de3190c5633451680800000000000000
+      internalID: -8785041597364890643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_heavy_knight_Processed_0_6
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 5
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4f17b2a61c233fc0800000000000000
+      internalID: -3516418408315412658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      walk_heavy_knight_Processed_0: 8234381506471151390
+      walk_heavy_knight_Processed_0_0: 3016530906330845500
+      walk_heavy_knight_Processed_0_1: 3042232387193970828
+      walk_heavy_knight_Processed_0_2: 4016973894946850213
+      walk_heavy_knight_Processed_0_3: 3607184920119168907
+      walk_heavy_knight_Processed_0_4: 4943917374471830620
+      walk_heavy_knight_Processed_0_5: -8785041597364890643
+      walk_heavy_knight_Processed_0_6: -3516418408315412658
+      walk_heavy_knight_Processed_1: -9064589222762415123
+      walk_heavy_knight_Processed_2: -4471870821023175414
+      walk_heavy_knight_Processed_3: 7886459637739574513
+      walk_heavy_knight_Processed_4: -5481775467599108424
+      walk_heavy_knight_Processed_5: -7025360551462024345
+      walk_heavy_knight_Processed_6: -5836015715807008302
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

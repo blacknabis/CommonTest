@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc68120465f0514cb71a99c1c78bf8f, type: 3}
+  m_Name: Juggernaut
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.EnemyConfig
+  EnemyId: Juggernaut
+  DisplayName: Juggernaut
+  EnemyType: 2
+  Sprite: {fileID: 0}
+  Tint: {r: 1, g: 1, b: 1, a: 1}
+  VisualScale: 0.95
+  MaxHp: 1600
+  ArmorPercent: 0.5
+  MagicResistPercent: 0.5
+  AttackDamageMin: 30
+  AttackDamageMax: 45
+  AttackCooldownSec: 1.2
+  AttackRange: 1.2
+  ArmorPhysical: 50
+  ArmorMagic: 50
+  MoveSpeed: 1.5
+  BountyGold: 40
+  DamageToBase: 4
+  CanBeBlockedByBarracks: 0
+  DodgeChance: 0
+  RegenHpPerSec: 6
+  DeathExplosionRadius: 2.8
+  DeathExplosionDamage: 30
+  IsFlying: 0
+  IsBoss: 1
+  IsInstaKillImmune: 1

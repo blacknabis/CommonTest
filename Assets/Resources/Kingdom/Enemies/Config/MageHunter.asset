@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc68120465f0514cb71a99c1c78bf8f, type: 3}
+  m_Name: MageHunter
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.EnemyConfig
+  EnemyId: MageHunter
+  DisplayName: Mage Hunter
+  EnemyType: 0
+  Sprite: {fileID: 0}
+  Tint: {r: 1, g: 1, b: 1, a: 1}
+  VisualScale: 0.62
+  MaxHp: 260
+  ArmorPercent: 0
+  MagicResistPercent: 0.6
+  AttackDamageMin: 12
+  AttackDamageMax: 17
+  AttackCooldownSec: 1
+  AttackRange: 1
+  ArmorPhysical: 0
+  ArmorMagic: 60
+  MoveSpeed: 3
+  BountyGold: 12
+  DamageToBase: 1
+  CanBeBlockedByBarracks: 1
+  DodgeChance: 0.1
+  RegenHpPerSec: 0
+  DeathExplosionRadius: 0
+  DeathExplosionDamage: 0
+  IsFlying: 0
+  IsBoss: 0
+  IsInstaKillImmune: 0

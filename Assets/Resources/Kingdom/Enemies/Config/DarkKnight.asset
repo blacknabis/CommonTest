@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc68120465f0514cb71a99c1c78bf8f, type: 3}
+  m_Name: DarkKnight
+  m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.EnemyConfig
+  EnemyId: DarkKnight
+  DisplayName: Dark Knight
+  EnemyType: 0
+  Sprite: {fileID: 0}
+  Tint: {r: 1, g: 1, b: 1, a: 1}
+  VisualScale: 0.72
+  MaxHp: 520
+  ArmorPercent: 0.8
+  MagicResistPercent: 0
+  AttackDamageMin: 16
+  AttackDamageMax: 23
+  AttackCooldownSec: 1
+  AttackRange: 1
+  ArmorPhysical: 80
+  ArmorMagic: 0
+  MoveSpeed: 2.8
+  BountyGold: 16
+  DamageToBase: 2
+  CanBeBlockedByBarracks: 1
+  DodgeChance: 0.05
+  RegenHpPerSec: 0
+  DeathExplosionRadius: 0
+  DeathExplosionDamage: 0
+  IsFlying: 0
+  IsBoss: 0
+  IsInstaKillImmune: 0

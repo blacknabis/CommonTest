@@ -11,13 +11,6 @@ namespace Kingdom.Game
         Artillery = 3
     }
 
-    public enum DamageType
-    {
-        Physical = 0,
-        Magic = 1,
-        True = 2
-    }
-
     public enum AttackDeliveryType
     {
         Projectile = 0,
@@ -30,43 +23,6 @@ namespace Kingdom.Game
         Homing = 0,
         Ballistic = 1,
         Linear = 2
-    }
-
-    public static class DamageCalculator
-    {
-        public static float CalculateFinalDamage(
-            float baseDamage,
-            EnemyConfig targetConfig,
-            DamageType damageType,
-            bool halfPhysicalArmorPenetration = false)
-        {
-            float damage = Mathf.Max(0f, baseDamage);
-            if (damage <= 0f || targetConfig == null)
-            {
-                return damage;
-            }
-
-            float armorPercent = 0f;
-            switch (damageType)
-            {
-                case DamageType.Physical:
-                    armorPercent = Mathf.Clamp(targetConfig.ArmorPhysical, 0f, 100f);
-                    if (halfPhysicalArmorPenetration)
-                    {
-                        return damage * (1f - (armorPercent / 200f));
-                    }
-
-                    return damage * (1f - (armorPercent / 100f));
-
-                case DamageType.Magic:
-                    armorPercent = Mathf.Clamp(targetConfig.ArmorMagic, 0f, 100f);
-                    return damage * (1f - (armorPercent / 100f));
-
-                case DamageType.True:
-                default:
-                    return damage;
-            }
-        }
     }
 
     [Serializable]
