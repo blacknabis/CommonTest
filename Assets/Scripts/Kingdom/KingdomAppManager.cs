@@ -1,8 +1,10 @@
-using System.Collections;
 using Common;
 using Common.Utils;
+using Cysharp.Threading.Tasks;
+using Kingdom.Audio;
 using Kingdom.Game;
 using Kingdom.Save;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
@@ -18,6 +20,7 @@ namespace Kingdom.App
         [SerializeField] private bool isSceneLoopRegressionRunning;
         [SerializeField] private bool isWorldMapMetaRegressionRunning;
         [SerializeField] private bool isMetaPersistenceRegressionRunning;
+        [SerializeField] private bool isAudioSettingsRegressionRunning;
 
         protected override string GetSceneNamespacePrefix()
         {
@@ -32,6 +35,10 @@ namespace Kingdom.App
 
             var soundManager = SoundManager.Instance;
             Debug.Log($"[KingdomAppManager] SoundManager initialized: {soundManager.name}");
+
+            AudioSettingsService.InitializeLifecycleHook();
+            AudioSettingsService.Load();
+            Debug.Log("[KingdomAppManager] AudioSettingsService loaded and applied.");
         }
 
         protected override void Update()
@@ -48,7 +55,8 @@ namespace Kingdom.App
                 return;
             }
 
-            StartCoroutine(CoRunSceneLoopRegression(30, 0.35f));
+            // 코루틴 대신 UniTask 실행
+            RunSceneLoopRegressionAsync(30, 0.35f).Forget();
         }
 
         [ContextMenu("Run WorldMap Meta Popup Regression (20)")]
@@ -63,6 +71,12 @@ namespace Kingdom.App
             StartMetaPersistenceAndHeroApplyRegression();
         }
 
+        [ContextMenu("Run Audio Settings Regression")]
+        private void RunAudioSettingsRegression()
+        {
+            StartAudioSettingsRegression();
+        }
+
         public bool StartWorldMapMetaPopupRegression(int loopCount = 20, float dwellSeconds = 0.08f)
         {
             if (isWorldMapMetaRegressionRunning)
@@ -71,7 +85,8 @@ namespace Kingdom.App
                 return false;
             }
 
-            StartCoroutine(CoRunWorldMapMetaPopupRegression(loopCount, dwellSeconds));
+            // 코루틴 대신 UniTask 실행
+            RunWorldMapMetaPopupRegressionAsync(loopCount, dwellSeconds).Forget();
             return true;
         }
 
@@ -83,11 +98,24 @@ namespace Kingdom.App
                 return false;
             }
 
-            StartCoroutine(CoRunMetaPersistenceAndHeroApplyRegression());
+            // 코루틴 대신 UniTask 실행
+            RunMetaPersistenceAndHeroApplyRegressionAsync().Forget();
             return true;
         }
 
-        private IEnumerator CoRunSceneLoopRegression(int loopCount, float dwellSeconds)
+        public bool StartAudioSettingsRegression()
+        {
+            if (isAudioSettingsRegressionRunning)
+            {
+                Debug.Log("[KingdomAppManager] Audio settings regression is already running.");
+                return false;
+            }
+
+            RunAudioSettingsRegressionAsync().Forget();
+            return true;
+        }
+
+        private async UniTaskVoid RunSceneLoopRegressionAsync(int loopCount, float dwellSeconds)
         {
             isSceneLoopRegressionRunning = true;
             int successCount = 0;
@@ -100,15 +128,13 @@ namespace Kingdom.App
 
             for (int i = 0; i < Mathf.Max(1, loopCount); i++)
             {
-                bool toWorld = false;
-                yield return CoTryChangeAndWait(SCENES.WorldMapScene, "WorldMapScene", value => toWorld = value);
+                bool toWorld = await TryChangeAndWaitAsync(SCENES.WorldMapScene, "WorldMapScene");
                 if (toWorld) successCount++;
                 else failCount++;
 
-                yield return new WaitForSecondsRealtime(safeDwell);
+                await UniTask.Delay(TimeSpan.FromSeconds(safeDwell), DelayType.UnscaledDeltaTime);
 
-                bool toGame = false;
-                yield return CoTryChangeAndWait(SCENES.GameScene, "GameScene", value => toGame = value);
+                bool toGame = await TryChangeAndWaitAsync(SCENES.GameScene, "GameScene");
                 if (toGame) successCount++;
                 else failCount++;
 
@@ -118,7 +144,7 @@ namespace Kingdom.App
                     memoryPeak = currentMemory;
                 }
 
-                yield return new WaitForSecondsRealtime(safeDwell);
+                await UniTask.Delay(TimeSpan.FromSeconds(safeDwell), DelayType.UnscaledDeltaTime);
             }
 
             ChangeScene(SCENES.WorldMapScene);
@@ -131,7 +157,7 @@ namespace Kingdom.App
             isSceneLoopRegressionRunning = false;
         }
 
-        private IEnumerator CoTryChangeAndWait(SCENES scene, string expectedSceneName, System.Action<bool> onDone)
+        private async UniTask<bool> TryChangeAndWaitAsync(SCENES scene, string expectedSceneName)
         {
             ChangeScene(scene);
 
@@ -142,41 +168,39 @@ namespace Kingdom.App
                 Scene active = SceneManager.GetActiveScene();
                 if (string.Equals(active.name, expectedSceneName, System.StringComparison.Ordinal))
                 {
-                    onDone?.Invoke(true);
-                    yield break;
+                    return true;
                 }
 
                 elapsed += Time.unscaledDeltaTime;
-                yield return null;
+                await UniTask.Yield(PlayerLoopTiming.Update);
             }
 
             Debug.Log($"[KingdomAppManager] Scene loop step timeout. expected={expectedSceneName}, active={SceneManager.GetActiveScene().name}");
-            onDone?.Invoke(false);
+            return false;
         }
 
-        private IEnumerator CoRunWorldMapMetaPopupRegression(int loopCount, float dwellSeconds)
+        private async UniTaskVoid RunWorldMapMetaPopupRegressionAsync(int loopCount, float dwellSeconds)
         {
             isWorldMapMetaRegressionRunning = true;
             int successCount = 0;
             int failCount = 0;
             float safeDwell = Mathf.Max(0.03f, dwellSeconds);
 
-            bool toWorld = false;
-            yield return CoTryChangeAndWait(SCENES.WorldMapScene, "WorldMapScene", value => toWorld = value);
+            bool toWorld = await TryChangeAndWaitAsync(SCENES.WorldMapScene, "WorldMapScene");
             if (!toWorld)
             {
                 Debug.Log("[KingdomAppManager] WorldMap meta popup regression aborted. Failed to enter WorldMapScene.");
                 isWorldMapMetaRegressionRunning = false;
-                yield break;
+                return;
             }
 
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update);
             WorldMapView worldMapView = FindFirstObjectByType<WorldMapView>();
             if (worldMapView == null)
             {
                 Debug.Log("[KingdomAppManager] WorldMap meta popup regression aborted. WorldMapView not found.");
                 isWorldMapMetaRegressionRunning = false;
-                yield break;
+                return;
             }
 
             Debug.Log($"[KingdomAppManager] WorldMap meta popup regression started. loopCount={loopCount}");
@@ -185,12 +209,18 @@ namespace Kingdom.App
             for (int i = 0; i < loops; i++)
             {
                 worldMapView.OpenUpgradesPopup();
-                yield return new WaitForSecondsRealtime(safeDwell);
+                await UniTask.Delay(TimeSpan.FromSeconds(safeDwell), DelayType.UnscaledDeltaTime);
                 if (worldMapView.CloseOverlay()) successCount++;
                 else failCount++;
 
                 worldMapView.OpenHeroRoomPopup();
-                yield return new WaitForSecondsRealtime(safeDwell);
+                await UniTask.Delay(TimeSpan.FromSeconds(safeDwell), DelayType.UnscaledDeltaTime);
+                if (worldMapView.CloseOverlay()) successCount++;
+                else failCount++;
+
+                // 오디오 옵션 팝업 회귀 검증: 오픈/클로즈 루프 정상 동작 확인
+                worldMapView.OpenAudioOptionsPopup();
+                await UniTask.Delay(TimeSpan.FromSeconds(safeDwell), DelayType.UnscaledDeltaTime);
                 if (worldMapView.CloseOverlay()) successCount++;
                 else failCount++;
             }
@@ -199,7 +229,7 @@ namespace Kingdom.App
             isWorldMapMetaRegressionRunning = false;
         }
 
-        private IEnumerator CoRunMetaPersistenceAndHeroApplyRegression()
+        private async UniTaskVoid RunMetaPersistenceAndHeroApplyRegressionAsync()
         {
             isMetaPersistenceRegressionRunning = true;
             int successCount = 0;
@@ -235,12 +265,11 @@ namespace Kingdom.App
                 failCount++;
             }
 
-            bool toGame = false;
-            yield return CoTryChangeAndWait(SCENES.GameScene, "GameScene", value => toGame = value);
+            bool toGame = await TryChangeAndWaitAsync(SCENES.GameScene, "GameScene");
             if (toGame) successCount++;
             else failCount++;
 
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update);
             HeroController heroController = FindFirstObjectByType<HeroController>();
             string runtimeHeroId = heroController != null ? heroController.CurrentHeroId : string.Empty;
             if (heroController != null && string.Equals(runtimeHeroId, testHeroId, System.StringComparison.Ordinal))
@@ -252,8 +281,7 @@ namespace Kingdom.App
                 failCount++;
             }
 
-            bool toWorld = false;
-            yield return CoTryChangeAndWait(SCENES.WorldMapScene, "WorldMapScene", value => toWorld = value);
+            bool toWorld = await TryChangeAndWaitAsync(SCENES.WorldMapScene, "WorldMapScene");
             if (toWorld) successCount++;
             else failCount++;
 
@@ -281,6 +309,81 @@ namespace Kingdom.App
                 $"prevHero={previousHeroId}, prevSkill={previousSkillLevel}");
 
             isMetaPersistenceRegressionRunning = false;
+        }
+
+        private async UniTaskVoid RunAudioSettingsRegressionAsync()
+        {
+            isAudioSettingsRegressionRunning = true;
+            int successCount = 0;
+            int failCount = 0;
+
+            // 기존 설정 백업
+            float prevBgm = PlayerPrefs.GetFloat(AudioSettingsKeys.BgmVolume, AudioSettingsKeys.DefaultBgmVolume);
+            float prevSfx = PlayerPrefs.GetFloat(AudioSettingsKeys.SfxVolume, AudioSettingsKeys.DefaultSfxVolume);
+            bool prevBgmMuted = PlayerPrefs.GetInt(AudioSettingsKeys.BgmMuted, AudioSettingsKeys.DefaultBgmMuted ? 1 : 0) != 0;
+            bool prevSfxMuted = PlayerPrefs.GetInt(AudioSettingsKeys.SfxMuted, AudioSettingsKeys.DefaultSfxMuted ? 1 : 0) != 0;
+
+            // 테스트 값 적용
+            const float testBgm = 0.23f;
+            const float testSfx = 0.67f;
+            const bool testBgmMuted = true;
+            const bool testSfxMuted = false;
+
+            AudioSettingsService.SetBgmVolume(testBgm);
+            AudioSettingsService.SetSfxVolume(testSfx);
+            AudioSettingsService.SetBgmMuted(testBgmMuted);
+            AudioSettingsService.SetSfxMuted(testSfxMuted);
+
+            await UniTask.Yield(PlayerLoopTiming.Update);
+
+            // 1) PlayerPrefs 저장 검증
+            bool savedBgm = Mathf.Abs(PlayerPrefs.GetFloat(AudioSettingsKeys.BgmVolume, -1f) - testBgm) < 0.001f;
+            bool savedSfx = Mathf.Abs(PlayerPrefs.GetFloat(AudioSettingsKeys.SfxVolume, -1f) - testSfx) < 0.001f;
+            bool savedBgmMuted = (PlayerPrefs.GetInt(AudioSettingsKeys.BgmMuted, 0) != 0) == testBgmMuted;
+            bool savedSfxMuted = (PlayerPrefs.GetInt(AudioSettingsKeys.SfxMuted, 0) != 0) == testSfxMuted;
+
+            if (savedBgm) successCount++; else failCount++;
+            if (savedSfx) successCount++; else failCount++;
+            if (savedBgmMuted) successCount++; else failCount++;
+            if (savedSfxMuted) successCount++; else failCount++;
+
+            // 2) 런타임 반영 검증
+            var audio = AudioHelper.Instance;
+            bool runtimeBgm = audio != null && Mathf.Abs(audio.BGMVolume - testBgm) < 0.001f;
+            bool runtimeSfx = audio != null && Mathf.Abs(audio.SFXVolume - testSfx) < 0.001f;
+            bool runtimeBgmMuted = audio != null && audio.IsBGMMuted == testBgmMuted;
+            bool runtimeSfxMuted = audio != null && audio.IsSFXMuted == testSfxMuted;
+
+            if (runtimeBgm) successCount++; else failCount++;
+            if (runtimeSfx) successCount++; else failCount++;
+            if (runtimeBgmMuted) successCount++; else failCount++;
+            if (runtimeSfxMuted) successCount++; else failCount++;
+
+            // 3) 씬 왕복 후 값 유지 검증
+            bool toWorld = await TryChangeAndWaitAsync(SCENES.WorldMapScene, "WorldMapScene");
+            if (toWorld) successCount++; else failCount++;
+
+            bool toGame = await TryChangeAndWaitAsync(SCENES.GameScene, "GameScene");
+            if (toGame) successCount++; else failCount++;
+
+            bool persistedAfterSceneChange =
+                Mathf.Abs(PlayerPrefs.GetFloat(AudioSettingsKeys.BgmVolume, -1f) - testBgm) < 0.001f &&
+                Mathf.Abs(PlayerPrefs.GetFloat(AudioSettingsKeys.SfxVolume, -1f) - testSfx) < 0.001f &&
+                ((PlayerPrefs.GetInt(AudioSettingsKeys.BgmMuted, 0) != 0) == testBgmMuted) &&
+                ((PlayerPrefs.GetInt(AudioSettingsKeys.SfxMuted, 0) != 0) == testSfxMuted);
+
+            if (persistedAfterSceneChange) successCount++; else failCount++;
+
+            Debug.Log($"[KingdomAppManager] Audio settings regression finished. success={successCount}, fail={failCount}, " +
+                      $"testBgm={testBgm}, testSfx={testSfx}, testBgmMuted={testBgmMuted}, testSfxMuted={testSfxMuted}");
+
+            // 원복
+            AudioSettingsService.SetBgmVolume(prevBgm);
+            AudioSettingsService.SetSfxVolume(prevSfx);
+            AudioSettingsService.SetBgmMuted(prevBgmMuted);
+            AudioSettingsService.SetSfxMuted(prevSfxMuted);
+
+            isAudioSettingsRegressionRunning = false;
         }
 
 

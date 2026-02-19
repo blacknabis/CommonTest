@@ -1,6 +1,7 @@
 using System;
 using Common.Extensions;
 using Common.UI;
+using Common.Utils;
 using Kingdom.Game;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Kingdom.App
     {
         private const float HudMargin = 24f;
         private const string HeroPortraitWidgetResourcePath = "UI/Widgets/HeroPortraitWidget";
+        private const string AudioOptionsPopupResourcePath = "UI/WorldMap/AudioOptionsPopup";
         private static readonly Color TopLeftBackdropColor = new(0f, 0f, 0f, 0.32f);
         private static readonly Color BottomLeftBackdropColor = new(0f, 0f, 0f, 0.30f);
         private static readonly Color RightBackdropColor = new(0f, 0f, 0f, 0.28f);
@@ -26,6 +28,7 @@ namespace Kingdom.App
 
         [Header("Top HUD")]
         [SerializeField] private Button btnPause;
+        [SerializeField] private Button btnAudioOptions;
         [SerializeField] private Button btnSpeed;
         [SerializeField] private Button btnNextWave;
         [SerializeField] private TextMeshProUGUI txtWaveInfo;
@@ -75,6 +78,7 @@ namespace Kingdom.App
         private int _costBarracks;
         private int _costMage;
         private int _costArtillery;
+        private GameObject _audioOptionsPopupRoot;
 
         public event Action NextWaveRequested;
         public event Action SpeedToggleRequested;
@@ -104,6 +108,7 @@ namespace Kingdom.App
             BindButton(btnVictory, OnVictory);
             BindButton(btnDefeat, OnDefeat);
             BindPauseButton(btnPause, OnPause);
+            BindButton(btnAudioOptions, OnAudioOptions);
             BindButton(btnSpeed, OnSpeedToggle);
             BindButton(btnNextWave, OnNextWave);
             BindButton(btnBuildTower, OnBuildTower);
@@ -141,6 +146,7 @@ namespace Kingdom.App
             base.OnEnter(data);
             SetStateText("Prepare");
             HideResult();
+            AudioHelper.Instance.PlayBGM("BGM_GameScene");
         }
 
         protected override void OnExit()
@@ -149,6 +155,12 @@ namespace Kingdom.App
             {
                 _stateController.WaveChanged -= OnWaveChanged;
                 _stateController.StateChanged -= OnStateChanged;
+            }
+
+            if (_audioOptionsPopupRoot != null)
+            {
+                Destroy(_audioOptionsPopupRoot);
+                _audioOptionsPopupRoot = null;
             }
 
             Time.timeScale = 1f;
@@ -352,6 +364,11 @@ namespace Kingdom.App
             _stateController.TogglePause();
         }
 
+        private void OnAudioOptions()
+        {
+            OpenAudioOptionsPopup();
+        }
+
         private void OnNextWave()
         {
             NextWaveRequested?.Invoke();
@@ -499,6 +516,7 @@ namespace Kingdom.App
             btnVictory = btnVictory != null ? btnVictory : FindButton("btnVictory");
             btnDefeat = btnDefeat != null ? btnDefeat : FindButton("btnDefeat");
             btnPause = btnPause != null ? btnPause : FindButton("btnPause");
+            btnAudioOptions = btnAudioOptions != null ? btnAudioOptions : FindButton("btnAudioOptions");
             btnSpeed = btnSpeed != null ? btnSpeed : FindButton("btnSpeed");
             btnNextWave = btnNextWave != null ? btnNextWave : FindButton("btnNextWave");
             btnBuildTower = btnBuildTower != null ? btnBuildTower : FindButton("btnBuildTower");
@@ -596,6 +614,7 @@ namespace Kingdom.App
             txtGold ??= CreateText("txtGold");
 
             btnPause ??= CreateButton("btnPause", "Pause");
+            btnAudioOptions ??= CreateButton("btnAudioOptions", "Audio");
             btnSpeed ??= CreateButton("btnSpeed", "x1");
             btnNextWave ??= CreateButton("btnNextWave", "Next Wave");
             btnBuildTower ??= CreateButton("btnBuildTower", "Build Tower");
@@ -618,6 +637,7 @@ namespace Kingdom.App
             Reparent(btnVictory);
             Reparent(btnDefeat);
             Reparent(btnPause);
+            Reparent(btnAudioOptions);
             Reparent(btnSpeed);
             Reparent(btnNextWave);
             Reparent(btnBuildTower);
@@ -643,7 +663,8 @@ namespace Kingdom.App
             PlaceTextTopLeft(txtGold, new Vector2(HudMargin, -HudMargin - 135f), 28);
 
             PlaceButton(btnPause, new Vector2(1f, 1f), new Vector2(-HudMargin, -HudMargin), new Vector2(120f, 56f), new Color(0.18f, 0.2f, 0.25f, 0.9f), "Pause");
-            PlaceButton(btnSpeed, new Vector2(1f, 1f), new Vector2(-HudMargin - 132f, -HudMargin), new Vector2(120f, 56f), new Color(0.16f, 0.24f, 0.36f, 0.9f), "x1");
+            PlaceButton(btnAudioOptions, new Vector2(1f, 1f), new Vector2(-HudMargin - 132f, -HudMargin), new Vector2(120f, 56f), new Color(0.2f, 0.32f, 0.24f, 0.9f), "Audio");
+            PlaceButton(btnSpeed, new Vector2(1f, 1f), new Vector2(-HudMargin - 264f, -HudMargin), new Vector2(120f, 56f), new Color(0.16f, 0.24f, 0.36f, 0.9f), "x1");
             PlaceButton(btnNextWave, new Vector2(1f, 1f), new Vector2(-HudMargin, -HudMargin - 66f), new Vector2(180f, 56f), new Color(0.45f, 0.2f, 0.2f, 0.9f), "Next Wave");
             PlaceButton(btnVictory, new Vector2(1f, 0f), new Vector2(-HudMargin, HudMargin + 70f), new Vector2(150f, 56f), new Color(0.2f, 0.55f, 0.2f, 0.9f), "Victory");
             PlaceButton(btnDefeat, new Vector2(1f, 0f), new Vector2(-HudMargin, HudMargin), new Vector2(150f, 56f), new Color(0.65f, 0.2f, 0.2f, 0.9f), "Defeat");
@@ -1290,6 +1311,7 @@ namespace Kingdom.App
                 "btnVictory",
                 "btnDefeat",
                 "btnPause",
+                "btnAudioOptions",
                 "btnSpeed",
                 "btnNextWave",
                 "btnBuildTower",
@@ -1332,6 +1354,7 @@ namespace Kingdom.App
             return tr == GetTransform(btnVictory)
                 || tr == GetTransform(btnDefeat)
                 || tr == GetTransform(btnPause)
+                || tr == GetTransform(btnAudioOptions)
                 || tr == GetTransform(btnSpeed)
                 || tr == GetTransform(btnNextWave)
                 || tr == GetTransform(btnBuildTower)
@@ -1344,6 +1367,52 @@ namespace Kingdom.App
                 || tr == GetTransform(heroPortraitWidget)
                 || tr == GetTransform(btnSpellReinforce)
                 || tr == GetTransform(btnSpellRain);
+        }
+
+        private void OpenAudioOptionsPopup()
+        {
+            EnsureAudioOptionsPopupRoot();
+            if (_audioOptionsPopupRoot == null)
+            {
+                Debug.LogWarning("[GameView] AudioOptionsPopup prefab is missing.");
+                return;
+            }
+
+            _audioOptionsPopupRoot.SetActive(true);
+            _audioOptionsPopupRoot.transform.SetAsLastSibling();
+        }
+
+        private void EnsureAudioOptionsPopupRoot()
+        {
+            if (_audioOptionsPopupRoot != null)
+            {
+                return;
+            }
+
+            GameObject prefab = Resources.Load<GameObject>(AudioOptionsPopupResourcePath);
+            if (prefab == null)
+            {
+                return;
+            }
+
+            Transform parent = ResolveAudioOptionsPopupParent();
+            _audioOptionsPopupRoot = Instantiate(prefab, parent, false);
+            _audioOptionsPopupRoot.name = "AudioOptionsPopup_Game";
+            _audioOptionsPopupRoot.SetActive(false);
+        }
+
+        private Transform ResolveAudioOptionsPopupParent()
+        {
+            if (UIManager.Instance != null)
+            {
+                Canvas popupCanvas = UIManager.Instance.GetLayerCanvas(UILayer.Popup);
+                if (popupCanvas != null)
+                {
+                    return popupCanvas.transform;
+                }
+            }
+
+            return _hudRoot != null ? _hudRoot : transform;
         }
 
         private static Transform GetTransform(Component c)
