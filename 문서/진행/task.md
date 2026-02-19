@@ -1,7 +1,31 @@
 ﻿# Kingdom 작업 Task (정리본)
 
 > 기준 문서: `문서/완료/2026_02_16/월드맵_업그레이드_영웅관리소_플랜_2026_02_16.md`
-> 마지막 갱신: 2026-02-18 (문서 동기화)
+> 마지막 갱신: 2026-02-19 (오디오 옵션창 1차 반영)
+
+## 현재 메인 트랙: 환경설정 오디오 옵션창
+> 기준 문서: `문서/진행/환경설정_오디오옵션창_작업계획_2026_02_19.md`
+
+### Phase 1. 서비스/저장 기반
+- [x] `AudioSettingsKeys` 추가 (`Kingdom.Audio.*` 키/기본값)
+- [x] `AudioSettingsService` 추가 (Load/Save/Apply + legacy 키 호환)
+- [x] 앱 시작 시 오디오 설정 로드/적용 연결 (`KingdomAppManager`)
+
+### Phase 2. 옵션 UI/월드맵 연결
+- [x] `AudioOptionsPopup` 스크립트 추가 (슬라이더/토글/퍼센트 라벨/샘플 SFX)
+- [x] `WorldMapView` 오디오 옵션 팝업 오픈 경로 추가
+- [x] 프리팹 미존재 시 런타임 폴백 팝업 생성 지원
+- [x] `WorldMapView` 레거시 프리팹 버튼 슬롯(`btnAudioOptions`) 런타임 자동 복구 로직 추가
+
+### Phase 3. 검증/정리
+- [x] Unity PlayMode 자동 회귀 검증 통과 (`Audio settings regression: success=11, fail=0`)
+- [x] 오디오 옵션 프리팹 빌더 추가 (`Tools/Kingdom/Build AudioOptionsPopup Prefab`)
+- [x] 프리팹 기반 UI 연결 점검 (`UI/WorldMap/AudioOptionsPopup` 생성/로드 확인)
+- [x] 오디오 옵션 팝업 `UILayer_Popup` 라우팅 확인
+- [x] 오디오 설정 저장 디바운스(200ms) + Pause/Quit 강제 저장 훅 반영
+- [x] `UserSaveData` 직렬화 타이밍 `persistentDataPath` 접근 예외 방어 반영
+- [x] 오디오 설정 자동 회귀 러너 추가 (`KingdomRegressionMenu/ContextMenu`)
+- [x] `task.md` / 작업로그 동기화
 
 ## 운영 원칙
 - [x] 완료된 상세 문서는 `문서/완료/2026_02_16`로 이관 완료
