@@ -54,8 +54,20 @@ namespace Kingdom.Save
         private const string CorruptBackupSuffix = ".json";
 
         private readonly Dictionary<int, StageProgressData> _stageProgressMap = new();
+        private string _saveFilePath;
 
-        public string SaveFilePath => Path.Combine(Application.persistentDataPath, FileName);
+        public string SaveFilePath
+        {
+            get
+            {
+                if (TryGetSaveFilePath(out string path))
+                {
+                    return path;
+                }
+
+                return string.Empty;
+            }
+        }
 
         public UserSaveData()
         {
@@ -97,6 +109,11 @@ namespace Kingdom.Save
 
         public void Save()
         {
+            if (!TryGetSaveFilePath(out string path))
+            {
+                return;
+            }
+
             try
             {
                 var container = new SaveDataContainer
@@ -106,7 +123,7 @@ namespace Kingdom.Save
                 };
 
                 var json = JsonUtility.ToJson(container, true);
-                File.WriteAllText(SaveFilePath, json);
+                File.WriteAllText(path, json);
             }
             catch (Exception e)
             {
@@ -118,7 +135,12 @@ namespace Kingdom.Save
         {
             _stageProgressMap.Clear();
 
-            if (!File.Exists(SaveFilePath))
+            if (!TryGetSaveFilePath(out string path))
+            {
+                return;
+            }
+
+            if (!File.Exists(path))
             {
                 return;
             }
@@ -126,7 +148,7 @@ namespace Kingdom.Save
             string json = null;
             try
             {
-                json = File.ReadAllText(SaveFilePath);
+                json = File.ReadAllText(path);
                 if (string.IsNullOrWhiteSpace(json))
                 {
                     BackupCorruptSaveFile("empty");
@@ -173,9 +195,14 @@ namespace Kingdom.Save
 
             try
             {
-                if (File.Exists(SaveFilePath))
+                if (!TryGetSaveFilePath(out string path))
                 {
-                    File.Delete(SaveFilePath);
+                    return;
+                }
+
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
                 }
             }
             catch (Exception e)
@@ -188,12 +215,17 @@ namespace Kingdom.Save
         {
             try
             {
-                if (!File.Exists(SaveFilePath))
+                if (!TryGetSaveFilePath(out string path))
                 {
                     return;
                 }
 
-                string directory = Path.GetDirectoryName(SaveFilePath);
+                if (!File.Exists(path))
+                {
+                    return;
+                }
+
+                string directory = Path.GetDirectoryName(path);
                 if (string.IsNullOrWhiteSpace(directory))
                 {
                     return;
@@ -201,12 +233,41 @@ namespace Kingdom.Save
 
                 string stamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
                 string backupPath = Path.Combine(directory, $"{CorruptBackupPrefix}{stamp}_{reason}{CorruptBackupSuffix}");
-                File.Move(SaveFilePath, backupPath);
+                File.Move(path, backupPath);
                 Debug.LogWarning($"[UserSaveData] Corrupt save file moved to backup: {backupPath}");
             }
             catch (Exception backupException)
             {
                 Debug.LogError($"[UserSaveData] Corrupt backup failed: {backupException}");
+            }
+        }
+
+        private bool TryGetSaveFilePath(out string path)
+        {
+            if (!string.IsNullOrWhiteSpace(_saveFilePath))
+            {
+                path = _saveFilePath;
+                return true;
+            }
+
+            try
+            {
+                string persistentPath = Application.persistentDataPath;
+                if (string.IsNullOrWhiteSpace(persistentPath))
+                {
+                    path = string.Empty;
+                    return false;
+                }
+
+                _saveFilePath = Path.Combine(persistentPath, FileName);
+                path = _saveFilePath;
+                return true;
+            }
+            catch (UnityException)
+            {
+                // 직렬화/에디터 특정 타이밍에는 persistentDataPath 접근이 금지될 수 있다.
+                path = string.Empty;
+                return false;
             }
         }
 
