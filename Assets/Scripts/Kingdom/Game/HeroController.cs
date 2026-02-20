@@ -10,6 +10,8 @@ namespace Kingdom.Game
     public class HeroController : MonoBehaviour, IDamageable
     {
         private const string HeroInGameSpriteResourcePathPrefix = "UI/Sprites/Heroes/InGame/";
+        private const string GeneratedHeroManifestResourcePath = "Sprites/Heroes/manifest";
+        private const string GeneratedHeroSpriteResourcePathPrefix = "Sprites/Heroes/";
         private const int MaxSequenceFrames = 32;
         private const float DefaultAnimationFps = 10f;
         private const float TankGuardBuffSeconds = 3.5f;
@@ -56,6 +58,8 @@ namespace Kingdom.Game
         private HeroVisualState _visualState = HeroVisualState.Idle;
         private HeroRuntimeState _runtimeState = HeroRuntimeState.Idle;
         private static Sprite _fallbackSummonSprite;
+        private static GeneratedHeroManifest _cachedGeneratedHeroManifest;
+        private static string _cachedGeneratedHeroManifestRaw;
 
         public string CurrentHeroId => heroConfig != null ? heroConfig.HeroId : string.Empty;
         public int CurrentLevel => _level;
@@ -736,7 +740,8 @@ namespace Kingdom.Game
             if (didAttack)
             {
                 _attackVisualHoldLeft = GetAttackVisualDuration();
-                SetVisualState(HeroVisualState.Attack);
+                // Restart attack clip from frame 0 on every actual attack.
+                SetVisualState(HeroVisualState.Attack, forceReset: true);
                 return;
             }
 
@@ -787,8 +792,21 @@ namespace Kingdom.Game
 
             int step = Mathf.FloorToInt(_animationTimer / frameDuration);
             _animationTimer -= step * frameDuration;
-            _activeFrameIndex = (_activeFrameIndex + step) % _activeFrames.Length;
+            if (ShouldLoopVisualState(_visualState))
+            {
+                _activeFrameIndex = (_activeFrameIndex + step) % _activeFrames.Length;
+            }
+            else
+            {
+                _activeFrameIndex = Mathf.Min(_activeFrameIndex + step, _activeFrames.Length - 1);
+            }
+
             _renderer.sprite = _activeFrames[_activeFrameIndex];
+        }
+
+        private static bool ShouldLoopVisualState(HeroVisualState state)
+        {
+            return state == HeroVisualState.Idle || state == HeroVisualState.Move;
         }
 
         private Sprite[] ResolveFramesForState(HeroVisualState state)
@@ -846,7 +864,162 @@ namespace Kingdom.Game
                 frames.Add(frame);
             }
 
-            return frames.ToArray();
+            if (frames.Count > 0)
+            {
+                return frames.ToArray();
+            }
+
+            return LoadGeneratedFramesFromManifest(heroId, action);
+        }
+
+        private static Sprite[] LoadGeneratedFramesFromManifest(string heroId, string action)
+        {
+            GeneratedHeroManifest manifest = LoadGeneratedHeroManifest();
+            if (manifest == null || manifest.actions == null || manifest.actions.Length <= 0)
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            GeneratedHeroActionRecord best = null;
+            string actionLower = action.ToLowerInvariant();
+
+            for (int i = 0; i < manifest.actions.Length; i++)
+            {
+                GeneratedHeroActionRecord candidate = manifest.actions[i];
+                if (candidate == null || string.IsNullOrWhiteSpace(candidate.actionGroup))
+                {
+                    continue;
+                }
+
+                if (!string.Equals(candidate.actionGroup, actionLower, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (best == null)
+                {
+                    best = candidate;
+                }
+
+                if (ContainsIgnoreCase(candidate.outputTexture, heroId) || ContainsIgnoreCase(candidate.sourceFile, heroId))
+                {
+                    best = candidate;
+                    break;
+                }
+            }
+
+            if (best == null || string.IsNullOrWhiteSpace(best.outputTexture))
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            string textureResourcePath = GeneratedHeroSpriteResourcePathPrefix + StripExtension(best.outputTexture);
+            Sprite[] loaded = Resources.LoadAll<Sprite>(textureResourcePath);
+            if (loaded == null || loaded.Length <= 0)
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            Array.Sort(loaded, CompareSpriteByFrameName);
+            Debug.Log($"[HeroController] Loaded generated animation frames via manifest. heroId={heroId}, action={actionLower}, texture={textureResourcePath}, count={loaded.Length}");
+            return loaded;
+        }
+
+        private static GeneratedHeroManifest LoadGeneratedHeroManifest()
+        {
+            TextAsset asset = Resources.Load<TextAsset>(GeneratedHeroManifestResourcePath);
+            if (asset == null || string.IsNullOrWhiteSpace(asset.text))
+            {
+                return null;
+            }
+
+            if (_cachedGeneratedHeroManifest != null && string.Equals(_cachedGeneratedHeroManifestRaw, asset.text, StringComparison.Ordinal))
+            {
+                return _cachedGeneratedHeroManifest;
+            }
+
+            GeneratedHeroManifest parsed = JsonUtility.FromJson<GeneratedHeroManifest>(asset.text);
+            if (parsed == null)
+            {
+                return null;
+            }
+
+            _cachedGeneratedHeroManifest = parsed;
+            _cachedGeneratedHeroManifestRaw = asset.text;
+            return _cachedGeneratedHeroManifest;
+        }
+
+        private static bool ContainsIgnoreCase(string source, string token)
+        {
+            if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            return source.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static string StripExtension(string fileName)
+        {
+            return string.IsNullOrWhiteSpace(fileName)
+                ? string.Empty
+                : System.IO.Path.GetFileNameWithoutExtension(fileName);
+        }
+
+        private static int CompareSpriteByFrameName(Sprite a, Sprite b)
+        {
+            if (a == null && b == null)
+            {
+                return 0;
+            }
+
+            if (a == null)
+            {
+                return 1;
+            }
+
+            if (b == null)
+            {
+                return -1;
+            }
+
+            TryParseFrameIndices(a.name, out int aRow, out int aCol);
+            TryParseFrameIndices(b.name, out int bRow, out int bCol);
+
+            int rowComp = aRow.CompareTo(bRow);
+            if (rowComp != 0)
+            {
+                return rowComp;
+            }
+
+            int colComp = aCol.CompareTo(bCol);
+            if (colComp != 0)
+            {
+                return colComp;
+            }
+
+            return string.CompareOrdinal(a.name, b.name);
+        }
+
+        private static bool TryParseFrameIndices(string name, out int row, out int col)
+        {
+            row = int.MaxValue;
+            col = int.MaxValue;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return false;
+            }
+
+            string[] tokens = name.Split('_');
+            if (tokens.Length < 2)
+            {
+                return false;
+            }
+
+            bool hasRow = int.TryParse(tokens[tokens.Length - 2], out row);
+            bool hasCol = int.TryParse(tokens[tokens.Length - 1], out col);
+            return hasRow && hasCol;
         }
 
         private static HeroConfig CreateFallbackHeroConfig()
@@ -909,6 +1082,20 @@ namespace Kingdom.Game
                 10f);
 
             return _fallbackSummonSprite;
+        }
+
+        [Serializable]
+        private sealed class GeneratedHeroManifest
+        {
+            public GeneratedHeroActionRecord[] actions = Array.Empty<GeneratedHeroActionRecord>();
+        }
+
+        [Serializable]
+        private sealed class GeneratedHeroActionRecord
+        {
+            public string actionGroup = string.Empty;
+            public string sourceFile = string.Empty;
+            public string outputTexture = string.Empty;
         }
 
         private sealed class SummonRuntime

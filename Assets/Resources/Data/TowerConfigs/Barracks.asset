@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
   TowerId: Barracks
   TowerType: 1
+  RuntimeSpriteResourcePath: Sprites/Towers/Barracks/L{level}
   DamageType: 0
   TargetType: 0
   HalfPhysicalArmorPenetration: 0
@@ -21,6 +22,7 @@ MonoBehaviour:
   BarracksData:
     SquadSize: 3
     RallyRange: 1.6
+    SoldierSpriteResourcePath: Sprites/Barracks/Soldier
   Levels:
   - Cost: 77
     Damage: 8
@@ -29,6 +31,7 @@ MonoBehaviour:
     AttackDeliveryType: 2
     ProjectileProfileId: 
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Barracks/L1
     VisualScale: 0.65
   - Cost: 104
     Damage: 10.4
@@ -37,6 +40,7 @@ MonoBehaviour:
     AttackDeliveryType: 2
     ProjectileProfileId: 
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Barracks/L2
     VisualScale: 0.72999996
   - Cost: 151
     Damage: 13.519999
@@ -45,4 +49,5 @@ MonoBehaviour:
     AttackDeliveryType: 2
     ProjectileProfileId: 
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Barracks/L3
     VisualScale: 0.80999994

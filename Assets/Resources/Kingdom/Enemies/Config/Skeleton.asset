@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: Skeleton
   EnemyType: 0
   Sprite: {fileID: 0}
+  RuntimeSpriteResourcePath: Sprites/Enemies/Skeleton
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.55
   MaxHp: 75

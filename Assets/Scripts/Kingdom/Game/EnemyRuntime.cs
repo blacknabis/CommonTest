@@ -24,9 +24,20 @@ namespace Kingdom.Game
         private Vector3 _blockedAnchor;
         private float _blockedElapsed;
         private float _attackCooldownLeft;
+        private float _attackVisualHoldLeft;
         private float _regenTickAccum;
         private bool _deathBurstTriggered;
         private EnemyMotionState _motionState = EnemyMotionState.Moving;
+        private SpriteRenderer _renderer;
+        private Sprite[] _idleFrames = Array.Empty<Sprite>();
+        private Sprite[] _moveFrames = Array.Empty<Sprite>();
+        private Sprite[] _attackFrames = Array.Empty<Sprite>();
+        private Sprite[] _dieFrames = Array.Empty<Sprite>();
+        private Sprite[] _activeFrames = Array.Empty<Sprite>();
+        private int _activeFrameIndex;
+        private float _animationTimer;
+        private float _animationFps = 8f;
+        private EnemyMotionState _animationState = EnemyMotionState.Moving;
 
         public event Action<EnemyRuntime> ReachedGoal;
         public event Action<EnemyRuntime> Killed;
@@ -44,7 +55,34 @@ namespace Kingdom.Game
         public EnemyMotionState MotionState => _motionState;
         public bool IsBlocked => _blockerTowerId >= 0;
 
+        public float GetDeathVisualDuration()
+        {
+            if (_dieFrames == null || _dieFrames.Length <= 1)
+            {
+                return 0f;
+            }
+
+            return (_dieFrames.Length - 1) / Mathf.Max(1f, _animationFps);
+        }
+
         public void Initialize(EnemyConfig config, List<Vector3> path)
+        {
+            Initialize(config, path, GetComponent<SpriteRenderer>(), null, null, null, null);
+        }
+
+        public void Initialize(EnemyConfig config, List<Vector3> path, SpriteRenderer renderer, Sprite[] moveFrames)
+        {
+            Initialize(config, path, renderer, null, moveFrames, null, null);
+        }
+
+        public void Initialize(
+            EnemyConfig config,
+            List<Vector3> path,
+            SpriteRenderer renderer,
+            Sprite[] idleFrames,
+            Sprite[] moveFrames,
+            Sprite[] attackFrames,
+            Sprite[] dieFrames)
         {
             _config = config;
             _path = path;
@@ -52,9 +90,17 @@ namespace Kingdom.Game
             _blockerTowerId = -1;
             _blockedElapsed = 0f;
             _attackCooldownLeft = 0f;
+            _attackVisualHoldLeft = 0f;
             _regenTickAccum = 0f;
             _deathBurstTriggered = false;
             _motionState = EnemyMotionState.Moving;
+            _renderer = renderer != null ? renderer : GetComponent<SpriteRenderer>();
+            if (_renderer == null)
+            {
+                _renderer = gameObject.AddComponent<SpriteRenderer>();
+            }
+
+            SetAnimationFrames(idleFrames, moveFrames, attackFrames, dieFrames);
 
             float startHp = config != null ? Mathf.Max(1f, config.MaxHp) : 1f;
             InitializeHealth(startHp);
@@ -67,8 +113,11 @@ namespace Kingdom.Game
 
         private void Update()
         {
+            _attackVisualHoldLeft = Mathf.Max(0f, _attackVisualHoldLeft - Time.deltaTime);
+
             if (!IsAlive)
             {
+                TickVisualAnimation(Time.deltaTime);
                 return;
             }
 
@@ -76,11 +125,13 @@ namespace Kingdom.Game
             {
                 TickBlockedState();
                 TickRegen();
+                TickVisualAnimation(Time.deltaTime);
                 return;
             }
 
             if (_path == null || _path.Count == 0 || _pathIndex >= _path.Count)
             {
+                TickVisualAnimation(Time.deltaTime);
                 return;
             }
 
@@ -99,6 +150,8 @@ namespace Kingdom.Game
                     ReachedGoal?.Invoke(this);
                 }
             }
+
+            TickVisualAnimation(Time.deltaTime);
         }
 
         public bool TryEnterBlock(int blockerTowerId, Vector3 blockAnchor)
@@ -207,15 +260,16 @@ namespace Kingdom.Game
         {
             _blockedElapsed += Time.deltaTime;
             _attackCooldownLeft = Mathf.Max(0f, _attackCooldownLeft - Time.deltaTime);
+            _motionState = EnemyMotionState.Blocked;
 
-            if (_blockedElapsed >= 0.2f)
+            if (_blockedElapsed >= 0.2f && TryAttackBlocker())
+            {
+                _attackVisualHoldLeft = GetAttackVisualDuration();
+            }
+
+            if (_attackVisualHoldLeft > 0f)
             {
                 _motionState = EnemyMotionState.Attacking;
-                TryAttackBlocker();
-            }
-            else
-            {
-                _motionState = EnemyMotionState.Blocked;
             }
 
             transform.position = Vector3.Lerp(transform.position, _blockedAnchor, Time.deltaTime * 8f);
@@ -251,11 +305,11 @@ namespace Kingdom.Game
             }
         }
 
-        private void TryAttackBlocker()
+        private bool TryAttackBlocker()
         {
             if (_config == null || _attackCooldownLeft > 0f)
             {
-                return;
+                return false;
             }
 
             float min = Mathf.Max(0f, _config.AttackDamageMin);
@@ -267,6 +321,7 @@ namespace Kingdom.Game
             }
 
             _attackCooldownLeft = Mathf.Max(0.1f, _config.AttackCooldownSec);
+            return true;
         }
 
         private bool TryDodge()
@@ -312,6 +367,140 @@ namespace Kingdom.Game
 
             _deathBurstTriggered = true;
             DeathBurstTriggered?.Invoke(this, radius, damage, transform.position);
+        }
+
+        private float GetAttackVisualDuration()
+        {
+            if (_attackFrames == null || _attackFrames.Length <= 1)
+            {
+                return 0.1f;
+            }
+
+            return (_attackFrames.Length - 1) / Mathf.Max(1f, _animationFps);
+        }
+
+        private void SetAnimationFrames(Sprite[] idleFrames, Sprite[] moveFrames, Sprite[] attackFrames, Sprite[] dieFrames)
+        {
+            if (moveFrames != null && moveFrames.Length > 0)
+            {
+                _moveFrames = moveFrames;
+            }
+            else if (_renderer != null && _renderer.sprite != null)
+            {
+                _moveFrames = new[] { _renderer.sprite };
+            }
+            else
+            {
+                _moveFrames = Array.Empty<Sprite>();
+            }
+
+            _idleFrames = idleFrames != null && idleFrames.Length > 0 ? idleFrames : _moveFrames;
+            _attackFrames = attackFrames != null && attackFrames.Length > 0 ? attackFrames : _moveFrames;
+            _dieFrames = dieFrames != null && dieFrames.Length > 0 ? dieFrames : _attackFrames;
+
+            if (_idleFrames == null || _idleFrames.Length <= 0)
+            {
+                _idleFrames = _moveFrames;
+            }
+
+            if (_attackFrames == null || _attackFrames.Length <= 0)
+            {
+                _attackFrames = _moveFrames;
+            }
+
+            if (_dieFrames == null || _dieFrames.Length <= 0)
+            {
+                _dieFrames = _attackFrames;
+            }
+
+            _activeFrames = ResolveFramesForState(_motionState);
+            _activeFrameIndex = 0;
+            _animationTimer = 0f;
+            _animationState = _motionState;
+            if (_renderer != null && _activeFrames.Length > 0 && _activeFrames[0] != null)
+            {
+                _renderer.sprite = _activeFrames[0];
+            }
+        }
+
+        private void TickVisualAnimation(float deltaTime)
+        {
+            if (_renderer == null)
+            {
+                return;
+            }
+
+            if (_animationState != _motionState)
+            {
+                _animationState = _motionState;
+                _activeFrames = ResolveFramesForState(_motionState);
+                _activeFrameIndex = 0;
+                _animationTimer = 0f;
+                if (_activeFrames.Length > 0 && _activeFrames[0] != null)
+                {
+                    _renderer.sprite = _activeFrames[0];
+                }
+            }
+
+            if (_activeFrames == null || _activeFrames.Length <= 0)
+            {
+                return;
+            }
+
+            if (_activeFrames.Length == 1)
+            {
+                if (_renderer.sprite != _activeFrames[0])
+                {
+                    _renderer.sprite = _activeFrames[0];
+                }
+
+                return;
+            }
+
+            float frameDuration = 1f / Mathf.Max(1f, _animationFps);
+            _animationTimer += Mathf.Max(0f, deltaTime);
+            if (_animationTimer < frameDuration)
+            {
+                return;
+            }
+
+            int step = Mathf.FloorToInt(_animationTimer / frameDuration);
+            _animationTimer -= step * frameDuration;
+            if (ShouldLoopCurrentAnimation())
+            {
+                _activeFrameIndex = (_activeFrameIndex + Mathf.Max(1, step)) % _activeFrames.Length;
+            }
+            else
+            {
+                _activeFrameIndex = Mathf.Min(_activeFrameIndex + Mathf.Max(1, step), _activeFrames.Length - 1);
+            }
+
+            Sprite next = _activeFrames[_activeFrameIndex];
+            if (next != null)
+            {
+                _renderer.sprite = next;
+            }
+        }
+
+        private Sprite[] ResolveFramesForState(EnemyMotionState state)
+        {
+            switch (state)
+            {
+                case EnemyMotionState.Attacking:
+                    return _attackFrames;
+                case EnemyMotionState.Dead:
+                    return _dieFrames;
+                case EnemyMotionState.Blocked:
+                    return _idleFrames;
+                case EnemyMotionState.Moving:
+                default:
+                    return _moveFrames;
+            }
+        }
+
+        private bool ShouldLoopCurrentAnimation()
+        {
+            return _motionState == EnemyMotionState.Moving || _motionState == EnemyMotionState.Blocked;
         }
     }
 }

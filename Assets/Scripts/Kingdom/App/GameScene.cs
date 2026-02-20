@@ -1,4 +1,4 @@
-using Common.UI;
+﻿using Common.UI;
 using Common.Utils;
 using Common.App;
 using System.Collections.Generic;
@@ -12,63 +12,94 @@ namespace Kingdom.App
 {
     /// <summary>
     /// 메인 게임 씬 컨트롤러.
-    /// 웨이브 진행, 타워 건설 등을 총괄합니다.
+    /// 웨이브 진행, 타워/영웅/스킬 시스템을 초기화합니다.
     /// </summary>
     public class GameScene : SceneBase<SCENES>
     {
-        private const string BattlefieldPrefabResourcePath = "Prefabs/Game/GameBattlefield";
-        private const string TowerConfigResourcePath = "Data/TowerConfigs/BasicTower";
-        private const string HeroConfigResourcePathPrefix = "Data/HeroConfigs/";
-        private const string DefaultHeroId = "DefaultHero";
-        private const string SelectedHeroIdPlayerPrefsKey = "Kingdom.Hero.SelectedHeroId";
-        private const string HeroPortraitSpriteResourcePathPrefix = "UI/Sprites/Heroes/Portraits/";
-        private const string SpellReinforceConfigResourcePath = "Data/SpellConfigs/ReinforceSpell";
-        private const string SpellRainConfigResourcePath = "Data/SpellConfigs/RainSpell";
-        private const float EarlyCallGoldPerSecond = 2.0f;
-        private const float EarlyCallCooldownMinRatio = 0.35f;
-        private const float FastForwardTimeScale = 2f;
-        private const int DebugGrantGoldAmount = 500;
-        private const string WaveStartSfxResourcePath = "Audio/SFX/UI_WaveStart_Heroic";
-        private const string WaveStartSfxFallbackResourcePath = "Audio/SFX/UI_Common_Click";
-        private const float WaveStartBannerDurationSec = 1.2f;
-        private const float WaveStartSfxVolumeScale = 0.85f;
+        // 리소스 경로 및 밸런스 상수
+        private const string BattlefieldPrefabResourcePath = "Prefabs/Game/GameBattlefield"; // 전장 프리팹 경로
+        private const string TowerConfigResourcePath = "Data/TowerConfigs/BasicTower"; // 기본 타워 설정 경로
+        private const string HeroConfigResourcePathPrefix = "Data/HeroConfigs/"; // 영웅 설정 폴더 경로 접두사
+        private const string DefaultHeroId = "DefaultHero"; // 기본 영웅 ID
+        private const string SelectedHeroIdPlayerPrefsKey = "Kingdom.Hero.SelectedHeroId"; // 선택 영웅 저장 키
+        private const string HeroPortraitSpriteResourcePathPrefix = "UI/Sprites/Heroes/Portraits/"; // 영웅 초상화 스프라이트 경로 접두사
+        private const string SpellReinforceConfigResourcePath = "Data/SpellConfigs/ReinforceSpell"; // 지원병 스펠 설정 경로
+        private const string SpellRainConfigResourcePath = "Data/SpellConfigs/RainSpell"; // 화살비 스펠 설정 경로
+        private const float EarlyCallGoldPerSecond = 2.0f; // 웨이브 조기 호출 초당 보너스 골드
+        private const float EarlyCallCooldownMinRatio = 0.35f; // 웨이브 조기 호출 최소 쿨다운 비율
+        private const float FastForwardTimeScale = 2f; // 배속 시간 배율
+        private const int DebugGrantGoldAmount = 500; // 디버그 골드 지급량
+        private const string WaveStartSfxResourcePath = "Audio/SFX/UI_WaveStart_Heroic"; // 웨이브 시작 사운드 경로
+        private const string WaveStartSfxFallbackResourcePath = "Audio/SFX/UI_Common_Click"; // 웨이브 시작 대체 사운드 경로
+        private const float WaveStartBannerDurationSec = 1.2f; // 웨이브 시작 배너 노출 시간
+        private const float WaveStartSfxVolumeScale = 0.85f; // 웨이브 시작 사운드 볼륨 스케일
+        private const bool RequireCompleteRuntimeVisualData = true; // 필수 비주얼 데이터 누락 시 씬 시작 중단
+        private const string HeroInGameSpriteResourcePathPrefix = "UI/Sprites/Heroes/InGame/"; // 인게임 영웅 스프라이트 경로 접두사
+        private const string GeneratedHeroManifestResourcePath = "Sprites/Heroes/manifest"; // 생성형 영웅 매니페스트 경로
+        private const string GeneratedHeroSpriteResourcePathPrefix = "Sprites/Heroes/"; // 생성형 영웅 스프라이트 경로 접두사
+        private static readonly string[] RequiredHeroActions = { "idle", "walk", "attack", "die" }; // 영웅 필수 액션 목록
+        private static readonly string[] RequiredEnemyActions = { "idle", "attack", "die" }; // 적 필수 액션 목록
+        private static readonly string[] EnemySpriteResourcePrefixes =
+        {
+            "UI/Sprites/Enemies/",
+            "Sprites/Enemies/",
+            "Kingdom/Enemies/Sprites/"
+        };
+        private static readonly string[] TowerSpriteResourcePrefixes =
+        {
+            "UI/Sprites/Towers/",
+            "Sprites/Towers/",
+            "Kingdom/Towers/Sprites/"
+        };
+        [System.Serializable]
+        private sealed class GeneratedHeroManifestData
+        {
+            public GeneratedHeroActionRecord[] actions;
+        }
+        [System.Serializable]
+        private sealed class GeneratedHeroActionRecord
+        {
+            public string actionGroup;
+            public string sourceFile;
+            public string outputTexture;
+        }
+        private GameStateController _stateController; // 전투 흐름 상태 머신
+        private PathManager _pathManager; // 적 이동 경로 관리
+        private SpawnManager _spawnManager; // 적 스폰 관리자
+        private WaveManager _waveManager; // 웨이브 진행 관리자
+        private InGameEconomyManager _economyManager; // 골드/생명 경제 관리자
+        private TowerManager _towerManager; // 타워 건설/강화/판매 관리자
+        private ProjectileManager _projectileManager; // 투사체 시뮬레이션 관리자
+        private HeroController _heroController; // 영웅 런타임 제어기
+        private GameBattlefield _battlefield; // 전장 루트 오브젝트
+        private WaveConfig _activeWaveConfig; // 현재 스테이지 웨이브 설정
+        private HeroConfig _heroConfig; // 선택된 영웅 설정
+        private SpellConfig _reinforceSpellConfig; // 지원병 스펠 설정
+        private SpellConfig _rainSpellConfig; // 화살비 스펠 설정
+        private int _pendingBuildSlotIndex = -1; // 링 메뉴에서 선택된 대기 슬롯
+        private int _selectedTowerId = -1; // 현재 선택된 타워 런타임 ID
+        private bool _isRallyPlacementMode; // 집결지 배치 모드 여부
+        private float _reinforceCooldownLeft; // 지원병 스펠 남은 쿨다운
+        private float _rainCooldownLeft; // 화살비 스펠 남은 쿨다운
+        private bool _resultPresented; // 결과 UI 표시 여부
+        private bool _resultFinalized; // 결과 처리 완료 여부
+        private float _battleStartedAtUnscaled; // 전투 시작 시각(언스케일드)
+        private bool _isFastForward; // 배속 모드 여부
+        private float _activeTimeScale = 1f; // 현재 적용 시간 배율
+        private bool _waveKpiActive; // 웨이브 KPI 수집 활성 여부
+        private int _waveKpiNumber; // KPI 대상 웨이브 번호
+        private float _waveKpiStartedAtUnscaled; // KPI 수집 시작 시각
+        private int _waveKpiStartLives; // KPI 시작 시 생명값
+        private int _waveKpiStartGold; // KPI 시작 시 골드값
+        private int _waveEarlyCallAttempts; // 조기 호출 시도 횟수
+        private int _waveEarlyCallSuccess; // 조기 호출 성공 횟수
+        private readonly Dictionary<TowerType, int> _waveTowerBuildCount = new(); // 웨이브별 타워 타입 건설 횟수
+        private readonly Dictionary<string, int> _waveLeakByEnemyType = new(); // 웨이브별 적 타입 누수 횟수
+        private int _waveStartAnnouncedWave = -1; // 마지막 웨이브 시작 안내 인덱스
+        private bool _waveStartSfxResolved; // 웨이브 시작 사운드 해석 완료 여부
+        private AudioClip _waveStartSfxClip; // 웨이브 시작 사운드 캐시
 
-        private GameStateController _stateController;
-        private PathManager _pathManager;
-        private SpawnManager _spawnManager;
-        private WaveManager _waveManager;
-        private InGameEconomyManager _economyManager;
-        private TowerManager _towerManager;
-        private ProjectileManager _projectileManager;
-        private HeroController _heroController;
-        private GameBattlefield _battlefield;
-        private WaveConfig _activeWaveConfig;
-        private HeroConfig _heroConfig;
-        private SpellConfig _reinforceSpellConfig;
-        private SpellConfig _rainSpellConfig;
-        private int _pendingBuildSlotIndex = -1;
-        private int _selectedTowerId = -1;
-        private bool _isRallyPlacementMode;
-        private float _reinforceCooldownLeft;
-        private float _rainCooldownLeft;
-        private bool _resultPresented;
-        private bool _resultFinalized;
-        private float _battleStartedAtUnscaled;
-        private bool _isFastForward;
-        private float _activeTimeScale = 1f;
-        private bool _waveKpiActive;
-        private int _waveKpiNumber;
-        private float _waveKpiStartedAtUnscaled;
-        private int _waveKpiStartLives;
-        private int _waveKpiStartGold;
-        private int _waveEarlyCallAttempts;
-        private int _waveEarlyCallSuccess;
-        private readonly Dictionary<TowerType, int> _waveTowerBuildCount = new();
-        private readonly Dictionary<string, int> _waveLeakByEnemyType = new();
-        private int _waveStartAnnouncedWave = -1;
-        private bool _waveStartSfxResolved;
-        private AudioClip _waveStartSfxClip;
-
+        // 씬 초기화 시 UI를 준비한다.
         public override bool OnInit()
         {
             Debug.Log("[GameScene] Initialized.");
@@ -76,6 +107,7 @@ namespace Kingdom.App
             return true;
         }
 
+        // 씬 시작 시 전투 시스템을 생성/연결한다.
         public override bool OnStartScene()
         {
             Debug.Log("[GameScene] Started.");
@@ -143,6 +175,11 @@ namespace Kingdom.App
             }
 
             _activeWaveConfig = ResolveStageWaveConfig();
+            if (RequireCompleteRuntimeVisualData && !ValidateRequiredRuntimeData(out List<string> missingData))
+            {
+                return AbortSceneStartForMissingData(missingData);
+            }
+
             _resultPresented = false;
             _resultFinalized = false;
             _battleStartedAtUnscaled = Time.unscaledTime;
@@ -164,6 +201,7 @@ namespace Kingdom.App
             return true;
         }
 
+        // 씬 종료 시 이벤트 구독과 상태를 정리한다.
         public override void OnEndScene()
         {
             Time.timeScale = 1f;
@@ -206,6 +244,7 @@ namespace Kingdom.App
             Debug.Log("[GameScene] Ended.");
         }
 
+        // 입력 처리, 타워 선택, 주문 쿨다운 갱신을 수행한다.
         private void Update()
         {
             HandleDebugGrantGoldInput();
@@ -242,7 +281,7 @@ namespace Kingdom.App
                 _isRallyPlacementMode = false;
                 if (!rallySet)
                 {
-                    Debug.Log($"[GameScene] Rally set ignored. towerId={_selectedTowerId}");
+                    LogRallySetIgnored(_selectedTowerId);
                 }
 
                 RefreshAfterTowerAction();
@@ -258,7 +297,7 @@ namespace Kingdom.App
                     _isRallyPlacementMode = false;
                     _pendingBuildSlotIndex = -1;
                     gameView.HideTowerRingMenuPublic();
-                    string infoText = $"{towerInfo.TowerType} Lv.{towerInfo.Level}";
+                    string infoText = BuildTowerActionInfoText(towerInfo);
                     bool canUpgrade = towerInfo.Level < towerInfo.MaxLevel && _economyManager != null && _economyManager.Gold >= towerInfo.UpgradeCost;
                     gameView.OpenTowerActionMenuAtWorldPosition(
                         towerWorld,
@@ -297,6 +336,19 @@ namespace Kingdom.App
             TickSpellCooldowns();
         }
 
+        // Update에서 문자열 보간 할당을 피하기 위한 타워 정보 텍스트 생성 헬퍼.
+        private static string BuildTowerActionInfoText(TowerManager.TowerActionInfo towerInfo)
+        {
+            return $"{towerInfo.TowerType} Lv.{towerInfo.Level}";
+        }
+
+        // Update에서 문자열 보간 할당을 피하기 위한 로그 헬퍼.
+        private static void LogRallySetIgnored(int towerId)
+        {
+            Debug.Log($"[GameScene] Rally set ignored. towerId={towerId}");
+        }
+
+        // 에디터 디버그 골드 지급 입력(F6)을 처리한다.
         private void HandleDebugGrantGoldInput()
         {
 #if UNITY_EDITOR
@@ -315,6 +367,7 @@ namespace Kingdom.App
 #endif
         }
 
+        // 현재 선택 스테이지의 웨이브 설정을 해석한다.
         private static WaveConfig ResolveStageWaveConfig()
         {
             WorldMapManager worldMapManager = WorldMapManager.Instance;
@@ -362,6 +415,7 @@ namespace Kingdom.App
             return null;
         }
 
+        // StageData에서 웨이브 설정을 직접/경로 기반으로 찾는다.
         private static WaveConfig TryResolveWaveConfig(StageData stageData)
         {
             if (stageData.WaveConfig != null)
@@ -369,7 +423,7 @@ namespace Kingdom.App
                 return stageData.WaveConfig;
             }
 
-            // StageConfig 직렬화 누락 시 Resources 경로에서 보완 로드.
+            // StageConfig 직렬화 참조가 비어 있으면 Resources 경로에서 보완 로드한다.
             if (stageData.StageId > 0)
             {
                 return Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{stageData.StageId}_WaveConfig");
@@ -378,6 +432,7 @@ namespace Kingdom.App
             return null;
         }
 
+        // 메인 카메라를 2D 전투 기준값으로 고정한다.
         private static void EnsureMainCameraForBattle2D()
         {
             Camera cam = Camera.main;
@@ -394,6 +449,7 @@ namespace Kingdom.App
             cam.backgroundColor = new Color(0.05f, 0.05f, 0.05f, 1f);
         }
 
+        // 전장 오브젝트를 확보하고 없으면 폴백을 생성한다.
         private static GameBattlefield EnsureBattlefield()
         {
             GameBattlefield existing = FindFirstObjectByType<GameBattlefield>();
@@ -440,6 +496,1191 @@ namespace Kingdom.App
             return fallback;
         }
 
+        // 씬 시작 전에 필수 런타임 비주얼 데이터를 검증한다.
+        private bool ValidateRequiredRuntimeData(out List<string> missingData)
+        {
+            missingData = new List<string>();
+
+            string selectedHeroId = GetSelectedHeroIdForRuntimeValidation();
+            HeroConfig selectedHeroConfig = LoadSelectedHeroConfigForRuntimeValidation(selectedHeroId, missingData);
+            if (selectedHeroConfig != null)
+            {
+                ValidateHeroVisualBindings(selectedHeroConfig, missingData);
+            }
+
+            ValidateWaveEnemyVisualBindings(_activeWaveConfig, missingData);
+            ValidateTowerVisualBindings(missingData);
+
+            return missingData.Count <= 0;
+        }
+
+        // 검증용 선택 영웅 ID를 안전하게 반환한다.
+        private static string GetSelectedHeroIdForRuntimeValidation()
+        {
+            string selectedHeroId = PlayerPrefs.GetString(SelectedHeroIdPlayerPrefsKey, DefaultHeroId);
+            if (string.IsNullOrWhiteSpace(selectedHeroId))
+            {
+                return DefaultHeroId;
+            }
+
+            return selectedHeroId.Trim();
+        }
+
+        // 검증용 선택 영웅 설정을 로드한다.
+        private static HeroConfig LoadSelectedHeroConfigForRuntimeValidation(string selectedHeroId, List<string> missingData)
+        {
+            string path = HeroConfigResourcePathPrefix + selectedHeroId;
+            HeroConfig config = Resources.Load<HeroConfig>(path);
+            if (config == null)
+            {
+                missingData.Add($"HeroConfig missing: {path}");
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(config.HeroId))
+            {
+                missingData.Add($"HeroConfig invalid HeroId: {path}");
+            }
+
+            return config;
+        }
+
+        // 영웅 필수 액션 스프라이트 바인딩을 검증한다.
+        private static void ValidateHeroVisualBindings(HeroConfig heroConfig, List<string> missingData)
+        {
+            if (heroConfig == null)
+            {
+                missingData.Add("Hero visual validation failed: selected hero config is null.");
+                return;
+            }
+
+            string heroId = string.IsNullOrWhiteSpace(heroConfig.HeroId)
+                ? string.Empty
+                : heroConfig.HeroId.Trim();
+            if (heroId.Length <= 0)
+            {
+                missingData.Add($"Hero visual validation failed: HeroId is empty. config={heroConfig.name}");
+                return;
+            }
+
+            GeneratedHeroManifestData manifest = LoadGeneratedHeroManifestForRuntimeValidation();
+            for (int i = 0; i < RequiredHeroActions.Length; i++)
+            {
+                string action = RequiredHeroActions[i];
+                string directPath = $"{HeroInGameSpriteResourcePathPrefix}{heroId}/{action}_00";
+                if (TryResolveSpriteResourcePath(directPath))
+                {
+                    continue;
+                }
+
+                if (TryResolveHeroActionFromManifest(heroId, action, manifest, out _, out string reason))
+                {
+                    continue;
+                }
+
+                missingData.Add(
+                    $"Hero sprite missing: heroId={heroId}, action={action}, directPath={directPath}, manifest={GeneratedHeroManifestResourcePath}, reason={reason}");
+            }
+        }
+
+        // 생성형 영웅 매니페스트를 로드한다.
+        private static GeneratedHeroManifestData LoadGeneratedHeroManifestForRuntimeValidation()
+        {
+            TextAsset manifestAsset = Resources.Load<TextAsset>(GeneratedHeroManifestResourcePath);
+            if (manifestAsset == null || string.IsNullOrWhiteSpace(manifestAsset.text))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonUtility.FromJson<GeneratedHeroManifestData>(manifestAsset.text);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        // 매니페스트에서 영웅 액션 경로를 해석한다.
+        private static bool TryResolveHeroActionFromManifest(
+            string heroId,
+            string action,
+            GeneratedHeroManifestData manifest,
+            out string textureResourcePath,
+            out string reason)
+        {
+            textureResourcePath = string.Empty;
+            reason = string.Empty;
+
+            if (manifest == null || manifest.actions == null || manifest.actions.Length <= 0)
+            {
+                reason = "manifest missing or empty.";
+                return false;
+            }
+
+            GeneratedHeroActionRecord best = null;
+            for (int i = 0; i < manifest.actions.Length; i++)
+            {
+                GeneratedHeroActionRecord candidate = manifest.actions[i];
+                if (candidate == null || string.IsNullOrWhiteSpace(candidate.actionGroup))
+                {
+                    continue;
+                }
+
+                if (!string.Equals(candidate.actionGroup, action, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (best == null)
+                {
+                    best = candidate;
+                }
+
+                if (ContainsIgnoreCase(candidate.outputTexture, heroId) || ContainsIgnoreCase(candidate.sourceFile, heroId))
+                {
+                    best = candidate;
+                    break;
+                }
+            }
+
+            if (best == null)
+            {
+                reason = $"action record missing for action={action}.";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(best.outputTexture))
+            {
+                reason = $"outputTexture is empty for action={action}.";
+                return false;
+            }
+
+            textureResourcePath = GeneratedHeroSpriteResourcePathPrefix + StripExtension(best.outputTexture);
+            if (!TryResolveSpriteResourcePath(textureResourcePath))
+            {
+                reason = $"output texture unresolved at {textureResourcePath}.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // 웨이브에 등장하는 적의 비주얼 바인딩을 검증한다.
+        private static void ValidateWaveEnemyVisualBindings(WaveConfig waveConfig, List<string> missingData)
+        {
+            if (waveConfig == null)
+            {
+                missingData.Add("WaveConfig missing: current stage has no wave config.");
+                return;
+            }
+
+            if (waveConfig.Waves == null || waveConfig.Waves.Count <= 0)
+            {
+                missingData.Add($"WaveConfig has no waves: {waveConfig.name}");
+                return;
+            }
+
+            var checkedConfigs = new HashSet<EnemyConfig>();
+            for (int waveIndex = 0; waveIndex < waveConfig.Waves.Count; waveIndex++)
+            {
+                WaveConfig.WaveData wave = waveConfig.Waves[waveIndex];
+                int displayWave = wave.WaveIndex > 0 ? wave.WaveIndex : waveIndex + 1;
+                if (wave.SpawnEntries == null || wave.SpawnEntries.Count <= 0)
+                {
+                    missingData.Add($"Wave spawn entry missing: wave={displayWave}");
+                    continue;
+                }
+
+                for (int entryIndex = 0; entryIndex < wave.SpawnEntries.Count; entryIndex++)
+                {
+                    WaveConfig.SpawnEntry spawnEntry = wave.SpawnEntries[entryIndex];
+                    if (spawnEntry.Enemy == null)
+                    {
+                        missingData.Add($"EnemyConfig reference missing: wave={displayWave}, entry={entryIndex + 1}");
+                        continue;
+                    }
+
+                    if (!checkedConfigs.Add(spawnEntry.Enemy))
+                    {
+                        continue;
+                    }
+
+                    if (!TryResolveEnemySpriteBinding(spawnEntry.Enemy, out string detail))
+                    {
+                        missingData.Add(detail);
+                    }
+                }
+            }
+        }
+
+        // 적 이동/행동 스프라이트 바인딩을 통합 검증한다.
+        private static bool TryResolveEnemySpriteBinding(EnemyConfig config, out string detail)
+        {
+            detail = string.Empty;
+            if (config == null)
+            {
+                detail = "Enemy sprite missing: EnemyConfig is null.";
+                return false;
+            }
+
+            string enemyId = string.IsNullOrWhiteSpace(config.EnemyId) ? "(empty)" : config.EnemyId.Trim();
+            string runtimePath = string.IsNullOrWhiteSpace(config.RuntimeSpriteResourcePath) ? "(empty)" : config.RuntimeSpriteResourcePath.Trim();
+            // 1) 이동 기본 클립을 먼저 해석한다. 이동이 없으면 액션 클립 검증도 의미가 없다.
+            if (!TryResolveEnemyMoveSpriteBinding(config, out string moveResolvedPath, out string moveReason))
+            {
+                detail =
+                    $"Enemy move sprite missing: enemyId={enemyId}, runtimePath={runtimePath}, reason={moveReason}";
+                return false;
+            }
+
+            // 2) 필수 액션 클립을 개별 해석하고, 누락된 후보 경로를 정확히 로그에 남긴다.
+            var missingActions = new List<string>();
+            for (int i = 0; i < RequiredEnemyActions.Length; i++)
+            {
+                string action = RequiredEnemyActions[i];
+                if (TryResolveEnemyActionSpriteBinding(config, action, out _, out _))
+                {
+                    continue;
+                }
+
+                BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> actionCandidates);
+                string candidateText = actionCandidates.Count > 0 ? string.Join(", ", actionCandidates) : "(none)";
+                missingActions.Add($"action={action}, candidates={candidateText}");
+            }
+
+            if (missingActions.Count > 0)
+            {
+                detail =
+                    $"Enemy action sprite missing: enemyId={enemyId}, runtimePath={runtimePath}, " +
+                    $"move={NormalizeForLog(moveResolvedPath)}, missing=[{string.Join(" | ", missingActions)}]";
+                return false;
+            }
+
+            return true;
+        }
+
+        // enemyId 기반 적 스프라이트 후보 경로를 생성한다.
+        private static List<string> BuildEnemySpritePathCandidates(string enemyId)
+        {
+            var candidates = new List<string>();
+            if (string.IsNullOrWhiteSpace(enemyId))
+            {
+                return candidates;
+            }
+
+            string trimmed = enemyId.Trim();
+            for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
+            {
+                string prefix = EnemySpriteResourcePrefixes[i];
+                TryAddEnemyCandidate(candidates, prefix + trimmed);
+                TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}/{trimmed}");
+            }
+
+            return candidates;
+        }
+
+        // 적 이동 스프라이트 경로를 우선 해석한다.
+        private static bool TryResolveEnemyMoveSpriteBinding(EnemyConfig config, out string resolvedPath, out string reason)
+        {
+            resolvedPath = string.Empty;
+            reason = string.Empty;
+
+            if (config == null)
+            {
+                reason = "EnemyConfig is null.";
+                return false;
+            }
+
+            if (TryResolveSpriteResourcePath(config.RuntimeSpriteResourcePath))
+            {
+                resolvedPath = config.RuntimeSpriteResourcePath;
+                return true;
+            }
+
+            // 런타임 경로 실패 시 enemyId 네이밍 규칙 기반 후보로 폴백한다.
+            List<string> candidates = BuildEnemySpritePathCandidates(config.EnemyId);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (!TryResolveSpriteResourcePath(candidates[i]))
+                {
+                    continue;
+                }
+
+                resolvedPath = candidates[i];
+                return true;
+            }
+
+            reason = candidates.Count > 0 ? $"candidates={string.Join(", ", candidates)}" : "no candidates";
+            return false;
+        }
+
+        // 적 액션별 스프라이트 경로를 해석한다.
+        private static bool TryResolveEnemyActionSpriteBinding(EnemyConfig config, string action, out string resolvedPath, out string reason)
+        {
+            resolvedPath = string.Empty;
+            reason = string.Empty;
+
+            if (config == null)
+            {
+                reason = "EnemyConfig is null.";
+                return false;
+            }
+
+            // 런타임 경로 + enemyId 네이밍 규칙으로 후보 경로를 생성한다.
+            BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> candidates);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (!TryResolveSpriteResourcePath(candidates[i]))
+                {
+                    continue;
+                }
+
+                resolvedPath = candidates[i];
+                return true;
+            }
+
+            reason = candidates.Count > 0 ? $"candidates={string.Join(", ", candidates)}" : "no candidates";
+            return false;
+        }
+
+        // 액션/경로 규칙 기반 적 스프라이트 후보를 구성한다.
+        private static void BuildEnemyActionPathCandidates(string action, string runtimePath, string enemyId, out List<string> candidates)
+        {
+            candidates = new List<string>(20);
+            // 네이밍 스타일 차이를 흡수하기 위해 공통 별칭을 허용한다.
+            string[] aliases = GetEnemyActionAliases(action);
+
+            if (!string.IsNullOrWhiteSpace(runtimePath))
+            {
+                for (int i = 0; i < aliases.Length; i++)
+                {
+                    string alias = aliases[i];
+                    TryAddEnemyCandidate(candidates, ReplaceEnemyActionToken(runtimePath, alias));
+                    TryAddEnemyCandidate(candidates, AppendEnemyActionSegment(runtimePath, alias));
+                    TryAddEnemyCandidate(candidates, $"{runtimePath}_{alias}");
+                    TryAddEnemyCandidate(candidates, $"{alias}_{runtimePath}");
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(enemyId))
+            {
+                return;
+            }
+
+            string trimmed = enemyId.Trim();
+            for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
+            {
+                string prefix = EnemySpriteResourcePrefixes[i];
+                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
+                {
+                    string alias = aliases[aliasIndex];
+                    TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}/{alias}");
+                    TryAddEnemyCandidate(candidates, $"{prefix}{alias}_{trimmed}");
+                    TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}_{alias}");
+                    TryAddEnemyCandidate(candidates, $"{prefix}{alias}_{trimmed}_Processed");
+                }
+            }
+        }
+
+        // 액션명 별칭 목록을 반환한다.
+        private static string[] GetEnemyActionAliases(string action)
+        {
+            if (string.IsNullOrWhiteSpace(action))
+            {
+                return new[] { string.Empty };
+            }
+
+            if (string.Equals(action, "idle", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { "idle" };
+            }
+
+            if (string.Equals(action, "attack", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { "attack", "atk" };
+            }
+
+            if (string.Equals(action, "die", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { "die", "death", "dead" };
+            }
+
+            if (string.Equals(action, "walk", System.StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "move", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { "walk", "move", "run" };
+            }
+
+            return new[] { action.ToLowerInvariant() };
+        }
+
+        // 리소스 경로의 액션 토큰을 목표 액션으로 치환한다.
+        private static string ReplaceEnemyActionToken(string resourcePath, string actionAlias)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(actionAlias))
+            {
+                return string.Empty;
+            }
+
+            // 토큰 치환: "walk_xxx" 형태를 "attack_xxx" 같은 액션명으로 교체한다.
+            string[] prefixedTokens =
+            {
+                "idle_",
+                "walk_",
+                "run_",
+                "move_",
+                "attack_",
+                "atk_",
+                "die_",
+                "death_",
+                "dead_"
+            };
+
+            for (int i = 0; i < prefixedTokens.Length; i++)
+            {
+                string token = prefixedTokens[i];
+                int index = resourcePath.IndexOf(token, System.StringComparison.OrdinalIgnoreCase);
+                if (index < 0)
+                {
+                    continue;
+                }
+
+                if (index > 0 && resourcePath[index - 1] != '/')
+                {
+                    continue;
+                }
+
+                return $"{resourcePath.Substring(0, index)}{actionAlias}_{resourcePath.Substring(index + token.Length)}";
+            }
+
+            string[] segments = resourcePath.Split('/');
+            for (int i = 0; i < segments.Length; i++)
+            {
+                // 세그먼트 치환: ".../walk/..." 형태를 ".../attack/..." 형태로 교체한다.
+                if (!IsEnemyActionSegment(segments[i]))
+                {
+                    continue;
+                }
+
+                segments[i] = actionAlias;
+                return string.Join("/", segments);
+            }
+
+            return string.Empty;
+        }
+
+        // 경로 세그먼트가 적 액션 토큰인지 판별한다.
+        private static bool IsEnemyActionSegment(string segment)
+        {
+            if (string.IsNullOrWhiteSpace(segment))
+            {
+                return false;
+            }
+
+            return string.Equals(segment, "idle", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "walk", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "run", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "move", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "attack", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "atk", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "die", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "death", System.StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "dead", System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        // 액션 세그먼트를 덧붙인 폴백 경로를 만든다.
+        private static string AppendEnemyActionSegment(string resourcePath, string actionAlias)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(actionAlias))
+            {
+                return string.Empty;
+            }
+
+            // 디렉터리형 폴백: ".../Foo" 경로를 ".../<action>" 형태로 변환한다.
+            int slash = resourcePath.LastIndexOf('/');
+            if (slash < 0)
+            {
+                return $"{actionAlias}/{resourcePath}";
+            }
+
+            string dir = resourcePath.Substring(0, slash);
+            return $"{dir}/{actionAlias}";
+        }
+
+        // 적 후보 경로를 중복 없이 추가한다.
+        private static void TryAddEnemyCandidate(List<string> candidates, string candidate)
+        {
+            if (candidates == null || string.IsNullOrWhiteSpace(candidate))
+            {
+                return;
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (string.Equals(candidates[i], candidate, System.StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            candidates.Add(candidate);
+        }
+
+        // 타워/배럭 병사 스프라이트 바인딩을 검증한다.
+        private static void ValidateTowerVisualBindings(List<string> missingData)
+        {
+            foreach (TowerType towerType in System.Enum.GetValues(typeof(TowerType)))
+            {
+                string configPath = $"Data/TowerConfigs/{towerType}";
+                TowerConfig config = Resources.Load<TowerConfig>(configPath);
+                if (config == null)
+                {
+                    missingData.Add($"TowerConfig missing: {configPath}");
+                    continue;
+                }
+
+                if (config.Levels == null || config.Levels.Length <= 0)
+                {
+                    missingData.Add($"Tower level data missing: towerType={towerType}, config={configPath}");
+                    continue;
+                }
+
+                for (int levelIndex = 0; levelIndex < config.Levels.Length; levelIndex++)
+                {
+                    if (!HasTowerLevelSpriteBinding(config, towerType, levelIndex, out string detail))
+                    {
+                        missingData.Add(detail);
+                    }
+                }
+
+                if (towerType == TowerType.Barracks && !HasBarracksSoldierSpriteBinding(config, out string barracksDetail))
+                {
+                    missingData.Add(barracksDetail);
+                }
+            }
+        }
+
+        // 타워 레벨별 스프라이트 바인딩 존재 여부를 확인한다.
+        private static bool HasTowerLevelSpriteBinding(TowerConfig config, TowerType towerType, int levelIndex, out string detail)
+        {
+            detail = string.Empty;
+            if (config == null || config.Levels == null || config.Levels.Length <= levelIndex || levelIndex < 0)
+            {
+                detail = $"Tower sprite missing: towerType={towerType}, invalid level index={levelIndex}";
+                return false;
+            }
+
+            int safeLevelIndex = Mathf.Max(0, levelIndex);
+            int displayLevel = safeLevelIndex + 1;
+            TowerLevelData levelData = config.Levels[safeLevelIndex];
+
+            if (levelData.SpriteOverride != null)
+            {
+                return true;
+            }
+
+            if (TryResolveSpriteResourcePath(levelData.SpriteResourcePath))
+            {
+                return true;
+            }
+
+            string expandedRuntimePath = ExpandTowerTemplatePath(config.RuntimeSpriteResourcePath, towerType, safeLevelIndex);
+            if (TryResolveSpriteResourcePath(expandedRuntimePath))
+            {
+                return true;
+            }
+
+            List<string> candidates = BuildTowerSpritePathCandidates(config.TowerId, towerType, safeLevelIndex);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryResolveSpriteResourcePath(candidates[i]))
+                {
+                    return true;
+                }
+            }
+
+            string candidateText = candidates.Count > 0 ? string.Join(", ", candidates) : "(none)";
+            detail =
+                $"Tower sprite missing: towerType={towerType}, towerId={NormalizeForLog(config.TowerId)}, level=L{displayLevel}, " +
+                $"levelPath={NormalizeForLog(levelData.SpriteResourcePath)}, runtimePath={NormalizeForLog(expandedRuntimePath)}, candidates={candidateText}";
+            return false;
+        }
+
+        // 배럭 병사 스프라이트 바인딩 존재 여부를 확인한다.
+        private static bool HasBarracksSoldierSpriteBinding(TowerConfig config, out string detail)
+        {
+            detail = string.Empty;
+            if (config == null)
+            {
+                detail = "Barracks soldier sprite missing: TowerConfig is null.";
+                return false;
+            }
+
+            if (TryResolveSpriteResourcePath(config.BarracksData.SoldierSpriteResourcePath))
+            {
+                return true;
+            }
+
+            var candidates = new List<string>
+            {
+                "UI/Sprites/Barracks/Soldier",
+                "Sprites/Barracks/Soldier",
+                "UI/Sprites/Towers/Barracks/Soldier",
+                "Sprites/Towers/Barracks/Soldier",
+                "Kingdom/Towers/Sprites/Barracks/Soldier"
+            };
+
+            if (!string.IsNullOrWhiteSpace(config.TowerId))
+            {
+                string towerId = config.TowerId.Trim();
+                candidates.Add($"UI/Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Kingdom/Towers/Sprites/{towerId}/Soldier");
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryResolveSpriteResourcePath(candidates[i]))
+                {
+                    return true;
+                }
+            }
+
+            detail =
+                $"Barracks soldier sprite missing: towerId={NormalizeForLog(config.TowerId)}, " +
+                $"path={NormalizeForLog(config.BarracksData.SoldierSpriteResourcePath)}, candidates={string.Join(", ", candidates)}";
+            return false;
+        }
+
+        // 타워 식별자 기반 스프라이트 후보 경로를 생성한다.
+        private static List<string> BuildTowerSpritePathCandidates(string towerId, TowerType towerType, int levelIndex)
+        {
+            string typeName = towerType.ToString();
+            string levelToken = Mathf.Max(1, levelIndex + 1).ToString();
+            var candidates = new List<string>(24);
+
+            for (int i = 0; i < TowerSpriteResourcePrefixes.Length; i++)
+            {
+                string prefix = TowerSpriteResourcePrefixes[i];
+                AddTowerNameCandidates(candidates, prefix, towerId, levelToken);
+                AddTowerNameCandidates(candidates, prefix, typeName, levelToken);
+            }
+
+            return candidates;
+        }
+
+        // 타워 이름 조합 후보를 경로 목록에 추가한다.
+        private static void AddTowerNameCandidates(List<string> candidates, string prefix, string towerName, string levelToken)
+        {
+            if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(towerName))
+            {
+                return;
+            }
+
+            string trimmed = towerName.Trim();
+            TryAddCandidate(candidates, $"{prefix}{trimmed}_L{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}/L{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}/Level{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}");
+        }
+
+        // 일반 후보 경로를 중복 없이 추가한다.
+        private static void TryAddCandidate(List<string> candidates, string candidate)
+        {
+            if (string.IsNullOrWhiteSpace(candidate) || candidates.Contains(candidate))
+            {
+                return;
+            }
+
+            candidates.Add(candidate);
+        }
+
+        // 타워 템플릿 경로의 토큰을 실제 값으로 확장한다.
+        private static string ExpandTowerTemplatePath(string templatePath, TowerType towerType, int levelIndex)
+        {
+            if (string.IsNullOrWhiteSpace(templatePath))
+            {
+                return string.Empty;
+            }
+
+            int level = Mathf.Max(1, levelIndex + 1);
+            string expanded = templatePath.Replace("{tower}", towerType.ToString());
+            expanded = expanded.Replace("{level}", level.ToString());
+            return expanded;
+        }
+
+        // Resources/디스크 기준으로 스프라이트 경로를 검증한다.
+        private static bool TryResolveSpriteResourcePath(string resourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            Sprite single = Resources.Load<Sprite>(resourcePath);
+            if (single != null)
+            {
+                return true;
+            }
+
+            Sprite[] multiple = Resources.LoadAll<Sprite>(resourcePath);
+            if (multiple != null && multiple.Length > 0)
+            {
+                return true;
+            }
+
+            Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+            if (texture != null)
+            {
+                return true;
+            }
+
+            return TryResolveTextureOnResourcesDisk(resourcePath);
+        }
+
+        // Resources 폴더의 텍스처 파일 존재를 검사한다.
+        private static bool TryResolveTextureOnResourcesDisk(string resourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            string normalized = resourcePath.Replace('\\', '/').TrimStart('/');
+            if (normalized.Length <= 0)
+            {
+                return false;
+            }
+
+            string basePath = System.IO.Path.Combine(Application.dataPath, "Resources", normalized);
+            if (System.IO.File.Exists(basePath + ".png"))
+            {
+                return true;
+            }
+
+            if (System.IO.File.Exists(basePath + ".jpg"))
+            {
+                return true;
+            }
+
+            if (System.IO.File.Exists(basePath + ".jpeg"))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        // 대소문자 무시 포함 여부를 확인한다.
+        private static bool ContainsIgnoreCase(string source, string token)
+        {
+            if (string.IsNullOrWhiteSpace(source) || string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            return source.IndexOf(token, System.StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        // 파일명에서 확장자를 제거한다.
+        private static string StripExtension(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return string.Empty;
+            }
+
+            return System.IO.Path.GetFileNameWithoutExtension(fileName);
+        }
+
+        // 로그 출력용 문자열을 정규화한다.
+        private static string NormalizeForLog(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "(empty)" : value.Trim();
+        }
+
+        // 누락 상세 메시지를 Hero/Enemy/Tower/Barracks/Other 분류로 변환한다.
+        private static string ClassifyMissingDataCategory(string detail)
+        {
+            if (ContainsIgnoreCase(detail, "barracks"))
+            {
+                return "Barracks";
+            }
+
+            if (ContainsIgnoreCase(detail, "hero"))
+            {
+                return "Hero";
+            }
+
+            if (ContainsIgnoreCase(detail, "enemy"))
+            {
+                return "Enemy";
+            }
+
+            if (ContainsIgnoreCase(detail, "tower"))
+            {
+                return "Tower";
+            }
+
+            return "Other";
+        }
+
+        // 누락 데이터 카테고리 요약을 로그 빌더에 추가한다.
+        private static void AppendMissingDataCategorySummary(System.Text.StringBuilder builder, List<string> missingData)
+        {
+            if (builder == null || missingData == null || missingData.Count <= 0)
+            {
+                return;
+            }
+
+            var counts = new Dictionary<string, int>(System.StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < missingData.Count; i++)
+            {
+                string category = ClassifyMissingDataCategory(missingData[i]);
+                counts.TryGetValue(category, out int current);
+                counts[category] = current + 1;
+            }
+
+            string[] order = { "Hero", "Enemy", "Barracks", "Tower", "Other" };
+            builder.AppendLine("[Category Summary]");
+            for (int i = 0; i < order.Length; i++)
+            {
+                string key = order[i];
+                if (!counts.TryGetValue(key, out int count) || count <= 0)
+                {
+                    continue;
+                }
+
+                builder.Append(" - ");
+                builder.Append(key);
+                builder.Append(": ");
+                builder.AppendLine(count.ToString());
+            }
+        }
+
+        // 누락 상세 메시지에서 실제 리소스 경로를 추출해 요약으로 출력한다.
+        private static void AppendMissingResourcePathSummary(System.Text.StringBuilder builder, List<string> missingData)
+        {
+            if (builder == null || missingData == null || missingData.Count <= 0)
+            {
+                return;
+            }
+
+            var paths = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < missingData.Count; i++)
+            {
+                CollectMissingResourcePaths(missingData[i], paths);
+            }
+
+            if (paths.Count <= 0)
+            {
+                return;
+            }
+
+            builder.AppendLine("[Missing Resource Paths]");
+            foreach (string path in paths)
+            {
+                builder.Append(" - ");
+                builder.AppendLine(path);
+            }
+        }
+
+        // 단일 누락 메시지에서 경로 후보를 추출한다.
+        private static void CollectMissingResourcePaths(string detail, HashSet<string> output)
+        {
+            if (output == null || string.IsNullOrWhiteSpace(detail))
+            {
+                return;
+            }
+
+            const string heroConfigMissingPrefix = "HeroConfig missing:";
+            if (detail.StartsWith(heroConfigMissingPrefix, System.StringComparison.OrdinalIgnoreCase))
+            {
+                AddNormalizedMissingPath(output, detail.Substring(heroConfigMissingPrefix.Length));
+            }
+
+            CollectKeyValuePath(detail, "requiredPath=", output);
+            CollectKeyValuePath(detail, "runtimePath=", output);
+            CollectKeyValuePath(detail, "move=", output);
+
+            // candidates=a, b, c 형태와 missing=[action=..., candidates=...] 형태를 모두 처리한다.
+            System.Text.RegularExpressions.MatchCollection candidateMatches =
+                System.Text.RegularExpressions.Regex.Matches(detail, @"candidates=([^\]\|]+)");
+            for (int i = 0; i < candidateMatches.Count; i++)
+            {
+                string candidateGroup = candidateMatches[i].Groups[1].Value;
+                if (string.IsNullOrWhiteSpace(candidateGroup))
+                {
+                    continue;
+                }
+
+                string[] split = candidateGroup.Split(',');
+                for (int splitIndex = 0; splitIndex < split.Length; splitIndex++)
+                {
+                    AddNormalizedMissingPath(output, split[splitIndex]);
+                }
+            }
+        }
+
+        // key=value 형태에서 value를 추출해 경로 목록에 추가한다.
+        private static void CollectKeyValuePath(string detail, string key, HashSet<string> output)
+        {
+            if (string.IsNullOrWhiteSpace(detail) || string.IsNullOrWhiteSpace(key) || output == null)
+            {
+                return;
+            }
+
+            int searchIndex = 0;
+            while (searchIndex < detail.Length)
+            {
+                int keyIndex = detail.IndexOf(key, searchIndex, System.StringComparison.OrdinalIgnoreCase);
+                if (keyIndex < 0)
+                {
+                    return;
+                }
+
+                int valueStart = keyIndex + key.Length;
+                if (valueStart >= detail.Length)
+                {
+                    return;
+                }
+
+                int valueEnd = detail.Length;
+                int comma = detail.IndexOf(',', valueStart);
+                if (comma >= 0)
+                {
+                    valueEnd = System.Math.Min(valueEnd, comma);
+                }
+
+                int pipe = detail.IndexOf('|', valueStart);
+                if (pipe >= 0)
+                {
+                    valueEnd = System.Math.Min(valueEnd, pipe);
+                }
+
+                int bracket = detail.IndexOf(']', valueStart);
+                if (bracket >= 0)
+                {
+                    valueEnd = System.Math.Min(valueEnd, bracket);
+                }
+
+                if (valueEnd > valueStart)
+                {
+                    string value = detail.Substring(valueStart, valueEnd - valueStart);
+                    AddNormalizedMissingPath(output, value);
+                }
+
+                searchIndex = valueStart;
+            }
+        }
+
+        // 경로 후보 문자열을 정규화해 유효한 항목만 추가한다.
+        private static void AddNormalizedMissingPath(HashSet<string> output, string rawPath)
+        {
+            if (output == null || string.IsNullOrWhiteSpace(rawPath))
+            {
+                return;
+            }
+
+            string path = rawPath.Trim();
+            path = path.Trim('\"', '\'', '[', ']', '(', ')');
+            if (path.EndsWith(".", System.StringComparison.Ordinal))
+            {
+                path = path.Substring(0, path.Length - 1).Trim();
+            }
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+
+            if (string.Equals(path, "(empty)", System.StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(path, "(none)", System.StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            if (path.IndexOf("no candidates", System.StringComparison.OrdinalIgnoreCase) >= 0 ||
+                path.IndexOf("EnemyConfig is null", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return;
+            }
+
+            output.Add(path);
+        }
+
+        // 누락 상세 메시지를 기반으로 자동 수정 힌트를 생성한다.
+        private static void AppendMissingFixHintSummary(System.Text.StringBuilder builder, List<string> missingData)
+        {
+            if (builder == null || missingData == null || missingData.Count <= 0)
+            {
+                return;
+            }
+
+            var hints = new HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < missingData.Count; i++)
+            {
+                CollectMissingFixHints(missingData[i], hints);
+            }
+
+            if (hints.Count <= 0)
+            {
+                return;
+            }
+
+            builder.AppendLine("[Auto Fix Hints]");
+            foreach (string hint in hints)
+            {
+                builder.Append(" - ");
+                builder.AppendLine(hint);
+            }
+        }
+
+        // 단일 누락 메시지에서 수정 힌트를 추출한다.
+        private static void CollectMissingFixHints(string detail, HashSet<string> hints)
+        {
+            if (hints == null || string.IsNullOrWhiteSpace(detail))
+            {
+                return;
+            }
+
+            if (detail.StartsWith("HeroConfig missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("HeroConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Data/HeroConfigs/<HeroId>.asset");
+                return;
+            }
+
+            if (detail.StartsWith("HeroConfig invalid HeroId:", System.StringComparison.OrdinalIgnoreCase) ||
+                detail.IndexOf("HeroId is empty", System.StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                hints.Add("HeroConfig.HeroId 값을 채우세요.");
+                return;
+            }
+
+            if (detail.StartsWith("Hero sprite missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("영웅 스프라이트를 추가하세요: UI/Sprites/Heroes/InGame/<HeroId>/<action>_00");
+                hints.Add("또는 Assets/Resources/Sprites/Heroes/manifest.json의 action/outputTexture 매핑을 보완하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("WaveConfig missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("현재 스테이지에 WaveConfig를 연결하거나 Resources/Data/WaveConfigs/Stage_<id>_WaveConfig를 생성하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("WaveConfig has no waves:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("WaveConfig.Waves에 최소 1개 이상의 웨이브 데이터를 추가하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("Wave spawn entry missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("WaveConfig.Waves[*].SpawnEntries에 최소 1개 이상의 엔트리를 추가하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("EnemyConfig reference missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("WaveConfig.Waves[*].SpawnEntries[*].Enemy 참조를 지정하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("Enemy move sprite missing:", System.StringComparison.OrdinalIgnoreCase) ||
+                detail.StartsWith("Enemy action sprite missing:", System.StringComparison.OrdinalIgnoreCase) ||
+                detail.StartsWith("Enemy sprite missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("EnemyConfig.RuntimeSpriteResourcePath를 유효한 Resources 경로로 지정하세요.");
+                hints.Add("EnemyConfig.EnemyId와 리소스 파일명 규칙(idle/walk/attack/die)을 일치시키세요.");
+                return;
+            }
+
+            if (detail.StartsWith("TowerConfig missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("TowerConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Data/TowerConfigs/<TowerType>.asset");
+                return;
+            }
+
+            if (detail.StartsWith("Tower level data missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("TowerConfig.Levels 배열에 레벨 데이터를 추가하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("Tower sprite missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("TowerConfig.Levels[i].SpriteResourcePath를 지정하거나 TowerConfig.RuntimeSpriteResourcePath 템플릿을 설정하세요.");
+                return;
+            }
+
+            if (detail.StartsWith("Barracks soldier sprite missing:", System.StringComparison.OrdinalIgnoreCase))
+            {
+                hints.Add("TowerConfig.BarracksData.SoldierSpriteResourcePath를 지정하세요.");
+                return;
+            }
+        }
+
+        // 필수 데이터 누락 시 시작을 중단하고 사유를 출력한다.
+        private bool AbortSceneStartForMissingData(List<string> missingData)
+        {
+            var builder = new System.Text.StringBuilder();
+            builder.AppendLine("[GameScene] Required runtime data is missing. Scene start aborted.");
+            AppendMissingDataCategorySummary(builder, missingData);
+            AppendMissingResourcePathSummary(builder, missingData);
+            AppendMissingFixHintSummary(builder, missingData);
+            if (missingData != null)
+            {
+                for (int i = 0; i < missingData.Count; i++)
+                {
+                    builder.Append(" - ");
+                    builder.AppendLine(missingData[i]);
+                }
+            }
+
+            Debug.LogError(builder.ToString());
+
+            if (_stateController != null)
+            {
+                _stateController.enabled = false;
+            }
+
+            if (_waveManager != null)
+            {
+                _waveManager.enabled = false;
+            }
+
+            if (_spawnManager != null)
+            {
+                _spawnManager.enabled = false;
+            }
+
+            if (_towerManager != null)
+            {
+                _towerManager.enabled = false;
+            }
+
+            if (_heroController != null)
+            {
+                _heroController.enabled = false;
+            }
+
+            enabled = false;
+            Time.timeScale = 0f;
+
+#if UNITY_EDITOR
+            if (UnityEditor.EditorApplication.isPlaying)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+            }
+#endif
+            return false;
+        }
+
+        // 경제/타워/웨이브 UI와 이벤트를 초기 구성한다.
         private void ConfigureEconomyAndTower()
         {
             int initialGold = _activeWaveConfig != null ? Mathf.Max(0, _activeWaveConfig.InitialGold) : 100;
@@ -507,6 +1748,7 @@ namespace Kingdom.App
             gameView.SetHeroPortrait(ResolveHeroPortraitSprite(_heroConfig));
         }
 
+        // 영웅 컨트롤러를 스폰 위치와 함께 설정한다.
         private void ConfigureHeroController(System.Collections.Generic.List<Vector3> towerSlots)
         {
             if (_heroController == null || _spawnManager == null)
@@ -514,12 +1756,13 @@ namespace Kingdom.App
                 return;
             }
 
-            // Start at safe position (bottom-left) instead of near first tower slot
+            // 첫 타워 슬롯 근처 대신 안전한 좌하단 위치에서 시작한다.
             Vector3 heroSpawn = new Vector3(-6.5f, -3.5f, 0f);
 
             _heroController.Configure(_spawnManager, _heroConfig, heroSpawn);
         }
 
+        // 기본 건설 요청을 처리한다.
         private void OnBuildTowerRequested()
         {
             if (_towerManager == null)
@@ -566,6 +1809,7 @@ namespace Kingdom.App
             }
         }
 
+        // 타워 타입별 건설 요청을 처리한다.
         private void OnTowerBuildTypeRequested(TowerType towerType)
         {
             if (_towerManager == null)
@@ -612,6 +1856,7 @@ namespace Kingdom.App
             }
         }
 
+        // 생명/골드 변경을 UI에 반영한다.
         private void OnResourceChanged(int lives, int gold)
         {
             if (MainUI is GameView gameView)
@@ -630,6 +1875,7 @@ namespace Kingdom.App
             }
         }
 
+        // 다음 웨이브 조기 호출 요청을 처리한다.
         private void OnNextWaveRequested()
         {
             if (_stateController == null)
@@ -639,9 +1885,9 @@ namespace Kingdom.App
 
             float remainingReadySeconds = _stateController.WaveReadyRemaining;
             _waveEarlyCallAttempts++;
-            // NOTE:
+            // 주의:
             // TryEarlyCallNextWave() 내부에서 상태 전이가 즉시 발생하고,
-            // 그 콜백에서 KPI Finalize가 먼저 호출될 수 있다.
+            // 같은 프레임에서 KPI Finalize가 먼저 호출될 수 있다.
             // 따라서 성공 카운트를 먼저 올려두고, 실패 시 롤백한다.
             _waveEarlyCallSuccess++;
             if (!_stateController.TryEarlyCallNextWave())
@@ -657,6 +1903,7 @@ namespace Kingdom.App
             }
         }
 
+        // 배속 토글 입력을 처리한다.
         private void OnSpeedToggleRequested()
         {
             _isFastForward = !_isFastForward;
@@ -671,6 +1918,7 @@ namespace Kingdom.App
             Debug.Log($"[KPI] SpeedToggle speed={_activeTimeScale:0.0}x paused={(_stateController != null && _stateController.IsPaused)}");
         }
 
+        // 웨이브 조기 호출 보상을 적용한다.
         private void ApplyEarlyCallReward(float remainingReadySeconds)
         {
             if (_economyManager == null || _stateController == null)
@@ -702,6 +1950,7 @@ namespace Kingdom.App
             Debug.Log($"[GameScene] EarlyCall reward applied. base={baseBonus} time={timeBonus} total={totalBonus} remain={remainingReadySeconds:0.00}s cdReduce(reinforce={reinforceReduction:0.00}, rain={rainReduction:0.00})");
         }
 
+        // 게임 상태 변화에 따라 HUD를 갱신한다.
         private void OnStateChangedForHud(GameFlowState state)
         {
             ApplyEffectiveTimeScale();
@@ -740,6 +1989,7 @@ namespace Kingdom.App
             }
         }
 
+        // 웨이브 대기 카운트다운 UI를 갱신한다.
         private void OnWaveReadyTimeChanged(float remainingSeconds)
         {
             if (MainUI is not GameView gameView)
@@ -756,6 +2006,7 @@ namespace Kingdom.App
             gameView.SetWaveReadyCountdown(remainingSeconds);
         }
 
+        // 웨이브 시작 배너/사운드를 1회 표시한다.
         private void TryPresentWaveStartCue(GameView gameView)
         {
             if (_stateController == null)
@@ -779,6 +2030,7 @@ namespace Kingdom.App
             }
         }
 
+        // 웨이브 시작 사운드를 로드(폴백 포함)한다.
         private AudioClip ResolveWaveStartSfxClip()
         {
             if (_waveStartSfxResolved)
@@ -802,6 +2054,7 @@ namespace Kingdom.App
             return _waveStartSfxClip;
         }
 
+        // 전투 결과를 계산해 UI에 표시한다.
         private void PresentBattleResult(GameView gameView)
         {
             if (_resultPresented)
@@ -819,6 +2072,7 @@ namespace Kingdom.App
             Debug.Log($"[GameScene] Result presented. victory={isVictory} stars={stars}");
         }
 
+        // 전투 결과를 저장 데이터에 확정 반영한다.
         private void FinalizeBattleResult(bool isVictory, int stars)
         {
             if (_resultFinalized)
@@ -846,6 +2100,7 @@ namespace Kingdom.App
             Debug.Log($"[GameScene] Result finalized. stage={stageId} victory={isVictory} stars={stars} clearTime={clearTime:0.00}s");
         }
 
+        // 결과 팝업에 표시할 메시지를 생성한다.
         private string BuildResultMessage(bool isVictory, int stars)
         {
             int lives = Mathf.Max(0, _economyManager != null ? _economyManager.Lives : 0);
@@ -860,9 +2115,10 @@ namespace Kingdom.App
             float bestTime = progress != null ? Mathf.Max(0f, progress.BestClearTimeSeconds) : 0f;
 
             string bestTimeText = bestTime > 0f ? $"{bestTime:0.0}s" : "-";
-            return $"별 {stars}/3 획득\n남은 생명: {lives}\nBEST 별: {bestStars}/3 / BEST 시간: {bestTimeText}";
+            return $"별 {stars}/3 획득\n남은 생명: {lives}\nBEST 별 {bestStars}/3 / BEST 시간: {bestTimeText}";
         }
 
+        // 보스 이벤트 시스템에 스테이지 클리어를 통지한다.
         private static void NotifyBossStageCleared(int stageId)
         {
             if (stageId <= 0)
@@ -879,6 +2135,7 @@ namespace Kingdom.App
             bossEventSystem.NotifyBossStageCleared(stageId);
         }
 
+        // 현재 전투의 승리 여부를 판정한다.
         private bool EvaluateVictory()
         {
             int lives = _economyManager != null ? _economyManager.Lives : 0;
@@ -895,6 +2152,7 @@ namespace Kingdom.App
             return _stateController.CurrentWave >= _stateController.TotalWaves;
         }
 
+        // 생명값 기준으로 별 개수를 계산한다.
         private int CalculateStars(bool isVictory)
         {
             if (!isVictory)
@@ -931,6 +2189,7 @@ namespace Kingdom.App
             return 1;
         }
 
+        // 지원병 스펠 사용 요청을 처리한다.
         private void OnSpellReinforceRequested()
         {
             if (_reinforceCooldownLeft > 0f)
@@ -942,6 +2201,7 @@ namespace Kingdom.App
             TickSpellCooldowns();
         }
 
+        // 화살비 스펠 사용 요청을 처리한다.
         private void OnSpellRainRequested()
         {
             if (_rainCooldownLeft > 0f)
@@ -953,6 +2213,7 @@ namespace Kingdom.App
             TickSpellCooldowns();
         }
 
+        // 주문 쿨다운을 진행시키고 UI를 갱신한다.
         private void TickSpellCooldowns()
         {
             if (MainUI is not GameView gameView)
@@ -980,6 +2241,7 @@ namespace Kingdom.App
             gameView.SetSpellCooldown("rain", rainNorm);
         }
 
+        // 스펠 설정을 로드하고 없으면 런타임 폴백을 생성한다.
         private static SpellConfig ResolveSpellConfig(string resourcePath, string spellId, string displayName, float cooldownSeconds, float earlyCallReductionSeconds)
         {
             SpellConfig config = Resources.Load<SpellConfig>(resourcePath);
@@ -997,6 +2259,7 @@ namespace Kingdom.App
             return fallback;
         }
 
+        // 영웅 설정을 로드하고 없으면 ID 기반 폴백을 반환한다.
         private static HeroConfig ResolveHeroConfig(string resourcePath, string fallbackHeroId = DefaultHeroId)
         {
             HeroConfig config = Resources.Load<HeroConfig>(resourcePath);
@@ -1008,6 +2271,7 @@ namespace Kingdom.App
             return CreateFallbackHeroConfigById(fallbackHeroId);
         }
 
+        // 영웅 ID에 맞는 기본 능력치 프로파일을 생성한다.
         private static HeroConfig CreateFallbackHeroConfigById(string heroId)
         {
             HeroConfig fallback = ScriptableObject.CreateInstance<HeroConfig>();
@@ -1092,6 +2356,7 @@ namespace Kingdom.App
             return fallback;
         }
 
+        // 선택 영웅 설정을 우선 로드하고 폴백을 적용한다.
         private static HeroConfig ResolveSelectedHeroConfig()
         {
             string selectedHeroId = PlayerPrefs.GetString(SelectedHeroIdPlayerPrefsKey, DefaultHeroId);
@@ -1124,6 +2389,7 @@ namespace Kingdom.App
             return CreateFallbackHeroConfigById(DefaultHeroId);
         }
 
+        // 영웅 초상화 스프라이트를 로드한다.
         private static Sprite ResolveHeroPortraitSprite(HeroConfig config)
         {
             if (config == null || string.IsNullOrWhiteSpace(config.HeroId))
@@ -1134,6 +2400,7 @@ namespace Kingdom.App
             return Resources.Load<Sprite>(HeroPortraitSpriteResourcePathPrefix + config.HeroId);
         }
 
+        // 스펠 쿨다운 시간을 안전값과 함께 반환한다.
         private static float GetSpellCooldownDuration(SpellConfig config, float fallbackSeconds)
         {
             if (config == null)
@@ -1144,6 +2411,7 @@ namespace Kingdom.App
             return Mathf.Max(0.1f, config.CooldownSeconds);
         }
 
+        // 조기 호출 쿨다운 감소량을 반환한다.
         private static float GetEarlyCallCooldownReduction(SpellConfig config)
         {
             if (config == null)
@@ -1154,6 +2422,7 @@ namespace Kingdom.App
             return Mathf.Max(0f, config.EarlyCallCooldownReductionSeconds);
         }
 
+        // 남은 대기시간 비율에 맞춰 감소량을 스케일링한다.
         private static float GetScaledEarlyCallCooldownReduction(
             SpellConfig config,
             float remainingReadySeconds,
@@ -1175,6 +2444,7 @@ namespace Kingdom.App
             return baseReduction * ratio;
         }
 
+        // 타워 업그레이드 요청을 처리한다.
         private void OnTowerUpgradeRequested()
         {
             if (_towerManager == null || _selectedTowerId < 0)
@@ -1192,6 +2462,7 @@ namespace Kingdom.App
             RefreshAfterTowerAction();
         }
 
+        // 타워 판매 요청을 처리한다.
         private void OnTowerSellRequested()
         {
             if (_towerManager == null || _selectedTowerId < 0)
@@ -1216,6 +2487,7 @@ namespace Kingdom.App
             RefreshAfterTowerAction();
         }
 
+        // 타워 액션 이후 UI/선택 상태를 갱신한다.
         private void RefreshAfterTowerAction()
         {
             if (MainUI is not GameView gameView || _economyManager == null || _towerManager == null)
@@ -1241,6 +2513,7 @@ namespace Kingdom.App
             }
         }
 
+        // 집결지 지정 모드를 시작한다.
         private void OnTowerRallyRequested()
         {
             if (_towerManager == null || _selectedTowerId < 0 || MainUI is not GameView gameView)
@@ -1258,6 +2531,7 @@ namespace Kingdom.App
             Debug.Log($"[GameScene] Rally placement mode started. towerId={_selectedTowerId}");
         }
 
+        // 일시정지/배속 상태를 반영해 TimeScale을 적용한다.
         private void ApplyEffectiveTimeScale()
         {
             if (_stateController != null && _stateController.IsPaused)
@@ -1269,12 +2543,14 @@ namespace Kingdom.App
             Time.timeScale = Mathf.Clamp(_activeTimeScale, 0.1f, FastForwardTimeScale);
         }
 
+        // 웨이브 변경 시 KPI 수집 구간을 전환한다.
         private void OnWaveChangedForKpi(int currentWave, int totalWave)
         {
             FinalizeWaveKpi("WaveChanged");
             BeginWaveKpi(currentWave);
         }
 
+        // 웨이브 KPI 수집을 시작한다.
         private void BeginWaveKpi(int waveNumber)
         {
             if (_economyManager == null)
@@ -1293,6 +2569,7 @@ namespace Kingdom.App
             _waveKpiActive = true;
         }
 
+        // 웨이브 KPI를 계산해 로그로 기록한다.
         private void FinalizeWaveKpi(string reason)
         {
             if (!_waveKpiActive || _economyManager == null)
@@ -1316,6 +2593,7 @@ namespace Kingdom.App
             _waveKpiActive = false;
         }
 
+        // 웨이브 내 타워 건설 통계를 누적한다.
         private void AccumulateTowerBuildKpi(TowerType towerType)
         {
             if (!_waveKpiActive)
@@ -1327,6 +2605,7 @@ namespace Kingdom.App
             _waveTowerBuildCount[towerType] = current + 1;
         }
 
+        // 웨이브 내 적 누수 통계를 누적한다.
         private void OnEnemyReachedGoalForKpi(EnemyRuntime enemy, EnemyConfig config)
         {
             if (!_waveKpiActive)
@@ -1344,6 +2623,7 @@ namespace Kingdom.App
             _waveLeakByEnemyType[enemyId] = leakCount + 1;
         }
 
+        // 타워 건설 비율 문자열을 생성한다.
         private string BuildTowerRateString()
         {
             if (_waveTowerBuildCount.Count <= 0)
@@ -1379,6 +2659,7 @@ namespace Kingdom.App
             return result;
         }
 
+        // 적 누수 집계 문자열을 생성한다.
         private string BuildLeakRateString()
         {
             if (_waveLeakByEnemyType.Count <= 0)
@@ -1403,3 +2684,4 @@ namespace Kingdom.App
         }
     }
 }
+

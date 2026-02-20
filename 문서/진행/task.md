@@ -221,4 +221,28 @@
 ### Phase 1. 타일 생성기 (Tile Generator)
 - [x] `workflow_tile_generation.json` 제작 (SDXL 기반, Seamless 프롬프트)
 - [x] `TileGenerator` 에디터 툴 제작 (Grass/Dirt/Water 메뉴)
-- [ ] Unity Editor 내 생성 테스트 및 Seamless 확인
+- [x] 프롬프트 튜닝 (평면 2D 게임 타일 텍스처 스타일 고도화, 부정 프롬프트 동적 주입)
+- [x] 텍스처/배경 전용 생성 모델 시트 적용 (`sd_xl_base_1.0.safetensors` 전환)
+- [x] Unity Editor 내 생성 테스트 및 Seamless 확인
+
+### Phase 2. I2V 캐릭터 스프라이트 파이프라인 (Hero/Enemy)
+- [x] Base Image 생성 툴 제작 (우측면 단일 포즈)
+- [x] I2V (Image-to-Video) 연동 워크플로우 제작
+- [x] Unity 개별 프레임 병합(Stitching) 및 스프라이트 시트화 모듈 구현
+
+## 신규 서브 트랙: AI Sprite Processor BaseUnit/TowerBase 고도화
+> 기준 문서: `문서/진행/AISpriteProcessor_BaseUnit_TowerBase_고도화_계획_2026_02_20.md`
+
+### 계획 수립 및 구조 설계
+- [x] 고도화 계획 및 요구사항 구체화 (`AISpriteProcessor_BaseUnit_TowerBase_고도화_계획_2026_02_20.md`)
+
+### 구현 단계 (구현 전 단계별 세분화)
+- [ ] Phase A: 탭 UI 골격 관리 및 컨텍스트 분리
+- [ ] Phase B: BaseUnit 탭 + HeroConfig 연결 구현 (ActionGroup 적용)
+- [ ] Phase C: BaseUnit 탭 + EnemyConfig 연결 구현
+- [ ] Phase D: BaseUnit 탭 + BarracksSoldierConfig 연결 구현
+- [ ] Phase E: TowerBase 탭 + TowerConfig 연결 구현 (레벨별 연동)
+- [ ] Phase F: 데이터 마이그레이션 및 하위 호환성 (Fallback) 대응
+- [ ] Phase G: 검증/로그 통합 UX 및 예외 처리 정책
+- [ ] Phase H: 실제 샘플(에셋) 적용 테스트
+

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
   TowerId: Archer
   TowerType: 0
+  RuntimeSpriteResourcePath: Sprites/Towers/Archer/L{level}
   DamageType: 0
   TargetType: 2
   HalfPhysicalArmorPenetration: 0
@@ -21,6 +22,7 @@ MonoBehaviour:
   BarracksData:
     SquadSize: 0
     RallyRange: 0
+    SoldierSpriteResourcePath: 
   Levels:
   - Cost: 70
     Damage: 34
@@ -29,6 +31,7 @@ MonoBehaviour:
     AttackDeliveryType: 0
     ProjectileProfileId: Archer_Arrow
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Archer/L1
     VisualScale: 0.65
   - Cost: 94
     Damage: 44.199997
@@ -37,6 +40,7 @@ MonoBehaviour:
     AttackDeliveryType: 0
     ProjectileProfileId: Archer_Arrow
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Archer/L2
     VisualScale: 0.72999996
   - Cost: 136
     Damage: 57.459995
@@ -45,4 +49,5 @@ MonoBehaviour:
     AttackDeliveryType: 0
     ProjectileProfileId: Archer_Arrow
     SpriteOverride: {fileID: 0}
+    SpriteResourcePath: Sprites/Towers/Archer/L3
     VisualScale: 0.80999994

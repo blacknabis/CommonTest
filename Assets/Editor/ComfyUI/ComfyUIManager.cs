@@ -140,6 +140,40 @@ namespace CatSudoku.Editor
                 return new List<string>();
             }
         }
+
+        public static async Task<bool> UploadImage(byte[] imageData, string filename, string overwrite = "true")
+        {
+            try
+            {
+                using (var form = new MultipartFormDataContent())
+                {
+                    var imageContent = new ByteArrayContent(imageData);
+                    imageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/png");
+                    form.Add(imageContent, "image", filename);
+                    
+                    var overwriteContent = new StringContent(overwrite);
+                    form.Add(overwriteContent, "overwrite");
+
+                    var response = await client.PostAsync($"{BaseUrl}/upload/image", form);
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        var error = await response.Content.ReadAsStringAsync();
+                        Debug.LogError($"Failed to upload image: {response.StatusCode} {error}");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Upload Image Error: {e.Message}");
+                return false;
+            }
+        }
     }
 
 

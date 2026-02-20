@@ -6,13 +6,20 @@ using UnityEngine;
 namespace Kingdom.Game
 {
     /// <summary>
-    /// Wave 데이터 기반 적 스폰 담당.
+    /// Spawns enemies for wave data.
     /// </summary>
     public class SpawnManager : MonoBehaviour
     {
         [SerializeField] private Transform enemyRoot;
         private readonly Dictionary<EnemyRuntime, EnemyConfig> _enemyConfigMap = new();
         private static Sprite _fallbackEnemySprite;
+        private static readonly Dictionary<string, Sprite> RuntimeTextureSpriteCache = new();
+        private static readonly string[] EnemySpriteResourcePrefixes =
+        {
+            "UI/Sprites/Enemies/",
+            "Sprites/Enemies/",
+            "Kingdom/Enemies/Sprites/"
+        };
 
         public event Action<EnemyRuntime, EnemyConfig> EnemySpawned;
         public event Action<EnemyRuntime, EnemyConfig> EnemyReachedGoal;
@@ -76,16 +83,26 @@ namespace Kingdom.Game
             }
             enemyGo.layer = ResolveEnemyLayer(entry.Enemy);
 
-            // 최소 전투 가시성을 위해 기본 SpriteRenderer를 부여한다.
+            // Assigns a default sprite renderer for combat visibility.
             var renderer = enemyGo.AddComponent<SpriteRenderer>();
             EnemyConfig config = entry.Enemy;
-            renderer.sprite = ResolveEnemySprite(config);
-            renderer.color = ResolveEnemyColor(config);
+            Sprite resolvedSprite = ResolveEnemySprite(config);
+            ResolveEnemyAnimationClips(
+                config,
+                resolvedSprite,
+                out Sprite[] idleFrames,
+                out Sprite[] moveFrames,
+                out Sprite[] attackFrames,
+                out Sprite[] dieFrames);
+            renderer.sprite = moveFrames != null && moveFrames.Length > 0 && moveFrames[0] != null
+                ? moveFrames[0]
+                : resolvedSprite;
+            renderer.color = ResolveEnemyColor(config, IsFallbackEnemySprite(resolvedSprite));
             renderer.sortingOrder = 20;
             enemyGo.transform.localScale = Vector3.one * ResolveEnemyScale(config);
 
             EnemyRuntime enemy = enemyGo.AddComponent<EnemyRuntime>();
-            enemy.Initialize(config, path);
+            enemy.Initialize(config, path, renderer, idleFrames, moveFrames, attackFrames, dieFrames);
             enemy.ReachedGoal += OnEnemyReachedGoal;
             enemy.Killed += OnEnemyKilled;
             enemy.DeathBurstTriggered += OnEnemyDeathBurstTriggered;
@@ -113,7 +130,35 @@ namespace Kingdom.Game
             enemy.DeathBurstTriggered -= OnEnemyDeathBurstTriggered;
             _enemyConfigMap.Remove(enemy);
             EnemyKilled?.Invoke(enemy, config);
-            Destroy(enemy.gameObject);
+
+            float deathDelay = enemy != null ? enemy.GetDeathVisualDuration() : 0f;
+            if (deathDelay > 0f && enemy != null)
+            {
+                StartCoroutine(CoDestroyEnemyAfterDelay(enemy.gameObject, deathDelay));
+            }
+            else if (enemy != null)
+            {
+                Destroy(enemy.gameObject);
+            }
+        }
+
+        private IEnumerator CoDestroyEnemyAfterDelay(GameObject enemyObject, float delay)
+        {
+            if (enemyObject == null)
+            {
+                yield break;
+            }
+
+            float safeDelay = Mathf.Max(0f, delay);
+            if (safeDelay > 0f)
+            {
+                yield return new WaitForSeconds(safeDelay);
+            }
+
+            if (enemyObject != null)
+            {
+                Destroy(enemyObject);
+            }
         }
 
         private void OnEnemyDeathBurstTriggered(EnemyRuntime source, float radius, float damage, Vector3 center)
@@ -185,29 +230,413 @@ namespace Kingdom.Game
                 return config.Sprite;
             }
 
+            if (config != null && TryLoadSprite(config.RuntimeSpriteResourcePath, out Sprite byResourcePath))
+            {
+                return byResourcePath;
+            }
+
             if (config != null && !string.IsNullOrWhiteSpace(config.EnemyId))
             {
-                // 규칙 기반 리소스 경로: Resources/UI/Sprites/Enemies/{EnemyId}.png
-                Sprite byId = Resources.Load<Sprite>($"UI/Sprites/Enemies/{config.EnemyId}");
-                if (byId != null)
+                string enemyId = config.EnemyId.Trim();
+                for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
                 {
-                    return byId;
+                    string prefix = EnemySpriteResourcePrefixes[i];
+                    if (TryLoadSprite(prefix + enemyId, out Sprite byId))
+                    {
+                        return byId;
+                    }
+
+                    if (TryLoadSprite($"{prefix}{enemyId}/{enemyId}", out Sprite byFolderId))
+                    {
+                        return byFolderId;
+                    }
                 }
             }
 
             return GetFallbackEnemySprite();
         }
 
-        private static Color ResolveEnemyColor(EnemyConfig config)
+        private static bool TryLoadSprite(string resourcePath, out Sprite sprite)
+        {
+            sprite = null;
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            Sprite single = Resources.Load<Sprite>(resourcePath);
+            if (single != null)
+            {
+                sprite = single;
+                return true;
+            }
+
+            Sprite[] multiple = Resources.LoadAll<Sprite>(resourcePath);
+            if (multiple == null || multiple.Length <= 0)
+            {
+                if (RuntimeTextureSpriteCache.TryGetValue(resourcePath, out Sprite cached) && cached != null)
+                {
+                    sprite = cached;
+                    return true;
+                }
+
+                Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+                if (texture == null)
+                {
+                    texture = TryLoadTextureFromDisk(resourcePath);
+                }
+
+                if (texture == null)
+                {
+                    return false;
+                }
+
+                sprite = Sprite.Create(
+                    texture,
+                    new Rect(0f, 0f, texture.width, texture.height),
+                    new Vector2(0.5f, 0f),
+                    Mathf.Max(16f, texture.width));
+                RuntimeTextureSpriteCache[resourcePath] = sprite;
+                return true;
+            }
+
+            Array.Sort(multiple, CompareSpriteByName);
+            sprite = multiple[0];
+            return sprite != null;
+        }
+
+        private static bool TryLoadSprites(string resourcePath, out Sprite[] sprites)
+        {
+            sprites = Array.Empty<Sprite>();
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            Sprite[] multiple = Resources.LoadAll<Sprite>(resourcePath);
+            if (multiple != null && multiple.Length > 0)
+            {
+                Array.Sort(multiple, CompareSpriteByName);
+                sprites = multiple;
+                return true;
+            }
+
+            if (TryLoadSprite(resourcePath, out Sprite single) && single != null)
+            {
+                sprites = new[] { single };
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void ResolveEnemyAnimationClips(
+            EnemyConfig config,
+            Sprite resolvedSprite,
+            out Sprite[] idleFrames,
+            out Sprite[] moveFrames,
+            out Sprite[] attackFrames,
+            out Sprite[] dieFrames)
+        {
+            idleFrames = Array.Empty<Sprite>();
+            moveFrames = Array.Empty<Sprite>();
+            attackFrames = Array.Empty<Sprite>();
+            dieFrames = Array.Empty<Sprite>();
+
+            string runtimePath = config != null ? config.RuntimeSpriteResourcePath : string.Empty;
+            string enemyId = config != null ? (config.EnemyId ?? string.Empty).Trim() : string.Empty;
+
+            if (TryLoadSprites(runtimePath, out Sprite[] byPath))
+            {
+                moveFrames = byPath;
+            }
+
+            if ((moveFrames == null || moveFrames.Length <= 0) && !string.IsNullOrWhiteSpace(enemyId))
+            {
+                for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
+                {
+                    string prefix = EnemySpriteResourcePrefixes[i];
+                    if (TryLoadSprites(prefix + enemyId, out Sprite[] byId))
+                    {
+                        moveFrames = byId;
+                        break;
+                    }
+
+                    if (TryLoadSprites($"{prefix}{enemyId}/{enemyId}", out Sprite[] byFolderId))
+                    {
+                        moveFrames = byFolderId;
+                        break;
+                    }
+                }
+            }
+
+            idleFrames = TryResolveEnemyActionFrames("idle", runtimePath, enemyId, moveFrames);
+            attackFrames = TryResolveEnemyActionFrames("attack", runtimePath, enemyId, moveFrames);
+            dieFrames = TryResolveEnemyActionFrames("die", runtimePath, enemyId, attackFrames);
+
+            if (moveFrames == null || moveFrames.Length <= 0)
+            {
+                moveFrames = resolvedSprite != null
+                    ? new[] { resolvedSprite }
+                    : new[] { GetFallbackEnemySprite() };
+            }
+
+            if (idleFrames == null || idleFrames.Length <= 0)
+            {
+                idleFrames = moveFrames;
+            }
+
+            if (attackFrames == null || attackFrames.Length <= 0)
+            {
+                attackFrames = moveFrames;
+            }
+
+            if (dieFrames == null || dieFrames.Length <= 0)
+            {
+                dieFrames = attackFrames;
+            }
+        }
+
+        private static Sprite[] TryResolveEnemyActionFrames(string action, string runtimePath, string enemyId, Sprite[] fallback)
+        {
+            var candidates = BuildEnemyActionCandidates(action, runtimePath, enemyId);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryLoadSprites(candidates[i], out Sprite[] loaded) && loaded.Length > 0)
+                {
+                    return loaded;
+                }
+            }
+
+            return fallback ?? Array.Empty<Sprite>();
+        }
+
+        private static List<string> BuildEnemyActionCandidates(string action, string runtimePath, string enemyId)
+        {
+            var candidates = new List<string>(20);
+            if (!string.IsNullOrWhiteSpace(runtimePath))
+            {
+                AddUniquePath(candidates, ReplaceActionToken(runtimePath, action));
+                AddUniquePath(candidates, AppendActionSegment(runtimePath, action));
+                AddUniquePath(candidates, $"{runtimePath}_{action}");
+                AddUniquePath(candidates, $"{action}_{runtimePath}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(enemyId))
+            {
+                for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
+                {
+                    string prefix = EnemySpriteResourcePrefixes[i];
+                    AddUniquePath(candidates, $"{prefix}{enemyId}/{action}");
+                    AddUniquePath(candidates, $"{prefix}{action}_{enemyId}");
+                    AddUniquePath(candidates, $"{prefix}{enemyId}_{action}");
+                    AddUniquePath(candidates, $"{prefix}{action}_{enemyId}_Processed");
+                }
+            }
+
+            return candidates;
+        }
+
+        private static string AppendActionSegment(string resourcePath, string action)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(action))
+            {
+                return string.Empty;
+            }
+
+            int slash = resourcePath.LastIndexOf('/');
+            if (slash < 0)
+            {
+                return $"{action}/{resourcePath}";
+            }
+
+            string dir = resourcePath.Substring(0, slash);
+            return $"{dir}/{action}";
+        }
+
+        private static string ReplaceActionToken(string resourcePath, string action)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(action))
+            {
+                return resourcePath ?? string.Empty;
+            }
+
+            string[] prefixedTokens =
+            {
+                "idle_",
+                "walk_",
+                "run_",
+                "move_",
+                "attack_",
+                "die_",
+                "death_",
+                "dead_"
+            };
+
+            for (int i = 0; i < prefixedTokens.Length; i++)
+            {
+                string token = prefixedTokens[i];
+                int index = resourcePath.IndexOf(token, StringComparison.OrdinalIgnoreCase);
+                if (index >= 0 && (index == 0 || resourcePath[index - 1] == '/'))
+                {
+                    return $"{resourcePath.Substring(0, index)}{action}_{resourcePath.Substring(index + token.Length)}";
+                }
+            }
+
+            string[] segments = resourcePath.Split('/');
+            for (int i = 0; i < segments.Length; i++)
+            {
+                if (IsActionSegment(segments[i]))
+                {
+                    segments[i] = action;
+                    return string.Join("/", segments);
+                }
+            }
+
+            return resourcePath;
+        }
+
+        private static bool IsActionSegment(string segment)
+        {
+            if (string.IsNullOrWhiteSpace(segment))
+            {
+                return false;
+            }
+
+            return string.Equals(segment, "idle", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "walk", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "run", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "move", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "attack", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "die", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "death", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(segment, "dead", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void AddUniquePath(List<string> candidates, string path)
+        {
+            if (candidates == null || string.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (string.Equals(candidates[i], path, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+            }
+
+            candidates.Add(path);
+        }
+
+        private static Texture2D TryLoadTextureFromDisk(string resourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return null;
+            }
+
+            string normalized = resourcePath.Replace('\\', '/').TrimStart('/');
+            string absolutePath = System.IO.Path.Combine(Application.dataPath, "Resources", normalized + ".png");
+            if (!System.IO.File.Exists(absolutePath))
+            {
+                return null;
+            }
+
+            byte[] bytes = System.IO.File.ReadAllBytes(absolutePath);
+            if (bytes == null || bytes.Length <= 0)
+            {
+                return null;
+            }
+
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            if (!texture.LoadImage(bytes, false))
+            {
+                UnityEngine.Object.Destroy(texture);
+                return null;
+            }
+
+            return texture;
+        }
+
+        private static int CompareSpriteByName(Sprite a, Sprite b)
+        {
+            if (a == null && b == null)
+            {
+                return 0;
+            }
+
+            if (a == null)
+            {
+                return 1;
+            }
+
+            if (b == null)
+            {
+                return -1;
+            }
+
+            if (TryParseFrameIndices(a.name, out int aRow, out int aCol) &&
+                TryParseFrameIndices(b.name, out int bRow, out int bCol))
+            {
+                int rowComp = aRow.CompareTo(bRow);
+                if (rowComp != 0)
+                {
+                    return rowComp;
+                }
+
+                int colComp = aCol.CompareTo(bCol);
+                if (colComp != 0)
+                {
+                    return colComp;
+                }
+            }
+
+            return string.Compare(a.name, b.name, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool TryParseFrameIndices(string name, out int row, out int col)
+        {
+            row = int.MaxValue;
+            col = int.MaxValue;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return false;
+            }
+
+            string[] tokens = name.Split('_');
+            if (tokens.Length < 2)
+            {
+                return false;
+            }
+
+            bool hasRow = int.TryParse(tokens[tokens.Length - 2], out row);
+            bool hasCol = int.TryParse(tokens[tokens.Length - 1], out col);
+            return hasRow && hasCol;
+        }
+
+        private static bool IsFallbackEnemySprite(Sprite sprite)
+        {
+            return sprite == null || sprite == GetFallbackEnemySprite();
+        }
+
+        private static Color ResolveEnemyColor(EnemyConfig config, bool fallbackSprite)
         {
             if (config == null)
             {
                 return new Color(0.75f, 0.85f, 1f, 1f);
             }
 
-            if (config.Tint.a > 0f && config.Tint != Color.white)
+            if (HasExplicitTint(config.Tint))
             {
                 return config.Tint;
+            }
+
+            if (!fallbackSprite)
+            {
+                return Color.white;
             }
 
             if (config.IsBossUnit)
@@ -215,12 +644,21 @@ namespace Kingdom.Game
                 return new Color(0.75f, 0.2f, 0.2f, 1f);
             }
 
-            // EnemyId 기반 고정 색상으로 흰 박스 군집을 피한다.
             int hash = Mathf.Abs((config.EnemyId ?? "Enemy").GetHashCode());
             float h = (hash % 360) / 360f;
             Color c = Color.HSVToRGB(h, 0.45f, 0.95f);
             c.a = 1f;
             return c;
+        }
+
+        private static bool HasExplicitTint(Color tint)
+        {
+            const float epsilon = 0.0001f;
+            return tint.a > 0f
+                && (Mathf.Abs(tint.r - 1f) > epsilon
+                    || Mathf.Abs(tint.g - 1f) > epsilon
+                    || Mathf.Abs(tint.b - 1f) > epsilon
+                    || Mathf.Abs(tint.a - 1f) > epsilon);
         }
 
         private static float ResolveEnemyScale(EnemyConfig config)

@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: Goblin
   EnemyType: 0
   Sprite: {fileID: 0}
+  RuntimeSpriteResourcePath: Sprites/Heroes/walk_Change_the_background_202602182330_Processed
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.55
   MaxHp: 90

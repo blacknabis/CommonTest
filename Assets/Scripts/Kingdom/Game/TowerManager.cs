@@ -97,6 +97,13 @@ namespace Kingdom.Game
         private readonly List<Vector3> _towerSlots = new();
         private readonly List<int> _freeSlotIndices = new();
         private static readonly Dictionary<TowerType, Sprite> FallbackTowerSprites = new();
+        private static readonly Dictionary<string, Sprite> RuntimeTextureSpriteCache = new();
+        private static readonly string[] TowerSpriteResourcePrefixes =
+        {
+            "UI/Sprites/Towers/",
+            "Sprites/Towers/",
+            "Kingdom/Towers/Sprites/"
+        };
         private static Sprite BarracksSoldierSprite;
 
         private SpawnManager _spawnManager;
@@ -542,11 +549,10 @@ namespace Kingdom.Game
             var sr = go.AddComponent<SpriteRenderer>();
             
             // Initial sprite and scale from Level 1
-            Sprite initialSprite = null;
+            Sprite initialSprite = ResolveTowerLevelSprite(config, towerType, 0);
             float initialScale = 0.65f;
             if (config != null && config.Levels != null && config.Levels.Length > 0)
             {
-                initialSprite = config.Levels[0].SpriteOverride;
                 if (config.Levels[0].VisualScale > 0.05f) 
                 {
                     initialScale = config.Levels[0].VisualScale;
@@ -830,6 +836,234 @@ namespace Kingdom.Game
             return total;
         }
 
+        private static Sprite ResolveTowerLevelSprite(TowerConfig config, TowerType towerType, int levelIndex)
+        {
+            if (config == null)
+            {
+                return null;
+            }
+
+            int safeLevelIndex = Mathf.Max(0, levelIndex);
+            if (config.Levels != null && safeLevelIndex < config.Levels.Length)
+            {
+                TowerLevelData levelData = config.Levels[safeLevelIndex];
+                if (levelData.SpriteOverride != null)
+                {
+                    return levelData.SpriteOverride;
+                }
+
+                if (TryLoadSprite(levelData.SpriteResourcePath, out Sprite byLevelPath))
+                {
+                    return byLevelPath;
+                }
+            }
+
+            string expandedConfigPath = ExpandTowerTemplatePath(config.RuntimeSpriteResourcePath, towerType, safeLevelIndex);
+            if (TryLoadSprite(expandedConfigPath, out Sprite byConfigPath))
+            {
+                return byConfigPath;
+            }
+
+            List<string> candidates = BuildTowerSpritePathCandidates(config.TowerId, towerType, safeLevelIndex);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryLoadSprite(candidates[i], out Sprite fromConvention))
+                {
+                    return fromConvention;
+                }
+            }
+
+            return null;
+        }
+
+        private static Sprite ResolveBarracksSoldierSprite(TowerConfig config)
+        {
+            if (config != null && TryLoadSprite(config.BarracksData.SoldierSpriteResourcePath, out Sprite byConfigPath))
+            {
+                return byConfigPath;
+            }
+
+            var candidates = new List<string>
+            {
+                "UI/Sprites/Barracks/Soldier",
+                "Sprites/Barracks/Soldier",
+                "UI/Sprites/Towers/Barracks/Soldier",
+                "Sprites/Towers/Barracks/Soldier",
+                "Kingdom/Towers/Sprites/Barracks/Soldier"
+            };
+
+            if (config != null && !string.IsNullOrWhiteSpace(config.TowerId))
+            {
+                string towerId = config.TowerId.Trim();
+                candidates.Add($"UI/Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Kingdom/Towers/Sprites/{towerId}/Soldier");
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryLoadSprite(candidates[i], out Sprite loaded))
+                {
+                    return loaded;
+                }
+            }
+
+            Sprite generatedFallback = GetOrCreateBarracksSoldierSprite();
+            return generatedFallback != null ? generatedFallback : GetOrCreateFallbackTowerSprite(TowerType.Barracks);
+        }
+
+        private static List<string> BuildTowerSpritePathCandidates(string towerId, TowerType towerType, int levelIndex)
+        {
+            string typeName = towerType.ToString();
+            string levelToken = Mathf.Max(1, levelIndex + 1).ToString();
+            var candidates = new List<string>(24);
+
+            for (int i = 0; i < TowerSpriteResourcePrefixes.Length; i++)
+            {
+                string prefix = TowerSpriteResourcePrefixes[i];
+                AddTowerNameCandidates(candidates, prefix, towerId, levelToken);
+                AddTowerNameCandidates(candidates, prefix, typeName, levelToken);
+            }
+
+            return candidates;
+        }
+
+        private static void AddTowerNameCandidates(List<string> candidates, string prefix, string towerName, string levelToken)
+        {
+            if (string.IsNullOrWhiteSpace(prefix) || string.IsNullOrWhiteSpace(towerName))
+            {
+                return;
+            }
+
+            string trimmed = towerName.Trim();
+            TryAddCandidate(candidates, $"{prefix}{trimmed}_L{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}/L{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}/Level{levelToken}");
+            TryAddCandidate(candidates, $"{prefix}{trimmed}");
+        }
+
+        private static void TryAddCandidate(List<string> candidates, string candidate)
+        {
+            if (string.IsNullOrWhiteSpace(candidate) || candidates.Contains(candidate))
+            {
+                return;
+            }
+
+            candidates.Add(candidate);
+        }
+
+        private static string ExpandTowerTemplatePath(string templatePath, TowerType towerType, int levelIndex)
+        {
+            if (string.IsNullOrWhiteSpace(templatePath))
+            {
+                return string.Empty;
+            }
+
+            int level = Mathf.Max(1, levelIndex + 1);
+            string expanded = templatePath.Replace("{tower}", towerType.ToString());
+            expanded = expanded.Replace("{level}", level.ToString());
+            return expanded;
+        }
+
+        private static bool TryLoadSprite(string resourcePath, out Sprite sprite)
+        {
+            sprite = null;
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            Sprite single = Resources.Load<Sprite>(resourcePath);
+            if (single != null)
+            {
+                sprite = single;
+                return true;
+            }
+
+            Sprite[] multiple = Resources.LoadAll<Sprite>(resourcePath);
+            if (multiple == null || multiple.Length <= 0)
+            {
+                if (RuntimeTextureSpriteCache.TryGetValue(resourcePath, out Sprite cached) && cached != null)
+                {
+                    sprite = cached;
+                    return true;
+                }
+
+                Texture2D texture = Resources.Load<Texture2D>(resourcePath);
+                if (texture == null)
+                {
+                    texture = TryLoadTextureFromDisk(resourcePath);
+                }
+
+                if (texture == null)
+                {
+                    return false;
+                }
+
+                sprite = Sprite.Create(
+                    texture,
+                    new Rect(0f, 0f, texture.width, texture.height),
+                    new Vector2(0.5f, 0f),
+                    Mathf.Max(16f, texture.width));
+                RuntimeTextureSpriteCache[resourcePath] = sprite;
+                return true;
+            }
+
+            System.Array.Sort(multiple, CompareSpriteByName);
+            sprite = multiple[0];
+            return sprite != null;
+        }
+
+        private static Texture2D TryLoadTextureFromDisk(string resourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return null;
+            }
+
+            string normalized = resourcePath.Replace('\\', '/').TrimStart('/');
+            string absolutePath = System.IO.Path.Combine(Application.dataPath, "Resources", normalized + ".png");
+            if (!System.IO.File.Exists(absolutePath))
+            {
+                return null;
+            }
+
+            byte[] bytes = System.IO.File.ReadAllBytes(absolutePath);
+            if (bytes == null || bytes.Length <= 0)
+            {
+                return null;
+            }
+
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            if (!texture.LoadImage(bytes, false))
+            {
+                UnityEngine.Object.Destroy(texture);
+                return null;
+            }
+
+            return texture;
+        }
+
+        private static int CompareSpriteByName(Sprite a, Sprite b)
+        {
+            if (a == null && b == null)
+            {
+                return 0;
+            }
+
+            if (a == null)
+            {
+                return 1;
+            }
+
+            if (b == null)
+            {
+                return -1;
+            }
+
+            return string.Compare(a.name, b.name, System.StringComparison.OrdinalIgnoreCase);
+        }
+
         private static Sprite GetOrCreateFallbackTowerSprite(TowerType towerType)
         {
             if (FallbackTowerSprites.TryGetValue(towerType, out Sprite cached) && cached != null)
@@ -1001,7 +1235,8 @@ namespace Kingdom.Game
             private const float BarracksThrowAxeCooldownSec = 3.5f;
             private const int MaxBarracksSoldierCount = 8;
             private const float BarracksSoldierIdleRadius = 0.58f;
-            private const float BarracksSoldierCombatRadius = 0.30f;
+            private const float BarracksSoldierCombatRadius = 0.42f;
+            private const float BarracksEnemyBlockRadius = 0.52f;
 
             private readonly Transform _transform;
             private readonly TowerType _towerType;
@@ -1356,7 +1591,8 @@ namespace Kingdom.Game
                         break;
                     }
 
-                    if (candidate.TryEnterBlock(TowerId, origin))
+                    Vector3 blockAnchor = GetBlockAnchorForSoldier(origin, soldier, squadSize);
+                    if (candidate.TryEnterBlock(TowerId, blockAnchor))
                     {
                         AssignEnemyToSoldier(candidate, soldier);
                     }
@@ -1640,8 +1876,11 @@ namespace Kingdom.Game
                     go.transform.localScale = Vector3.one * 0.62f;
 
                     var renderer = go.AddComponent<SpriteRenderer>();
-                    renderer.sprite = GetOrCreateFallbackTowerSprite(TowerType.Barracks);
-                    renderer.color = new Color(1f, 0.1f, 0.9f, 1f);
+                    Sprite soldierSprite = ResolveBarracksSoldierSprite(_config);
+                    renderer.sprite = soldierSprite;
+                    renderer.color = soldierSprite == GetOrCreateFallbackTowerSprite(TowerType.Barracks)
+                        ? new Color(1f, 0.1f, 0.9f, 1f)
+                        : Color.white;
                     if (_sr != null)
                     {
                         renderer.sortingLayerID = _sr.sortingLayerID;
@@ -1748,6 +1987,21 @@ namespace Kingdom.Game
 
                 float angle = (Mathf.PI * 2f * index) / count;
                 return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * radius;
+            }
+
+            private static Vector3 GetBlockAnchorForSoldier(Vector3 rallyOrigin, BarracksSoldierRuntime soldier, int squadSize)
+            {
+                int index = 0;
+                if (soldier != null)
+                {
+                    index = Mathf.Max(0, soldier.SoldierIndex - 1);
+                }
+
+                int clampedCount = Mathf.Clamp(squadSize, 1, MaxBarracksSoldierCount);
+                Vector3 offset = GetFormationOffset(index, clampedCount, BarracksEnemyBlockRadius);
+                Vector3 anchor = rallyOrigin + offset;
+                anchor.z = rallyOrigin.z;
+                return anchor;
             }
 
             private EnemyRuntime FindClosestGroundEnemy(
@@ -1968,20 +2222,28 @@ namespace Kingdom.Game
                     _baseScale = new Vector3(scale, scale, 1f);
                     _transform.localScale = _baseScale; // Immediate sync
                     
-                    if (_sr != null && levelData.SpriteOverride != null)
+                    if (_sr != null)
                     {
-                        _sr.sprite = levelData.SpriteOverride;
-                    }
-                    else if (_sr != null && levelData.SpriteOverride == null)
-                    {
-                        if (_sr.sprite == null)
+                        Sprite resolvedLevelSprite = ResolveTowerLevelSprite(_config, _towerType, levelIndex);
+                        if (resolvedLevelSprite != null)
                         {
-                            _sr.sprite = GetOrCreateFallbackTowerSprite(_towerType);
+                            _sr.sprite = resolvedLevelSprite;
+                            _sr.color = Color.white;
                         }
-
-                        // Tint change fallback if no sprite
-                        Color baseColor = GetTowerTint(_towerType);
-                        _sr.color = Color.Lerp(baseColor, Color.white, (_level - 1) * 0.25f);
+                        else
+                        {
+                            bool fallbackVisual = _sr.sprite == null || _sr.sprite == GetOrCreateFallbackTowerSprite(_towerType);
+                            if (fallbackVisual)
+                            {
+                                _sr.sprite = GetOrCreateFallbackTowerSprite(_towerType);
+                                Color baseColor = GetTowerTint(_towerType);
+                                _sr.color = Color.Lerp(baseColor, Color.white, (_level - 1) * 0.25f);
+                            }
+                            else
+                            {
+                                _sr.color = Color.white;
+                            }
+                        }
                     }
                     
                     // Do a visual punch

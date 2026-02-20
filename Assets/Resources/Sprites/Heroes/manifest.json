@@ -1,0 +1,149 @@
+{
+    "version": 1,
+    "updatedAtUtc": "2026-02-20T10:44:56.9767374Z",
+    "sourceFiles": [
+        "Change_the_background_202602182330.jpeg"
+    ],
+    "actions": [
+        {
+            "actionGroup": "walk",
+            "sourceFile": "Change_the_background_202602182330.jpeg",
+            "outputTexture": "walk_Change_the_background_202602182330_Processed.png",
+            "frameCount": 4,
+            "maxFrameWidth": 134,
+            "maxFrameHeight": 160,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "CustomGrid",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": false,
+                "tolerance": 0.25,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 1,
+                "rows": 2,
+                "cols": 2,
+                "innerPadding": 5,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2
+            },
+            "warnings": [
+                "source=Change_the_background_202602182330"
+            ]
+        },
+        {
+            "actionGroup": "attack",
+            "sourceFile": "Change_the_background_202602182330.jpeg",
+            "outputTexture": "attack_Change_the_background_202602182330_Processed.png",
+            "frameCount": 4,
+            "maxFrameWidth": 134,
+            "maxFrameHeight": 160,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "CustomGrid",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": false,
+                "tolerance": 0.25,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 1,
+                "rows": 2,
+                "cols": 2,
+                "innerPadding": 5,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2
+            },
+            "warnings": [
+                "source=Change_the_background_202602182330"
+            ]
+        },
+        {
+            "actionGroup": "die",
+            "sourceFile": "Change_the_background_202602182330.jpeg",
+            "outputTexture": "die_Change_the_background_202602182330_Processed.png",
+            "frameCount": 4,
+            "maxFrameWidth": 134,
+            "maxFrameHeight": 160,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "CustomGrid",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": true,
+                "tolerance": 0.25,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 1,
+                "rows": 2,
+                "cols": 2,
+                "innerPadding": 5,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2
+            },
+            "warnings": [
+                "source=Change_the_background_202602182330"
+            ]
+        },
+        {
+            "actionGroup": "idle",
+            "sourceFile": "Change_the_background_202602182330.jpeg",
+            "outputTexture": "idle_Change_the_background_202602182330_Processed.png",
+            "frameCount": 4,
+            "maxFrameWidth": 131,
+            "maxFrameHeight": 160,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "CustomGrid",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": true,
+                "tolerance": 0.25,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 1,
+                "rows": 2,
+                "cols": 2,
+                "innerPadding": 5,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2
+            },
+            "warnings": [
+                "source=Change_the_background_202602182330"
+            ]
+        }
+    ]
+}

@@ -37,6 +37,8 @@ namespace Kingdom.Game
     {
         public int SquadSize;
         public float RallyRange;
+        [Tooltip("Optional Resources path (without extension) for barracks soldier sprite. Example: Sprites/Barracks/Soldier")]
+        public string SoldierSpriteResourcePath;
 
         [Header("Soldier Combat Stats")]
         public float SoldierMaxHp;
@@ -55,6 +57,8 @@ namespace Kingdom.Game
         public AttackDeliveryType AttackDeliveryType;
         public string ProjectileProfileId;
         public Sprite SpriteOverride;
+        [Tooltip("Optional Resources path (without extension) for this level sprite. Example: Sprites/Towers/Archer_L1")]
+        public string SpriteResourcePath;
         public float VisualScale;
     }
 
@@ -76,6 +80,8 @@ namespace Kingdom.Game
     {
         public string TowerId = "BasicTower";
         public TowerType TowerType = TowerType.Archer;
+        [Tooltip("Optional fallback Resources path (without extension) for runtime tower sprite. Supports {level} and {tower} tokens.")]
+        public string RuntimeSpriteResourcePath;
         
         [Header("Damage Settings")]
         public DamageType DamageType = DamageType.Physical;
