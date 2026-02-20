@@ -34,6 +34,7 @@ namespace Kingdom.App
         [SerializeField] private TextMeshProUGUI txtWaveInfo;
         [SerializeField] private TextMeshProUGUI txtWaveTimer;
         [SerializeField] private TextMeshProUGUI txtStateInfo;
+        [SerializeField] private TextMeshProUGUI txtWaveStartBanner;
         [SerializeField] private TextMeshProUGUI txtLives;
         [SerializeField] private TextMeshProUGUI txtGold;
 
@@ -131,6 +132,7 @@ namespace Kingdom.App
             SetSpeedVisual(false);
             UpdateWaveInfo(1, 1);
             HideWaveReadyCountdown();
+            HideWaveStartBanner();
             UpdateResourceInfo(20, 100);
             SetHeroPortrait(null);
             SetSpellCooldown("reinforce", 0f);
@@ -163,6 +165,8 @@ namespace Kingdom.App
                 _audioOptionsPopupRoot = null;
             }
 
+            CancelInvoke(nameof(HideWaveStartBanner));
+            HideWaveStartBanner();
             Time.timeScale = 1f;
             base.OnExit();
         }
@@ -253,6 +257,36 @@ namespace Kingdom.App
             {
                 txtWaveTimer.gameObject.SetActive(false);
             }
+        }
+
+        public void ShowWaveStartBanner(int currentWave, int totalWave, float durationSec = 1.2f)
+        {
+            if (txtWaveStartBanner == null)
+            {
+                return;
+            }
+
+            int safeCurrent = Mathf.Max(1, currentWave);
+            int safeTotal = Mathf.Max(1, totalWave);
+            txtWaveStartBanner.text = $"WAVE {safeCurrent}/{safeTotal} START!";
+            txtWaveStartBanner.gameObject.SetActive(true);
+            txtWaveStartBanner.alpha = 1f;
+
+            CancelInvoke(nameof(HideWaveStartBanner));
+            if (durationSec > 0f)
+            {
+                Invoke(nameof(HideWaveStartBanner), durationSec);
+            }
+        }
+
+        public void HideWaveStartBanner()
+        {
+            if (txtWaveStartBanner == null)
+            {
+                return;
+            }
+
+            txtWaveStartBanner.gameObject.SetActive(false);
         }
 
         public void SetSpellCooldown(string spellId, float normalized01)
@@ -537,6 +571,7 @@ namespace Kingdom.App
             txtWaveInfo = txtWaveInfo != null ? txtWaveInfo : FindText("txtWaveInfo");
             txtWaveTimer = txtWaveTimer != null ? txtWaveTimer : FindText("txtWaveTimer");
             txtStateInfo = txtStateInfo != null ? txtStateInfo : FindText("txtStateInfo");
+            txtWaveStartBanner = txtWaveStartBanner != null ? txtWaveStartBanner : FindText("txtWaveStartBanner");
             txtLives = txtLives != null ? txtLives : FindText("txtLives");
             txtGold = txtGold != null ? txtGold : FindText("txtGold");
             txtTowerInfo = txtTowerInfo != null ? txtTowerInfo : FindText("txtTowerInfo");
@@ -610,6 +645,7 @@ namespace Kingdom.App
         {
             txtWaveInfo ??= CreateText("txtWaveInfo");
             txtStateInfo ??= CreateText("txtStateInfo");
+            txtWaveStartBanner ??= CreateText("txtWaveStartBanner");
             txtLives ??= CreateText("txtLives");
             txtGold ??= CreateText("txtGold");
 
@@ -645,6 +681,7 @@ namespace Kingdom.App
             Reparent(btnSpellRain);
             Reparent(txtWaveInfo);
             Reparent(txtStateInfo);
+            Reparent(txtWaveStartBanner);
             Reparent(txtLives);
             Reparent(txtGold);
             Reparent(txtTowerInfo);
@@ -661,6 +698,7 @@ namespace Kingdom.App
             PlaceTextTopLeft(txtStateInfo, new Vector2(HudMargin, -HudMargin - 50f), 30);
             PlaceTextTopLeft(txtLives, new Vector2(HudMargin, -HudMargin - 95f), 28);
             PlaceTextTopLeft(txtGold, new Vector2(HudMargin, -HudMargin - 135f), 28);
+            PlaceTextTopCenter(txtWaveStartBanner, new Vector2(0f, -96f), 56f);
 
             PlaceButton(btnPause, new Vector2(1f, 1f), new Vector2(-HudMargin, -HudMargin), new Vector2(120f, 56f), new Color(0.18f, 0.2f, 0.25f, 0.9f), "Pause");
             PlaceButton(btnAudioOptions, new Vector2(1f, 1f), new Vector2(-HudMargin - 132f, -HudMargin), new Vector2(120f, 56f), new Color(0.2f, 0.32f, 0.24f, 0.9f), "Audio");
@@ -859,6 +897,25 @@ namespace Kingdom.App
             rect.sizeDelta = new Vector2(560f, 46f);
             text.fontSize = fontSize;
             text.alignment = TextAlignmentOptions.Left;
+        }
+
+        private static void PlaceTextTopCenter(TextMeshProUGUI text, Vector2 pos, float fontSize)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            var rect = text.GetComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.5f, 1f);
+            rect.anchorMax = new Vector2(0.5f, 1f);
+            rect.pivot = new Vector2(0.5f, 1f);
+            rect.anchoredPosition = pos;
+            rect.sizeDelta = new Vector2(840f, 68f);
+            text.fontSize = fontSize;
+            text.alignment = TextAlignmentOptions.Center;
+            text.color = new Color(1f, 0.93f, 0.66f, 1f);
+            text.raycastTarget = false;
         }
 
         private static void PlaceButton(Button button, Vector2 anchor, Vector2 pos, Vector2 size, Color color, string label)
@@ -1317,6 +1374,7 @@ namespace Kingdom.App
                 "btnBuildTower",
                 "txtWaveInfo",
                 "txtStateInfo",
+                "txtWaveStartBanner",
                 "txtLives",
                 "txtGold",
                 "txtTowerInfo",
@@ -1360,6 +1418,7 @@ namespace Kingdom.App
                 || tr == GetTransform(btnBuildTower)
                 || tr == GetTransform(txtWaveInfo)
                 || tr == GetTransform(txtStateInfo)
+                || tr == GetTransform(txtWaveStartBanner)
                 || tr == GetTransform(txtLives)
                 || tr == GetTransform(txtGold)
                 || tr == GetTransform(txtTowerInfo)

@@ -12,15 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa95b7a7e724ce4a9f3d649db34ab11, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
-  TowerId: BasicTower
-  TowerType: 0
-  BuildCost: 70
-  AttackRange: 2.2
-  AttackCooldown: 0.75
-  AttackDamage: 34
-  DamageType: 0
+  TowerId: Mage
+  TowerType: 2
+  DamageType: 1
+  TargetType: 2
   HalfPhysicalArmorPenetration: 0
   CanTargetAir: 1
   BarracksData:
     SquadSize: 0
     RallyRange: 0
+  Levels:
+  - Cost: 98
+    Damage: 34
+    Cooldown: 1.35
+    Range: 2
+    AttackDeliveryType: 0
+    ProjectileProfileId: Mage_Bolt
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.65
+  - Cost: 132
+    Damage: 44.199997
+    Cooldown: 1.2825
+    Range: 2.1
+    AttackDeliveryType: 0
+    ProjectileProfileId: Mage_Bolt
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.72999996
+  - Cost: 191
+    Damage: 57.459995
+    Cooldown: 1.218375
+    Range: 2.31
+    AttackDeliveryType: 0
+    ProjectileProfileId: Mage_Bolt
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.80999994

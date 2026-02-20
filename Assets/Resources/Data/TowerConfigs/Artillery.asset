@@ -12,15 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa95b7a7e724ce4a9f3d649db34ab11, type: 3}
   m_Name: Artillery
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
-  TowerId: BasicTower
-  TowerType: 0
-  BuildCost: 70
-  AttackRange: 2.2
-  AttackCooldown: 0.75
-  AttackDamage: 34
+  TowerId: Artillery
+  TowerType: 3
   DamageType: 0
-  HalfPhysicalArmorPenetration: 0
-  CanTargetAir: 1
+  TargetType: 0
+  HalfPhysicalArmorPenetration: 1
+  CanTargetAir: 0
   BarracksData:
     SquadSize: 0
     RallyRange: 0
+  Levels:
+  - Cost: 126
+    Damage: 25
+    Cooldown: 2.6
+    Range: 2.4
+    AttackDeliveryType: 0
+    ProjectileProfileId: Artillery_Shell
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.65
+  - Cost: 170
+    Damage: 32.5
+    Cooldown: 2.4699998
+    Range: 2.52
+    AttackDeliveryType: 0
+    ProjectileProfileId: Artillery_Shell
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.72999996
+  - Cost: 247
+    Damage: 42.249996
+    Cooldown: 2.3465
+    Range: 2.772
+    AttackDeliveryType: 0
+    ProjectileProfileId: Artillery_Shell
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.80999994

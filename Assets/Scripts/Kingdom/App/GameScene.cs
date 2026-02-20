@@ -1,4 +1,5 @@
 using Common.UI;
+using Common.Utils;
 using Common.App;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,10 @@ namespace Kingdom.App
         private const float EarlyCallCooldownMinRatio = 0.35f;
         private const float FastForwardTimeScale = 2f;
         private const int DebugGrantGoldAmount = 500;
+        private const string WaveStartSfxResourcePath = "Audio/SFX/UI_WaveStart_Heroic";
+        private const string WaveStartSfxFallbackResourcePath = "Audio/SFX/UI_Common_Click";
+        private const float WaveStartBannerDurationSec = 1.2f;
+        private const float WaveStartSfxVolumeScale = 0.85f;
 
         private GameStateController _stateController;
         private PathManager _pathManager;
@@ -60,6 +65,9 @@ namespace Kingdom.App
         private int _waveEarlyCallSuccess;
         private readonly Dictionary<TowerType, int> _waveTowerBuildCount = new();
         private readonly Dictionary<string, int> _waveLeakByEnemyType = new();
+        private int _waveStartAnnouncedWave = -1;
+        private bool _waveStartSfxResolved;
+        private AudioClip _waveStartSfxClip;
 
         public override bool OnInit()
         {
@@ -141,6 +149,9 @@ namespace Kingdom.App
             _isFastForward = false;
             _activeTimeScale = 1f;
             _waveKpiActive = false;
+            _waveStartAnnouncedWave = -1;
+            _waveStartSfxResolved = false;
+            _waveStartSfxClip = null;
             if (_activeWaveConfig != null && _activeWaveConfig.Waves != null && _activeWaveConfig.Waves.Count > 0)
             {
                 _stateController.SetTotalWaves(_activeWaveConfig.Waves.Count);
@@ -160,6 +171,7 @@ namespace Kingdom.App
             _isRallyPlacementMode = false;
             _resultPresented = false;
             _resultFinalized = false;
+            _waveStartAnnouncedWave = -1;
 
             if (MainUI is GameView gameView)
             {
@@ -309,7 +321,17 @@ namespace Kingdom.App
             StageConfig stageConfig = worldMapManager != null ? worldMapManager.CurrentStageConfig : null;
             if (stageConfig == null || stageConfig.Stages == null || stageConfig.Stages.Count == 0)
             {
-                return null;
+                int selectedStageIdFallback = WorldMapScene.SelectedStageId;
+                if (selectedStageIdFallback > 0)
+                {
+                    WaveConfig directById = Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{selectedStageIdFallback}_WaveConfig");
+                    if (directById != null)
+                    {
+                        return directById;
+                    }
+                }
+
+                return Resources.Load<WaveConfig>("Data/WaveConfigs/Stage_1_WaveConfig");
             }
 
             int selectedStageId = WorldMapScene.SelectedStageId;
@@ -698,6 +720,15 @@ namespace Kingdom.App
                     gameView.HideWaveReadyCountdown();
                 }
 
+                if (state == GameFlowState.WaveRunning)
+                {
+                    TryPresentWaveStartCue(gameView);
+                }
+                else
+                {
+                    gameView.HideWaveStartBanner();
+                }
+
                 if (state == GameFlowState.Result)
                 {
                     PresentBattleResult(gameView);
@@ -723,6 +754,52 @@ namespace Kingdom.App
             }
 
             gameView.SetWaveReadyCountdown(remainingSeconds);
+        }
+
+        private void TryPresentWaveStartCue(GameView gameView)
+        {
+            if (_stateController == null)
+            {
+                return;
+            }
+
+            int currentWave = Mathf.Max(1, _stateController.CurrentWave);
+            if (_waveStartAnnouncedWave == currentWave)
+            {
+                return;
+            }
+
+            _waveStartAnnouncedWave = currentWave;
+            gameView.ShowWaveStartBanner(currentWave, _stateController.TotalWaves, WaveStartBannerDurationSec);
+
+            AudioClip clip = ResolveWaveStartSfxClip();
+            if (clip != null)
+            {
+                AudioHelper.Instance?.PlaySFX(clip, WaveStartSfxVolumeScale);
+            }
+        }
+
+        private AudioClip ResolveWaveStartSfxClip()
+        {
+            if (_waveStartSfxResolved)
+            {
+                return _waveStartSfxClip;
+            }
+
+            _waveStartSfxResolved = true;
+            _waveStartSfxClip = Resources.Load<AudioClip>(WaveStartSfxResourcePath);
+            if (_waveStartSfxClip != null)
+            {
+                return _waveStartSfxClip;
+            }
+
+            _waveStartSfxClip = Resources.Load<AudioClip>(WaveStartSfxFallbackResourcePath);
+            if (_waveStartSfxClip == null)
+            {
+                Debug.LogWarning($"[GameScene] Wave start SFX not found. path={WaveStartSfxResourcePath}, fallback={WaveStartSfxFallbackResourcePath}");
+            }
+
+            return _waveStartSfxClip;
         }
 
         private void PresentBattleResult(GameView gameView)
@@ -920,7 +997,7 @@ namespace Kingdom.App
             return fallback;
         }
 
-        private static HeroConfig ResolveHeroConfig(string resourcePath)
+        private static HeroConfig ResolveHeroConfig(string resourcePath, string fallbackHeroId = DefaultHeroId)
         {
             HeroConfig config = Resources.Load<HeroConfig>(resourcePath);
             if (config != null)
@@ -928,15 +1005,90 @@ namespace Kingdom.App
                 return config;
             }
 
+            return CreateFallbackHeroConfigById(fallbackHeroId);
+        }
+
+        private static HeroConfig CreateFallbackHeroConfigById(string heroId)
+        {
             HeroConfig fallback = ScriptableObject.CreateInstance<HeroConfig>();
             fallback.hideFlags = HideFlags.DontSave;
-            fallback.HeroId = "DefaultHero";
-            fallback.DisplayName = "Hero";
-            fallback.MaxHp = 500f;
-            fallback.MoveSpeed = 3.2f;
-            fallback.AttackDamage = 30f;
-            fallback.AttackCooldown = 0.8f;
-            fallback.AttackRange = 1.8f;
+            string normalizedId = string.IsNullOrWhiteSpace(heroId) ? DefaultHeroId : heroId.Trim();
+
+            fallback.HeroId = normalizedId;
+            fallback.DisplayName = normalizedId;
+            fallback.StartLevel = 1;
+            fallback.MaxLevel = 10;
+
+            switch (normalizedId.ToLowerInvariant())
+            {
+                case "archerhero":
+                    fallback.Role = HeroRole.RangedDps;
+                    fallback.DisplayName = "Ranger";
+                    fallback.MaxHp = 460f;
+                    fallback.MoveSpeed = 3.5f;
+                    fallback.AttackDamage = 28f;
+                    fallback.DamageMin = 24f;
+                    fallback.DamageMax = 33f;
+                    fallback.AttackCooldown = 0.72f;
+                    fallback.AttackRange = 2.5f;
+                    fallback.ArmorPercent = 0.08f;
+                    fallback.MagicResistPercent = 0.12f;
+                    fallback.HpGrowthPerLevel = 35f;
+                    fallback.DamageGrowthPerLevel = 3.2f;
+                    fallback.ArmorGrowthPerLevel = 0.003f;
+                    fallback.MagicResistGrowthPerLevel = 0.004f;
+                    fallback.RespawnSec = 14f;
+                    fallback.ActiveSkillId = "multishot";
+                    fallback.ActiveCooldownSec = 9f;
+                    fallback.ActiveRange = 3f;
+                    break;
+
+                case "magehero":
+                    fallback.Role = HeroRole.MagicDps;
+                    fallback.DisplayName = "Mage";
+                    fallback.MaxHp = 420f;
+                    fallback.MoveSpeed = 3.2f;
+                    fallback.AttackDamage = 33f;
+                    fallback.DamageMin = 28f;
+                    fallback.DamageMax = 39f;
+                    fallback.AttackCooldown = 0.85f;
+                    fallback.AttackRange = 2.2f;
+                    fallback.ArmorPercent = 0.06f;
+                    fallback.MagicResistPercent = 0.2f;
+                    fallback.HpGrowthPerLevel = 33f;
+                    fallback.DamageGrowthPerLevel = 3.8f;
+                    fallback.ArmorGrowthPerLevel = 0.0025f;
+                    fallback.MagicResistGrowthPerLevel = 0.0055f;
+                    fallback.RespawnSec = 15f;
+                    fallback.ActiveSkillId = "arcaneburst";
+                    fallback.ActiveCooldownSec = 10.5f;
+                    fallback.ActiveRange = 2.8f;
+                    break;
+
+                default:
+                    fallback.Role = HeroRole.Tank;
+                    fallback.DisplayName = "Knight";
+                    fallback.HeroId = DefaultHeroId;
+                    fallback.MaxHp = 620f;
+                    fallback.MoveSpeed = 3f;
+                    fallback.AttackDamage = 26f;
+                    fallback.DamageMin = 23f;
+                    fallback.DamageMax = 31f;
+                    fallback.AttackCooldown = 0.9f;
+                    fallback.AttackRange = 1.7f;
+                    fallback.ArmorPercent = 0.22f;
+                    fallback.MagicResistPercent = 0.14f;
+                    fallback.HpGrowthPerLevel = 52f;
+                    fallback.DamageGrowthPerLevel = 2.6f;
+                    fallback.ArmorGrowthPerLevel = 0.006f;
+                    fallback.MagicResistGrowthPerLevel = 0.004f;
+                    fallback.RespawnSec = 12.5f;
+                    fallback.ActiveSkillId = "shieldslam";
+                    fallback.ActiveCooldownSec = 8.5f;
+                    fallback.ActiveRange = 2.1f;
+                    break;
+            }
+
             return fallback;
         }
 
@@ -959,10 +1111,17 @@ namespace Kingdom.App
             string defaultPath = HeroConfigResourcePathPrefix + DefaultHeroId;
             if (!selectedHeroId.Equals(DefaultHeroId))
             {
-                Debug.Log($"[GameScene] Selected hero config missing: {selectedPath}. Fallback to {defaultPath}.");
+                Debug.Log($"[GameScene] Selected hero config missing: {selectedPath}. Fallback to runtime profile.");
+                return CreateFallbackHeroConfigById(selectedHeroId);
             }
 
-            return ResolveHeroConfig(defaultPath);
+            HeroConfig defaultConfig = ResolveHeroConfig(defaultPath, DefaultHeroId);
+            if (defaultConfig != null)
+            {
+                return defaultConfig;
+            }
+
+            return CreateFallbackHeroConfigById(DefaultHeroId);
         }
 
         private static Sprite ResolveHeroPortraitSprite(HeroConfig config)

@@ -1,28 +1,49 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Kingdom.Game
 {
     /// <summary>
-    /// Minimal hero runtime loop: chase nearest enemy and attack on cooldown.
+    /// Hero runtime loop: state machine + combat + progression.
     /// </summary>
     public class HeroController : MonoBehaviour, IDamageable
     {
         private const string HeroInGameSpriteResourcePathPrefix = "UI/Sprites/Heroes/InGame/";
         private const int MaxSequenceFrames = 32;
         private const float DefaultAnimationFps = 10f;
+        private const float TankGuardBuffSeconds = 3.5f;
+        private const float TankGuardDamageReduction = 0.35f;
+        private const int SupportSummonMaxCount = 2;
+        private const float SupportSummonLifetimeSec = 12f;
+        private const float SupportSummonAttackRange = 2.4f;
+        private const float SupportSummonAttackCooldown = 0.8f;
+        private const float SupportSummonDamageRatio = 0.45f;
+        private const float SupportSummonOrbitRadius = 1.2f;
 
         [SerializeField] private HeroConfig heroConfig;
 
         private readonly List<EnemyRuntime> _aliveEnemies = new();
+        private readonly List<SummonRuntime> _summons = new();
         private SpawnManager _spawnManager;
         private EnemyRuntime _currentTarget;
+
         private float _attackCooldownLeft;
+        private float _activeSkillCooldownLeft;
+        private float _attackVisualHoldLeft;
+        private float _guardBuffLeft;
         private float _currentHp;
+        private float _respawnLeft;
+
+        private int _level = 1;
+        private int _xp;
+        private int _xpToNext;
+
+        private float _armorPercent;
+        private float _magicResistPercent;
+
         private SpriteRenderer _renderer;
         private Vector3 _homePosition;
-        private float _attackVisualHoldLeft;
 
         private Sprite[] _idleFrames;
         private Sprite[] _walkFrames;
@@ -33,69 +54,53 @@ namespace Kingdom.Game
         private float _animationTimer;
         private bool _useAnimatedSprites;
         private HeroVisualState _visualState = HeroVisualState.Idle;
+        private HeroRuntimeState _runtimeState = HeroRuntimeState.Idle;
+        private static Sprite _fallbackSummonSprite;
 
         public string CurrentHeroId => heroConfig != null ? heroConfig.HeroId : string.Empty;
+        public int CurrentLevel => _level;
+        public int CurrentXp => _xp;
+        public HeroRuntimeState RuntimeState => _runtimeState;
         public bool IsAlive => _currentHp > 0f;
 
         public void Configure(SpawnManager spawnManager, HeroConfig config, Vector3 spawnPosition)
         {
+            ClearSummons();
             _spawnManager = spawnManager;
             heroConfig = config != null ? config : CreateFallbackHeroConfig();
             _homePosition = spawnPosition;
             transform.position = spawnPosition;
-            _currentHp = heroConfig != null ? Mathf.Max(1f, heroConfig.MaxHp) : 1f;
+
+            InitializeProgression();
+            _currentHp = heroConfig.GetMaxHp(_level);
+            _respawnLeft = 0f;
+            _attackCooldownLeft = 0f;
+            _activeSkillCooldownLeft = 0f;
+            _guardBuffLeft = 0f;
+            _runtimeState = HeroRuntimeState.Idle;
+
             EnsureVisual();
             RebindSpawnEvents();
         }
 
         private void Update()
         {
-            if (heroConfig == null || !IsAlive)
+            if (heroConfig == null)
             {
                 return;
             }
 
-            _attackCooldownLeft = Mathf.Max(0f, _attackCooldownLeft - Time.deltaTime);
-            _attackVisualHoldLeft = Mathf.Max(0f, _attackVisualHoldLeft - Time.deltaTime);
-            ValidateCurrentTarget();
-            bool isMoving = false;
-            bool didAttack = false;
+            TickCooldownLoop();
+            TickSummons(Time.deltaTime);
 
-            if (_currentTarget == null)
+            if (!IsAlive)
             {
-                _currentTarget = FindNearestEnemy(heroConfig.AttackRange * 2.4f);
-            }
-
-            if (_currentTarget == null)
-            {
-                isMoving = MoveTowards(_homePosition, heroConfig.MoveSpeed * 0.75f);
-                UpdateVisualState(isMoving, didAttack);
+                TickRespawnLoop();
                 TickVisualAnimation(Time.deltaTime);
                 return;
             }
 
-            Vector3 targetPos = _currentTarget.transform.position;
-            float attackRange = Mathf.Max(0.4f, heroConfig.AttackRange);
-            float sqrDistance = (targetPos - transform.position).sqrMagnitude;
-            if (sqrDistance > attackRange * attackRange)
-            {
-                isMoving = MoveTowards(targetPos, heroConfig.MoveSpeed);
-                UpdateVisualState(isMoving, didAttack);
-                TickVisualAnimation(Time.deltaTime);
-                return;
-            }
-
-            if (_attackCooldownLeft > 0f)
-            {
-                UpdateVisualState(isMoving, didAttack);
-                TickVisualAnimation(Time.deltaTime);
-                return;
-            }
-
-            _currentTarget.ApplyDamage(Mathf.Max(1f, heroConfig.AttackDamage), DamageType.Physical, false);
-            _attackCooldownLeft = Mathf.Max(0.1f, heroConfig.AttackCooldown);
-            didAttack = true;
-            UpdateVisualState(isMoving, didAttack);
+            TickCombatLoop();
             TickVisualAnimation(Time.deltaTime);
         }
 
@@ -104,6 +109,7 @@ namespace Kingdom.Game
             UnbindSpawnEvents();
             _aliveEnemies.Clear();
             _currentTarget = null;
+            ClearSummons();
         }
 
         public void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
@@ -113,7 +119,7 @@ namespace Kingdom.Game
                 return;
             }
 
-            float damage = Mathf.Max(0f, amount);
+            float damage = ComputeMitigatedDamage(Mathf.Max(0f, amount), damageType, halfPhysicalArmorPenetration);
             if (damage <= 0f)
             {
                 return;
@@ -122,13 +128,162 @@ namespace Kingdom.Game
             _currentHp -= damage;
             if (_currentHp <= 0f)
             {
-                _currentHp = 0f;
-                _currentTarget = null;
-                SetVisualState(HeroVisualState.Dead, forceReset: true);
-                if (_renderer != null)
+                EnterDeadState();
+            }
+        }
+
+        private void InitializeProgression()
+        {
+            _level = heroConfig != null ? heroConfig.ClampLevel(heroConfig.StartLevel) : 1;
+            _xp = 0;
+            _xpToNext = heroConfig != null ? heroConfig.GetRequiredXpForNextLevel(_level) : 100;
+            _armorPercent = heroConfig != null ? heroConfig.GetArmorPercent(_level) : 0f;
+            _magicResistPercent = heroConfig != null ? heroConfig.GetMagicResistPercent(_level) : 0f;
+        }
+
+        private void TickCooldownLoop()
+        {
+            float dt = Time.deltaTime;
+            _attackCooldownLeft = Mathf.Max(0f, _attackCooldownLeft - dt);
+            _activeSkillCooldownLeft = Mathf.Max(0f, _activeSkillCooldownLeft - dt);
+            _attackVisualHoldLeft = Mathf.Max(0f, _attackVisualHoldLeft - dt);
+            _guardBuffLeft = Mathf.Max(0f, _guardBuffLeft - dt);
+        }
+
+        private void TickRespawnLoop()
+        {
+            if (_runtimeState != HeroRuntimeState.Dead)
+            {
+                _runtimeState = HeroRuntimeState.Dead;
+                if (_respawnLeft <= 0f)
                 {
-                    _renderer.color = new Color(0.45f, 0.45f, 0.45f, 1f);
+                    _respawnLeft = heroConfig.GetRespawnSec(_level);
                 }
+            }
+
+            SetVisualState(HeroVisualState.Dead);
+            _respawnLeft -= Time.deltaTime;
+            if (_respawnLeft > 0f)
+            {
+                return;
+            }
+
+            Respawn();
+        }
+
+        private void Respawn()
+        {
+            _runtimeState = HeroRuntimeState.Respawn;
+            _currentHp = heroConfig.GetMaxHp(_level);
+            _currentTarget = null;
+            _respawnLeft = 0f;
+            _attackCooldownLeft = 0.15f;
+
+            transform.position = _homePosition;
+            if (_renderer != null)
+            {
+                _renderer.color = Color.white;
+            }
+
+            SetVisualState(HeroVisualState.Idle, forceReset: true);
+            _runtimeState = HeroRuntimeState.Idle;
+        }
+
+        private void TickCombatLoop()
+        {
+            ValidateCurrentTarget();
+            bool isMoving = false;
+            bool didAttack = false;
+
+            if (_currentTarget == null)
+            {
+                _currentTarget = FindNearestEnemy(heroConfig.GetAttackRange(_level) * 2.4f);
+            }
+
+            if (_currentTarget == null)
+            {
+                isMoving = MoveTowards(_homePosition, heroConfig.GetMoveSpeed(_level) * 0.75f);
+                _runtimeState = isMoving ? HeroRuntimeState.Move : HeroRuntimeState.Idle;
+                UpdateVisualState(isMoving, didAttack);
+                return;
+            }
+
+            Vector3 targetPos = _currentTarget.transform.position;
+            float attackRange = Mathf.Max(0.4f, heroConfig.GetAttackRange(_level));
+            float sqrDistance = (targetPos - transform.position).sqrMagnitude;
+            if (sqrDistance > attackRange * attackRange)
+            {
+                isMoving = MoveTowards(targetPos, heroConfig.GetMoveSpeed(_level));
+                _runtimeState = HeroRuntimeState.Move;
+                UpdateVisualState(isMoving, didAttack);
+                return;
+            }
+
+            _runtimeState = HeroRuntimeState.Engage;
+
+            if (_attackCooldownLeft > 0f)
+            {
+                UpdateVisualState(isMoving, didAttack);
+                return;
+            }
+
+            float damage = UnityEngine.Random.Range(heroConfig.GetDamageMin(_level), heroConfig.GetDamageMax(_level));
+            _currentTarget.ApplyDamage(Mathf.Max(1f, damage), DamageType.Physical, false);
+            _attackCooldownLeft = heroConfig.GetAttackCooldown(_level);
+            TryExecuteActiveSkill(_currentTarget);
+
+            didAttack = true;
+            UpdateVisualState(isMoving, didAttack);
+        }
+
+        private float ComputeMitigatedDamage(float amount, DamageType damageType, bool halfPhysicalArmorPenetration)
+        {
+            if (amount <= 0f)
+            {
+                return 0f;
+            }
+
+            float resist = 0f;
+            switch (damageType)
+            {
+                case DamageType.Physical:
+                    resist = _armorPercent;
+                    if (halfPhysicalArmorPenetration)
+                    {
+                        resist *= 0.5f;
+                    }
+                    break;
+                case DamageType.Magic:
+                    resist = _magicResistPercent;
+                    break;
+                case DamageType.True:
+                default:
+                    resist = 0f;
+                    break;
+            }
+
+            float mitigated = amount * (1f - Mathf.Clamp(resist, 0f, EnemyConfig.MaxResistanceCap));
+            if (_guardBuffLeft > 0f && damageType != DamageType.True)
+            {
+                mitigated *= (1f - TankGuardDamageReduction);
+            }
+
+            return mitigated;
+        }
+
+        private void EnterDeadState()
+        {
+            _currentHp = 0f;
+            _currentTarget = null;
+            _runtimeState = HeroRuntimeState.Dead;
+            _respawnLeft = heroConfig != null ? heroConfig.GetRespawnSec(_level) : 8f;
+            _guardBuffLeft = 0f;
+            ClearSummons();
+
+            SetVisualState(HeroVisualState.Dead, forceReset: true);
+            if (_renderer != null)
+            {
+                _renderer.color = new Color(0.45f, 0.45f, 0.45f, 1f);
             }
         }
 
@@ -141,7 +296,7 @@ namespace Kingdom.Game
             }
 
             _spawnManager.EnemySpawned += HandleEnemySpawned;
-            _spawnManager.EnemyKilled += HandleEnemyRemoved;
+            _spawnManager.EnemyKilled += HandleEnemyKilled;
             _spawnManager.EnemyReachedGoal += HandleEnemyRemoved;
         }
 
@@ -153,7 +308,7 @@ namespace Kingdom.Game
             }
 
             _spawnManager.EnemySpawned -= HandleEnemySpawned;
-            _spawnManager.EnemyKilled -= HandleEnemyRemoved;
+            _spawnManager.EnemyKilled -= HandleEnemyKilled;
             _spawnManager.EnemyReachedGoal -= HandleEnemyRemoved;
         }
 
@@ -165,6 +320,12 @@ namespace Kingdom.Game
             }
         }
 
+        private void HandleEnemyKilled(EnemyRuntime enemy, EnemyConfig config)
+        {
+            HandleEnemyRemoved(enemy, config);
+            GrantExperience(config != null ? Mathf.Max(1, config.BountyGold) : 1);
+        }
+
         private void HandleEnemyRemoved(EnemyRuntime enemy, EnemyConfig config)
         {
             _aliveEnemies.Remove(enemy);
@@ -172,6 +333,302 @@ namespace Kingdom.Game
             {
                 _currentTarget = null;
             }
+        }
+
+        private void GrantExperience(int amount)
+        {
+            if (heroConfig == null || amount <= 0 || _level >= heroConfig.MaxLevel)
+            {
+                return;
+            }
+
+            _xp += amount;
+            while (_level < heroConfig.MaxLevel && _xp >= _xpToNext)
+            {
+                _xp -= _xpToNext;
+                int prevLevel = _level;
+                float prevMaxHp = heroConfig.GetMaxHp(prevLevel);
+
+                _level++;
+                _xpToNext = heroConfig.GetRequiredXpForNextLevel(_level);
+                _armorPercent = heroConfig.GetArmorPercent(_level);
+                _magicResistPercent = heroConfig.GetMagicResistPercent(_level);
+
+                if (IsAlive)
+                {
+                    float newMaxHp = heroConfig.GetMaxHp(_level);
+                    float healBonus = (newMaxHp - prevMaxHp) * 0.5f;
+                    _currentHp = Mathf.Min(newMaxHp, _currentHp + healBonus);
+                }
+            }
+        }
+
+        private void TryExecuteActiveSkill(EnemyRuntime primaryTarget)
+        {
+            if (heroConfig == null || _activeSkillCooldownLeft > 0f)
+            {
+                return;
+            }
+
+            string skill = ResolveActiveSkillKey();
+            if (string.IsNullOrWhiteSpace(skill))
+            {
+                return;
+            }
+
+            float baseDamage = UnityEngine.Random.Range(heroConfig.GetDamageMin(_level), heroConfig.GetDamageMax(_level));
+            bool fired = false;
+
+            if (skill.Contains("multishot"))
+            {
+                fired = ExecuteMultishot(baseDamage);
+            }
+            else if (skill.Contains("shield") || skill.Contains("smash"))
+            {
+                fired = ExecuteShieldSlam(baseDamage);
+            }
+            else if (skill.Contains("arcane") || skill.Contains("burst") || skill.Contains("ray"))
+            {
+                fired = ExecuteArcaneBurst(baseDamage, primaryTarget);
+            }
+            else if (skill.Contains("summon"))
+            {
+                fired = ExecuteSummonGuardian();
+            }
+            else if (primaryTarget != null && !primaryTarget.IsDead)
+            {
+                primaryTarget.ApplyDamage(Mathf.Max(1f, baseDamage * 0.6f), DamageType.Physical, false);
+                fired = true;
+            }
+
+            if (fired)
+            {
+                _activeSkillCooldownLeft = heroConfig.GetActiveCooldownSec(_level);
+            }
+        }
+
+        private string ResolveActiveSkillKey()
+        {
+            if (heroConfig == null)
+            {
+                return string.Empty;
+            }
+
+            if (!string.IsNullOrWhiteSpace(heroConfig.ActiveSkillId))
+            {
+                return heroConfig.ActiveSkillId.Trim().ToLowerInvariant();
+            }
+
+            return heroConfig.Role switch
+            {
+                HeroRole.Tank => "shieldslam",
+                HeroRole.MagicDps => "arcaneburst",
+                HeroRole.Support => "summon_guardian",
+                _ => "multishot"
+            };
+        }
+
+        private bool ExecuteMultishot(float baseDamage)
+        {
+            int hitCount = 0;
+            float range = Mathf.Max(1.2f, heroConfig.ActiveRange > 0f ? heroConfig.ActiveRange : heroConfig.GetAttackRange(_level) * 1.25f);
+            float rangeSqr = range * range;
+            Vector3 origin = transform.position;
+
+            for (int i = 0; i < _aliveEnemies.Count && hitCount < 3; i++)
+            {
+                EnemyRuntime enemy = _aliveEnemies[i];
+                if (enemy == null || enemy.IsDead)
+                {
+                    continue;
+                }
+
+                float sqr = (enemy.transform.position - origin).sqrMagnitude;
+                if (sqr > rangeSqr)
+                {
+                    continue;
+                }
+
+                enemy.ApplyDamage(Mathf.Max(1f, baseDamage * 0.75f), DamageType.Physical, false);
+                hitCount++;
+            }
+
+            return hitCount > 0;
+        }
+
+        private bool ExecuteShieldSlam(float baseDamage)
+        {
+            int hitCount = 0;
+            float radius = Mathf.Max(1.1f, heroConfig.ActiveRange > 0f ? heroConfig.ActiveRange : 1.6f);
+            float radiusSqr = radius * radius;
+            Vector3 origin = transform.position;
+
+            for (int i = 0; i < _aliveEnemies.Count; i++)
+            {
+                EnemyRuntime enemy = _aliveEnemies[i];
+                if (enemy == null || enemy.IsDead)
+                {
+                    continue;
+                }
+
+                float sqr = (enemy.transform.position - origin).sqrMagnitude;
+                if (sqr > radiusSqr)
+                {
+                    continue;
+                }
+
+                enemy.ApplyDamage(Mathf.Max(1f, baseDamage * 0.7f), DamageType.Physical, true);
+                hitCount++;
+            }
+
+            if (hitCount > 0)
+            {
+                _guardBuffLeft = Mathf.Max(_guardBuffLeft, TankGuardBuffSeconds);
+                float maxHp = heroConfig.GetMaxHp(_level);
+                _currentHp = Mathf.Min(maxHp, _currentHp + maxHp * 0.04f);
+            }
+
+            return hitCount > 0;
+        }
+
+        private bool ExecuteArcaneBurst(float baseDamage, EnemyRuntime primaryTarget)
+        {
+            int hitCount = 0;
+            Vector3 origin = primaryTarget != null && !primaryTarget.IsDead
+                ? primaryTarget.transform.position
+                : transform.position;
+            float radius = Mathf.Max(1.5f, heroConfig.ActiveRange > 0f ? heroConfig.ActiveRange : heroConfig.GetAttackRange(_level) * 1.4f);
+            float radiusSqr = radius * radius;
+
+            for (int i = 0; i < _aliveEnemies.Count; i++)
+            {
+                EnemyRuntime enemy = _aliveEnemies[i];
+                if (enemy == null || enemy.IsDead)
+                {
+                    continue;
+                }
+
+                float sqr = (enemy.transform.position - origin).sqrMagnitude;
+                if (sqr > radiusSqr)
+                {
+                    continue;
+                }
+
+                enemy.ApplyDamage(Mathf.Max(1f, baseDamage * 0.8f), DamageType.Magic, false);
+                hitCount++;
+            }
+
+            return hitCount > 0;
+        }
+
+        private bool ExecuteSummonGuardian()
+        {
+            if (_summons.Count >= SupportSummonMaxCount)
+            {
+                return false;
+            }
+
+            GameObject summonGo = new GameObject($"HeroSummon_{CurrentHeroId}_{_summons.Count + 1}");
+            summonGo.layer = gameObject.layer;
+            if (transform.parent != null)
+            {
+                summonGo.transform.SetParent(transform.parent, true);
+            }
+
+            Vector2 random = UnityEngine.Random.insideUnitCircle;
+            if (random.sqrMagnitude <= 0.0001f)
+            {
+                random = Vector2.right;
+            }
+
+            summonGo.transform.position = transform.position + new Vector3(random.x, random.y, 0f) * SupportSummonOrbitRadius;
+            summonGo.transform.localScale = new Vector3(0.35f, 0.35f, 1f);
+
+            SpriteRenderer renderer = summonGo.AddComponent<SpriteRenderer>();
+            renderer.sprite = GetFallbackSummonSprite();
+            renderer.sortingOrder = 34;
+            renderer.color = new Color(0.68f, 0.92f, 1f, 0.95f);
+
+            _summons.Add(new SummonRuntime
+            {
+                Root = summonGo,
+                Renderer = renderer,
+                LifeLeft = SupportSummonLifetimeSec,
+                AttackCooldownLeft = 0.2f
+            });
+
+            return true;
+        }
+
+        private void TickSummons(float deltaTime)
+        {
+            if (_summons.Count <= 0)
+            {
+                return;
+            }
+
+            for (int i = _summons.Count - 1; i >= 0; i--)
+            {
+                SummonRuntime summon = _summons[i];
+                if (summon == null || summon.Root == null)
+                {
+                    _summons.RemoveAt(i);
+                    continue;
+                }
+
+                summon.LifeLeft -= Mathf.Max(0f, deltaTime);
+                summon.AttackCooldownLeft = Mathf.Max(0f, summon.AttackCooldownLeft - Mathf.Max(0f, deltaTime));
+                if (summon.LifeLeft <= 0f)
+                {
+                    Destroy(summon.Root);
+                    _summons.RemoveAt(i);
+                    continue;
+                }
+
+                Vector3 orbitTarget = transform.position + GetSummonOrbitOffset(i);
+                orbitTarget.z = 0f;
+                summon.Root.transform.position = Vector3.MoveTowards(
+                    summon.Root.transform.position,
+                    orbitTarget,
+                    3.5f * Mathf.Max(0f, deltaTime));
+
+                if (summon.AttackCooldownLeft > 0f)
+                {
+                    continue;
+                }
+
+                EnemyRuntime target = FindNearestEnemyFrom(summon.Root.transform.position, SupportSummonAttackRange);
+                if (target == null)
+                {
+                    continue;
+                }
+
+                float damage = Mathf.Max(1f, heroConfig.GetDamageMin(_level) * SupportSummonDamageRatio);
+                target.ApplyDamage(damage, DamageType.Magic, false);
+                summon.AttackCooldownLeft = SupportSummonAttackCooldown;
+            }
+        }
+
+        private Vector3 GetSummonOrbitOffset(int index)
+        {
+            float angle = Time.time * 1.8f + index * 1.9f;
+            return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * SupportSummonOrbitRadius;
+        }
+
+        private void ClearSummons()
+        {
+            for (int i = 0; i < _summons.Count; i++)
+            {
+                SummonRuntime summon = _summons[i];
+                if (summon == null || summon.Root == null)
+                {
+                    continue;
+                }
+
+                Destroy(summon.Root);
+            }
+
+            _summons.Clear();
         }
 
         private void ValidateCurrentTarget()
@@ -189,6 +646,11 @@ namespace Kingdom.Game
 
         private EnemyRuntime FindNearestEnemy(float searchRange)
         {
+            return FindNearestEnemyFrom(transform.position, searchRange);
+        }
+
+        private EnemyRuntime FindNearestEnemyFrom(Vector3 origin, float searchRange)
+        {
             float range = Mathf.Max(0.5f, searchRange);
             float rangeSqr = range * range;
             float bestSqr = float.MaxValue;
@@ -202,7 +664,7 @@ namespace Kingdom.Game
                     continue;
                 }
 
-                float sqr = (enemy.transform.position - transform.position).sqrMagnitude;
+                float sqr = (enemy.transform.position - origin).sqrMagnitude;
                 if (sqr > rangeSqr || sqr >= bestSqr)
                 {
                     continue;
@@ -393,11 +855,19 @@ namespace Kingdom.Game
             config.hideFlags = HideFlags.DontSave;
             config.HeroId = "FallbackHero";
             config.DisplayName = "Hero";
+            config.Role = HeroRole.RangedDps;
             config.MaxHp = 500f;
             config.MoveSpeed = 3.2f;
             config.AttackDamage = 30f;
+            config.DamageMin = 25f;
+            config.DamageMax = 35f;
             config.AttackCooldown = 0.8f;
             config.AttackRange = 1.8f;
+            config.RespawnSec = 15f;
+            config.StartLevel = 1;
+            config.MaxLevel = 10;
+            config.ActiveCooldownSec = 12f;
+            config.ActiveRange = 2.1f;
             return config;
         }
 
@@ -415,12 +885,55 @@ namespace Kingdom.Game
             return Sprite.Create(tex, new Rect(0f, 0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 16f);
         }
 
+        private static Sprite GetFallbackSummonSprite()
+        {
+            if (_fallbackSummonSprite != null)
+            {
+                return _fallbackSummonSprite;
+            }
+
+            Texture2D tex = new Texture2D(10, 10, TextureFormat.RGBA32, false);
+            Color[] pixels = new Color[10 * 10];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = new Color(0.9f, 0.98f, 1f, 1f);
+            }
+
+            tex.SetPixels(pixels);
+            tex.Apply();
+
+            _fallbackSummonSprite = Sprite.Create(
+                tex,
+                new Rect(0f, 0f, tex.width, tex.height),
+                new Vector2(0.5f, 0.5f),
+                10f);
+
+            return _fallbackSummonSprite;
+        }
+
+        private sealed class SummonRuntime
+        {
+            public GameObject Root;
+            public SpriteRenderer Renderer;
+            public float LifeLeft;
+            public float AttackCooldownLeft;
+        }
+
         private enum HeroVisualState
         {
             Idle = 0,
             Move = 1,
             Attack = 2,
             Dead = 3
+        }
+
+        public enum HeroRuntimeState
+        {
+            Idle = 0,
+            Move = 1,
+            Engage = 2,
+            Dead = 3,
+            Respawn = 4
         }
     }
 }

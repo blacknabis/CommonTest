@@ -12,15 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa95b7a7e724ce4a9f3d649db34ab11, type: 3}
   m_Name: Barracks
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
-  TowerId: BasicTower
-  TowerType: 0
-  BuildCost: 70
-  AttackRange: 2.2
-  AttackCooldown: 0.75
-  AttackDamage: 34
+  TowerId: Barracks
+  TowerType: 1
   DamageType: 0
+  TargetType: 0
   HalfPhysicalArmorPenetration: 0
-  CanTargetAir: 1
+  CanTargetAir: 0
   BarracksData:
-    SquadSize: 0
-    RallyRange: 0
+    SquadSize: 3
+    RallyRange: 1.6
+  Levels:
+  - Cost: 77
+    Damage: 8
+    Cooldown: 1
+    Range: 1.6
+    AttackDeliveryType: 2
+    ProjectileProfileId: 
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.65
+  - Cost: 104
+    Damage: 10.4
+    Cooldown: 0.95
+    Range: 1.68
+    AttackDeliveryType: 2
+    ProjectileProfileId: 
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.72999996
+  - Cost: 151
+    Damage: 13.519999
+    Cooldown: 0.9025
+    Range: 1.8479999
+    AttackDeliveryType: 2
+    ProjectileProfileId: 
+    SpriteOverride: {fileID: 0}
+    VisualScale: 0.80999994
