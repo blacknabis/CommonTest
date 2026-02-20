@@ -37,7 +37,7 @@ namespace Kingdom.Game
     {
         public int SquadSize;
         public float RallyRange;
-        [Tooltip("Optional Resources path (without extension) for barracks soldier sprite. Example: Sprites/Barracks/Soldier")]
+        [Tooltip("Legacy fallback Resources path (without extension) for barracks soldier sprite. Example: Sprites/Barracks/Soldier")]
         public string SoldierSpriteResourcePath;
 
         [Header("Soldier Combat Stats")]
@@ -88,6 +88,11 @@ namespace Kingdom.Game
         public TowerTargetType TargetType = TowerTargetType.Both;
         public bool HalfPhysicalArmorPenetration;
         public bool CanTargetAir = true;
+
+        [Header("Barracks")]
+        [Tooltip("Optional soldier visual config. If assigned, this is the primary source for barracks soldier sprite binding.")]
+        public BarracksSoldierConfig BarracksSoldierConfig;
+
         public BarracksData BarracksData;
 
         [Header("Levels")]

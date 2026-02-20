@@ -878,9 +878,16 @@ namespace Kingdom.Game
 
         private static Sprite ResolveBarracksSoldierSprite(TowerConfig config)
         {
-            if (config != null && TryLoadSprite(config.BarracksData.SoldierSpriteResourcePath, out Sprite byConfigPath))
+            if (config != null &&
+                config.BarracksSoldierConfig != null &&
+                TryLoadSprite(config.BarracksSoldierConfig.RuntimeSpriteResourcePath, out Sprite bySoldierConfigPath))
             {
-                return byConfigPath;
+                return bySoldierConfigPath;
+            }
+
+            if (config != null && TryLoadSprite(config.BarracksData.SoldierSpriteResourcePath, out Sprite byLegacyPath))
+            {
+                return byLegacyPath;
             }
 
             var candidates = new List<string>
@@ -898,6 +905,14 @@ namespace Kingdom.Game
                 candidates.Add($"UI/Sprites/Towers/{towerId}/Soldier");
                 candidates.Add($"Sprites/Towers/{towerId}/Soldier");
                 candidates.Add($"Kingdom/Towers/Sprites/{towerId}/Soldier");
+            }
+
+            if (config != null && config.BarracksSoldierConfig != null && !string.IsNullOrWhiteSpace(config.BarracksSoldierConfig.SoldierId))
+            {
+                string soldierId = config.BarracksSoldierConfig.SoldierId.Trim();
+                candidates.Add($"UI/Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Kingdom/Barracks/Soldiers/{soldierId}");
             }
 
             for (int i = 0; i < candidates.Count; i++)

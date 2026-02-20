@@ -1,85 +1,44 @@
 # CommonTest
 
-킹덤러쉬 스타일 2D 타워디펜스 프로토타입(Unity) 프로젝트입니다.  
-`Common`(공용 프레임워크)와 `Kingdom`(게임 로직)을 분리해서 개발 중입니다.
+Unity 기반 2D 전략/디펜스 프로젝트입니다.  
+공통 프레임워크(`Assets/Scripts/Common`)와 게임 로직(`Assets/Scripts/Kingdom`)을 분리해 운영합니다.
 
-## 최근 업데이트 (2026-02-18)
-- 전투 시작 직후 몬스터 웨이브가 즉시 출현하던 흐름을 개선하여 준비 시간 기반 전투 루프를 반영했습니다.
-- AI 스프라이트 후처리 도구 [`Assets/Scripts/Common/Editor/AISpriteProcessor.cs`](Assets/Scripts/Common/Editor/AISpriteProcessor.cs) 고도화:
-  - 프리셋 Save/Load/Delete
-  - 입력값 검증(잘못된 Rows/Cols/패딩 방지)
-  - 선택 영역 Crop 저장
-  - SmartSlice(알파 아일랜드 감지) + 프리뷰 시각화
-  - 슬라이스 애니메이션 프리뷰 재생
-  - 배경제거 2모드 지원
-    - 모드 A: 제거 색상 + 허용 오차(Chroma Key)
-    - 모드 B: RGB 채널 조건식(채널별 `>=` / `<=` / `Ignore`)
-    - 예시 프리셋: `R>=150`, `G<=50`, `B>=150`
-  - 단일 Source Texture 처리 정책
-    - 다중 입력 대신 단일 입력 1개 기준 처리
-    - 액션 그룹 수동 지정 우선(`Unknown/Idle/Walk/Attack/Die`)
-    - 자동 파일명 분류는 fallback으로만 사용
-  - 프리뷰에서 전처리 반영(모드 A/B 모두)
-  - 줌아웃 시 Grid/영역 오버레이 좌표 어긋남 보정 반영
-
-## 프로젝트 상태
-- 씬 흐름: `InitScene -> TitleScene -> WorldMapScene -> GameScene`
-- 월드맵/스테이지 선택/저장 연동 동작
-- `GameScene` 전투 루프 단계 구현 진행 중
-- 현재 반영된 전투 기능(최소 구현):
-  - 웨이브/스폰/경로 이동 루프
-  - HUD(`Lives/Gold/Wave/Pause/NextWave`)
-  - 타워 건설 링 메뉴(타입 선택/비용 표시/골드 부족 비활성)
-  - 빈 건설 슬롯 클릭 후 해당 위치 건설
-  - 기존 타워 클릭 액션 메뉴(Upgrade/Sell 최소 버전)
-  - 피해 공식 공통화(물리/마법/고정, 포병 관통)
-  - 공중 타겟 제약(`CanTargetAir`)
+## 실행 환경
+- Unity: `6000.3.3f1` (프로젝트 기준)
+- 주요 패키지: `UniTask`, `TextMeshPro`, `MCPForUnity`
 
 ## 빠른 실행
-1. Unity `6000.3.3f1`(또는 호환 버전)으로 프로젝트를 엽니다.
+1. Unity로 프로젝트를 엽니다.
 2. 메뉴 `Kingdom/Setup/Register Scenes in Build Settings` 실행
 3. `Assets/Scenes/InitScene.unity`를 열고 Play
 
-## 씬 구성
-- `Assets/Scenes/InitScene.unity`: 앱 초기화 진입점
-- `Assets/Scenes/TitleScene.unity`: 타이틀 화면
-- `Assets/Scenes/WorldMapScene.unity`: 월드맵(스테이지 선택)
-- `Assets/Scenes/GameScene.unity`: 인게임 전투 씬
+## 현재 진행 트랙
+- 메인 작업 보드: `문서/진행/task.md`
+- AI Sprite Processor 고도화: `문서/진행/AISpriteProcessor_BaseUnit_TowerBase_고도화_계획_2026_02_20.md`
+- ComfyUI 자동화(분리 트랙): `문서/진행/ComfyUI_자동화_트랙_관리_2026_02_20.md`
+- 스프라이트 회귀 운영: `문서/진행/스프라이트_회귀_운영_가이드_2026_02_20.md`
 
-## 주요 코드 위치
-- `Assets/Scripts/Common/`
-  - UI 프레임워크, AppManager, 유틸리티, 확장 메서드
-- `Assets/Scripts/Kingdom/App/`
-  - 씬 컨트롤러(`InitScene`, `TitleScene`, `WorldMapScene`, `GameScene`)
-- `Assets/Scripts/Kingdom/WorldMap/`
-  - 스테이지 노드, 해금 정책, 월드맵 프레젠터/매니저
-- `Assets/Scripts/Kingdom/UI/`
-  - `WorldMapView`, `GameView` 등 UI 구현
-- `Assets/Scripts/Kingdom/Save/`
-  - `UserSaveData` 기반 진행도 저장/로드
-- `Assets/Scripts/Kingdom/Editor/`
-  - 빌드 세팅 등록, 월드맵 자동 배치/검증 등 에디터 도구
+## 최근 반영 요약 (2026-02-20)
+- `AISpriteProcessor` BaseUnit/TowerBase 워크플로우 운영
+- `BarracksSoldierConfig` 도입 및 `TowerConfig` 참조 연결
+- 배럭 병사 스프라이트 로딩 우선순위 정리  
+  `BarracksSoldierConfig -> legacy(SoldierSpriteResourcePath) -> 관용 경로`
+- 마이그레이션 메뉴 추가  
+  `Tools/Kingdom/Sprites/Migrate Barracks Soldier Config References`
+- 회귀 메뉴 실행 시 모달 다이얼로그 제거(자동 검증 중단 방지)
 
-## 기술 스택
-- Unity (6000.x 계열)
-- C#
-- uGUI + TextMeshPro
-- UniTask (`com.cysharp.unitask`)
+## 주요 코드 경로
+- `Assets/Scripts/Kingdom/App/`: 씬/게임 흐름(`GameScene`, `WorldMapScene` 등)
+- `Assets/Scripts/Kingdom/Game/`: 전투/타워/적/영웅 런타임
+- `Assets/Scripts/Kingdom/Editor/`: 회귀/검증/마이그레이션 에디터 메뉴
+- `Assets/Scripts/Common/Editor/`: `AISpriteProcessor` 등 공통 툴
 
-## 문서
-주요 문서는 `문서/` 폴더에 있습니다.
-
-- 구현 명세: `문서/진행/게임씬_구현명세서.md`
-- 작업 체크리스트: `문서/진행/task.md`
-- 작업 상세 로그(최신): `문서/진행/작업상세로그_2026_02_18.md`
-- 개발일지: `문서/개발일지/DevLog_2026_02_15_1.md`
-- 이미지 프롬프트(나노바나나): `문서/이미지프롬프트/StageInfoPopup_이미지프롬프트_나노바나나.md`
-
-### AI Sprite Processor 관련 문서
-- 작업 계획/인수인계: `문서/진행/AISpriteProcessor_작업계획_및_인수인계서_2026_02_18.md`
-- 진행 체크: `문서/진행/task.md`
-- 작업 로그: `문서/진행/작업상세로그_2026_02_18.md`
+## 회귀 점검 메뉴
+1. `Tools/Common/AI Sprite Processor/Run Preset Load Regression`
+2. `Tools/Kingdom/Sprites/Validate Runtime Sprite Bindings`
+3. `Tools/Kingdom/Sprites/Run Missing Hint Regression`
+4. `Tools/Kingdom/Sprites/Migrate Barracks Soldier Config References` (필요 시)
 
 ## 참고
-- 공용 라이브러리 문서: `Assets/Scripts/Common/README.md`
-- Unity MCP 도구 문서: `Assets/MCPForUnity/README.md`
+- 공통 모듈 문서: `Assets/Scripts/Common/README.md`
+- MCP for Unity 문서: `Assets/MCPForUnity/README.md`

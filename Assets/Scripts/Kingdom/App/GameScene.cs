@@ -1118,6 +1118,14 @@ namespace Kingdom.App
                 return false;
             }
 
+            string soldierConfigPath = config.BarracksSoldierConfig != null
+                ? config.BarracksSoldierConfig.RuntimeSpriteResourcePath
+                : string.Empty;
+            if (TryResolveSpriteResourcePath(soldierConfigPath))
+            {
+                return true;
+            }
+
             if (TryResolveSpriteResourcePath(config.BarracksData.SoldierSpriteResourcePath))
             {
                 return true;
@@ -1140,6 +1148,14 @@ namespace Kingdom.App
                 candidates.Add($"Kingdom/Towers/Sprites/{towerId}/Soldier");
             }
 
+            if (config.BarracksSoldierConfig != null && !string.IsNullOrWhiteSpace(config.BarracksSoldierConfig.SoldierId))
+            {
+                string soldierId = config.BarracksSoldierConfig.SoldierId.Trim();
+                candidates.Add($"UI/Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Kingdom/Barracks/Soldiers/{soldierId}");
+            }
+
             for (int i = 0; i < candidates.Count; i++)
             {
                 if (TryResolveSpriteResourcePath(candidates[i]))
@@ -1150,7 +1166,8 @@ namespace Kingdom.App
 
             detail =
                 $"Barracks soldier sprite missing: towerId={NormalizeForLog(config.TowerId)}, " +
-                $"path={NormalizeForLog(config.BarracksData.SoldierSpriteResourcePath)}, candidates={string.Join(", ", candidates)}";
+                $"configPath={NormalizeForLog(soldierConfigPath)}, legacyPath={NormalizeForLog(config.BarracksData.SoldierSpriteResourcePath)}, " +
+                $"candidates={string.Join(", ", candidates)}";
             return false;
         }
 
@@ -1619,6 +1636,7 @@ namespace Kingdom.App
 
             if (detail.StartsWith("Barracks soldier sprite missing:", System.StringComparison.OrdinalIgnoreCase))
             {
+                hints.Add("TowerConfig.BarracksSoldierConfig.RuntimeSpriteResourcePath를 지정하세요.");
                 hints.Add("TowerConfig.BarracksData.SoldierSpriteResourcePath를 지정하세요.");
                 return;
             }

@@ -97,7 +97,7 @@ public class TowerConfig : ScriptableObject
 
 > **Candidate 필드 매핑** (M1 단계에서 자동화):
 > - 현재 필드: `BarracksData.SoldierSpriteResourcePath` → 이관 후 `LegacySoldierSpriteResourcePath`로 리네임
-> - 현재는 `TowerConfig`에 `BarracksSoldierConfig` 필드가 **없음** → Phase D/F에서 추가
+> - `TowerConfig.BarracksSoldierConfig` 필드는 **추가 완료** (Phase D 반영)
 
 ### 4.3 런타임 로딩 우선순위
 배럭 병사 스프라이트 로딩 우선순위:
@@ -335,17 +335,17 @@ public class TowerConfig : ScriptableObject
 - [ ] 경로 자동 생성 규칙 적용
 
 4. Phase D
-- [ ] `BarracksSoldierConfig` SO 생성
-- [ ] Barracks soldier 바인딩 함수 구현
+- [x] `BarracksSoldierConfig` SO 생성
+- [x] Barracks soldier 바인딩 함수 구현
 
 5. Phase E
 - [ ] Tower level 바인딩 함수 구현
 - [ ] `Level Index` UI/배열 매핑 검증
 
 6. Phase F
-- [ ] 마이그레이션 메뉴 구현
-- [ ] legacy -> 신규 참조 자동 이관
-- [ ] 이관 결과 로그(성공/실패/스킵) 출력
+- [x] 마이그레이션 메뉴 구현
+- [x] legacy -> 신규 참조 자동 이관
+- [x] 이관 결과 로그(성공/실패/스킵) 출력
 
 7. Phase G/H
 - [ ] Validate 결과 패널 정리
@@ -382,7 +382,7 @@ public class TowerConfig : ScriptableObject
 ### A.3 BarracksSoldierConfig
 | 항목 | 상태 |
 |---|---|
-| SO 클래스 | **미존재** → Phase D에서 신규 생성 |
+| SO 클래스 | **존재** (`BarracksSoldierConfig.cs`) |
 | 현재 병사 데이터 위치 | `TowerConfig.BarracksData` 내부 인라인 |
 
 ### A.4 TowerConfig (`TowerConfig.cs`)
@@ -393,7 +393,7 @@ public class TowerConfig : ScriptableObject
 | `Levels[n].SpriteOverride` | **있음** (Sprite 직접 참조) |
 | `RuntimeSpriteResourcePath` | **있음** (템플릿 지원 `{tower}`,`{level}`) |
 | `BarracksData.SoldierSpriteResourcePath` | **있음** → legacy 제거 대상 |
-| `BarracksSoldierConfig` 참조 필드 | **없음** → Phase D/F에서 추가 |
+| `BarracksSoldierConfig` 참조 필드 | **있음** (Phase D 반영) |
 
 ### A.5 BarracksSoldierRuntime (`BarracksSoldierRuntime.cs`)
 | 항목 | 상태 |
@@ -401,7 +401,7 @@ public class TowerConfig : ScriptableObject
 | 상속 | `BaseUnit` |
 | 상태 enum | `Idle/Moving/Blocking/Dead/Respawning` |
 | 스프라이트 자체 로딩 | **없음** — `Initialize()`에서 `SpriteRenderer` 외부 주입 |
-| 스프라이트 설정 주체 | `TowerManager`가 `BarracksData.SoldierSpriteResourcePath`로 로드 후 전달 |
+| 스프라이트 설정 주체 | `TowerManager`가 `BarracksSoldierConfig.RuntimeSpriteResourcePath` 우선, legacy fallback 순으로 로드 후 전달 |
 
 ### A.6 HeroController (`HeroController.cs`)
 | 항목 | 상태 |

@@ -19,10 +19,15 @@ MonoBehaviour:
   TargetType: 0
   HalfPhysicalArmorPenetration: 0
   CanTargetAir: 0
+  BarracksSoldierConfig: {fileID: 11400000, guid: daec477bf6850fa4f929b49cc6f26c2a, type: 2}
   BarracksData:
     SquadSize: 3
     RallyRange: 1.6
     SoldierSpriteResourcePath: Sprites/Barracks/Soldier
+    SoldierMaxHp: 0
+    SoldierDamage: 0
+    SoldierAttackCooldown: 0
+    SoldierRespawnSec: 0
   Levels:
   - Cost: 77
     Damage: 8

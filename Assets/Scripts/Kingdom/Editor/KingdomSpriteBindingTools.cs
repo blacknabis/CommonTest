@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using Kingdom.App;
@@ -12,6 +13,7 @@ namespace Kingdom.Editor
     {
         private const string EnemyConfigFolder = "Assets/Resources/Kingdom/Enemies/Config";
         private const string TowerConfigFolder = "Assets/Resources/Data/TowerConfigs";
+        private const string BarracksSoldierConfigFolder = "Assets/Resources/Data/BarracksSoldierConfigs";
 
         [MenuItem("Tools/Kingdom/Sprites/Apply Sample Runtime Paths")]
         public static void ApplySampleRuntimePaths()
@@ -96,6 +98,15 @@ namespace Kingdom.Editor
                 string expectedSoldierPath = config.TowerType == TowerType.Barracks
                     ? "Sprites/Barracks/Soldier"
                     : string.Empty;
+
+                if (config.BarracksSoldierConfig != null &&
+                    config.BarracksSoldierConfig.RuntimeSpriteResourcePath != expectedSoldierPath)
+                {
+                    config.BarracksSoldierConfig.RuntimeSpriteResourcePath = expectedSoldierPath;
+                    EditorUtility.SetDirty(config.BarracksSoldierConfig);
+                    changed = true;
+                }
+
                 if (config.BarracksData.SoldierSpriteResourcePath != expectedSoldierPath)
                 {
                     BarracksData barracksData = config.BarracksData;
@@ -187,16 +198,16 @@ namespace Kingdom.Editor
                     }
                 }
 
-                if (!string.IsNullOrWhiteSpace(config.BarracksData.SoldierSpriteResourcePath))
+                if (config.TowerType == TowerType.Barracks)
                 {
                     checkedCount++;
-                    if (TryResolveSprite(config.BarracksData.SoldierSpriteResourcePath))
+                    if (TryResolveBarracksSoldierSprite(config, out string resolvedPath, out string source))
                     {
                         resolvedCount++;
                     }
                     else
                     {
-                        missing.Add($"Tower {config.TowerId} Soldier: {config.BarracksData.SoldierSpriteResourcePath}");
+                        missing.Add($"Tower {config.TowerId} Soldier ({source}): {resolvedPath}");
                     }
                 }
             }
@@ -217,7 +228,6 @@ namespace Kingdom.Editor
             if (appendHintMethod == null)
             {
                 Debug.LogError("[KingdomSpriteBindingTools] Missing hint regression failed: GameScene.AppendMissingFixHintSummary method not found.");
-                EditorUtility.DisplayDialog("Missing Hint Regression", "실패: GameScene의 힌트 생성 메서드를 찾지 못했습니다.", "확인");
                 return;
             }
 
@@ -244,7 +254,6 @@ namespace Kingdom.Editor
             catch (System.Exception ex)
             {
                 Debug.LogError($"[KingdomSpriteBindingTools] Missing hint regression failed: invoke exception: {ex.Message}");
-                EditorUtility.DisplayDialog("Missing Hint Regression", "실패: 힌트 생성 메서드 호출 중 예외가 발생했습니다.", "확인");
                 return;
             }
 
@@ -270,12 +279,96 @@ namespace Kingdom.Editor
             if (missingHints.Count <= 0)
             {
                 Debug.Log($"[KingdomSpriteBindingTools] Missing hint regression passed. hints={requiredHints.Length}");
-                EditorUtility.DisplayDialog("Missing Hint Regression", $"통과: {requiredHints.Length}개 힌트 확인", "확인");
                 return;
             }
 
             Debug.LogWarning($"[KingdomSpriteBindingTools] Missing hint regression failed. missing={missingHints.Count}\n{string.Join("\n", missingHints)}\n--- output ---\n{output}");
-            EditorUtility.DisplayDialog("Missing Hint Regression", $"실패: 누락 힌트 {missingHints.Count}개", "확인");
+        }
+
+        [MenuItem("Tools/Kingdom/Sprites/Migrate Barracks Soldier Config References")]
+        public static void MigrateBarracksSoldierConfigReferences()
+        {
+            int towerCount = 0;
+            int created = 0;
+            int linked = 0;
+            int skipped = 0;
+            int failed = 0;
+
+            EnsureAssetFolder(BarracksSoldierConfigFolder);
+            string[] towerGuids = AssetDatabase.FindAssets("t:TowerConfig", new[] { TowerConfigFolder });
+            for (int i = 0; i < towerGuids.Length; i++)
+            {
+                string towerPath = AssetDatabase.GUIDToAssetPath(towerGuids[i]);
+                TowerConfig towerConfig = AssetDatabase.LoadAssetAtPath<TowerConfig>(towerPath);
+                if (towerConfig == null)
+                {
+                    failed++;
+                    Debug.LogWarning($"[KingdomSpriteBindingTools] Migration skip: TowerConfig load failed. path={towerPath}");
+                    continue;
+                }
+
+                towerCount++;
+                if (towerConfig.TowerType != TowerType.Barracks)
+                {
+                    skipped++;
+                    continue;
+                }
+
+                string legacyPath = string.IsNullOrWhiteSpace(towerConfig.BarracksData.SoldierSpriteResourcePath)
+                    ? string.Empty
+                    : towerConfig.BarracksData.SoldierSpriteResourcePath.Trim();
+                string fallbackPath = string.IsNullOrWhiteSpace(legacyPath) ? "Sprites/Barracks/Soldier" : legacyPath;
+
+                BarracksSoldierConfig soldierConfig = towerConfig.BarracksSoldierConfig;
+                if (soldierConfig == null)
+                {
+                    string towerAssetName = Path.GetFileNameWithoutExtension(towerPath);
+                    string soldierAssetPath = $"{BarracksSoldierConfigFolder}/{towerAssetName}_Soldier.asset";
+                    soldierConfig = AssetDatabase.LoadAssetAtPath<BarracksSoldierConfig>(soldierAssetPath);
+                    if (soldierConfig == null)
+                    {
+                        soldierConfig = ScriptableObject.CreateInstance<BarracksSoldierConfig>();
+                        soldierConfig.SoldierId = BuildDefaultSoldierId(towerConfig, towerAssetName);
+                        soldierConfig.DisplayName = $"{towerConfig.TowerId} Soldier";
+                        soldierConfig.RuntimeSpriteResourcePath = fallbackPath;
+                        AssetDatabase.CreateAsset(soldierConfig, soldierAssetPath);
+                        created++;
+                    }
+
+                    towerConfig.BarracksSoldierConfig = soldierConfig;
+                    EditorUtility.SetDirty(towerConfig);
+                    linked++;
+                }
+
+                bool soldierConfigChanged = false;
+                if (string.IsNullOrWhiteSpace(soldierConfig.SoldierId))
+                {
+                    string towerAssetName = Path.GetFileNameWithoutExtension(towerPath);
+                    soldierConfig.SoldierId = BuildDefaultSoldierId(towerConfig, towerAssetName);
+                    soldierConfigChanged = true;
+                }
+
+                if (string.IsNullOrWhiteSpace(soldierConfig.DisplayName))
+                {
+                    soldierConfig.DisplayName = $"{towerConfig.TowerId} Soldier";
+                    soldierConfigChanged = true;
+                }
+
+                if (string.IsNullOrWhiteSpace(soldierConfig.RuntimeSpriteResourcePath))
+                {
+                    soldierConfig.RuntimeSpriteResourcePath = fallbackPath;
+                    soldierConfigChanged = true;
+                }
+
+                if (soldierConfigChanged)
+                {
+                    EditorUtility.SetDirty(soldierConfig);
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log($"[AISpriteProcessor] MigrationSummary tower={towerCount} created={created} linked={linked} skipped={skipped} failed={failed}");
         }
 
         private static bool TryResolveSprite(string resourcePath)
@@ -312,6 +405,158 @@ namespace Kingdom.Editor
             string expanded = templatePath.Replace("{tower}", towerType.ToString());
             expanded = expanded.Replace("{level}", level.ToString());
             return expanded;
+        }
+
+        private static string BuildDefaultSoldierId(TowerConfig towerConfig, string towerAssetName)
+        {
+            string baseId = !string.IsNullOrWhiteSpace(towerConfig.TowerId)
+                ? towerConfig.TowerId.Trim()
+                : towerAssetName;
+            if (string.IsNullOrWhiteSpace(baseId))
+            {
+                baseId = "Barracks";
+            }
+
+            return $"{SanitizeId(baseId)}_Soldier";
+        }
+
+        private static string SanitizeId(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return "Unknown";
+            }
+
+            var builder = new StringBuilder(value.Length);
+            for (int i = 0; i < value.Length; i++)
+            {
+                char ch = value[i];
+                if (char.IsLetterOrDigit(ch) || ch == '_')
+                {
+                    builder.Append(ch);
+                }
+                else
+                {
+                    builder.Append('_');
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        private static void EnsureAssetFolder(string assetFolderPath)
+        {
+            if (AssetDatabase.IsValidFolder(assetFolderPath))
+            {
+                return;
+            }
+
+            string[] parts = assetFolderPath.Split('/');
+            if (parts.Length < 2 || parts[0] != "Assets")
+            {
+                return;
+            }
+
+            string current = parts[0];
+            for (int i = 1; i < parts.Length; i++)
+            {
+                string next = $"{current}/{parts[i]}";
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(current, parts[i]);
+                }
+
+                current = next;
+            }
+        }
+
+        private static bool TryResolveBarracksSoldierSprite(TowerConfig config, out string resolvedPath, out string source)
+        {
+            resolvedPath = string.Empty;
+            source = "none";
+            if (config == null)
+            {
+                return false;
+            }
+
+            if (config.BarracksSoldierConfig != null &&
+                !string.IsNullOrWhiteSpace(config.BarracksSoldierConfig.RuntimeSpriteResourcePath))
+            {
+                string configPath = config.BarracksSoldierConfig.RuntimeSpriteResourcePath.Trim();
+                if (TryResolveSprite(configPath))
+                {
+                    resolvedPath = configPath;
+                    source = "BarracksSoldierConfig";
+                    return true;
+                }
+
+                resolvedPath = configPath;
+                source = "BarracksSoldierConfig";
+            }
+
+            if (!string.IsNullOrWhiteSpace(config.BarracksData.SoldierSpriteResourcePath))
+            {
+                string legacyPath = config.BarracksData.SoldierSpriteResourcePath.Trim();
+                if (TryResolveSprite(legacyPath))
+                {
+                    resolvedPath = legacyPath;
+                    source = "Legacy";
+                    return true;
+                }
+
+                resolvedPath = legacyPath;
+                source = source == "none" ? "Legacy" : $"{source}+Legacy";
+            }
+
+            List<string> candidates = BuildBarracksSoldierPathCandidates(config);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                string candidate = candidates[i];
+                if (TryResolveSprite(candidate))
+                {
+                    resolvedPath = candidate;
+                    source = "Convention";
+                    return true;
+                }
+            }
+
+            if (candidates.Count > 0)
+            {
+                resolvedPath = string.Join(", ", candidates);
+                source = source == "none" ? "Convention" : $"{source}+Convention";
+            }
+
+            return false;
+        }
+
+        private static List<string> BuildBarracksSoldierPathCandidates(TowerConfig config)
+        {
+            var candidates = new List<string>
+            {
+                "UI/Sprites/Barracks/Soldier",
+                "Sprites/Barracks/Soldier",
+                "UI/Sprites/Towers/Barracks/Soldier",
+                "Sprites/Towers/Barracks/Soldier",
+                "Kingdom/Towers/Sprites/Barracks/Soldier"
+            };
+
+            if (config != null && !string.IsNullOrWhiteSpace(config.TowerId))
+            {
+                string towerId = config.TowerId.Trim();
+                candidates.Add($"UI/Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Sprites/Towers/{towerId}/Soldier");
+                candidates.Add($"Kingdom/Towers/Sprites/{towerId}/Soldier");
+            }
+
+            if (config != null && config.BarracksSoldierConfig != null && !string.IsNullOrWhiteSpace(config.BarracksSoldierConfig.SoldierId))
+            {
+                string soldierId = config.BarracksSoldierConfig.SoldierId.Trim();
+                candidates.Add($"UI/Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Sprites/Barracks/Soldiers/{soldierId}");
+                candidates.Add($"Kingdom/Barracks/Soldiers/{soldierId}");
+            }
+
+            return candidates;
         }
     }
 }

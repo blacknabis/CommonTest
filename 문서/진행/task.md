@@ -218,6 +218,10 @@
 - [ ] Step 2 수동 검증: SmartSlice 품질(노이즈/누락/과검출)
 
 ## 신규 서브 트랙: ComfyUI 에셋 파이프라인
+> 기준 문서: `문서/진행/ComfyUI_자동화_트랙_관리_2026_02_20.md`
+
+- [x] ComfyUI 자동화 트랙 관리 문서 분리 및 체크리스트 동기화 (2026-02-20)
+
 ### Phase 1. 타일 생성기 (Tile Generator)
 - [x] `workflow_tile_generation.json` 제작 (SDXL 기반, Seamless 프롬프트)
 - [x] `TileGenerator` 에디터 툴 제작 (Grass/Dirt/Water 메뉴)
@@ -237,12 +241,11 @@
 - [x] 고도화 계획 및 요구사항 구체화 (`AISpriteProcessor_BaseUnit_TowerBase_고도화_계획_2026_02_20.md`)
 
 ### 구현 단계 (구현 전 단계별 세분화)
-- [ ] Phase A: 탭 UI 골격 관리 및 컨텍스트 분리
-- [ ] Phase B: BaseUnit 탭 + HeroConfig 연결 구현 (ActionGroup 적용)
-- [ ] Phase C: BaseUnit 탭 + EnemyConfig 연결 구현
-- [ ] Phase D: BaseUnit 탭 + BarracksSoldierConfig 연결 구현
-- [ ] Phase E: TowerBase 탭 + TowerConfig 연결 구현 (레벨별 연동)
-- [ ] Phase F: 데이터 마이그레이션 및 하위 호환성 (Fallback) 대응
-- [ ] Phase G: 검증/로그 통합 UX 및 예외 처리 정책
+- [x] Phase A: 탭 UI 골격 관리 및 컨텍스트 분리
+- [x] Phase B: BaseUnit 탭 + HeroConfig 연결 구현 (ActionGroup 적용)
+- [x] Phase C: BaseUnit 탭 + EnemyConfig 연결 구현
+- [x] Phase D: BaseUnit 탭 + BarracksSoldierConfig 연결 구현
+- [x] Phase E: TowerBase 탭 + TowerConfig 연결 구현 (레벨별 연동)
+- [x] Phase F: 데이터 마이그레이션 및 하위 호환성 (Fallback) 대응
+- [ ] Phase G: 검증/로그 통합 UX 및 예외 처리 정책 (회귀 메뉴 모달 제거 및 로그 기준 운영 반영 완료, Validate 결과 패널 정리는 남음)
 - [ ] Phase H: 실제 샘플(에셋) 적용 테스트
-
