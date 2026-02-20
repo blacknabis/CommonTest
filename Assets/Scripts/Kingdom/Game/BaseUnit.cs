@@ -1,0 +1,58 @@
+using UnityEngine;
+
+namespace Kingdom.Game
+{
+    /// <summary>
+    /// Base class for all combat units (Enemies, Soldiers, Heroes).
+    /// Provides common HP management and IDamageable implementation.
+    /// </summary>
+    public abstract class BaseUnit : MonoBehaviour, IDamageable
+    {
+        [SerializeField] protected float _currentHp;
+        [SerializeField] protected float _maxHp;
+
+        public float CurrentHp => _currentHp;
+        public float MaxHp => _maxHp;
+        public bool IsAlive => _currentHp > 0;
+
+        /// <summary>
+        /// Initialize the unit with MaxHP.
+        /// </summary>
+        protected virtual void InitializeHealth(float maxHp)
+        {
+            _maxHp = Mathf.Max(1f, maxHp);
+            _currentHp = _maxHp;
+        }
+
+        /// <summary>
+        /// Apply damage to the unit.
+        /// Derived classes should override this to implement specific damage calculation logic (e.g. Armor, Magic Resist).
+        /// </summary>
+        public virtual void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
+        {
+            if (!IsAlive) return;
+
+            float finalDamage = Mathf.Max(0f, amount);
+            if (finalDamage <= 0f)
+            {
+                return;
+            }
+
+            _currentHp -= finalDamage;
+            if (_currentHp <= 0f)
+            {
+                _currentHp = 0f;
+                Die();
+            }
+        }
+
+        protected void RestoreHealthToFull()
+        {
+            _currentHp = _maxHp;
+        }
+
+        protected virtual void Die()
+        {
+        }
+    }
+}

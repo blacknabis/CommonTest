@@ -1,7 +1,7 @@
 ﻿# Kingdom 작업 Task (정리본)
 
 > 기준 문서: `문서/완료/2026_02_16/월드맵_업그레이드_영웅관리소_플랜_2026_02_16.md`
-> 마지막 갱신: 2026-02-19 (적 유닛 구현 시작)
+> 마지막 갱신: 2026-02-19 (타워·영웅 구현 진행)
 
 ## 현재 메인 트랙: 적 유닛 구현 (Enemy Implementation)
 > 기준 문서: `문서/분석/적_유닛_상세_분석.md`
@@ -24,6 +24,43 @@
 ### Phase 4. 웨이브 검증
 - [x] Placeholder 프리팹 제작 (Color Variant) - 런타임 Placeholder(`SpawnManager` Sprite/Tint) 적용
 - [x] 웨이브 템플릿(A/B/C/D) 구성 및 테스트
+
+## 다음 메인 트랙: 타워·영웅 구현 (Tower & Hero Implementation)
+> 기준 문서: `문서/분석/타워_유닛_상세_분석.md`, `문서/분석/영웅_유닛_상세_분석.md`
+> 구현 계획: `문서/진행/타워_영웅_구현_계획_2026_02_19.md`
+
+### Phase 1. 타워 전투 규칙 정리 (P0)
+- [x] 타입별 핵심 규칙/타겟팅/상성 정리
+- [x] 1~3티어 성장 곡선 표준화
+
+### Phase 2. 상위 타워 스킬 훅 (P1)
+- [x] 4티어 대표 스킬 훅(계열별 최소 1개) 구현
+- [x] 쿨다운/중복 발동 안정화
+
+### Phase 3. 영웅 공통 시스템 (P0~P1)
+- [x] 영웅 공통 런타임(체력/피격/사망/복귀) 정리
+- [x] 영웅 스킬 슬롯/쿨다운 데이터 정책 정리
+
+### Phase 4. 영웅 역할군 능력 (P1)
+- [x] 탱커/딜러/소환·보조 역할군 대표 능력 구현
+- [x] 역할군 시나리오 테스트 (`Hero role smoke regression: success=12, fail=0, testedHeroes=3`)
+
+### Phase 5. 통합 검증 (P2)
+- [x] 정식 데이터 에셋화 (`TowerConfig` 4종/`HeroConfig` 3종/`StageConfig -> WaveConfig` 링크 정리)
+- [x] 타워·영웅·적 상성 통합 QA (`Combat integration smoke regression: success=1, fail=0, scenario=TankAndSpank`)
+- [x] 밸런스 조정 백로그 문서화 (`문서/진행/밸런스_조정_백로그_2026_02_19.md`)
+
+### Extension Track. 배럭 병사 근접교전 확장 (P0~P1)
+> 상세 플랜: `문서/진행/배럭_병사_근접교전_확장_계획_2026_02_19.md`
+
+- [x] 분리 상세 플랜 문서 생성 및 링크 연결
+- [x] `BaseUnit` 공통 부모 도입 및 `EnemyRuntime` 리팩토링 (Phase A)
+- [x] `BarracksData` 전투 파라미터 확장 및 호환성 보정 (Phase A)
+- [x] 병사 런타임 상태(`Idle/Blocking/Dead/Respawning`) 및 `BaseUnit` 상속 구현 (Phase B)
+- [x] 병사-적 상호 공격 연동 (`EnemyRuntime.AttackPerformed` 활용) (Phase C)
+- [x] 병사 사망/재소환 루프 구현 (Phase B/C)
+- [x] 배럭 근접교전 스모크 러너 추가 (`Tools/Kingdom/Run Barracks Melee Smoke Regression`)
+- [x] 랠리 포인트 재배치 안정화 및 경량 QA (`Barracks melee smoke regression: success=10, fail=0`)
 
 ## 완료 트랙: 환경설정 오디오 옵션창 (마감)
 > 기준 문서: `문서/완료/2026_02_19/환경설정_오디오옵션창_작업계획_2026_02_19.md`

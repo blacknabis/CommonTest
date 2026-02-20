@@ -43,5 +43,62 @@ namespace Kingdom.Editor
 
             manager.StartMetaPersistenceAndHeroApplyRegression();
         }
+
+        [MenuItem("Tools/Kingdom/Run Hero Role Smoke Regression")]
+        private static void RunHeroRoleSmokeRegression()
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] Enter Play Mode first.");
+                return;
+            }
+
+            KingdomAppManager manager = Object.FindFirstObjectByType<KingdomAppManager>();
+            if (manager == null)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] KingdomAppManager not found in active scene.");
+                return;
+            }
+
+            manager.StartHeroRoleSmokeRegression();
+        }
+
+        [MenuItem("Tools/Kingdom/Run Combat Integration Smoke Regression")]
+        private static void RunCombatIntegrationSmokeRegression()
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] Enter Play Mode first.");
+                return;
+            }
+
+            KingdomAppManager manager = Object.FindFirstObjectByType<KingdomAppManager>();
+            if (manager == null)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] KingdomAppManager not found in active scene.");
+                return;
+            }
+
+            manager.StartCombatIntegrationSmokeRegression();
+        }
+
+        [MenuItem("Tools/Kingdom/Run Barracks Melee Smoke Regression")]
+        private static void RunBarracksMeleeSmokeRegression()
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] Enter Play Mode first.");
+                return;
+            }
+
+            KingdomAppManager manager = Object.FindFirstObjectByType<KingdomAppManager>();
+            if (manager == null)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] KingdomAppManager not found in active scene.");
+                return;
+            }
+
+            manager.StartBarracksMeleeSmokeRegression();
+        }
     }
 }

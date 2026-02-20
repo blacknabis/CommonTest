@@ -18,6 +18,13 @@ namespace Kingdom.Game
         Melee = 2
     }
 
+    public enum TowerTargetType
+    {
+        Ground = 0,
+        Air = 1,
+        Both = 2
+    }
+
     public enum ProjectileMoveType
     {
         Homing = 0,
@@ -30,6 +37,12 @@ namespace Kingdom.Game
     {
         public int SquadSize;
         public float RallyRange;
+
+        [Header("Soldier Combat Stats")]
+        public float SoldierMaxHp;
+        public float SoldierDamage;
+        public float SoldierAttackCooldown;
+        public float SoldierRespawnSec;
     }
 
     [Serializable]
@@ -66,6 +79,7 @@ namespace Kingdom.Game
         
         [Header("Damage Settings")]
         public DamageType DamageType = DamageType.Physical;
+        public TowerTargetType TargetType = TowerTargetType.Both;
         public bool HalfPhysicalArmorPenetration;
         public bool CanTargetAir = true;
         public BarracksData BarracksData;
@@ -78,6 +92,33 @@ namespace Kingdom.Game
         public float AttackRange => Levels != null && Levels.Length > 0 ? Levels[0].Range : 2.2f;
         public float AttackCooldown => Levels != null && Levels.Length > 0 ? Levels[0].Cooldown : 0.75f;
         public float AttackDamage => Levels != null && Levels.Length > 0 ? Levels[0].Damage : 34f;
+
+        public bool CanTarget(bool isFlying)
+        {
+            TowerTargetType resolved = ResolveTargetType();
+            return resolved switch
+            {
+                TowerTargetType.Both => true,
+                TowerTargetType.Air => isFlying,
+                _ => !isFlying
+            };
+        }
+
+        public TowerTargetType ResolveTargetType()
+        {
+            // Legacy fallback path for older assets.
+            if (TargetType == TowerTargetType.Both)
+            {
+                return TargetType;
+            }
+
+            if (CanTargetAir && TargetType == TowerTargetType.Ground)
+            {
+                return TowerTargetType.Both;
+            }
+
+            return TargetType;
+        }
     }
 
 }

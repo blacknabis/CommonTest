@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,13 +15,11 @@ namespace Kingdom.Game
     /// <summary>
     /// Enemy runtime: path movement + block/attack states + on-hit traits.
     /// </summary>
-    public class EnemyRuntime : MonoBehaviour, IDamageable
+    public class EnemyRuntime : BaseUnit
     {
         private EnemyConfig _config;
         private List<Vector3> _path;
         private int _pathIndex;
-        private float _hp;
-        private bool _isDead;
         private int _blockerTowerId = -1;
         private Vector3 _blockedAnchor;
         private float _blockedElapsed;
@@ -38,8 +36,7 @@ namespace Kingdom.Game
         public event Action<EnemyRuntime, float> AttackPerformed;
         public event Action<EnemyRuntime, float, float, Vector3> DeathBurstTriggered;
 
-        public bool IsDead => _isDead;
-        public bool IsAlive => !_isDead;
+        public bool IsDead => !IsAlive;
         public bool IsFlying => _config != null && _config.IsFlyingUnit;
         public bool IsBoss => _config != null && _config.IsBossUnit;
         public bool IsInstaKillImmune => _config != null && _config.IsInstaKillImmune;
@@ -52,14 +49,15 @@ namespace Kingdom.Game
             _config = config;
             _path = path;
             _pathIndex = 0;
-            _hp = config != null ? Mathf.Max(1f, config.MaxHp) : 1f;
-            _isDead = false;
             _blockerTowerId = -1;
             _blockedElapsed = 0f;
             _attackCooldownLeft = 0f;
             _regenTickAccum = 0f;
             _deathBurstTriggered = false;
             _motionState = EnemyMotionState.Moving;
+
+            float startHp = config != null ? Mathf.Max(1f, config.MaxHp) : 1f;
+            InitializeHealth(startHp);
 
             if (_path != null && _path.Count > 0)
             {
@@ -69,7 +67,7 @@ namespace Kingdom.Game
 
         private void Update()
         {
-            if (_isDead)
+            if (!IsAlive)
             {
                 return;
             }
@@ -96,7 +94,7 @@ namespace Kingdom.Game
                 _pathIndex++;
                 if (_pathIndex >= _path.Count)
                 {
-                    _isDead = true;
+                    _currentHp = 0f;
                     _motionState = EnemyMotionState.Dead;
                     ReachedGoal?.Invoke(this);
                 }
@@ -105,7 +103,7 @@ namespace Kingdom.Game
 
         public bool TryEnterBlock(int blockerTowerId, Vector3 blockAnchor)
         {
-            if (_isDead || blockerTowerId < 0)
+            if (!IsAlive || blockerTowerId < 0)
             {
                 return false;
             }
@@ -130,7 +128,7 @@ namespace Kingdom.Game
 
         public bool TryApplyInstantKill()
         {
-            if (_isDead || IsInstaKillImmune || IsBoss)
+            if (!IsAlive || IsInstaKillImmune || IsBoss)
             {
                 return false;
             }
@@ -154,15 +152,15 @@ namespace Kingdom.Game
             _blockerTowerId = -1;
             _blockedElapsed = 0f;
             _attackCooldownLeft = 0f;
-            if (!_isDead)
+            if (IsAlive)
             {
                 _motionState = EnemyMotionState.Moving;
             }
         }
 
-        public void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
+        public override void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
         {
-            if (_isDead)
+            if (!IsAlive)
             {
                 return;
             }
@@ -184,12 +182,25 @@ namespace Kingdom.Game
                 return;
             }
 
-            _hp -= finalDamage;
+            _currentHp -= finalDamage;
             Damaged?.Invoke(this, finalDamage);
-            if (_hp <= 0f)
+            if (_currentHp <= 0f)
             {
-                KillAndNotify();
+                _currentHp = 0f;
+                Die();
             }
+        }
+
+        protected override void Die()
+        {
+            if (_motionState == EnemyMotionState.Dead)
+            {
+                return;
+            }
+
+            _motionState = EnemyMotionState.Dead;
+            TriggerDeathBurstOnce();
+            Killed?.Invoke(this);
         }
 
         private void TickBlockedState()
@@ -212,13 +223,13 @@ namespace Kingdom.Game
 
         private void TickRegen()
         {
-            if (_config == null || _isDead)
+            if (_config == null || !IsAlive)
             {
                 return;
             }
 
             float regenPerSec = Mathf.Max(0f, _config.RegenHpPerSec);
-            if (regenPerSec <= 0f || _hp >= _config.MaxHp)
+            if (regenPerSec <= 0f || _currentHp >= _config.MaxHp)
             {
                 return;
             }
@@ -231,9 +242,9 @@ namespace Kingdom.Game
 
             float dt = _regenTickAccum;
             _regenTickAccum = 0f;
-            float before = _hp;
-            _hp = Mathf.Min(_config.MaxHp, _hp + (regenPerSec * dt));
-            float healed = _hp - before;
+            float before = _currentHp;
+            _currentHp = Mathf.Min(_config.MaxHp, _currentHp + (regenPerSec * dt));
+            float healed = _currentHp - before;
             if (healed > 0f)
             {
                 Healed?.Invoke(this, healed);
@@ -276,15 +287,13 @@ namespace Kingdom.Game
 
         private void KillAndNotify()
         {
-            if (_isDead)
+            if (!IsAlive)
             {
                 return;
             }
 
-            _isDead = true;
-            _motionState = EnemyMotionState.Dead;
-            TriggerDeathBurstOnce();
-            Killed?.Invoke(this);
+            _currentHp = 0f;
+            Die();
         }
 
         private void TriggerDeathBurstOnce()
