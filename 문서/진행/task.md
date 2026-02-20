@@ -203,15 +203,22 @@
 - [x] 미분류 `Unknown` 그룹 처리
 
 ### Step 4. 정규화/Manifest
-- [ ] 프레임 크기 정규화(가변 크기 대응)
-- [ ] Pivot 기준 정렬(Bottom-Center 기본)
-- [ ] `manifest.json` 출력(경고/옵션 기록)
+- [x] 프레임 크기 정규화(가변 크기 대응)
+- [x] Pivot 기준 정렬(Bottom-Center 기본)
+- [x] `manifest.json` 출력(경고/옵션 기록)
 
 ### 문서 운영 세트
 - [x] 실행 로그 파일 생성/누적 (`문서/진행/작업상세로그_2026_02_18.md`)
 - [x] 단계 완료 시 계획서/로그/task 3종 동기화
 
 ### 검증(사용자 진행)
+- [x] Step 4 회귀 검증: `walk_Change_the_background_202602182330_Processed` rect out-of-bounds 경고 미재현, `manifest.json` 필드 정합 확인
 - [ ] Step 1 수동 검증: 프리셋 Save/Load/Delete
 - [ ] Step 1 수동 검증: 입력값 오류 다이얼로그
 - [ ] Step 2 수동 검증: SmartSlice 품질(노이즈/누락/과검출)
+
+## 신규 서브 트랙: ComfyUI 에셋 파이프라인
+### Phase 1. 타일 생성기 (Tile Generator)
+- [x] `workflow_tile_generation.json` 제작 (SDXL 기반, Seamless 프롬프트)
+- [x] `TileGenerator` 에디터 툴 제작 (Grass/Dirt/Water 메뉴)
+- [ ] Unity Editor 내 생성 테스트 및 Seamless 확인
