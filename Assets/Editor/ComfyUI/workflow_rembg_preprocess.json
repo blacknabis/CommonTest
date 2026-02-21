@@ -1,0 +1,37 @@
+{
+    "rembg_node": {
+        "inputs": {
+            "image": [
+                "load_image_node",
+                0
+            ]
+        },
+        "class_type": "Image Remove Background (rembg)",
+        "_meta": {
+            "title": "Image Remove Background (rembg)"
+        }
+    },
+    "load_image_node": {
+        "inputs": {
+            "image": "%UPLOADED_IMAGE_NAME%",
+            "upload": "image"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+            "title": "Load Image"
+        }
+    },
+    "save_image_node": {
+        "inputs": {
+            "filename_prefix": "rembg_output",
+            "images": [
+                "rembg_node",
+                0
+            ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+            "title": "Save Image"
+        }
+    }
+}

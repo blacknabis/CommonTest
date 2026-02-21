@@ -174,6 +174,39 @@ namespace CatSudoku.Editor
                 return false;
             }
         }
+
+        public static async Task<bool> HasNodeType(string classType)
+        {
+            if (string.IsNullOrWhiteSpace(classType))
+            {
+                return false;
+            }
+
+            try
+            {
+                string encoded = Uri.EscapeDataString(classType);
+                var directResponse = await client.GetAsync($"{BaseUrl}/object_info/{encoded}");
+                if (directResponse.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                var allResponse = await client.GetAsync($"{BaseUrl}/object_info");
+                if (!allResponse.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+
+                var json = await allResponse.Content.ReadAsStringAsync();
+                var objectInfo = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                return objectInfo != null && objectInfo.ContainsKey(classType);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Failed to query node type '{classType}': {e.Message}");
+                return false;
+            }
+        }
     }
 
 
