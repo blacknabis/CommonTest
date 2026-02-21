@@ -20,8 +20,8 @@
 
 ### Phase 3. 실기동 회귀
 - [x] Combat Integration Smoke Regression 재실행 성공 (`success=1, fail=0, scenarios=1`)
-- [ ] Stage 1 Goblin 기준 전투 진입 성공
-- [ ] Goblin `idle/walk/attack/die` 상태 재생 확인
+- [x] Stage 1 Goblin 기준 전투 진입 성공 (Stage context 고정 후 Wave 진행/전투 로그 확인)
+- [x] Goblin `idle/walk/attack/die` 상태 재생 확인 (multi 시트 액션 분해 로딩 경로 검증 + 전투 중 spawn/kill 동작 확인)
 - [ ] 기존 분리 파일 방식 회귀 없음 확인
 
 ## 현재 메인 트랙: 적 유닛 구현 (Enemy Implementation)

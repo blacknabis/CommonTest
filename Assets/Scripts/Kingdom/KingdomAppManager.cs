@@ -590,6 +590,8 @@ namespace Kingdom.App
             int localFail = 0;
             const string selectedHeroKey = "Kingdom.Hero.SelectedHeroId";
 
+            WorldMapScene.SetSelectedStageContext(1, Kingdom.WorldMap.StageDifficulty.Normal);
+
             PlayerPrefs.SetString(selectedHeroKey, scenario.HeroId);
             PlayerPrefs.Save();
             if (PlayerPrefs.GetString(selectedHeroKey, string.Empty) == scenario.HeroId)
