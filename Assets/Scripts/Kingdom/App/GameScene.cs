@@ -18,8 +18,6 @@ namespace Kingdom.App
     {
         // 리소스 경로 및 밸런스 상수
         private const string BattlefieldPrefabResourcePath = "Prefabs/Game/GameBattlefield"; // 전장 프리팹 경로
-        private const string TowerConfigResourcePath = "Data/TowerConfigs/BasicTower"; // 기본 타워 설정 경로
-        private const string HeroConfigResourcePathPrefix = "Data/HeroConfigs/"; // 영웅 설정 폴더 경로 접두사
         private const string DefaultHeroId = "DefaultHero"; // 기본 영웅 ID
         private const string SelectedHeroIdPlayerPrefsKey = "Kingdom.Hero.SelectedHeroId"; // 선택 영웅 저장 키
         private const string HeroPortraitSpriteResourcePathPrefix = "UI/Sprites/Heroes/Portraits/"; // 영웅 초상화 스프라이트 경로 접두사
@@ -38,13 +36,6 @@ namespace Kingdom.App
         private const string GeneratedHeroManifestResourcePath = "Sprites/Heroes/manifest"; // 생성형 영웅 매니페스트 경로
         private const string GeneratedHeroSpriteResourcePathPrefix = "Sprites/Heroes/"; // 생성형 영웅 스프라이트 경로 접두사
         private static readonly string[] RequiredHeroActions = { "idle", "walk", "attack", "die" }; // 영웅 필수 액션 목록
-        private static readonly string[] RequiredEnemyActions = { "idle", "attack", "die" }; // 적 필수 액션 목록
-        private static readonly string[] EnemySpriteResourcePrefixes =
-        {
-            "UI/Sprites/Enemies/",
-            "Sprites/Enemies/",
-            "Kingdom/Enemies/Sprites/"
-        };
         private static readonly string[] TowerSpriteResourcePrefixes =
         {
             "UI/Sprites/Towers/",
@@ -377,14 +368,14 @@ namespace Kingdom.App
                 int selectedStageIdFallback = WorldMapScene.SelectedStageId;
                 if (selectedStageIdFallback > 0)
                 {
-                    WaveConfig directById = Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{selectedStageIdFallback}_WaveConfig");
+                    WaveConfig directById = ConfigResourcePaths.LoadWaveConfigByStageId(selectedStageIdFallback);
                     if (directById != null)
                     {
                         return directById;
                     }
                 }
 
-                return Resources.Load<WaveConfig>("Data/WaveConfigs/Stage_1_WaveConfig");
+                return ConfigResourcePaths.LoadWaveConfigByStageId(1);
             }
 
             int selectedStageId = WorldMapScene.SelectedStageId;
@@ -426,7 +417,7 @@ namespace Kingdom.App
             // StageConfig 직렬화 참조가 비어 있으면 Resources 경로에서 보완 로드한다.
             if (stageData.StageId > 0)
             {
-                return Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{stageData.StageId}_WaveConfig");
+                return ConfigResourcePaths.LoadWaveConfigByStageId(stageData.StageId);
             }
 
             return null;
@@ -529,17 +520,16 @@ namespace Kingdom.App
         // 검증용 선택 영웅 설정을 로드한다.
         private static HeroConfig LoadSelectedHeroConfigForRuntimeValidation(string selectedHeroId, List<string> missingData)
         {
-            string path = HeroConfigResourcePathPrefix + selectedHeroId;
-            HeroConfig config = Resources.Load<HeroConfig>(path);
+            HeroConfig config = ConfigResourcePaths.LoadHeroConfig(selectedHeroId);
             if (config == null)
             {
-                missingData.Add($"HeroConfig missing: {path}");
+                missingData.Add($"HeroConfig missing: {ConfigResourcePaths.HeroPrefix}{selectedHeroId} (legacy fallback also checked)");
                 return null;
             }
 
             if (string.IsNullOrWhiteSpace(config.HeroId))
             {
-                missingData.Add($"HeroConfig invalid HeroId: {path}");
+                missingData.Add($"HeroConfig invalid HeroId: {ConfigResourcePaths.HeroPrefix}{selectedHeroId}");
             }
 
             return config;
@@ -715,56 +705,25 @@ namespace Kingdom.App
             }
         }
 
-        // 적 이동/행동 스프라이트 바인딩을 통합 검증한다.
+        // 적 Animator 바인딩을 검증한다.
         private static bool TryResolveEnemySpriteBinding(EnemyConfig config, out string detail)
         {
             detail = string.Empty;
             if (config == null)
             {
-                detail = "Enemy sprite missing: EnemyConfig is null.";
+                detail = "Enemy animator missing: EnemyConfig is null.";
                 return false;
             }
 
             string enemyId = string.IsNullOrWhiteSpace(config.EnemyId) ? "(empty)" : config.EnemyId.Trim();
-            string runtimePath = string.IsNullOrWhiteSpace(config.RuntimeSpriteResourcePath) ? "(empty)" : config.RuntimeSpriteResourcePath.Trim();
             if (!TryResolveEnemyAnimatorBinding(config, out string animatorResolvedPath, out string animatorReason))
             {
                 detail =
                     $"Enemy animator missing: enemyId={enemyId}, animatorPath={NormalizeForLog(animatorResolvedPath)}, reason={animatorReason}";
                 return false;
             }
-
-            // 1) 이동 기본 클립을 먼저 해석한다. 이동이 없으면 액션 클립 검증도 의미가 없다.
-            if (!TryResolveEnemyMoveSpriteBinding(config, out string moveResolvedPath, out string moveReason))
-            {
-                detail =
-                    $"Enemy move sprite missing: enemyId={enemyId}, runtimePath={runtimePath}, reason={moveReason}";
-                return false;
-            }
-
-            // 2) 필수 액션 클립을 개별 해석하고, 누락된 후보 경로를 정확히 로그에 남긴다.
-            var missingActions = new List<string>();
-            for (int i = 0; i < RequiredEnemyActions.Length; i++)
-            {
-                string action = RequiredEnemyActions[i];
-                if (TryResolveEnemyActionSpriteBinding(config, action, out _, out string actionReason))
-                {
-                    continue;
-                }
-
-                BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> actionCandidates);
-                string candidateText = actionCandidates.Count > 0 ? string.Join(", ", actionCandidates) : "(none)";
-                missingActions.Add($"action={action}, reason={NormalizeForLog(actionReason)}, candidates={candidateText}");
-            }
-
-            if (missingActions.Count > 0)
-            {
-                detail =
-                    $"Enemy action sprite missing: enemyId={enemyId}, runtimePath={runtimePath}, " +
-                    $"move={NormalizeForLog(moveResolvedPath)}, missing=[{string.Join(" | ", missingActions)}]";
-                return false;
-            }
-
+            // Enemy visual validation is now animator-driven.
+            // Sprite-path based validation is intentionally skipped.
             return true;
         }
 
@@ -810,363 +769,13 @@ namespace Kingdom.App
             return false;
         }
 
-        // enemyId 기반 적 스프라이트 후보 경로를 생성한다.
-        private static List<string> BuildEnemySpritePathCandidates(string enemyId)
-        {
-            var candidates = new List<string>();
-            if (string.IsNullOrWhiteSpace(enemyId))
-            {
-                return candidates;
-            }
-
-            string trimmed = enemyId.Trim();
-            for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
-            {
-                string prefix = EnemySpriteResourcePrefixes[i];
-                TryAddEnemyCandidate(candidates, prefix + trimmed);
-                TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}/{trimmed}");
-            }
-
-            return candidates;
-        }
-
-        // 적 이동 스프라이트 경로를 우선 해석한다.
-        private static bool TryResolveEnemyMoveSpriteBinding(EnemyConfig config, out string resolvedPath, out string reason)
-        {
-            resolvedPath = string.Empty;
-            reason = string.Empty;
-
-            if (config == null)
-            {
-                reason = "EnemyConfig is null.";
-                return false;
-            }
-
-            if (TryResolveSpriteResourcePath(config.RuntimeSpriteResourcePath))
-            {
-                resolvedPath = config.RuntimeSpriteResourcePath;
-                return true;
-            }
-
-            // 런타임 경로 실패 시 enemyId 네이밍 규칙 기반 후보로 폴백한다.
-            List<string> candidates = BuildEnemySpritePathCandidates(config.EnemyId);
-            for (int i = 0; i < candidates.Count; i++)
-            {
-                if (!TryResolveSpriteResourcePath(candidates[i]))
-                {
-                    continue;
-                }
-
-                resolvedPath = candidates[i];
-                return true;
-            }
-
-            reason = candidates.Count > 0 ? $"candidates={string.Join(", ", candidates)}" : "no candidates";
-            return false;
-        }
-
-        // 적 액션별 스프라이트 경로를 해석한다.
-        private static bool TryResolveEnemyActionSpriteBinding(EnemyConfig config, string action, out string resolvedPath, out string reason)
-        {
-            resolvedPath = string.Empty;
-            reason = string.Empty;
-
-            if (config == null)
-            {
-                reason = "EnemyConfig is null.";
-                return false;
-            }
-
-            if (TryResolveEnemyActionFromMultiSheet(config.RuntimeSpriteResourcePath, action, out string multiReason))
-            {
-                resolvedPath = config.RuntimeSpriteResourcePath;
-                reason = multiReason;
-                return true;
-            }
-
-            // 런타임 경로 + enemyId 네이밍 규칙으로 후보 경로를 생성한다.
-            BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> candidates);
-            for (int i = 0; i < candidates.Count; i++)
-            {
-                if (!TryResolveSpriteResourcePath(candidates[i]))
-                {
-                    continue;
-                }
-
-                resolvedPath = candidates[i];
-                return true;
-            }
-
-            reason = candidates.Count > 0
-                ? $"multi={NormalizeForLog(multiReason)}, candidates={string.Join(", ", candidates)}"
-                : $"multi={NormalizeForLog(multiReason)}, no candidates";
-            return false;
-        }
-
-        // 단일 시트(multi_*)에서 액션 토큰 기반으로 프레임 포함 여부를 확인한다.
-        private static bool TryResolveEnemyActionFromMultiSheet(string runtimePath, string action, out string reason)
-        {
-            reason = string.Empty;
-            if (string.IsNullOrWhiteSpace(runtimePath) || string.IsNullOrWhiteSpace(action))
-            {
-                reason = "runtimePath/action empty";
-                return false;
-            }
-
-            Sprite[] sprites = Resources.LoadAll<Sprite>(runtimePath);
-            if (sprites == null || sprites.Length <= 0)
-            {
-                reason = "no sprites at runtimePath";
-                return false;
-            }
-
-            string[] aliases = GetEnemyActionAliases(action);
-            int matched = 0;
-            for (int i = 0; i < sprites.Length; i++)
-            {
-                Sprite sprite = sprites[i];
-                if (sprite == null)
-                {
-                    continue;
-                }
-
-                if (!ContainsEnemyActionAliasToken(sprite.name, aliases))
-                {
-                    continue;
-                }
-
-                matched++;
-            }
-
-            if (matched > 0)
-            {
-                reason = $"multi-sheet parsed ({action}={matched})";
-                return true;
-            }
-
-            reason = $"multi-sheet loaded but no {action} token";
-            return false;
-        }
-
-        // 스프라이트 이름 토큰에서 액션 alias 존재 여부를 확인한다.
-        private static bool ContainsEnemyActionAliasToken(string spriteName, string[] aliases)
-        {
-            if (string.IsNullOrWhiteSpace(spriteName) || aliases == null || aliases.Length <= 0)
-            {
-                return false;
-            }
-
-            string[] tokens = spriteName.Split('_');
-            for (int tokenIndex = 0; tokenIndex < tokens.Length; tokenIndex++)
-            {
-                string token = tokens[tokenIndex];
-                if (string.IsNullOrWhiteSpace(token))
-                {
-                    continue;
-                }
-
-                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
-                {
-                    if (string.Equals(token, aliases[aliasIndex], System.StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        // 액션/경로 규칙 기반 적 스프라이트 후보를 구성한다.
-        private static void BuildEnemyActionPathCandidates(string action, string runtimePath, string enemyId, out List<string> candidates)
-        {
-            candidates = new List<string>(20);
-            // 네이밍 스타일 차이를 흡수하기 위해 공통 별칭을 허용한다.
-            string[] aliases = GetEnemyActionAliases(action);
-
-            if (!string.IsNullOrWhiteSpace(runtimePath))
-            {
-                for (int i = 0; i < aliases.Length; i++)
-                {
-                    string alias = aliases[i];
-                    TryAddEnemyCandidate(candidates, ReplaceEnemyActionToken(runtimePath, alias));
-                    TryAddEnemyCandidate(candidates, AppendEnemyActionSegment(runtimePath, alias));
-                    TryAddEnemyCandidate(candidates, $"{runtimePath}_{alias}");
-                    TryAddEnemyCandidate(candidates, $"{alias}_{runtimePath}");
-                }
-            }
-
-            if (string.IsNullOrWhiteSpace(enemyId))
-            {
-                return;
-            }
-
-            string trimmed = enemyId.Trim();
-            for (int i = 0; i < EnemySpriteResourcePrefixes.Length; i++)
-            {
-                string prefix = EnemySpriteResourcePrefixes[i];
-                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
-                {
-                    string alias = aliases[aliasIndex];
-                    TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}/{alias}");
-                    TryAddEnemyCandidate(candidates, $"{prefix}{alias}_{trimmed}");
-                    TryAddEnemyCandidate(candidates, $"{prefix}{trimmed}_{alias}");
-                    TryAddEnemyCandidate(candidates, $"{prefix}{alias}_{trimmed}_Processed");
-                }
-            }
-        }
-
-        // 액션명 별칭 목록을 반환한다.
-        private static string[] GetEnemyActionAliases(string action)
-        {
-            if (string.IsNullOrWhiteSpace(action))
-            {
-                return new[] { string.Empty };
-            }
-
-            if (string.Equals(action, "idle", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return new[] { "idle" };
-            }
-
-            if (string.Equals(action, "attack", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return new[] { "attack", "atk" };
-            }
-
-            if (string.Equals(action, "die", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return new[] { "die", "death", "dead" };
-            }
-
-            if (string.Equals(action, "walk", System.StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(action, "move", System.StringComparison.OrdinalIgnoreCase))
-            {
-                return new[] { "walk", "move", "run" };
-            }
-
-            return new[] { action.ToLowerInvariant() };
-        }
-
-        // 리소스 경로의 액션 토큰을 목표 액션으로 치환한다.
-        private static string ReplaceEnemyActionToken(string resourcePath, string actionAlias)
-        {
-            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(actionAlias))
-            {
-                return string.Empty;
-            }
-
-            // 토큰 치환: "walk_xxx" 형태를 "attack_xxx" 같은 액션명으로 교체한다.
-            string[] prefixedTokens =
-            {
-                "idle_",
-                "walk_",
-                "run_",
-                "move_",
-                "attack_",
-                "atk_",
-                "die_",
-                "death_",
-                "dead_"
-            };
-
-            for (int i = 0; i < prefixedTokens.Length; i++)
-            {
-                string token = prefixedTokens[i];
-                int index = resourcePath.IndexOf(token, System.StringComparison.OrdinalIgnoreCase);
-                if (index < 0)
-                {
-                    continue;
-                }
-
-                if (index > 0 && resourcePath[index - 1] != '/')
-                {
-                    continue;
-                }
-
-                return $"{resourcePath.Substring(0, index)}{actionAlias}_{resourcePath.Substring(index + token.Length)}";
-            }
-
-            string[] segments = resourcePath.Split('/');
-            for (int i = 0; i < segments.Length; i++)
-            {
-                // 세그먼트 치환: ".../walk/..." 형태를 ".../attack/..." 형태로 교체한다.
-                if (!IsEnemyActionSegment(segments[i]))
-                {
-                    continue;
-                }
-
-                segments[i] = actionAlias;
-                return string.Join("/", segments);
-            }
-
-            return string.Empty;
-        }
-
-        // 경로 세그먼트가 적 액션 토큰인지 판별한다.
-        private static bool IsEnemyActionSegment(string segment)
-        {
-            if (string.IsNullOrWhiteSpace(segment))
-            {
-                return false;
-            }
-
-            return string.Equals(segment, "idle", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "walk", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "run", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "move", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "attack", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "atk", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "die", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "death", System.StringComparison.OrdinalIgnoreCase)
-                   || string.Equals(segment, "dead", System.StringComparison.OrdinalIgnoreCase);
-        }
-
-        // 액션 세그먼트를 덧붙인 폴백 경로를 만든다.
-        private static string AppendEnemyActionSegment(string resourcePath, string actionAlias)
-        {
-            if (string.IsNullOrWhiteSpace(resourcePath) || string.IsNullOrWhiteSpace(actionAlias))
-            {
-                return string.Empty;
-            }
-
-            // 디렉터리형 폴백: ".../Foo" 경로를 ".../<action>" 형태로 변환한다.
-            int slash = resourcePath.LastIndexOf('/');
-            if (slash < 0)
-            {
-                return $"{actionAlias}/{resourcePath}";
-            }
-
-            string dir = resourcePath.Substring(0, slash);
-            return $"{dir}/{actionAlias}";
-        }
-
-        // 적 후보 경로를 중복 없이 추가한다.
-        private static void TryAddEnemyCandidate(List<string> candidates, string candidate)
-        {
-            if (candidates == null || string.IsNullOrWhiteSpace(candidate))
-            {
-                return;
-            }
-
-            for (int i = 0; i < candidates.Count; i++)
-            {
-                if (string.Equals(candidates[i], candidate, System.StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
-            }
-
-            candidates.Add(candidate);
-        }
-
         // 타워/배럭 병사 스프라이트 바인딩을 검증한다.
         private static void ValidateTowerVisualBindings(List<string> missingData)
         {
             foreach (TowerType towerType in System.Enum.GetValues(typeof(TowerType)))
             {
-                string configPath = $"Data/TowerConfigs/{towerType}";
-                TowerConfig config = Resources.Load<TowerConfig>(configPath);
+                string configPath = $"{ConfigResourcePaths.TowerPrefix}{towerType}";
+                TowerConfig config = ConfigResourcePaths.LoadTowerConfig(towerType.ToString());
                 if (config == null)
                 {
                     missingData.Add($"TowerConfig missing: {configPath}");
@@ -1697,7 +1306,7 @@ namespace Kingdom.App
 
             if (detail.StartsWith("HeroConfig missing:", System.StringComparison.OrdinalIgnoreCase))
             {
-                hints.Add("HeroConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Data/HeroConfigs/<HeroId>.asset");
+                hints.Add("HeroConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Kingdom/Configs/Heroes/<HeroId>.asset");
                 return;
             }
 
@@ -1717,7 +1326,7 @@ namespace Kingdom.App
 
             if (detail.StartsWith("WaveConfig missing:", System.StringComparison.OrdinalIgnoreCase))
             {
-                hints.Add("현재 스테이지에 WaveConfig를 연결하거나 Resources/Data/WaveConfigs/Stage_<id>_WaveConfig를 생성하세요.");
+                hints.Add("현재 스테이지에 WaveConfig를 연결하거나 Resources/Kingdom/Configs/Waves/Stage_<id>_WaveConfig를 생성하세요.");
                 return;
             }
 
@@ -1739,18 +1348,16 @@ namespace Kingdom.App
                 return;
             }
 
-            if (detail.StartsWith("Enemy move sprite missing:", System.StringComparison.OrdinalIgnoreCase) ||
-                detail.StartsWith("Enemy action sprite missing:", System.StringComparison.OrdinalIgnoreCase) ||
-                detail.StartsWith("Enemy sprite missing:", System.StringComparison.OrdinalIgnoreCase))
+            if (detail.StartsWith("Enemy animator missing:", System.StringComparison.OrdinalIgnoreCase))
             {
-                hints.Add("EnemyConfig.RuntimeSpriteResourcePath를 유효한 Resources 경로로 지정하세요.");
-                hints.Add("EnemyConfig.EnemyId와 리소스 파일명 규칙(idle/walk/attack/die)을 일치시키세요.");
+                hints.Add("EnemyConfig.RuntimeAnimatorControllerPath를 유효한 Resources 경로로 지정하세요.");
+                hints.Add("또는 관례 경로 Resources/Animations/Enemies/<EnemyId>/<EnemyId>.controller를 생성하세요.");
                 return;
             }
 
             if (detail.StartsWith("TowerConfig missing:", System.StringComparison.OrdinalIgnoreCase))
             {
-                hints.Add("TowerConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Data/TowerConfigs/<TowerType>.asset");
+                hints.Add("TowerConfig 리소스를 생성/복구하세요. 경로 예: Assets/Resources/Kingdom/Configs/Towers/<TowerType>.asset");
                 return;
             }
 
@@ -1837,7 +1444,7 @@ namespace Kingdom.App
             int initialLives = _activeWaveConfig != null ? Mathf.Max(1, _activeWaveConfig.InitialLives) : 20;
             _economyManager.Configure(initialGold, initialLives, _spawnManager, _stateController);
 
-            var towerConfig = Resources.Load<TowerConfig>(TowerConfigResourcePath);
+            var towerConfig = ConfigResourcePaths.LoadTowerConfig(TowerType.Archer.ToString());
             _heroConfig = ResolveSelectedHeroConfig();
             _reinforceSpellConfig = ResolveSpellConfig(SpellReinforceConfigResourcePath, "reinforce", "Reinforce", 20f, 4f);
             _rainSpellConfig = ResolveSpellConfig(SpellRainConfigResourcePath, "rain", "Rain", 30f, 4f);
@@ -2410,9 +2017,9 @@ namespace Kingdom.App
         }
 
         // 영웅 설정을 로드하고 없으면 ID 기반 폴백을 반환한다.
-        private static HeroConfig ResolveHeroConfig(string resourcePath, string fallbackHeroId = DefaultHeroId)
+        private static HeroConfig ResolveHeroConfig(string heroId, string fallbackHeroId = DefaultHeroId)
         {
-            HeroConfig config = Resources.Load<HeroConfig>(resourcePath);
+            HeroConfig config = ConfigResourcePaths.LoadHeroConfig(heroId);
             if (config != null)
             {
                 return config;
@@ -2515,22 +2122,21 @@ namespace Kingdom.App
                 selectedHeroId = DefaultHeroId;
             }
 
-            string selectedPath = HeroConfigResourcePathPrefix + selectedHeroId;
-            HeroConfig selectedConfig = Resources.Load<HeroConfig>(selectedPath);
+            string selectedPath = ConfigResourcePaths.HeroPrefix + selectedHeroId;
+            HeroConfig selectedConfig = ConfigResourcePaths.LoadHeroConfig(selectedHeroId);
             if (selectedConfig != null)
             {
                 Debug.Log($"[GameScene] Hero config resolved from selected id. heroId={selectedConfig.HeroId}, path={selectedPath}");
                 return selectedConfig;
             }
 
-            string defaultPath = HeroConfigResourcePathPrefix + DefaultHeroId;
             if (!selectedHeroId.Equals(DefaultHeroId))
             {
                 Debug.Log($"[GameScene] Selected hero config missing: {selectedPath}. Fallback to runtime profile.");
                 return CreateFallbackHeroConfigById(selectedHeroId);
             }
 
-            HeroConfig defaultConfig = ResolveHeroConfig(defaultPath, DefaultHeroId);
+            HeroConfig defaultConfig = ResolveHeroConfig(DefaultHeroId, DefaultHeroId);
             if (defaultConfig != null)
             {
                 return defaultConfig;

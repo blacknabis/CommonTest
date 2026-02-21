@@ -22,7 +22,7 @@ namespace Kingdom.App
         private const string WorldMapBgmResourcePath = "Audio/BGM/BGM_WolrdMapScene";
         private const string WorldMapClickResourcePath = "Audio/SFX/UI_Common_Click";
         private const string WorldMapButtonCatalogResourcePath = "Data/UI/WorldMapButtonCatalog";
-        private const string WorldMapStageConfigResourcePath = "Data/StageConfigs/World1_StageConfig";
+        private const string WorldMapStageConfigResourcePath = "Kingdom/Configs/Stages/World1_StageConfig";
         private const string UpgradesPopupResourcePath = "UI/WorldMap/UpgradesPopup";
         private const string HeroRoomPopupResourcePath = "UI/WorldMap/HeroRoomPopup";
         // 오디오 옵션 팝업 프리팹 경로 (없으면 런타임 폴백 생성)
@@ -1479,6 +1479,10 @@ namespace Kingdom.App
             if (config == null)
             {
                 config = Resources.Load<StageConfig>(WorldMapStageConfigResourcePath);
+                if (config == null)
+                {
+                    config = Kingdom.Game.ConfigResourcePaths.LoadStageConfigByWorldId(1);
+                }
             }
 
             if (config != null && config.Stages != null && config.Stages.Count > 0)

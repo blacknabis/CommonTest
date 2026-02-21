@@ -168,8 +168,8 @@ namespace Kingdom.Game
             _towerConfigs.Clear();
             foreach (TowerType type in System.Enum.GetValues(typeof(TowerType)))
             {
-                // Try load specific config: Data/TowerConfigs/Archer, etc.
-                var loaded = Resources.Load<TowerConfig>($"Data/TowerConfigs/{type}");
+                // Try load specific config using canonical/legacy fallback rules.
+                var loaded = ConfigResourcePaths.LoadTowerConfig(type.ToString());
                 if (loaded != null)
                 {
                     TowerConfig runtimeConfig = Instantiate(loaded);

@@ -11,16 +11,19 @@ namespace Kingdom.Editor
 {
     public static class KingdomSpriteBindingTools
     {
-        private const string EnemyConfigFolder = "Assets/Resources/Kingdom/Enemies/Config";
-        private const string TowerConfigFolder = "Assets/Resources/Data/TowerConfigs";
-        private const string BarracksSoldierConfigFolder = "Assets/Resources/Data/BarracksSoldierConfigs";
+        private const string EnemyConfigFolder = ConfigResourcePaths.EnemyAssetFolder;
+        private const string TowerConfigFolder = ConfigResourcePaths.TowerAssetFolder;
+        private const string BarracksSoldierConfigFolder = ConfigResourcePaths.BarracksSoldierAssetFolder;
 
         [MenuItem("Tools/Kingdom/Sprites/Apply Sample Runtime Paths")]
         public static void ApplySampleRuntimePaths()
         {
             int changedCount = 0;
 
-            string[] enemyGuids = AssetDatabase.FindAssets("t:EnemyConfig", new[] { EnemyConfigFolder });
+            string[] enemyGuids = FindConfigAssetGuids(
+                "t:EnemyConfig",
+                EnemyConfigFolder,
+                ConfigResourcePaths.LegacyEnemyAssetFolder);
             for (int i = 0; i < enemyGuids.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(enemyGuids[i]);
@@ -32,18 +35,21 @@ namespace Kingdom.Editor
 
                 string expected = string.IsNullOrWhiteSpace(config.EnemyId)
                     ? string.Empty
-                    : $"Sprites/Enemies/{config.EnemyId.Trim()}";
-                if (config.RuntimeSpriteResourcePath == expected)
+                    : $"Animations/Enemies/{config.EnemyId.Trim()}/{config.EnemyId.Trim()}";
+                if (config.RuntimeAnimatorControllerPath == expected)
                 {
                     continue;
                 }
 
-                config.RuntimeSpriteResourcePath = expected;
+                config.RuntimeAnimatorControllerPath = expected;
                 EditorUtility.SetDirty(config);
                 changedCount++;
             }
 
-            string[] towerGuids = AssetDatabase.FindAssets("t:TowerConfig", new[] { TowerConfigFolder });
+            string[] towerGuids = FindConfigAssetGuids(
+                "t:TowerConfig",
+                TowerConfigFolder,
+                ConfigResourcePaths.LegacyTowerAssetFolder);
             for (int i = 0; i < towerGuids.Length; i++)
             {
                 string path = AssetDatabase.GUIDToAssetPath(towerGuids[i]);
@@ -136,7 +142,7 @@ namespace Kingdom.Editor
             int resolvedCount = 0;
             var missing = new List<string>();
 
-            EnemyConfig[] enemyConfigs = Resources.LoadAll<EnemyConfig>("Kingdom/Enemies/Config");
+            EnemyConfig[] enemyConfigs = ConfigResourcePaths.LoadAllEnemyConfigs();
             for (int i = 0; i < enemyConfigs.Length; i++)
             {
                 EnemyConfig config = enemyConfigs[i];
@@ -146,17 +152,17 @@ namespace Kingdom.Editor
                 }
 
                 checkedCount++;
-                if (TryResolveSprite(config.RuntimeSpriteResourcePath))
+                if (TryResolveEnemyAnimator(config, out string resolvedAnimatorPath))
                 {
                     resolvedCount++;
                 }
                 else
                 {
-                    missing.Add($"Enemy {config.EnemyId}: {config.RuntimeSpriteResourcePath}");
+                    missing.Add($"Enemy {config.EnemyId}: animator missing (configured={config.RuntimeAnimatorControllerPath}, resolved={resolvedAnimatorPath})");
                 }
             }
 
-            TowerConfig[] towerConfigs = Resources.LoadAll<TowerConfig>("Data/TowerConfigs");
+            TowerConfig[] towerConfigs = ConfigResourcePaths.LoadAllTowerConfigs();
             for (int i = 0; i < towerConfigs.Length; i++)
             {
                 TowerConfig config = towerConfigs[i];
@@ -233,15 +239,15 @@ namespace Kingdom.Editor
 
             var sampleMissing = new List<string>
             {
-                "HeroConfig missing: Data/HeroConfigs/NoHero",
-                "HeroConfig invalid HeroId: Data/HeroConfigs/NoId",
+                "HeroConfig missing: Kingdom/Configs/Heroes/NoHero",
+                "HeroConfig invalid HeroId: Kingdom/Configs/Heroes/NoId",
                 "Hero sprite missing: heroId=Knight, action=attack, directPath=UI/Sprites/Heroes/InGame/Knight/attack_00, manifest=Sprites/Heroes/manifest, reason=missing",
                 "WaveConfig missing: current stage has no wave config.",
                 "Wave spawn entry missing: wave=1",
                 "EnemyConfig reference missing: wave=1, entry=1",
-                "Enemy action sprite missing: enemyId=Goblin, runtimePath=Sprites/Enemies/Goblin, move=Sprites/Enemies/Goblin/walk, missing=[action=attack, candidates=Sprites/Enemies/Goblin/attack]",
-                "TowerConfig missing: Data/TowerConfigs/Barracks",
-                "Tower level data missing: towerType=Barracks, config=Data/TowerConfigs/Barracks",
+                "Enemy animator missing: enemyId=Goblin, animatorPath=Animations/Enemies/Goblin/Goblin, reason=configured=(empty), conventional=Animations/Enemies/Goblin/Goblin",
+                "TowerConfig missing: Kingdom/Configs/Towers/Barracks",
+                "Tower level data missing: towerType=Barracks, config=Kingdom/Configs/Towers/Barracks",
                 "Tower sprite missing: towerType=Barracks, towerId=Barracks, level=L1, levelPath=Sprites/Towers/Barracks/L1, runtimePath=Sprites/Towers/Barracks/L{level}, candidates=Sprites/Towers/Barracks/L1",
                 "Barracks soldier sprite missing: towerId=Barracks, path=Sprites/Barracks/Soldier, candidates=Sprites/Barracks/Soldier"
             };
@@ -261,7 +267,7 @@ namespace Kingdom.Editor
             string[] requiredHints =
             {
                 "HeroConfig.HeroId 값을 채우세요.",
-                "EnemyConfig.RuntimeSpriteResourcePath를 유효한 Resources 경로로 지정하세요.",
+                "EnemyConfig.RuntimeAnimatorControllerPath를 유효한 Resources 경로로 지정하세요.",
                 "TowerConfig.Levels[i].SpriteResourcePath를 지정하거나 TowerConfig.RuntimeSpriteResourcePath 템플릿을 설정하세요.",
                 "TowerConfig.BarracksData.SoldierSpriteResourcePath를 지정하세요.",
                 "WaveConfig.Waves[*].SpawnEntries[*].Enemy 참조를 지정하세요."
@@ -295,7 +301,10 @@ namespace Kingdom.Editor
             int failed = 0;
 
             EnsureAssetFolder(BarracksSoldierConfigFolder);
-            string[] towerGuids = AssetDatabase.FindAssets("t:TowerConfig", new[] { TowerConfigFolder });
+            string[] towerGuids = FindConfigAssetGuids(
+                "t:TowerConfig",
+                TowerConfigFolder,
+                ConfigResourcePaths.LegacyTowerAssetFolder);
             for (int i = 0; i < towerGuids.Length; i++)
             {
                 string towerPath = AssetDatabase.GUIDToAssetPath(towerGuids[i]);
@@ -392,6 +401,43 @@ namespace Kingdom.Editor
 
             Texture2D texture = Resources.Load<Texture2D>(resourcePath);
             return texture != null;
+        }
+
+        private static bool TryResolveEnemyAnimator(EnemyConfig config, out string resolvedPath)
+        {
+            resolvedPath = string.Empty;
+            if (config == null)
+            {
+                return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(config.RuntimeAnimatorControllerPath))
+            {
+                string configuredPath = config.RuntimeAnimatorControllerPath.Trim();
+                RuntimeAnimatorController byConfig = Resources.Load<RuntimeAnimatorController>(configuredPath);
+                if (byConfig != null)
+                {
+                    resolvedPath = configuredPath;
+                    return true;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(config.EnemyId))
+            {
+                return false;
+            }
+
+            string enemyId = config.EnemyId.Trim();
+            string conventionalPath = $"Animations/Enemies/{enemyId}/{enemyId}";
+            RuntimeAnimatorController byConvention = Resources.Load<RuntimeAnimatorController>(conventionalPath);
+            if (byConvention != null)
+            {
+                resolvedPath = conventionalPath;
+                return true;
+            }
+
+            resolvedPath = conventionalPath;
+            return false;
         }
 
         private static string ExpandTowerTemplatePath(string templatePath, TowerType towerType, int levelIndex)
@@ -557,6 +603,25 @@ namespace Kingdom.Editor
             }
 
             return candidates;
+        }
+
+        private static string[] FindConfigAssetGuids(string filter, string primaryFolder, string legacyFolder)
+        {
+            if (AssetDatabase.IsValidFolder(primaryFolder))
+            {
+                string[] primary = AssetDatabase.FindAssets(filter, new[] { primaryFolder });
+                if (primary != null && primary.Length > 0)
+                {
+                    return primary;
+                }
+            }
+
+            if (AssetDatabase.IsValidFolder(legacyFolder))
+            {
+                return AssetDatabase.FindAssets(filter, new[] { legacyFolder });
+            }
+
+            return new string[0];
         }
     }
 }

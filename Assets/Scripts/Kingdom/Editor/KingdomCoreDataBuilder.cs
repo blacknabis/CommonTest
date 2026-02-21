@@ -8,10 +8,10 @@ namespace Kingdom.Editor
 {
     public static class KingdomCoreDataBuilder
     {
-        private const string DataRoot = "Assets/Resources/Data";
-        private const string TowerConfigFolder = "Assets/Resources/Data/TowerConfigs";
-        private const string HeroConfigFolder = "Assets/Resources/Data/HeroConfigs";
-        private const string StageConfigPath = "Assets/Resources/Data/StageConfigs/World1_StageConfig.asset";
+        private const string DataRoot = "Assets/Resources/Kingdom/Configs";
+        private const string TowerConfigFolder = ConfigResourcePaths.TowerAssetFolder;
+        private const string HeroConfigFolder = ConfigResourcePaths.HeroAssetFolder;
+        private const string StageConfigPath = ConfigResourcePaths.StageAssetFolder + "/World1_StageConfig.asset";
 
         [MenuItem("Tools/Kingdom/Rebuild Core Data Assets")]
         public static void RebuildCoreDataAssets()
@@ -232,6 +232,11 @@ namespace Kingdom.Editor
         private static void RelinkStageWaveConfigs()
         {
             StageConfig stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(StageConfigPath);
+            if (stageConfig == null)
+            {
+                stageConfig = AssetDatabase.LoadAssetAtPath<StageConfig>(
+                    $"{ConfigResourcePaths.LegacyStageAssetFolder}/World1_StageConfig.asset");
+            }
             if (stageConfig == null || stageConfig.Stages == null || stageConfig.Stages.Count == 0)
             {
                 Debug.LogWarning("[KingdomCoreDataBuilder] StageConfig missing or empty. Wave relink skipped.");
@@ -248,7 +253,13 @@ namespace Kingdom.Editor
                     continue;
                 }
 
-                WaveConfig wave = AssetDatabase.LoadAssetAtPath<WaveConfig>($"Assets/Resources/Data/WaveConfigs/Stage_{stage.StageId}_WaveConfig.asset");
+                WaveConfig wave = AssetDatabase.LoadAssetAtPath<WaveConfig>(
+                    $"{ConfigResourcePaths.WaveAssetFolder}/Stage_{stage.StageId}_WaveConfig.asset");
+                if (wave == null)
+                {
+                    wave = AssetDatabase.LoadAssetAtPath<WaveConfig>(
+                        $"{ConfigResourcePaths.LegacyWaveAssetFolder}/Stage_{stage.StageId}_WaveConfig.asset");
+                }
                 if (wave == null)
                 {
                     continue;

@@ -248,7 +248,7 @@ namespace Kingdom.Game
 
             if (stage.StageId > 0)
             {
-                return Resources.Load<WaveConfig>($"Data/WaveConfigs/Stage_{stage.StageId}_WaveConfig");
+                return ConfigResourcePaths.LoadWaveConfigByStageId(stage.StageId);
             }
 
             return null;

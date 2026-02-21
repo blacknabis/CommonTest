@@ -243,11 +243,6 @@ namespace Kingdom.Game
 
         private static Sprite ResolveEnemySprite(EnemyConfig config)
         {
-            if (config != null && TryLoadSprite(config.RuntimeSpriteResourcePath, out Sprite byResourcePath))
-            {
-                return byResourcePath;
-            }
-
             if (config != null && !string.IsNullOrWhiteSpace(config.EnemyId))
             {
                 string enemyId = config.EnemyId.Trim();
@@ -405,7 +400,7 @@ namespace Kingdom.Game
             attackFrames = Array.Empty<Sprite>();
             dieFrames = Array.Empty<Sprite>();
 
-            string runtimePath = config != null ? config.RuntimeSpriteResourcePath : string.Empty;
+            string runtimePath = string.Empty;
             string enemyId = config != null ? (config.EnemyId ?? string.Empty).Trim() : string.Empty;
 
             bool parsedFromMultiSheet = TrySplitEnemyActionFramesFromSingleSheet(

@@ -21,8 +21,6 @@ namespace Kingdom.Game
         public EnemyType EnemyType = EnemyType.Ground;
 
         [Header("Visual")]
-        [Tooltip("Optional Resources path (without extension) for runtime sprite loading. Example: Sprites/Enemies/Goblin")]
-        public string RuntimeSpriteResourcePath;
         [Tooltip("Optional Resources path (without extension) for runtime animator controller loading. Example: Animations/Enemies/Goblin/Goblin")]
         public string RuntimeAnimatorControllerPath;
         public Color Tint = Color.white;

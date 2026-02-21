@@ -1659,7 +1659,9 @@ namespace Kingdom.Editor
                 }
 
                 case BaseUnitTargetType.EnemyConfig:
-                    return TryAssignStringProperty(_baseUnitContext.targetAsset, "RuntimeSpriteResourcePath", resourcePath, out error);
+                    // Enemy runtime uses animator binding; sprite path is no longer persisted on EnemyConfig.
+                    error = null;
+                    return true;
 
                 case BaseUnitTargetType.BarracksSoldierConfig:
                     return TryAssignStringProperty(_baseUnitContext.targetAsset, "RuntimeSpriteResourcePath", resourcePath, out error);
@@ -2060,7 +2062,8 @@ namespace Kingdom.Editor
                 return true;
             }
 
-            if (TryReadTrimmedStringProperty(targetAsset, "RuntimeSpriteResourcePath", out string runtimePath) &&
+            if (targetType == BaseUnitTargetType.BarracksSoldierConfig &&
+                TryReadTrimmedStringProperty(targetAsset, "RuntimeSpriteResourcePath", out string runtimePath) &&
                 !string.IsNullOrWhiteSpace(runtimePath))
             {
                 if (TryResolveResourcePathToSpriteAssetPath(runtimePath, out spriteAssetPath))
@@ -2092,7 +2095,7 @@ namespace Kingdom.Editor
                 return true;
             }
 
-            error = "No source sprite path found. Run Process first, set RuntimeSpriteResourcePath, or assign Source Texture.";
+            error = "No source sprite path found. Run Process first or assign Source Texture.";
             return false;
         }
 

@@ -21,7 +21,7 @@ namespace Kingdom.WorldMap
 
         [Header("World Config")]
         [SerializeField] private StageConfig stageConfig;
-        [SerializeField] private string stageConfigResourcePath = "Data/StageConfigs/World1_StageConfig";
+        [SerializeField] private string stageConfigResourcePath = "Kingdom/Configs/Stages/World1_StageConfig";
         [SerializeField] private int currentWorldId = 1;
 
         [Header("Node Spawn")]
@@ -53,6 +53,10 @@ namespace Kingdom.WorldMap
             if (stageConfig == null)
             {
                 stageConfig = Resources.Load<StageConfig>(stageConfigResourcePath);
+                if (stageConfig == null)
+                {
+                    stageConfig = Kingdom.Game.ConfigResourcePaths.LoadStageConfigByWorldId(currentWorldId);
+                }
             }
 
             if (stageConfig != null)
@@ -69,7 +73,7 @@ namespace Kingdom.WorldMap
         public void SetWorld(int worldId, StageConfig config = null)
         {
             currentWorldId = worldId;
-            stageConfig = config != null ? config : Resources.Load<StageConfig>($"Data/StageConfigs/World{worldId}_StageConfig");
+            stageConfig = config != null ? config : Kingdom.Game.ConfigResourcePaths.LoadStageConfigByWorldId(worldId);
             BuildWorldNodes();
         }
 

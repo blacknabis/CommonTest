@@ -492,7 +492,7 @@ namespace Kingdom.App
                 for (int i = 0; i < candidates.Length; i++)
                 {
                     string heroId = candidates[i];
-                    HeroConfig config = Resources.Load<HeroConfig>($"Data/HeroConfigs/{heroId}");
+                    HeroConfig config = ConfigResourcePaths.LoadHeroConfig(heroId);
                     if (config == null)
                     {
                         failCount++;
@@ -1085,7 +1085,7 @@ namespace Kingdom.App
             for (int i = 0; i < candidates.Length; i++)
             {
                 string candidate = candidates[i];
-                HeroConfig config = Resources.Load<HeroConfig>($"Data/HeroConfigs/{candidate}");
+                HeroConfig config = ConfigResourcePaths.LoadHeroConfig(candidate);
                 if (config != null)
                 {
                     return candidate;
