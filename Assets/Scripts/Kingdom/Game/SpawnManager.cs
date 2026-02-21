@@ -436,7 +436,14 @@ namespace Kingdom.Game
             attackFrames = FilterSpritesByActionAliases(allSprites, "attack", "atk");
             dieFrames = FilterSpritesByActionAliases(allSprites, "die", "death", "dead");
 
-            return idleFrames.Length > 0 || moveFrames.Length > 0 || attackFrames.Length > 0 || dieFrames.Length > 0;
+            // 단일 액션 파일(idle_*, attack_*)은 기존 후보 탐색 경로를 타야 하므로
+            // 액션 토큰이 2개 이상 존재할 때만 "multi 시트 분해"로 인정한다.
+            int actionGroupsDetected = 0;
+            if (idleFrames.Length > 0) actionGroupsDetected++;
+            if (moveFrames.Length > 0) actionGroupsDetected++;
+            if (attackFrames.Length > 0) actionGroupsDetected++;
+            if (dieFrames.Length > 0) actionGroupsDetected++;
+            return actionGroupsDetected >= 2;
         }
 
         private static Sprite[] TryResolveEnemyActionFrames(string action, string runtimePath, string enemyId, Sprite[] fallback)
