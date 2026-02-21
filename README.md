@@ -57,3 +57,34 @@ Unity 기반 2D 전략/디펜스 프로젝트입니다.
 - 신규/수정 에셋은 레거시 경로에 생성하지 않는다.
 
 상세 마이그레이션 내역: `문서/완료/2026_02_21/리소스_컨피그_경로_통일_마이그레이션_2026_02_21.md`
+## AISpriteProcessor로 몬스터 Animator 연동
+아래 순서대로 진행하면 EnemyConfig에 Animator가 자동 연결되고, 게임 런타임에서 해당 Animator가 우선 사용됩니다.
+
+1. 입력 준비
+- `AI Sprite Processor` 창에서 `BaseUnit` 탭 선택
+- `Target Type = Enemy Config`, 대상 EnemyConfig 지정
+- 소스 텍스처(스프라이트 시트) 지정
+
+2. 슬라이싱 설정
+- 4행 시트(idle/walk/attack/die)면 `Mode = Smart Slice` + `4행 액션 분리 사용` 활성화
+- 이 모드에서는 `Action Group` 수동값이 무시됨
+
+3. 일괄 실행
+- 권장: `Run All (Process + Apply + Generate)` 버튼 1회 실행
+- 수동 분리 실행 시 순서:
+- `Process & Slice`
+- `Apply Binding`
+- `Generate Animator + Clips`
+
+4. 생성/바인딩 결과
+- 액션별 Sprite, AnimationClip, AnimatorController가 생성됨
+- 대상 `EnemyConfig.RuntimeAnimatorControllerPath`가 자동 갱신됨
+
+5. 런타임 확인
+- 플레이 중 콘솔 로그 확인:
+- `[SpawnManager] Enemy animator resolve. enemyId=..., configuredPath=..., loaded=...`
+- `loaded` 값이 출력되면 Animator 로딩 성공
+
+6. 주의사항
+- `Generate Animator + Clips`는 소스 경로가 필요하므로 보통 `Process + Apply` 이후 실행
+- ComfyUI 전처리(rembg)를 쓰는 경우 ComfyUI에 `Image Remove Background (rembg)` 커스텀 노드가 설치되어 있어야 함

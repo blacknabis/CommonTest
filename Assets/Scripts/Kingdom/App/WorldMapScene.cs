@@ -7,8 +7,8 @@ using Kingdom.Save;
 namespace Kingdom.App
 {
     /// <summary>
-    /// ?붾뱶留???而⑦듃濡ㅻ윭.
-    /// ?ㅽ뀒?댁? ?좏깮, ?곸썒 愿由? ????ㅽ궗 ?낃렇?덉씠?쒕? ?대떦?⑸땲??
+    /// 월드맵 씬 컨트롤러.
+    /// 스테이지 선택, 진척도 관리, 시작 팝업 표시를 담당합니다.
     /// </summary>
     public class WorldMapScene : SceneBase<SCENES>
     {
@@ -58,7 +58,7 @@ namespace Kingdom.App
 
         public override bool ProcessBackKey()
         {
-            // ?붾뱶留듭뿉???ㅻ줈媛湲?????댄?濡?蹂듦?
+            // 월드맵에서는 뒤로가기 시 타이틀로 복귀
             KingdomAppManager.Instance.ChangeScene(SCENES.TitleScene);
             return true;
         }
