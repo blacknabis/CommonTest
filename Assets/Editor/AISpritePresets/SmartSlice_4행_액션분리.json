@@ -1,0 +1,51 @@
+﻿{
+    "schemaVersion": 2,
+    "hasBindingContext": true,
+    "removeBackground": true,
+    "keyColor": {
+        "r": 1.0,
+        "g": 0.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "tolerance": 0.25,
+    "useRgbRangeFilter": false,
+    "thresholdR": 150,
+    "thresholdG": 50,
+    "thresholdB": 150,
+    "compareR": 1,
+    "compareG": 2,
+    "compareB": 1,
+    "slicingMode": 2,
+    "rows": 4,
+    "cols": 4,
+    "innerPadding": 0,
+    "offset": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "cellSize": {
+        "x": 100.0,
+        "y": 100.0
+    },
+    "spacing": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "smartSliceAlphaThreshold": 0.1,
+    "smartSliceMinPixels": 64,
+    "smartSliceOuterPadding": 2,
+    "smartSliceSplitActionsByRows": true,
+    "smartSliceActionRowCount": 4,
+    "normalizeFrames": true,
+    "emitManifest": true,
+    "useManualActionGroup": true,
+    "singleSourceActionGroup": 0,
+    "activeTab": 0,
+    "baseUnitTargetType": 0,
+    "baseUnitUseManualActionGroup": true,
+    "baseUnitActionGroup": 0,
+    "baseUnitAutoApplyAfterProcess": false,
+    "towerLevelIndex": 1,
+    "towerAutoApplyAfterProcess": false
+}

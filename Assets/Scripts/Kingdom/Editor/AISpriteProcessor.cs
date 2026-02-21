@@ -99,6 +99,8 @@ namespace Kingdom.Editor
             public float smartSliceAlphaThreshold = 0.1f;
             public int smartSliceMinPixels = 64;
             public int smartSliceOuterPadding = 2;
+            public bool smartSliceSplitActionsByRows = false;
+            public int smartSliceActionRowCount = 4;
             public bool normalizeFrames = true;
             public bool emitManifest = true;
             public bool useManualActionGroup = true;
@@ -159,6 +161,8 @@ namespace Kingdom.Editor
             public float smartSliceAlphaThreshold;
             public int smartSliceMinPixels;
             public int smartSliceOuterPadding;
+            public bool smartSliceSplitActionsByRows;
+            public int smartSliceActionRowCount;
         }
 
         private const string PresetFolderPath = "Assets/Editor/AISpritePresets";
@@ -198,6 +202,8 @@ namespace Kingdom.Editor
         private float _smartSliceAlphaThreshold = 0.1f;
         private int _smartSliceMinPixels = 64;
         private int _smartSliceOuterPadding = 2;
+        private bool _smartSliceSplitActionsByRows = false;
+        private int _smartSliceActionRowCount = 4;
         
         // 프리뷰 상태
         private Vector2 _scrollPosition;
@@ -209,6 +215,9 @@ namespace Kingdom.Editor
         private bool _previewApplyProcessing = true;
         private Texture2D _previewProcessedTexture;
         private int _previewProcessedHash = int.MinValue;
+        private List<Rect> _previewFrameRectsCache = new List<Rect>();
+        private int _previewFrameRectsTextureId = 0;
+        private bool _previewFrameRectsDirty = true;
 
         private readonly List<string> _presetNames = new List<string>();
         private int _selectedPresetIndex = -1;
@@ -273,6 +282,7 @@ namespace Kingdom.Editor
             }
 
             _previewProcessedHash = int.MinValue;
+            InvalidatePreviewFrameRectsCache();
         }
 
         // 좌측 설정 패널과 우측 미리보기 패널을 렌더링한다.
@@ -391,6 +401,7 @@ namespace Kingdom.Editor
 
         private void DrawSlicingAndProcessingOptions()
         {
+            EditorGUI.BeginChangeCheck();
             GUILayout.Label("자르기 설정 (Slicing)", EditorStyles.boldLabel);
 
             _slicingMode = (SlicingMode)EditorGUILayout.EnumPopup("Mode", _slicingMode);
@@ -420,6 +431,13 @@ namespace Kingdom.Editor
                 _smartSliceAlphaThreshold = EditorGUILayout.Slider("Alpha Threshold", _smartSliceAlphaThreshold, 0.001f, 1f);
                 _smartSliceMinPixels = Mathf.Max(1, EditorGUILayout.IntField("Min Island Pixels", _smartSliceMinPixels));
                 _smartSliceOuterPadding = Mathf.Max(0, EditorGUILayout.IntField("Outer Padding", _smartSliceOuterPadding));
+                _smartSliceSplitActionsByRows = EditorGUILayout.Toggle("4행 액션 분리 사용", _smartSliceSplitActionsByRows);
+                if (_smartSliceSplitActionsByRows)
+                {
+                    _smartSliceActionRowCount = Mathf.Max(2, EditorGUILayout.IntField("액션 행 수", _smartSliceActionRowCount));
+                    EditorGUILayout.HelpBox("행 기준으로 rect를 분류해 top->bottom 순서로 idle/walk/attack/die(4행) 또는 row00..로 이름을 부여합니다.", MessageType.None);
+                    EditorGUILayout.HelpBox("이 모드에서는 Action Group 수동/자동 설정을 사용하지 않습니다.", MessageType.None);
+                }
                 EditorGUILayout.HelpBox("알파 픽셀 덩어리를 자동 감지해 스프라이트를 자릅니다.", MessageType.None);
             }
             else
@@ -471,6 +489,11 @@ namespace Kingdom.Editor
                     _removeColor = EditorGUILayout.ColorField("제거 색상 (Key Color)", _removeColor);
                     _tolerance = EditorGUILayout.Slider("허용 오차 (Tolerance)", _tolerance, 0f, 1f);
                 }
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                InvalidatePreviewFrameRectsCache();
             }
         }
 
@@ -667,6 +690,10 @@ namespace Kingdom.Editor
                 _baseUnitContext.actionGroup =
                     (SpriteActionGroup)EditorGUILayout.EnumPopup("Action Group", _baseUnitContext.actionGroup);
             }
+            if (IsSmartSliceActionSplitMode())
+            {
+                EditorGUILayout.HelpBox("SmartSlice 4행 액션 분리 모드에서는 Action Group 설정이 무시됩니다.", MessageType.Info);
+            }
             _useManualActionGroup = _baseUnitContext.useManualActionGroup;
             _singleSourceActionGroup = _baseUnitContext.actionGroup;
 
@@ -808,9 +835,13 @@ namespace Kingdom.Editor
         {
             EditorGUI.BeginChangeCheck();
             _sourceTexture = (Texture2D)EditorGUILayout.ObjectField("Source Texture", _sourceTexture, typeof(Texture2D), false);
-            if (EditorGUI.EndChangeCheck() && _sourceTexture != null && _slicingMode == SlicingMode.AutoDivide)
+            if (EditorGUI.EndChangeCheck())
             {
-                RecalculateAutoGrid();
+                InvalidatePreviewFrameRectsCache();
+                if (_sourceTexture != null && _slicingMode == SlicingMode.AutoDivide)
+                {
+                    RecalculateAutoGrid();
+                }
             }
         }
 
@@ -846,6 +877,12 @@ namespace Kingdom.Editor
             {
                 useManualGroup = _baseUnitContext.useManualActionGroup;
                 actionGroup = _baseUnitContext.actionGroup;
+            }
+
+            if (IsSmartSliceActionSplitMode())
+            {
+                useManualGroup = false;
+                actionGroup = SpriteActionGroup.Unknown;
             }
 
             bool processed = ProcessSingleTexture(_sourceTexture, true, useManualGroup, actionGroup);
@@ -1088,9 +1125,18 @@ namespace Kingdom.Editor
         // 현재 설정 기준 프레임 사각형 목록을 생성한다.
         private List<Rect> BuildCurrentFrameRects(Texture2D texture)
         {
+            int textureId = texture != null ? texture.GetInstanceID() : 0;
+            if (!_previewFrameRectsDirty && _previewFrameRectsTextureId == textureId && _previewFrameRectsCache != null)
+            {
+                return _previewFrameRectsCache;
+            }
+
             var frames = new List<Rect>();
             if (texture == null)
             {
+                _previewFrameRectsCache = frames;
+                _previewFrameRectsTextureId = textureId;
+                _previewFrameRectsDirty = false;
                 return frames;
             }
 
@@ -1117,7 +1163,11 @@ namespace Kingdom.Editor
             }
             else if (_slicingMode == SlicingMode.SmartSlice)
             {
-                return DetectIslands(texture, _smartSliceAlphaThreshold, _smartSliceMinPixels, _smartSliceOuterPadding);
+                frames = DetectIslands(texture, _smartSliceAlphaThreshold, _smartSliceMinPixels, _smartSliceOuterPadding);
+                _previewFrameRectsCache = frames;
+                _previewFrameRectsTextureId = textureId;
+                _previewFrameRectsDirty = false;
+                return frames;
             }
             else
             {
@@ -1155,6 +1205,9 @@ namespace Kingdom.Editor
                 }
             }
 
+            _previewFrameRectsCache = frames;
+            _previewFrameRectsTextureId = textureId;
+            _previewFrameRectsDirty = false;
             return frames;
         }
 
@@ -1205,7 +1258,7 @@ namespace Kingdom.Editor
             }
             else if (_slicingMode == SlicingMode.SmartSlice)
             {
-                List<Rect> smartRects = DetectIslands(texture, _smartSliceAlphaThreshold, _smartSliceMinPixels, _smartSliceOuterPadding);
+                List<Rect> smartRects = BuildCurrentFrameRects(texture);
                 float smartScale = _previewZoom;
                 for (int i = 0; i < smartRects.Count; i++)
                 {
@@ -1303,8 +1356,9 @@ namespace Kingdom.Editor
 
             string dir = Path.GetDirectoryName(sourcePath);
             string fileName = Path.GetFileNameWithoutExtension(sourcePath);
-            SpriteActionGroup group = hasManualGroup ? manualGroup : DetectActionGroupFromFileName(fileName);
-            string actionGroup = ToActionGroupName(group);
+            bool ignoreActionGroup = IsSmartSliceActionSplitMode();
+            SpriteActionGroup group = ignoreActionGroup ? SpriteActionGroup.Unknown : (hasManualGroup ? manualGroup : DetectActionGroupFromFileName(fileName));
+            string actionGroup = ignoreActionGroup ? "multi" : ToActionGroupName(group);
             string processedPath = Path.Combine(dir, $"{actionGroup}_{fileName}_Processed.png");
             List<string> warnings = new List<string>();
 
@@ -1436,13 +1490,16 @@ namespace Kingdom.Editor
                 return false;
             }
 
-            if (_baseUnitContext.useManualActionGroup && _baseUnitContext.actionGroup == SpriteActionGroup.Unknown)
+            bool ignoreActionGroup = IsSmartSliceActionSplitMode();
+            if (!ignoreActionGroup && _baseUnitContext.useManualActionGroup && _baseUnitContext.actionGroup == SpriteActionGroup.Unknown)
             {
-                error = "Manual Action Group cannot be Unknown.";
-                return false;
+                _baseUnitContext.actionGroup = SpriteActionGroup.Idle;
+                _singleSourceActionGroup = _baseUnitContext.actionGroup;
+                _useManualActionGroup = _baseUnitContext.useManualActionGroup;
+                NotifyWarning("BaseUnit Action Group Auto-Fix", "Manual Action Group was Unknown. It has been auto-corrected to Idle.");
             }
 
-            if (!_baseUnitContext.useManualActionGroup)
+            if (!ignoreActionGroup && !_baseUnitContext.useManualActionGroup)
             {
                 SpriteActionGroup detected = DetectActionGroupFromFileName(_sourceTexture.name);
                 if (detected == SpriteActionGroup.Unknown)
@@ -1800,6 +1857,11 @@ namespace Kingdom.Editor
             }
         }
 
+        private bool IsSmartSliceActionSplitMode()
+        {
+            return _slicingMode == SlicingMode.SmartSlice && _smartSliceSplitActionsByRows && _smartSliceActionRowCount >= 2;
+        }
+
         // 읽기 가능한 임시 텍스처를 생성한다.
         private Texture2D CreateReadableTexture(Texture2D source)
         {
@@ -1994,6 +2056,11 @@ namespace Kingdom.Editor
             if (_slicingMode == SlicingMode.SmartSlice)
             {
                 List<Rect> smartRects = DetectIslands(slicingTexture, _smartSliceAlphaThreshold, _smartSliceMinPixels, _smartSliceOuterPadding);
+                if (_smartSliceSplitActionsByRows)
+                {
+                    return BuildSmartSliceActionMetaData(baseName, smartRects, width, height, warnings);
+                }
+
                 for (int i = 0; i < smartRects.Count; i++)
                 {
                     Rect clamped = ClampRectToTexture(smartRects[i], width, height);
@@ -2075,6 +2142,153 @@ namespace Kingdom.Editor
                     }
 
                     metas.Add(CreateSpriteMeta($"{baseName}_{r}_{c}", clamped));
+                }
+            }
+
+            return metas;
+        }
+
+        private List<SpriteMetaData> BuildSmartSliceActionMetaData(string baseName, List<Rect> smartRects, int width, int height, List<string> warnings)
+        {
+            var metas = new List<SpriteMetaData>();
+            int rowCount = Mathf.Max(2, _smartSliceActionRowCount);
+            if (smartRects == null || smartRects.Count <= 0)
+            {
+                return metas;
+            }
+
+            var clampedRects = new List<Rect>(smartRects.Count);
+            for (int i = 0; i < smartRects.Count; i++)
+            {
+                Rect clamped = ClampRectToTexture(smartRects[i], width, height);
+                if (clamped.width <= 0f || clamped.height <= 0f)
+                {
+                    if (warnings != null)
+                    {
+                        warnings.Add($"SmartSlice frame #{i} was out of bounds and skipped.");
+                    }
+
+                    continue;
+                }
+
+                clampedRects.Add(clamped);
+            }
+
+            if (clampedRects.Count <= 0)
+            {
+                return metas;
+            }
+
+            if (clampedRects.Count < rowCount)
+            {
+                if (warnings != null)
+                {
+                    warnings.Add($"SmartSlice action-row split skipped: frameCount({clampedRects.Count}) < rowCount({rowCount}).");
+                }
+
+                for (int i = 0; i < clampedRects.Count; i++)
+                {
+                    metas.Add(CreateSpriteMeta($"{baseName}_{i:00}", clampedRects[i]));
+                }
+
+                return metas;
+            }
+
+            float topCenter = float.MinValue;
+            float bottomCenter = float.MaxValue;
+            float[] centers = new float[clampedRects.Count];
+            for (int i = 0; i < clampedRects.Count; i++)
+            {
+                float center = clampedRects[i].center.y;
+                centers[i] = center;
+                if (center > topCenter) topCenter = center;
+                if (center < bottomCenter) bottomCenter = center;
+            }
+
+            float range = topCenter - bottomCenter;
+            if (range < 0.0001f)
+            {
+                if (warnings != null)
+                {
+                    warnings.Add("SmartSlice action-row split skipped: vertical range too small.");
+                }
+
+                clampedRects.Sort((a, b) => a.x.CompareTo(b.x));
+                for (int i = 0; i < clampedRects.Count; i++)
+                {
+                    metas.Add(CreateSpriteMeta($"{baseName}_{i:00}", clampedRects[i]));
+                }
+
+                return metas;
+            }
+
+            float step = range / rowCount;
+            if (step < 0.5f)
+            {
+                if (warnings != null)
+                {
+                    warnings.Add("SmartSlice action-row split skipped: inferred row step too small.");
+                }
+
+                for (int i = 0; i < clampedRects.Count; i++)
+                {
+                    metas.Add(CreateSpriteMeta($"{baseName}_{i:00}", clampedRects[i]));
+                }
+
+                return metas;
+            }
+
+            var buckets = new List<Rect>[rowCount];
+            for (int i = 0; i < rowCount; i++)
+            {
+                buckets[i] = new List<Rect>();
+            }
+
+            for (int i = 0; i < clampedRects.Count; i++)
+            {
+                int rowIndex = Mathf.Clamp(Mathf.FloorToInt((topCenter - centers[i]) / step), 0, rowCount - 1);
+                buckets[rowIndex].Add(clampedRects[i]);
+            }
+
+            bool hasEmptyRow = false;
+            for (int i = 0; i < rowCount; i++)
+            {
+                if (buckets[i].Count <= 0)
+                {
+                    hasEmptyRow = true;
+                    break;
+                }
+            }
+
+            if (hasEmptyRow)
+            {
+                if (warnings != null)
+                {
+                    warnings.Add("SmartSlice action-row split skipped: one or more rows are empty.");
+                }
+
+                clampedRects.Sort((a, b) =>
+                {
+                    int yCompare = b.center.y.CompareTo(a.center.y);
+                    return yCompare != 0 ? yCompare : a.x.CompareTo(b.x);
+                });
+
+                for (int i = 0; i < clampedRects.Count; i++)
+                {
+                    metas.Add(CreateSpriteMeta($"{baseName}_{i:00}", clampedRects[i]));
+                }
+
+                return metas;
+            }
+
+            string[] actionLabels = { "idle", "walk", "attack", "die" };
+            for (int row = 0; row < rowCount; row++)
+            {
+                buckets[row].Sort((a, b) => a.x.CompareTo(b.x));
+                string label = rowCount == 4 && row < actionLabels.Length ? actionLabels[row] : $"row{row:00}";
+                for (int frame = 0; frame < buckets[row].Count; frame++)
+                {
+                    metas.Add(CreateSpriteMeta($"{baseName}_{label}_{frame:00}", buckets[row][frame]));
                 }
             }
 
@@ -2233,6 +2447,8 @@ namespace Kingdom.Editor
                 smartSliceAlphaThreshold = _smartSliceAlphaThreshold,
                 smartSliceMinPixels = _smartSliceMinPixels,
                 smartSliceOuterPadding = _smartSliceOuterPadding,
+                smartSliceSplitActionsByRows = _smartSliceSplitActionsByRows,
+                smartSliceActionRowCount = _smartSliceActionRowCount,
             };
         }
 
@@ -2387,6 +2603,7 @@ namespace Kingdom.Editor
         {
             if (_sourceTexture == null)
             {
+                InvalidatePreviewFrameRectsCache();
                 return null;
             }
 
@@ -2396,6 +2613,7 @@ namespace Kingdom.Editor
                 {
                     DestroyImmediate(_previewProcessedTexture);
                     _previewProcessedTexture = null;
+                    InvalidatePreviewFrameRectsCache();
                 }
 
                 _previewProcessedHash = int.MinValue;
@@ -2423,6 +2641,7 @@ namespace Kingdom.Editor
             RemoveBackground(readable, _removeColor, _tolerance);
             _previewProcessedTexture = readable;
             _previewProcessedHash = hash;
+            InvalidatePreviewFrameRectsCache();
             return _previewProcessedTexture;
         }
 
@@ -2610,6 +2829,8 @@ namespace Kingdom.Editor
                 smartSliceAlphaThreshold = _smartSliceAlphaThreshold,
                 smartSliceMinPixels = _smartSliceMinPixels,
                 smartSliceOuterPadding = _smartSliceOuterPadding,
+                smartSliceSplitActionsByRows = _smartSliceSplitActionsByRows,
+                smartSliceActionRowCount = _smartSliceActionRowCount,
                 normalizeFrames = _normalizeFrames,
                 emitManifest = _emitManifest,
                 useManualActionGroup = _useManualActionGroup,
@@ -2652,6 +2873,8 @@ namespace Kingdom.Editor
             _smartSliceAlphaThreshold = Mathf.Clamp(config.smartSliceAlphaThreshold <= 0f ? 0.1f : config.smartSliceAlphaThreshold, 0.001f, 1f);
             _smartSliceMinPixels = Mathf.Max(1, config.smartSliceMinPixels <= 0 ? 64 : config.smartSliceMinPixels);
             _smartSliceOuterPadding = Mathf.Max(0, config.smartSliceOuterPadding);
+            _smartSliceSplitActionsByRows = config.smartSliceSplitActionsByRows;
+            _smartSliceActionRowCount = Mathf.Max(2, config.smartSliceActionRowCount <= 0 ? 4 : config.smartSliceActionRowCount);
             _normalizeFrames = config.normalizeFrames;
             _emitManifest = config.emitManifest;
 
@@ -2674,6 +2897,21 @@ namespace Kingdom.Editor
 
             _useManualActionGroup = _baseUnitContext.useManualActionGroup;
             _singleSourceActionGroup = _baseUnitContext.actionGroup;
+            InvalidatePreviewFrameRectsCache();
+        }
+
+        private void InvalidatePreviewFrameRectsCache()
+        {
+            _previewFrameRectsDirty = true;
+            _previewFrameRectsTextureId = 0;
+            if (_previewFrameRectsCache == null)
+            {
+                _previewFrameRectsCache = new List<Rect>();
+            }
+            else
+            {
+                _previewFrameRectsCache.Clear();
+            }
         }
 
         // 알파 기반 연결 영역을 감지해 사각형 목록을 생성한다.

@@ -28,7 +28,7 @@ MonoBehaviour:
     IsBossWave: 0
   - WaveIndex: 2
     SpawnEntries:
-    - Enemy: {fileID: 11400000, guid: 2bc31e2496f04442b8bd415f6de7c3a2, type: 2}
+    - Enemy: {fileID: 11400000, guid: fb6a018f9d0b4cd997ef40c6837e990c, type: 2}
       Count: 5
       SpawnInterval: 0.65
       PathId: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
     IsBossWave: 0
   - WaveIndex: 3
     SpawnEntries:
-    - Enemy: {fileID: 11400000, guid: 12bfdcea72a0456d89e371e8ea028c4b, type: 2}
+    - Enemy: {fileID: 11400000, guid: fb6a018f9d0b4cd997ef40c6837e990c, type: 2}
       Count: 7
       SpawnInterval: 0.55
       PathId: 0

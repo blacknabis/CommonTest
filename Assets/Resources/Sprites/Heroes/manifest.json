@@ -1,0 +1,104 @@
+﻿{
+    "version":  1,
+    "updatedAtUtc":  "2026-02-21T12:18:20.0367851Z",
+    "sourceFiles":  [
+                        "Armored Knight1.jpeg",
+                        "MageHero_sheet.png"
+                    ],
+    "actions":  [
+                    {
+                        "actionGroup":  "unknown",
+                        "sourceFile":  "Armored Knight1.jpeg",
+                        "outputTexture":  "unknown_Armored Knight1_Processed.png",
+                        "frameCount":  32,
+                        "maxFrameWidth":  146,
+                        "maxFrameHeight":  169,
+                        "pivotX":  0.5,
+                        "pivotY":  0.0,
+                        "normalizedFrames":  true,
+                        "slicingMode":  "SmartSlice",
+                        "options":  {
+                                        "removeBackground":  true,
+                                        "useRgbRangeFilter":  false,
+                                        "tolerance":  0.4000000059604645,
+                                        "thresholdR":  150,
+                                        "thresholdG":  50,
+                                        "thresholdB":  150,
+                                        "compareR":  1,
+                                        "compareG":  2,
+                                        "compareB":  1,
+                                        "cropToSelection":  true,
+                                        "normalizeFrames":  true,
+                                        "slicingMode":  2,
+                                        "rows":  2,
+                                        "cols":  4,
+                                        "innerPadding":  4,
+                                        "smartSliceAlphaThreshold":  0.10000000149011612,
+                                        "smartSliceMinPixels":  64,
+                                        "smartSliceOuterPadding":  2,
+                                        "smartSliceSplitActionsByRows":  false,
+                                        "smartSliceActionRowCount":  4
+                                    },
+                        "warnings":  [
+                                         "source=Armored Knight1"
+                                     ]
+                    },
+                    {
+                        "actionGroup":  "idle",
+                        "sourceFile":  "Armored Knight1.jpeg",
+                        "outputTexture":  "idle_Armored Knight1_Processed.png",
+                        "frameCount":  32,
+                        "maxFrameWidth":  146,
+                        "maxFrameHeight":  169,
+                        "pivotX":  0.5,
+                        "pivotY":  0.0,
+                        "normalizedFrames":  true,
+                        "slicingMode":  "SmartSlice",
+                        "options":  {
+                                        "removeBackground":  true,
+                                        "useRgbRangeFilter":  false,
+                                        "tolerance":  0.38999998569488528,
+                                        "thresholdR":  150,
+                                        "thresholdG":  50,
+                                        "thresholdB":  150,
+                                        "compareR":  1,
+                                        "compareG":  2,
+                                        "compareB":  1,
+                                        "cropToSelection":  true,
+                                        "normalizeFrames":  true,
+                                        "slicingMode":  2,
+                                        "rows":  2,
+                                        "cols":  4,
+                                        "innerPadding":  4,
+                                        "smartSliceAlphaThreshold":  0.10000000149011612,
+                                        "smartSliceMinPixels":  64,
+                                        "smartSliceOuterPadding":  2,
+                                        "smartSliceSplitActionsByRows":  false,
+                                        "smartSliceActionRowCount":  4
+                                    },
+                        "warnings":  [
+                                         "source=Armored Knight1"
+                                     ]
+                    },
+                    {
+                        "actionGroup":  "idle",
+                        "sourceFile":  "MageHero_sheet.png",
+                        "outputTexture":  "idle_MageHero_Processed.png"
+                    },
+                    {
+                        "actionGroup":  "walk",
+                        "sourceFile":  "MageHero_sheet.png",
+                        "outputTexture":  "walk_MageHero_Processed.png"
+                    },
+                    {
+                        "actionGroup":  "attack",
+                        "sourceFile":  "MageHero_sheet.png",
+                        "outputTexture":  "attack_MageHero_Processed.png"
+                    },
+                    {
+                        "actionGroup":  "die",
+                        "sourceFile":  "MageHero_sheet.png",
+                        "outputTexture":  "die_MageHero_Processed.png"
+                    }
+                ]
+}

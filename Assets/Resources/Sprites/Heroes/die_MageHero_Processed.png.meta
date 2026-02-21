@@ -1,0 +1,962 @@
+fileFormatVersion: 2
+guid: 312f7bc524377d548ab216501cd66fa9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5734448802643566780
+    second: die_MageHero_Processed_0
+  - first:
+      213: 2781765666177003708
+    second: die_MageHero_Processed_1
+  - first:
+      213: 4022236450196822316
+    second: die_MageHero_Processed_2
+  - first:
+      213: 3613474587019871296
+    second: die_MageHero_Processed_3
+  - first:
+      213: -6306267240081550990
+    second: die_MageHero_Processed_4
+  - first:
+      213: 1964082493101730070
+    second: die_MageHero_Processed_5
+  - first:
+      213: -8332918521808523549
+    second: die_MageHero_Processed_6
+  - first:
+      213: -994997745971026188
+    second: die_MageHero_Processed_7
+  - first:
+      213: -3083787085214616761
+    second: die_MageHero_Processed_8
+  - first:
+      213: -7201445590179536076
+    second: die_MageHero_Processed_9
+  - first:
+      213: -8890910147355972315
+    second: die_MageHero_Processed_10
+  - first:
+      213: 5874366473250434723
+    second: die_MageHero_Processed_11
+  - first:
+      213: -2276963154003972539
+    second: die_MageHero_Processed_12
+  - first:
+      213: 5590876435334256798
+    second: die_MageHero_Processed_13
+  - first:
+      213: 1563967990749095070
+    second: die_MageHero_Processed_14
+  - first:
+      213: -1455510254534607329
+    second: die_MageHero_Processed_15
+  - first:
+      213: 7894352961054164984
+    second: die_MageHero_Processed_16
+  - first:
+      213: 3791135001944787322
+    second: die_MageHero_Processed_17
+  - first:
+      213: 8879183251003647668
+    second: die_MageHero_Processed_18
+  - first:
+      213: 5069127327920867091
+    second: die_MageHero_Processed_19
+  - first:
+      213: 3533497486895480040
+    second: die_MageHero_Processed_20
+  - first:
+      213: 4076660034044858050
+    second: die_MageHero_Processed_21
+  - first:
+      213: 9100263128522365408
+    second: die_MageHero_Processed_22
+  - first:
+      213: -5218344359827148810
+    second: die_MageHero_Processed_23
+  - first:
+      213: -5883370983247116950
+    second: die_MageHero_Processed_24
+  - first:
+      213: 6018499244730124288
+    second: die_MageHero_Processed_25
+  - first:
+      213: -7760380075610900288
+    second: die_MageHero_Processed_26
+  - first:
+      213: 4738144103508452133
+    second: die_MageHero_Processed_27
+  - first:
+      213: 1642194471805844122
+    second: die_MageHero_Processed_28
+  - first:
+      213: 5897484358392077089
+    second: die_MageHero_Processed_29
+  - first:
+      213: -3176352604669938247
+    second: die_MageHero_Processed_30
+  - first:
+      213: 2542205672846707707
+    second: die_MageHero_Processed_31
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: die_MageHero_Processed_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 846
+        width: 125
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb0eb38bdcad49f40800000000000000
+      internalID: 5734448802643566780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_1
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 846
+        width: 126
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb0bbdc8221da9620800000000000000
+      internalID: 2781765666177003708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_2
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 846
+        width: 126
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c291c90adbad1d730800000000000000
+      internalID: 4022236450196822316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_3
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 846
+        width: 129
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 044883cedf3a52230800000000000000
+      internalID: 3613474587019871296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_4
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 846
+        width: 124
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27191407b53ab78a0800000000000000
+      internalID: -6306267240081550990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_5
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 846
+        width: 124
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61964ee0f92d14b10800000000000000
+      internalID: 1964082493101730070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 677
+        width: 115
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee645d01c68b5c80800000000000000
+      internalID: -8332918521808523549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_7
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 677
+        width: 123
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f6251f52de0132f0800000000000000
+      internalID: -994997745971026188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_8
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 677
+        width: 122
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74378de0cff2435d0800000000000000
+      internalID: -3083787085214616761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_9
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 677
+        width: 112
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 433ab0004635f0c90800000000000000
+      internalID: -7201445590179536076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_10
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 677
+        width: 109
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52d6ee8b3542d9480800000000000000
+      internalID: -8890910147355972315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_11
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 677
+        width: 110
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ae6e860f21f58150800000000000000
+      internalID: 5874366473250434723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_12
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 508
+        width: 118
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54ea0f6431a9660e0800000000000000
+      internalID: -2276963154003972539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_13
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 508
+        width: 109
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9853370f78c69d40800000000000000
+      internalID: 5590876435334256798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_14
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 508
+        width: 109
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e946ea0f99454b510800000000000000
+      internalID: 1563967990749095070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_15
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 508
+        width: 115
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1eb687922dfccbe0800000000000000
+      internalID: -1455510254534607329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_16
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 508
+        width: 121
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f7cf2721306e8d60800000000000000
+      internalID: 7894352961054164984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_17
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 508
+        width: 121
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a79087ea231dc9430800000000000000
+      internalID: 3791135001944787322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_18
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 339
+        width: 122
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b6aba37f12393b70800000000000000
+      internalID: 8879183251003647668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_19
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 339
+        width: 130
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 317c2f58278295640800000000000000
+      internalID: 5069127327920867091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_20
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 339
+        width: 131
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ecf3293e31890130800000000000000
+      internalID: 3533497486895480040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_21
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 339
+        width: 128
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ce864fa3b4339830800000000000000
+      internalID: 4076660034044858050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_22
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 339
+        width: 126
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e91922a911aa4e70800000000000000
+      internalID: 9100263128522365408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_23
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 339
+        width: 122
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ffe6d4e377b497b0800000000000000
+      internalID: -5218344359827148810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_24
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 170
+        width: 124
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6507bd13411a5ea0800000000000000
+      internalID: -5883370983247116950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_25
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 170
+        width: 124
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 008881bfc21068350800000000000000
+      internalID: 6018499244730124288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_26
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 169
+        width: 126
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c8713fff679d4490800000000000000
+      internalID: -7760380075610900288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_27
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 170
+        width: 126
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 523ab3855f441c140800000000000000
+      internalID: 4738144103508452133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_28
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 170
+        width: 144
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9af810eb2f3ac610800000000000000
+      internalID: 1642194471805844122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_29
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 168
+        width: 135
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12bd16a17c218d150800000000000000
+      internalID: 5897484358392077089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_30
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1
+        width: 141
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b5f24592245be3d0800000000000000
+      internalID: -3176352604669938247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: die_MageHero_Processed_31
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 0
+        width: 144
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfbc20c179ab74320800000000000000
+      internalID: 2542205672846707707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      die_MageHero_Processed_0: 5734448802643566780
+      die_MageHero_Processed_1: 2781765666177003708
+      die_MageHero_Processed_10: -8890910147355972315
+      die_MageHero_Processed_11: 5874366473250434723
+      die_MageHero_Processed_12: -2276963154003972539
+      die_MageHero_Processed_13: 5590876435334256798
+      die_MageHero_Processed_14: 1563967990749095070
+      die_MageHero_Processed_15: -1455510254534607329
+      die_MageHero_Processed_16: 7894352961054164984
+      die_MageHero_Processed_17: 3791135001944787322
+      die_MageHero_Processed_18: 8879183251003647668
+      die_MageHero_Processed_19: 5069127327920867091
+      die_MageHero_Processed_2: 4022236450196822316
+      die_MageHero_Processed_20: 3533497486895480040
+      die_MageHero_Processed_21: 4076660034044858050
+      die_MageHero_Processed_22: 9100263128522365408
+      die_MageHero_Processed_23: -5218344359827148810
+      die_MageHero_Processed_24: -5883370983247116950
+      die_MageHero_Processed_25: 6018499244730124288
+      die_MageHero_Processed_26: -7760380075610900288
+      die_MageHero_Processed_27: 4738144103508452133
+      die_MageHero_Processed_28: 1642194471805844122
+      die_MageHero_Processed_29: 5897484358392077089
+      die_MageHero_Processed_3: 3613474587019871296
+      die_MageHero_Processed_30: -3176352604669938247
+      die_MageHero_Processed_31: 2542205672846707707
+      die_MageHero_Processed_4: -6306267240081550990
+      die_MageHero_Processed_5: 1964082493101730070
+      die_MageHero_Processed_6: -8332918521808523549
+      die_MageHero_Processed_7: -994997745971026188
+      die_MageHero_Processed_8: -3083787085214616761
+      die_MageHero_Processed_9: -7201445590179536076
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

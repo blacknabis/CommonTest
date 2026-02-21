@@ -1,0 +1,962 @@
+fileFormatVersion: 2
+guid: 31685fe02cabfd042b8e57195d4ec64a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4480435051057314460
+    second: walk_MageHero_Processed_0
+  - first:
+      213: 6254246182439552652
+    second: walk_MageHero_Processed_1
+  - first:
+      213: -8784748907251536942
+    second: walk_MageHero_Processed_2
+  - first:
+      213: -5721568986833519755
+    second: walk_MageHero_Processed_3
+  - first:
+      213: 3109703886745430379
+    second: walk_MageHero_Processed_4
+  - first:
+      213: 326142174904312718
+    second: walk_MageHero_Processed_5
+  - first:
+      213: 1082201755012062680
+    second: walk_MageHero_Processed_6
+  - first:
+      213: -4731579563058336017
+    second: walk_MageHero_Processed_7
+  - first:
+      213: 7548125214822866978
+    second: walk_MageHero_Processed_8
+  - first:
+      213: -2333972081397137377
+    second: walk_MageHero_Processed_9
+  - first:
+      213: -382051581853818735
+    second: walk_MageHero_Processed_10
+  - first:
+      213: -8198975074700707540
+    second: walk_MageHero_Processed_11
+  - first:
+      213: -8889956682201315931
+    second: walk_MageHero_Processed_12
+  - first:
+      213: -9119681661335549595
+    second: walk_MageHero_Processed_13
+  - first:
+      213: -2479785198326639907
+    second: walk_MageHero_Processed_14
+  - first:
+      213: 391194347975524416
+    second: walk_MageHero_Processed_15
+  - first:
+      213: 4797689527555918669
+    second: walk_MageHero_Processed_16
+  - first:
+      213: 2000122889834568471
+    second: walk_MageHero_Processed_17
+  - first:
+      213: -1120227592517474832
+    second: walk_MageHero_Processed_18
+  - first:
+      213: 8265419748280112960
+    second: walk_MageHero_Processed_19
+  - first:
+      213: 2363462221984965497
+    second: walk_MageHero_Processed_20
+  - first:
+      213: -5543967858745968743
+    second: walk_MageHero_Processed_21
+  - first:
+      213: -6723448757871228361
+    second: walk_MageHero_Processed_22
+  - first:
+      213: 7076850381771676010
+    second: walk_MageHero_Processed_23
+  - first:
+      213: 2719948821286799864
+    second: walk_MageHero_Processed_24
+  - first:
+      213: -3946614662462352354
+    second: walk_MageHero_Processed_25
+  - first:
+      213: 4019473355409554717
+    second: walk_MageHero_Processed_26
+  - first:
+      213: 8203316232054088897
+    second: walk_MageHero_Processed_27
+  - first:
+      213: -4001600584662456068
+    second: walk_MageHero_Processed_28
+  - first:
+      213: -5301083958988807545
+    second: walk_MageHero_Processed_29
+  - first:
+      213: 8069816215076664634
+    second: walk_MageHero_Processed_30
+  - first:
+      213: 2077769912734144677
+    second: walk_MageHero_Processed_31
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 846
+        width: 125
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46505863f0c42d1c0800000000000000
+      internalID: -4480435051057314460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_1
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 846
+        width: 126
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c86072a34cb8bc650800000000000000
+      internalID: 6254246182439552652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_2
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 846
+        width: 126
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2db6546996d461680800000000000000
+      internalID: -8784748907251536942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_3
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 846
+        width: 129
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57b75e51257e890b0800000000000000
+      internalID: -5721568986833519755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_4
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 846
+        width: 124
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b69ec168533e72b20800000000000000
+      internalID: 3109703886745430379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_5
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 846
+        width: 124
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e83e1718490b68400800000000000000
+      internalID: 326142174904312718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 677
+        width: 115
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dd5cce23c0c40f00800000000000000
+      internalID: 1082201755012062680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_7
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 677
+        width: 123
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feee865d47d065eb0800000000000000
+      internalID: -4731579563058336017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_8
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 677
+        width: 122
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 220afa524e350c860800000000000000
+      internalID: 7548125214822866978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_9
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 677
+        width: 112
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1005a402c01c9fd0800000000000000
+      internalID: -2333972081397137377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_10
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 677
+        width: 109
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1902ab94c1ea2baf0800000000000000
+      internalID: -382051581853818735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_11
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 677
+        width: 110
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c29be2e0c93673e80800000000000000
+      internalID: -8198975074700707540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_12
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 508
+        width: 118
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a5c7c0af7780a480800000000000000
+      internalID: -8889956682201315931
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_13
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 508
+        width: 109
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 569437fd8d1607180800000000000000
+      internalID: -9119681661335549595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_14
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 508
+        width: 109
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd218762088069dd0800000000000000
+      internalID: -2479785198326639907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_15
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 508
+        width: 115
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 040c835df2dcd6500800000000000000
+      internalID: 391194347975524416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_16
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 508
+        width: 121
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4b0590c431d49240800000000000000
+      internalID: 4797689527555918669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_17
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 508
+        width: 121
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71b97b3db2dd1cb10800000000000000
+      internalID: 2000122889834568471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_18
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 339
+        width: 122
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f5a76890f62470f0800000000000000
+      internalID: -1120227592517474832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_19
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 339
+        width: 130
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0471cbf087ba4b270800000000000000
+      internalID: 8265419748280112960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_20
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 339
+        width: 131
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97328756e54bcc020800000000000000
+      internalID: 2363462221984965497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_21
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 339
+        width: 128
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 997734d0b9edf03b0800000000000000
+      internalID: -5543967858745968743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_22
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 339
+        width: 126
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73a4b812af281b2a0800000000000000
+      internalID: -6723448757871228361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_23
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 339
+        width: 122
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69961e6de5063260800000000000000
+      internalID: 7076850381771676010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_24
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 170
+        width: 124
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f9ca04ca033fb520800000000000000
+      internalID: 2719948821286799864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_25
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 170
+        width: 124
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e145592efdeca39c0800000000000000
+      internalID: -3946614662462352354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_26
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 169
+        width: 126
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1d755d78b908c730800000000000000
+      internalID: 4019473355409554717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_27
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 170
+        width: 126
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c4a7c766a808d170800000000000000
+      internalID: 8203316232054088897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_28
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 170
+        width: 144
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf8e23a38757778c0800000000000000
+      internalID: -4001600584662456068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_29
+      rect:
+        serializedVersion: 2
+        x: 735
+        y: 168
+        width: 135
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78263f3c934ce66b0800000000000000
+      internalID: -5301083958988807545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_30
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1
+        width: 141
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a35f456871fbdff60800000000000000
+      internalID: 8069816215076664634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_MageHero_Processed_31
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 0
+        width: 144
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a853852ab8b5dc10800000000000000
+      internalID: 2077769912734144677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      walk_MageHero_Processed_0: -4480435051057314460
+      walk_MageHero_Processed_1: 6254246182439552652
+      walk_MageHero_Processed_10: -382051581853818735
+      walk_MageHero_Processed_11: -8198975074700707540
+      walk_MageHero_Processed_12: -8889956682201315931
+      walk_MageHero_Processed_13: -9119681661335549595
+      walk_MageHero_Processed_14: -2479785198326639907
+      walk_MageHero_Processed_15: 391194347975524416
+      walk_MageHero_Processed_16: 4797689527555918669
+      walk_MageHero_Processed_17: 2000122889834568471
+      walk_MageHero_Processed_18: -1120227592517474832
+      walk_MageHero_Processed_19: 8265419748280112960
+      walk_MageHero_Processed_2: -8784748907251536942
+      walk_MageHero_Processed_20: 2363462221984965497
+      walk_MageHero_Processed_21: -5543967858745968743
+      walk_MageHero_Processed_22: -6723448757871228361
+      walk_MageHero_Processed_23: 7076850381771676010
+      walk_MageHero_Processed_24: 2719948821286799864
+      walk_MageHero_Processed_25: -3946614662462352354
+      walk_MageHero_Processed_26: 4019473355409554717
+      walk_MageHero_Processed_27: 8203316232054088897
+      walk_MageHero_Processed_28: -4001600584662456068
+      walk_MageHero_Processed_29: -5301083958988807545
+      walk_MageHero_Processed_3: -5721568986833519755
+      walk_MageHero_Processed_30: 8069816215076664634
+      walk_MageHero_Processed_31: 2077769912734144677
+      walk_MageHero_Processed_4: 3109703886745430379
+      walk_MageHero_Processed_5: 326142174904312718
+      walk_MageHero_Processed_6: 1082201755012062680
+      walk_MageHero_Processed_7: -4731579563058336017
+      walk_MageHero_Processed_8: 7548125214822866978
+      walk_MageHero_Processed_9: -2333972081397137377
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
