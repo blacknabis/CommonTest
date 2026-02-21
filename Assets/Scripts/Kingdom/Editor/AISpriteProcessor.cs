@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.Animations;
 using Newtonsoft.Json;
 using CatSudoku.Editor;
 
@@ -230,6 +231,8 @@ namespace Kingdom.Editor
         private readonly TowerBindingContext _towerContext = new TowerBindingContext();
         private string _lastProcessedAssetPath = string.Empty;
         private const string ComfyUiRembgNodeType = "Image Remove Background (rembg)";
+        private float _animatorClipFps = 8f;
+        private bool _showBaseUnitAdvancedActions;
 
         // 자동 검증/회귀 환경에서 모달로 멈추지 않도록 기본적으로 로그 알림을 사용한다.
         private static void NotifyInfo(string title, string message)
@@ -407,9 +410,12 @@ namespace Kingdom.Editor
             _slicingMode = (SlicingMode)EditorGUILayout.EnumPopup("Mode", _slicingMode);
 
             EditorGUILayout.Space(5);
-            _rows = EditorGUILayout.IntField("행 (Rows)", _rows);
-            _cols = EditorGUILayout.IntField("열 (Cols)", _cols);
-            _innerPadding = Mathf.Max(0, EditorGUILayout.IntField("내부 여백 (Padding px)", _innerPadding));
+            if (_slicingMode != SlicingMode.SmartSlice)
+            {
+                _rows = EditorGUILayout.IntField("행 (Rows)", _rows);
+                _cols = EditorGUILayout.IntField("열 (Cols)", _cols);
+                _innerPadding = Mathf.Max(0, EditorGUILayout.IntField("내부 여백 (Padding px)", _innerPadding));
+            }
 
             if (_slicingMode == SlicingMode.CustomGrid)
             {
@@ -708,30 +714,60 @@ namespace Kingdom.Editor
                 EditorGUILayout.LabelField("Last Output", _lastProcessedAssetPath, EditorStyles.miniLabel);
             }
 
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Process & Slice"))
+            EditorGUILayout.Space(4f);
+            _animatorClipFps = EditorGUILayout.FloatField("Clip FPS", Mathf.Max(1f, _animatorClipFps));
+            if (GUILayout.Button("Run All (Process + Apply + Generate)", GUILayout.Height(28f)))
             {
-                ProcessWithContext(_baseUnitContext.autoApplyAfterProcess);
-            }
-
-            GUI.enabled = !string.IsNullOrEmpty(_lastProcessedAssetPath);
-            if (GUILayout.Button("Apply Binding"))
-            {
-                if (!TryApplyBaseUnitBinding(_lastProcessedAssetPath, out string bindError))
+                if (!TryRunBaseUnitFullPipeline(out string pipelineError))
                 {
-                    NotifyError("BaseUnit Apply Failed", bindError);
+                    NotifyError("Run All Failed", pipelineError);
                 }
                 else
                 {
-                    NotifyInfo("BaseUnit Apply Success", _lastProcessedAssetPath);
+                    NotifyInfo("Run All Success", "Process, binding, and animator generation completed.");
                 }
             }
-            GUI.enabled = true;
-            EditorGUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Process + Apply"))
+            _showBaseUnitAdvancedActions = EditorGUILayout.Foldout(_showBaseUnitAdvancedActions, "Advanced Actions");
+            if (_showBaseUnitAdvancedActions)
             {
-                ProcessWithContext(true);
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Process & Slice"))
+                {
+                    ProcessWithContext(_baseUnitContext.autoApplyAfterProcess);
+                }
+
+                GUI.enabled = !string.IsNullOrEmpty(_lastProcessedAssetPath);
+                if (GUILayout.Button("Apply Binding"))
+                {
+                    if (!TryApplyBaseUnitBinding(_lastProcessedAssetPath, out string bindError))
+                    {
+                        NotifyError("BaseUnit Apply Failed", bindError);
+                    }
+                    else
+                    {
+                        NotifyInfo("BaseUnit Apply Success", _lastProcessedAssetPath);
+                    }
+                }
+                GUI.enabled = true;
+                EditorGUILayout.EndHorizontal();
+
+                if (GUILayout.Button("Process + Apply"))
+                {
+                    ProcessWithContext(true);
+                }
+
+                if (GUILayout.Button("Generate Animator + Clips"))
+                {
+                    if (!TryGenerateBaseUnitAnimatorAssets(out string animatorError))
+                    {
+                        NotifyError("Animator Generate Failed", animatorError);
+                    }
+                    else
+                    {
+                        NotifyInfo("Animator Generate Success", "Animator controller and clips generated.");
+                    }
+                }
             }
 
             if (GUILayout.Button("Validate Current"))
@@ -1860,6 +1896,561 @@ namespace Kingdom.Editor
         private bool IsSmartSliceActionSplitMode()
         {
             return _slicingMode == SlicingMode.SmartSlice && _smartSliceSplitActionsByRows && _smartSliceActionRowCount >= 2;
+        }
+
+        // BaseUnit에서 처리/바인딩/애니메이터 생성을 한 번에 실행한다.
+        private bool TryRunBaseUnitFullPipeline(out string error)
+        {
+            if (!TryValidateBaseUnitContext(out error))
+            {
+                return false;
+            }
+
+            if (!TryValidateInputs(out error))
+            {
+                return false;
+            }
+
+            bool useManualGroup = _baseUnitContext.useManualActionGroup;
+            SpriteActionGroup actionGroup = _baseUnitContext.actionGroup;
+            if (IsSmartSliceActionSplitMode())
+            {
+                useManualGroup = false;
+                actionGroup = SpriteActionGroup.Unknown;
+            }
+
+            bool processed = ProcessSingleTexture(_sourceTexture, true, useManualGroup, actionGroup);
+            if (!processed)
+            {
+                error = "Process failed. Check previous log for details.";
+                return false;
+            }
+
+            if (!TryApplyBaseUnitBinding(_lastProcessedAssetPath, out error))
+            {
+                return false;
+            }
+
+            if (!TryGenerateBaseUnitAnimatorAssets(out error))
+            {
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
+        // 베이스 유닛 대상의 액션 스프라이트에서 AnimationClip/AnimatorController를 생성한다.
+        private bool TryGenerateBaseUnitAnimatorAssets(out string error)
+        {
+            if (_baseUnitContext.targetAsset == null)
+            {
+                error = "Target Asset is required.";
+                return false;
+            }
+
+            if (!TryResolveAnimatorTargetId(_baseUnitContext.targetAsset, _baseUnitContext.targetType, out string targetId, out error))
+            {
+                return false;
+            }
+
+            if (!TryResolveAnimatorSourceSpriteAssetPath(
+                    _baseUnitContext.targetAsset,
+                    _baseUnitContext.targetType,
+                    targetId,
+                    out string spriteAssetPath,
+                    out error))
+            {
+                return false;
+            }
+
+            Sprite[] sprites = LoadSpritesFromAssetPath(spriteAssetPath);
+            if (sprites == null || sprites.Length <= 0)
+            {
+                error = $"No sprites were found at: {spriteAssetPath}";
+                return false;
+            }
+
+            var idleFrames = FilterSpritesByActionAliases(sprites, "idle");
+            var walkFrames = FilterSpritesByActionAliases(sprites, "walk", "move", "run");
+            var attackFrames = FilterSpritesByActionAliases(sprites, "attack", "atk");
+            var dieFrames = FilterSpritesByActionAliases(sprites, "die", "death", "dead");
+
+            if (idleFrames.Count <= 0 && walkFrames.Count <= 0 && attackFrames.Count <= 0 && dieFrames.Count <= 0)
+            {
+                error = $"Could not detect action groups from sprite names at: {spriteAssetPath}";
+                return false;
+            }
+
+            if (!TryEnsureAnimatorOutputFolder(_baseUnitContext.targetType, targetId, out string outputFolder, out error))
+            {
+                return false;
+            }
+
+            AnimationClip idleClip = CreateOrUpdateActionClip(outputFolder, targetId, "idle", idleFrames, true, _animatorClipFps);
+            AnimationClip walkClip = CreateOrUpdateActionClip(outputFolder, targetId, "walk", walkFrames, true, _animatorClipFps);
+            AnimationClip attackClip = CreateOrUpdateActionClip(outputFolder, targetId, "attack", attackFrames, false, _animatorClipFps);
+            AnimationClip dieClip = CreateOrUpdateActionClip(outputFolder, targetId, "die", dieFrames, false, _animatorClipFps);
+
+            string controllerPath = $"{outputFolder}/{targetId}.controller";
+            AnimatorController controller = CreateOrUpdateAnimatorController(controllerPath, idleClip, walkClip, attackClip, dieClip);
+            if (controller == null)
+            {
+                error = $"Failed to create animator controller at: {controllerPath}";
+                return false;
+            }
+
+            if (_baseUnitContext.targetType == BaseUnitTargetType.EnemyConfig &&
+                TryConvertAssetPathToResourcePath(controllerPath, out string controllerResourcePath, out _))
+            {
+                if (!TryAssignStringProperty(_baseUnitContext.targetAsset, "RuntimeAnimatorControllerPath", controllerResourcePath, out string assignError))
+                {
+                    NotifyWarning("Animator Path Bind Warning", assignError);
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log(
+                $"[AISpriteProcessor] Animator generated. target={targetId}, source={spriteAssetPath}, controller={controllerPath}, " +
+                $"idle={idleFrames.Count}, walk={walkFrames.Count}, attack={attackFrames.Count}, die={dieFrames.Count}");
+
+            error = null;
+            return true;
+        }
+
+        // 대상 타입에 맞는 식별자(HeroId/EnemyId/SoldierId)를 가져온다.
+        private static bool TryResolveAnimatorTargetId(UnityEngine.Object targetAsset, BaseUnitTargetType targetType, out string targetId, out string error)
+        {
+            targetId = string.Empty;
+            string propertyName = "EnemyId";
+            if (targetType == BaseUnitTargetType.HeroConfig)
+            {
+                propertyName = "HeroId";
+            }
+            else if (targetType == BaseUnitTargetType.BarracksSoldierConfig)
+            {
+                propertyName = "SoldierId";
+            }
+
+            if (!TryReadTrimmedStringProperty(targetAsset, propertyName, out targetId) || string.IsNullOrWhiteSpace(targetId))
+            {
+                error = $"{targetAsset.GetType().Name}.{propertyName} is required.";
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
+        // Animator 생성용 소스 스프라이트 에셋 경로를 해석한다.
+        private bool TryResolveAnimatorSourceSpriteAssetPath(
+            UnityEngine.Object targetAsset,
+            BaseUnitTargetType targetType,
+            string targetId,
+            out string spriteAssetPath,
+            out string error)
+        {
+            spriteAssetPath = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(_lastProcessedAssetPath) && File.Exists(_lastProcessedAssetPath))
+            {
+                spriteAssetPath = _lastProcessedAssetPath.Replace('\\', '/');
+                error = null;
+                return true;
+            }
+
+            if (TryReadTrimmedStringProperty(targetAsset, "RuntimeSpriteResourcePath", out string runtimePath) &&
+                !string.IsNullOrWhiteSpace(runtimePath))
+            {
+                if (TryResolveResourcePathToSpriteAssetPath(runtimePath, out spriteAssetPath))
+                {
+                    error = null;
+                    return true;
+                }
+            }
+
+            if (_sourceTexture != null)
+            {
+                string sourceTexturePath = AssetDatabase.GetAssetPath(_sourceTexture);
+                if (!string.IsNullOrWhiteSpace(sourceTexturePath) && File.Exists(sourceTexturePath))
+                {
+                    Sprite[] sourceSprites = LoadSpritesFromAssetPath(sourceTexturePath);
+                    if (sourceSprites.Length > 0)
+                    {
+                        spriteAssetPath = sourceTexturePath.Replace('\\', '/');
+                        error = null;
+                        return true;
+                    }
+                }
+            }
+
+            if (TryFindSpriteAssetPathByTargetId(targetType, targetId, out string discoveredPath))
+            {
+                spriteAssetPath = discoveredPath;
+                error = null;
+                return true;
+            }
+
+            error = "No source sprite path found. Run Process first, set RuntimeSpriteResourcePath, or assign Source Texture.";
+            return false;
+        }
+
+        // 대상 ID 기반으로 Resources/Sprites 하위의 후보 텍스처를 찾아 첫 유효 스프라이트 경로를 반환한다.
+        private static bool TryFindSpriteAssetPathByTargetId(BaseUnitTargetType targetType, string targetId, out string spriteAssetPath)
+        {
+            spriteAssetPath = string.Empty;
+            if (string.IsNullOrWhiteSpace(targetId))
+            {
+                return false;
+            }
+
+            string searchRoot = "Assets/Resources/Sprites";
+            if (targetType == BaseUnitTargetType.EnemyConfig)
+            {
+                searchRoot = "Assets/Resources/Sprites/Enemies";
+            }
+            else if (targetType == BaseUnitTargetType.HeroConfig)
+            {
+                searchRoot = "Assets/Resources/Sprites/Heroes";
+            }
+            else if (targetType == BaseUnitTargetType.BarracksSoldierConfig)
+            {
+                searchRoot = "Assets/Resources/Sprites/Barracks";
+            }
+
+            if (!AssetDatabase.IsValidFolder(searchRoot))
+            {
+                return false;
+            }
+
+            string[] guids = AssetDatabase.FindAssets($"t:Texture2D {targetId}", new[] { searchRoot });
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    continue;
+                }
+
+                Sprite[] sprites = LoadSpritesFromAssetPath(path);
+                if (sprites == null || sprites.Length <= 0)
+                {
+                    continue;
+                }
+
+                spriteAssetPath = path.Replace('\\', '/');
+                return true;
+            }
+
+            return false;
+        }
+
+        // Resources 경로를 실제 에셋 경로로 변환한다.
+        private static bool TryResolveResourcePathToSpriteAssetPath(string runtimePath, out string assetPath)
+        {
+            assetPath = string.Empty;
+            if (string.IsNullOrWhiteSpace(runtimePath))
+            {
+                return false;
+            }
+
+            string normalized = runtimePath.Trim().Replace('\\', '/').TrimStart('/');
+            string[] extensions = { ".png", ".jpg", ".jpeg" };
+            for (int i = 0; i < extensions.Length; i++)
+            {
+                string candidate = $"Assets/Resources/{normalized}{extensions[i]}";
+                if (!File.Exists(candidate))
+                {
+                    continue;
+                }
+
+                assetPath = candidate;
+                return true;
+            }
+
+            return false;
+        }
+
+        // 에셋 경로의 스프라이트 서브에셋 목록을 로드한다.
+        private static Sprite[] LoadSpritesFromAssetPath(string spriteAssetPath)
+        {
+            UnityEngine.Object[] allAssets = AssetDatabase.LoadAllAssetsAtPath(spriteAssetPath);
+            if (allAssets == null || allAssets.Length <= 0)
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            var sprites = new List<Sprite>(allAssets.Length);
+            for (int i = 0; i < allAssets.Length; i++)
+            {
+                if (allAssets[i] is Sprite sprite)
+                {
+                    sprites.Add(sprite);
+                }
+            }
+
+            return sprites.ToArray();
+        }
+
+        // 액션 alias 토큰으로 스프라이트를 필터링한다.
+        private static List<Sprite> FilterSpritesByActionAliases(Sprite[] sprites, params string[] aliases)
+        {
+            var result = new List<Sprite>();
+            if (sprites == null || aliases == null || aliases.Length <= 0)
+            {
+                return result;
+            }
+
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite == null || !SpriteNameContainsAnyAliasToken(sprite.name, aliases))
+                {
+                    continue;
+                }
+
+                result.Add(sprite);
+            }
+
+            result.Sort(CompareSpriteByActionFrame);
+            return result;
+        }
+
+        // 스프라이트 이름 토큰에 alias가 존재하는지 확인한다.
+        private static bool SpriteNameContainsAnyAliasToken(string name, string[] aliases)
+        {
+            if (string.IsNullOrWhiteSpace(name) || aliases == null || aliases.Length <= 0)
+            {
+                return false;
+            }
+
+            string[] tokens = name.Split('_');
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; tokenIndex++)
+            {
+                string token = tokens[tokenIndex];
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    continue;
+                }
+
+                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
+                {
+                    if (string.Equals(token, aliases[aliasIndex], StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // 액션 프레임 번호 기준으로 스프라이트 정렬 비교를 수행한다.
+        private static int CompareSpriteByActionFrame(Sprite a, Sprite b)
+        {
+            if (a == null && b == null) return 0;
+            if (a == null) return 1;
+            if (b == null) return -1;
+
+            int aIndex = ParseTrailingFrameIndex(a.name);
+            int bIndex = ParseTrailingFrameIndex(b.name);
+            if (aIndex != bIndex)
+            {
+                return aIndex.CompareTo(bIndex);
+            }
+
+            return string.Compare(a.name, b.name, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // 이름 끝 숫자를 프레임 인덱스로 파싱한다.
+        private static int ParseTrailingFrameIndex(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return int.MaxValue;
+            }
+
+            string[] tokens = name.Split('_');
+            if (tokens.Length <= 0)
+            {
+                return int.MaxValue;
+            }
+
+            return int.TryParse(tokens[tokens.Length - 1], out int parsed) ? parsed : int.MaxValue;
+        }
+
+        // 대상 타입/ID 기준 Animator 출력 폴더를 보장한다.
+        private static bool TryEnsureAnimatorOutputFolder(BaseUnitTargetType targetType, string targetId, out string folderPath, out string error)
+        {
+            string typeFolder = "Enemies";
+            if (targetType == BaseUnitTargetType.HeroConfig)
+            {
+                typeFolder = "Heroes";
+            }
+            else if (targetType == BaseUnitTargetType.BarracksSoldierConfig)
+            {
+                typeFolder = "Barracks";
+            }
+
+            folderPath = $"Assets/Resources/Animations/{typeFolder}/{targetId}";
+            string current = "Assets";
+            string[] segments = folderPath.Split('/');
+            for (int i = 1; i < segments.Length; i++)
+            {
+                string next = $"{current}/{segments[i]}";
+                if (!AssetDatabase.IsValidFolder(next))
+                {
+                    AssetDatabase.CreateFolder(current, segments[i]);
+                }
+
+                current = next;
+            }
+
+            if (!AssetDatabase.IsValidFolder(folderPath))
+            {
+                error = $"Failed to create folder: {folderPath}";
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
+        // 액션 클립을 생성 또는 갱신한다.
+        private static AnimationClip CreateOrUpdateActionClip(
+            string outputFolder,
+            string targetId,
+            string actionName,
+            List<Sprite> frames,
+            bool loop,
+            float fps)
+        {
+            if (frames == null || frames.Count <= 0)
+            {
+                return null;
+            }
+
+            string clipPath = $"{outputFolder}/{targetId}_{actionName}.anim";
+            AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+            if (clip == null)
+            {
+                clip = new AnimationClip();
+                AssetDatabase.CreateAsset(clip, clipPath);
+            }
+
+            clip.frameRate = Mathf.Max(1f, fps);
+            EditorCurveBinding binding = new EditorCurveBinding
+            {
+                type = typeof(SpriteRenderer),
+                path = string.Empty,
+                propertyName = "m_Sprite"
+            };
+
+            var keyframes = new ObjectReferenceKeyframe[frames.Count];
+            float frameDuration = 1f / Mathf.Max(1f, fps);
+            for (int i = 0; i < frames.Count; i++)
+            {
+                keyframes[i] = new ObjectReferenceKeyframe
+                {
+                    time = i * frameDuration,
+                    value = frames[i]
+                };
+            }
+
+            AnimationUtility.SetObjectReferenceCurve(clip, binding, keyframes);
+            SetAnimationClipLoop(clip, loop);
+            EditorUtility.SetDirty(clip);
+            return clip;
+        }
+
+        // 클립 루프 옵션을 설정한다.
+        private static void SetAnimationClipLoop(AnimationClip clip, bool loop)
+        {
+            if (clip == null)
+            {
+                return;
+            }
+
+            SerializedObject so = new SerializedObject(clip);
+            SerializedProperty settings = so.FindProperty("m_AnimationClipSettings");
+            if (settings != null)
+            {
+                SerializedProperty loopTime = settings.FindPropertyRelative("m_LoopTime");
+                if (loopTime != null)
+                {
+                    loopTime.boolValue = loop;
+                }
+            }
+
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // 액션 클립들로 AnimatorController를 생성 또는 갱신한다.
+        private static AnimatorController CreateOrUpdateAnimatorController(
+            string controllerPath,
+            AnimationClip idleClip,
+            AnimationClip walkClip,
+            AnimationClip attackClip,
+            AnimationClip dieClip)
+        {
+            if (File.Exists(controllerPath))
+            {
+                AssetDatabase.DeleteAsset(controllerPath);
+            }
+
+            AnimatorController controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
+            if (controller == null)
+            {
+                return null;
+            }
+
+            controller.AddParameter("MotionState", AnimatorControllerParameterType.Int);
+            AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
+            stateMachine.states = Array.Empty<ChildAnimatorState>();
+
+            AnimatorState idleState = AddStateIfClipExists(stateMachine, "Idle", idleClip);
+            AnimatorState walkState = AddStateIfClipExists(stateMachine, "Walk", walkClip);
+            AnimatorState attackState = AddStateIfClipExists(stateMachine, "Attack", attackClip);
+            AnimatorState dieState = AddStateIfClipExists(stateMachine, "Die", dieClip);
+
+            stateMachine.defaultState = idleState ?? walkState ?? attackState ?? dieState;
+
+            AddAnyStateTransition(stateMachine, idleState, "MotionState", 0);
+            AddAnyStateTransition(stateMachine, walkState, "MotionState", 1);
+            AddAnyStateTransition(stateMachine, attackState, "MotionState", 2);
+            AddAnyStateTransition(stateMachine, dieState, "MotionState", 3);
+            EditorUtility.SetDirty(controller);
+            return controller;
+        }
+
+        // 상태 머신에 클립이 있을 때만 상태를 추가한다.
+        private static AnimatorState AddStateIfClipExists(AnimatorStateMachine stateMachine, string stateName, AnimationClip clip)
+        {
+            if (stateMachine == null || clip == null)
+            {
+                return null;
+            }
+
+            AnimatorState state = stateMachine.AddState(stateName);
+            state.motion = clip;
+            return state;
+        }
+
+        // AnyState -> 타겟 상태 전이를 정수 조건으로 추가한다.
+        private static void AddAnyStateTransition(AnimatorStateMachine stateMachine, AnimatorState targetState, string parameterName, int value)
+        {
+            if (stateMachine == null || targetState == null)
+            {
+                return;
+            }
+
+            AnimatorStateTransition transition = stateMachine.AddAnyStateTransition(targetState);
+            transition.hasExitTime = false;
+            transition.hasFixedDuration = true;
+            transition.duration = 0f;
+            transition.canTransitionToSelf = false;
+            transition.AddCondition(AnimatorConditionMode.Equals, value, parameterName);
         }
 
         // 읽기 가능한 임시 텍스처를 생성한다.

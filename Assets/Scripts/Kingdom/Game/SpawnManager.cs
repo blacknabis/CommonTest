@@ -14,6 +14,7 @@ namespace Kingdom.Game
         private readonly Dictionary<EnemyRuntime, EnemyConfig> _enemyConfigMap = new();
         private static Sprite _fallbackEnemySprite;
         private static readonly Dictionary<string, Sprite> RuntimeTextureSpriteCache = new();
+        private static readonly HashSet<string> EnemyAnimatorLogCache = new();
         private static readonly string[] EnemySpriteResourcePrefixes =
         {
             "UI/Sprites/Enemies/",
@@ -87,13 +88,30 @@ namespace Kingdom.Game
             var renderer = enemyGo.AddComponent<SpriteRenderer>();
             EnemyConfig config = entry.Enemy;
             Sprite resolvedSprite = ResolveEnemySprite(config);
-            ResolveEnemyAnimationClips(
-                config,
-                resolvedSprite,
-                out Sprite[] idleFrames,
-                out Sprite[] moveFrames,
-                out Sprite[] attackFrames,
-                out Sprite[] dieFrames);
+            RuntimeAnimatorController animatorController = ResolveEnemyAnimatorController(config);
+            if (animatorController == null)
+            {
+                string enemyId = config != null ? config.EnemyId : "(null)";
+                Debug.LogError($"[SpawnManager] Animator is required but not found. enemyId={enemyId}");
+                return;
+            }
+
+            if (animatorController != null)
+            {
+                Animator animator = enemyGo.GetComponent<Animator>();
+                if (animator == null)
+                {
+                    animator = enemyGo.AddComponent<Animator>();
+                }
+
+                animator.runtimeAnimatorController = animatorController;
+            }
+            LogEnemyAnimatorResolutionOnce(config, animatorController);
+            Sprite[] idleFrames = Array.Empty<Sprite>();
+            Sprite[] moveFrames = Array.Empty<Sprite>();
+            Sprite[] attackFrames = Array.Empty<Sprite>();
+            Sprite[] dieFrames = Array.Empty<Sprite>();
+
             renderer.sprite = moveFrames != null && moveFrames.Length > 0 && moveFrames[0] != null
                 ? moveFrames[0]
                 : resolvedSprite;
@@ -225,11 +243,6 @@ namespace Kingdom.Game
 
         private static Sprite ResolveEnemySprite(EnemyConfig config)
         {
-            if (config != null && config.Sprite != null)
-            {
-                return config.Sprite;
-            }
-
             if (config != null && TryLoadSprite(config.RuntimeSpriteResourcePath, out Sprite byResourcePath))
             {
                 return byResourcePath;
@@ -254,6 +267,55 @@ namespace Kingdom.Game
             }
 
             return GetFallbackEnemySprite();
+        }
+
+        private static RuntimeAnimatorController ResolveEnemyAnimatorController(EnemyConfig config)
+        {
+            if (config == null)
+            {
+                return null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(config.RuntimeAnimatorControllerPath))
+            {
+                RuntimeAnimatorController byConfig =
+                    Resources.Load<RuntimeAnimatorController>(config.RuntimeAnimatorControllerPath.Trim());
+                if (byConfig != null)
+                {
+                    return byConfig;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(config.EnemyId))
+            {
+                return null;
+            }
+
+            string enemyId = config.EnemyId.Trim();
+            string conventionalPath = $"Animations/Enemies/{enemyId}/{enemyId}";
+            return Resources.Load<RuntimeAnimatorController>(conventionalPath);
+        }
+
+        private static void LogEnemyAnimatorResolutionOnce(EnemyConfig config, RuntimeAnimatorController controller)
+        {
+            if (config == null)
+            {
+                return;
+            }
+
+            string enemyId = string.IsNullOrWhiteSpace(config.EnemyId) ? "(empty)" : config.EnemyId.Trim();
+            string key = $"{enemyId}|{(controller != null ? "ok" : "none")}";
+            if (!EnemyAnimatorLogCache.Add(key))
+            {
+                return;
+            }
+
+            string configuredPath = string.IsNullOrWhiteSpace(config.RuntimeAnimatorControllerPath)
+                ? "(empty)"
+                : config.RuntimeAnimatorControllerPath.Trim();
+            string loadedName = controller != null ? controller.name : "(null)";
+            Debug.Log(
+                $"[SpawnManager] Enemy animator resolve. enemyId={enemyId}, configuredPath={configuredPath}, loaded={loadedName}");
         }
 
         private static bool TryLoadSprite(string resourcePath, out Sprite sprite)

@@ -727,6 +727,13 @@ namespace Kingdom.App
 
             string enemyId = string.IsNullOrWhiteSpace(config.EnemyId) ? "(empty)" : config.EnemyId.Trim();
             string runtimePath = string.IsNullOrWhiteSpace(config.RuntimeSpriteResourcePath) ? "(empty)" : config.RuntimeSpriteResourcePath.Trim();
+            if (!TryResolveEnemyAnimatorBinding(config, out string animatorResolvedPath, out string animatorReason))
+            {
+                detail =
+                    $"Enemy animator missing: enemyId={enemyId}, animatorPath={NormalizeForLog(animatorResolvedPath)}, reason={animatorReason}";
+                return false;
+            }
+
             // 1) 이동 기본 클립을 먼저 해석한다. 이동이 없으면 액션 클립 검증도 의미가 없다.
             if (!TryResolveEnemyMoveSpriteBinding(config, out string moveResolvedPath, out string moveReason))
             {
@@ -759,6 +766,48 @@ namespace Kingdom.App
             }
 
             return true;
+        }
+
+        // 적 Animator 컨트롤러 바인딩을 확인한다. (현재 런타임은 Animator를 필수로 사용)
+        private static bool TryResolveEnemyAnimatorBinding(EnemyConfig config, out string resolvedPath, out string reason)
+        {
+            resolvedPath = string.Empty;
+            reason = string.Empty;
+
+            if (config == null)
+            {
+                reason = "EnemyConfig is null.";
+                return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(config.RuntimeAnimatorControllerPath))
+            {
+                string configuredPath = config.RuntimeAnimatorControllerPath.Trim();
+                RuntimeAnimatorController byConfig = Resources.Load<RuntimeAnimatorController>(configuredPath);
+                if (byConfig != null)
+                {
+                    resolvedPath = configuredPath;
+                    return true;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(config.EnemyId))
+            {
+                reason = "EnemyId is empty.";
+                return false;
+            }
+
+            string enemyId = config.EnemyId.Trim();
+            string conventionalPath = $"Animations/Enemies/{enemyId}/{enemyId}";
+            RuntimeAnimatorController byConvention = Resources.Load<RuntimeAnimatorController>(conventionalPath);
+            if (byConvention != null)
+            {
+                resolvedPath = conventionalPath;
+                return true;
+            }
+
+            reason = $"configured={NormalizeForLog(config.RuntimeAnimatorControllerPath)}, conventional={conventionalPath}";
+            return false;
         }
 
         // enemyId 기반 적 스프라이트 후보 경로를 생성한다.

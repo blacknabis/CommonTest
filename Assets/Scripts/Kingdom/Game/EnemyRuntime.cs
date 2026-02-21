@@ -29,6 +29,8 @@ namespace Kingdom.Game
         private bool _deathBurstTriggered;
         private EnemyMotionState _motionState = EnemyMotionState.Moving;
         private SpriteRenderer _renderer;
+        private Animator _animator;
+        private bool _useAnimator;
         private Sprite[] _idleFrames = Array.Empty<Sprite>();
         private Sprite[] _moveFrames = Array.Empty<Sprite>();
         private Sprite[] _attackFrames = Array.Empty<Sprite>();
@@ -38,6 +40,9 @@ namespace Kingdom.Game
         private float _animationTimer;
         private float _animationFps = 8f;
         private EnemyMotionState _animationState = EnemyMotionState.Moving;
+        private static readonly int MotionStateHash = Animator.StringToHash("MotionState");
+        private float _animAttackDuration = 0.1f;
+        private float _animDieDuration;
 
         public event Action<EnemyRuntime> ReachedGoal;
         public event Action<EnemyRuntime> Killed;
@@ -57,6 +62,11 @@ namespace Kingdom.Game
 
         public float GetDeathVisualDuration()
         {
+            if (_useAnimator)
+            {
+                return Mathf.Max(0f, _animDieDuration);
+            }
+
             if (_dieFrames == null || _dieFrames.Length <= 1)
             {
                 return 0f;
@@ -98,6 +108,13 @@ namespace Kingdom.Game
             if (_renderer == null)
             {
                 _renderer = gameObject.AddComponent<SpriteRenderer>();
+            }
+            _animator = GetComponent<Animator>();
+            _useAnimator = _animator != null && _animator.runtimeAnimatorController != null;
+            if (_useAnimator)
+            {
+                _animAttackDuration = ResolveAnimatorClipLength("attack", "atk", "slash");
+                _animDieDuration = ResolveAnimatorClipLength("die", "death", "dead");
             }
 
             SetAnimationFrames(idleFrames, moveFrames, attackFrames, dieFrames);
@@ -371,6 +388,11 @@ namespace Kingdom.Game
 
         private float GetAttackVisualDuration()
         {
+            if (_useAnimator)
+            {
+                return Mathf.Max(0.1f, _animAttackDuration);
+            }
+
             if (_attackFrames == null || _attackFrames.Length <= 1)
             {
                 return 0.1f;
@@ -425,6 +447,12 @@ namespace Kingdom.Game
 
         private void TickVisualAnimation(float deltaTime)
         {
+            if (_useAnimator && _animator != null)
+            {
+                _animator.SetInteger(MotionStateHash, ToAnimatorMotionState(_motionState));
+                return;
+            }
+
             if (_renderer == null)
             {
                 return;
@@ -501,6 +529,63 @@ namespace Kingdom.Game
         private bool ShouldLoopCurrentAnimation()
         {
             return _motionState == EnemyMotionState.Moving || _motionState == EnemyMotionState.Blocked;
+        }
+
+        private static int ToAnimatorMotionState(EnemyMotionState state)
+        {
+            switch (state)
+            {
+                case EnemyMotionState.Blocked:
+                    return 0; // Idle
+                case EnemyMotionState.Moving:
+                    return 1; // Walk
+                case EnemyMotionState.Attacking:
+                    return 2; // Attack
+                case EnemyMotionState.Dead:
+                    return 3; // Die
+                default:
+                    return 0;
+            }
+        }
+
+        private float ResolveAnimatorClipLength(params string[] nameTokens)
+        {
+            if (_animator == null || _animator.runtimeAnimatorController == null)
+            {
+                return 0f;
+            }
+
+            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+            if (clips == null || clips.Length <= 0 || nameTokens == null || nameTokens.Length <= 0)
+            {
+                return 0f;
+            }
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                AnimationClip clip = clips[i];
+                if (clip == null)
+                {
+                    continue;
+                }
+
+                string n = (clip.name ?? string.Empty).ToLowerInvariant();
+                for (int tokenIndex = 0; tokenIndex < nameTokens.Length; tokenIndex++)
+                {
+                    string token = nameTokens[tokenIndex];
+                    if (string.IsNullOrWhiteSpace(token))
+                    {
+                        continue;
+                    }
+
+                    if (n.Contains(token.ToLowerInvariant()))
+                    {
+                        return clip.length;
+                    }
+                }
+            }
+
+            return 0f;
         }
     }
 }
