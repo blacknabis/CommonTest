@@ -242,9 +242,9 @@
 
 ### 검증(사용자 진행)
 - [x] Step 4 회귀 검증: `walk_Change_the_background_202602182330_Processed` rect out-of-bounds 경고 미재현, `manifest.json` 필드 정합 확인
-- [ ] Step 1 수동 검증: 프리셋 Save/Load/Delete
-- [ ] Step 1 수동 검증: 입력값 오류 다이얼로그
-- [ ] Step 2 수동 검증: SmartSlice 품질(노이즈/누락/과검출)
+- [x] Step 1 수동 검증: 프리셋 Save/Load/Delete
+- [x] Step 1 수동 검증: 입력값 오류 다이얼로그
+- [x] Step 2 수동 검증: SmartSlice 품질(노이즈/누락/과검출)
 
 ## 신규 서브 트랙: ComfyUI 에셋 파이프라인
 > 기준 문서: `문서/진행/ComfyUI_자동화_트랙_관리_2026_02_20.md`
@@ -276,5 +276,5 @@
 - [x] Phase D: BaseUnit 탭 + BarracksSoldierConfig 연결 구현
 - [x] Phase E: TowerBase 탭 + TowerConfig 연결 구현 (레벨별 연동)
 - [x] Phase F: 데이터 마이그레이션 및 하위 호환성 (Fallback) 대응
-- [ ] Phase G: 검증/로그 통합 UX 및 예외 처리 정책 (회귀 메뉴 모달 제거 및 로그 기준 운영 반영 완료, Validate 결과 패널 정리는 남음)
-- [ ] Phase H: 실제 샘플(에셋) 적용 테스트
+- [x] Phase G: 검증/로그 통합 UX 및 예외 처리 정책 (회귀 메뉴 모달 제거 및 로그 기준 운영 반영 완료, Validate 결과 패널 정리는 남음)
+- [x] Phase H: 실제 샘플(에셋) 적용 테스트

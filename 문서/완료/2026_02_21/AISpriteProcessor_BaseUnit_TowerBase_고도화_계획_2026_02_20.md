@@ -348,9 +348,9 @@ public class TowerConfig : ScriptableObject
 - [x] 이관 결과 로그(성공/실패/스킵) 출력
 
 7. Phase G/H
-- [ ] Validate 결과 패널 정리
-- [ ] 런타임 strict 회귀 테스트
-- [ ] 샘플 에셋 스모크 테스트
+- [x] Validate 결과 패널 정리
+- [x] 런타임 strict 회귀 테스트
+- [x] 샘플 에셋 스모크 테스트
 
 ## 16. 롤백 기준
 1. 런타임에서 타워/병사 스프라이트 누락이 증가하면 즉시 legacy fallback 경로를 임시 재활성화한다.
