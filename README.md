@@ -42,3 +42,18 @@ Unity 기반 2D 전략/디펜스 프로젝트입니다.
 ## 참고
 - 공통 모듈 문서: `Assets/Scripts/Common/README.md`
 - MCP for Unity 문서: `Assets/MCPForUnity/README.md`
+
+## Config 경로 규칙 (2026-02-21)
+- 표준(Resources) 경로는 `Assets/Resources/Kingdom/Configs/<Category>/`를 사용한다.
+- 카테고리:
+  - `Heroes`
+  - `Enemies`
+  - `Towers`
+  - `Waves`
+  - `Stages`
+  - `BarracksSoldiers`
+- 런타임 로딩은 표준 경로를 우선 사용한다.
+- 레거시 경로(`Assets/Resources/Data/...`, `Assets/Resources/Kingdom/Enemies/Config`)는 마이그레이션 호환을 위해 fallback으로만 유지한다.
+- 신규/수정 에셋은 레거시 경로에 생성하지 않는다.
+
+상세 마이그레이션 내역: `문서/완료/2026_02_21/리소스_컨피그_경로_통일_마이그레이션_2026_02_21.md`

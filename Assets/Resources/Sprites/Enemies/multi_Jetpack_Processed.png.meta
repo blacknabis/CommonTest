@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: d68c75c93ec88ab4f9ebebe0b300b127
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1444213105174263031
+    second: multi_Jetpack_Processed_0
+  - first:
+      213: -2075406982329840517
+    second: multi_Jetpack_Processed_1
+  - first:
+      213: 4994213149737389471
+    second: multi_Jetpack_Processed_2
+  - first:
+      213: 4066442763470963043
+    second: multi_Jetpack_Processed_3
+  - first:
+      213: -3125823199522605840
+    second: multi_Jetpack_Processed_4
+  - first:
+      213: 5987732234474528257
+    second: multi_Jetpack_Processed_5
+  - first:
+      213: 1556704530281560584
+    second: multi_Jetpack_Processed_6
+  - first:
+      213: 6814732576803553081
+    second: multi_Jetpack_Processed_7
+  - first:
+      213: -1324582748927522760
+    second: multi_Jetpack_Processed_8
+  - first:
+      213: -1234323209386240739
+    second: multi_Jetpack_Processed_9
+  - first:
+      213: -3996211610458631710
+    second: multi_Jetpack_Processed_10
+  - first:
+      213: 3561880087877841299
+    second: multi_Jetpack_Processed_11
+  - first:
+      213: -6728547346861794286
+    second: multi_Jetpack_Processed_12
+  - first:
+      213: 679358396078712199
+    second: multi_Jetpack_Processed_13
+  - first:
+      213: -5529466956574855097
+    second: multi_Jetpack_Processed_14
+  - first:
+      213: 8763222215819344516
+    second: multi_Jetpack_Processed_15
+  - first:
+      213: 9022796516176016114
+    second: multi_Jetpack_Processed_idle_00
+  - first:
+      213: 4687020614246706568
+    second: multi_Jetpack_Processed_idle_01
+  - first:
+      213: -2269261845726489431
+    second: multi_Jetpack_Processed_idle_02
+  - first:
+      213: -4920704722456345873
+    second: multi_Jetpack_Processed_idle_03
+  - first:
+      213: -2152115743020523049
+    second: multi_Jetpack_Processed_walk_00
+  - first:
+      213: -4142378900968447049
+    second: multi_Jetpack_Processed_walk_01
+  - first:
+      213: 6617926403628408890
+    second: multi_Jetpack_Processed_walk_02
+  - first:
+      213: 5161157848555885408
+    second: multi_Jetpack_Processed_walk_03
+  - first:
+      213: -8683469164839399652
+    second: multi_Jetpack_Processed_attack_00
+  - first:
+      213: 4406649978254946299
+    second: multi_Jetpack_Processed_attack_01
+  - first:
+      213: -5868873676536671955
+    second: multi_Jetpack_Processed_attack_02
+  - first:
+      213: -8811234479322111624
+    second: multi_Jetpack_Processed_attack_03
+  - first:
+      213: -7247010962612259245
+    second: multi_Jetpack_Processed_die_00
+  - first:
+      213: 7218789891132047961
+    second: multi_Jetpack_Processed_die_01
+  - first:
+      213: -3184541724178709175
+    second: multi_Jetpack_Processed_die_02
+  - first:
+      213: 7097306627570106359
+    second: multi_Jetpack_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 546
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f2bd4b60a9673d70800000000000000
+      internalID: 9022796516176016114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 546
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88dab1f6a64ab0140800000000000000
+      internalID: 4687020614246706568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 546
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a41027df56f180e0800000000000000
+      internalID: -2269261845726489431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 546
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe2076d302526bbb0800000000000000
+      internalID: -4920704722456345873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 364
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d16cb552262222e0800000000000000
+      internalID: -2152115743020523049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 364
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b3e3ba36505386c0800000000000000
+      internalID: -4142378900968447049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 364
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3023f5300997db50800000000000000
+      internalID: 6617926403628408890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 364
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06394e0e7bd10a740800000000000000
+      internalID: 5161157848555885408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 182
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1f80b33dce1e7780800000000000000
+      internalID: -8683469164839399652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 182
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bff6e5bcec0972d30800000000000000
+      internalID: 4406649978254946299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 182
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21146e5c729d8ea0800000000000000
+      internalID: -5868873676536671955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 182
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 871e45bcce438b580800000000000000
+      internalID: -8811234479322111624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35672220de17d6b90800000000000000
+      internalID: -7247010962612259245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 0
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9524b11c82b4e2460800000000000000
+      internalID: 7218789891132047961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 0
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9450bed9c2c3ec3d0800000000000000
+      internalID: -3184541724178709175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Jetpack_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 0
+        width: 258
+        height: 182
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ff775e46c2be7260800000000000000
+      internalID: 7097306627570106359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Jetpack_Processed_0: 1444213105174263031
+      multi_Jetpack_Processed_1: -2075406982329840517
+      multi_Jetpack_Processed_10: -3996211610458631710
+      multi_Jetpack_Processed_11: 3561880087877841299
+      multi_Jetpack_Processed_12: -6728547346861794286
+      multi_Jetpack_Processed_13: 679358396078712199
+      multi_Jetpack_Processed_14: -5529466956574855097
+      multi_Jetpack_Processed_15: 8763222215819344516
+      multi_Jetpack_Processed_2: 4994213149737389471
+      multi_Jetpack_Processed_3: 4066442763470963043
+      multi_Jetpack_Processed_4: -3125823199522605840
+      multi_Jetpack_Processed_5: 5987732234474528257
+      multi_Jetpack_Processed_6: 1556704530281560584
+      multi_Jetpack_Processed_7: 6814732576803553081
+      multi_Jetpack_Processed_8: -1324582748927522760
+      multi_Jetpack_Processed_9: -1234323209386240739
+      multi_Jetpack_Processed_attack_00: -8683469164839399652
+      multi_Jetpack_Processed_attack_01: 4406649978254946299
+      multi_Jetpack_Processed_attack_02: -5868873676536671955
+      multi_Jetpack_Processed_attack_03: -8811234479322111624
+      multi_Jetpack_Processed_die_00: -7247010962612259245
+      multi_Jetpack_Processed_die_01: 7218789891132047961
+      multi_Jetpack_Processed_die_02: -3184541724178709175
+      multi_Jetpack_Processed_die_03: 7097306627570106359
+      multi_Jetpack_Processed_idle_00: 9022796516176016114
+      multi_Jetpack_Processed_idle_01: 4687020614246706568
+      multi_Jetpack_Processed_idle_02: -2269261845726489431
+      multi_Jetpack_Processed_idle_03: -4920704722456345873
+      multi_Jetpack_Processed_walk_00: -2152115743020523049
+      multi_Jetpack_Processed_walk_01: -4142378900968447049
+      multi_Jetpack_Processed_walk_02: 6617926403628408890
+      multi_Jetpack_Processed_walk_03: 5161157848555885408
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,654 @@
+fileFormatVersion: 2
+guid: 7e6da3d5c060b0b43a10ab399268a8cf
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7306550371955830480
+    second: multi_DemonSpawn_Processed_0
+  - first:
+      213: 6980151392388861193
+    second: multi_DemonSpawn_Processed_1
+  - first:
+      213: -4701999539668453359
+    second: multi_DemonSpawn_Processed_2
+  - first:
+      213: -5836950150123185931
+    second: multi_DemonSpawn_Processed_3
+  - first:
+      213: -8447164269125346496
+    second: multi_DemonSpawn_Processed_4
+  - first:
+      213: 347028909457773901
+    second: multi_DemonSpawn_Processed_5
+  - first:
+      213: -7426418526511390598
+    second: multi_DemonSpawn_Processed_6
+  - first:
+      213: -7668026226339500182
+    second: multi_DemonSpawn_Processed_7
+  - first:
+      213: 1681237858877030359
+    second: multi_DemonSpawn_Processed_8
+  - first:
+      213: 8379644090943884911
+    second: multi_DemonSpawn_Processed_9
+  - first:
+      213: 5280902863638553615
+    second: multi_DemonSpawn_Processed_10
+  - first:
+      213: 2997887644001148636
+    second: multi_DemonSpawn_Processed_11
+  - first:
+      213: -2695750199898783995
+    second: multi_DemonSpawn_Processed_12
+  - first:
+      213: 8671881763635920000
+    second: multi_DemonSpawn_Processed_13
+  - first:
+      213: 7809416722873719681
+    second: multi_DemonSpawn_Processed_14
+  - first:
+      213: 2678700959018161593
+    second: multi_DemonSpawn_Processed_15
+  - first:
+      213: 790453115810207706
+    second: multi_DemonSpawn_Processed_16
+  - first:
+      213: -3641501825028070952
+    second: multi_DemonSpawn_Processed_17
+  - first:
+      213: 4806287122989866038
+    second: multi_DemonSpawn_Processed_18
+  - first:
+      213: 2683045199161399708
+    second: multi_DemonSpawn_Processed_19
+  - first:
+      213: -3879106355952524151
+    second: multi_DemonSpawn_Processed_20
+  - first:
+      213: 3069681125983844421
+    second: multi_DemonSpawn_Processed_21
+  - first:
+      213: 8528612099610958377
+    second: multi_DemonSpawn_Processed_22
+  - first:
+      213: 8593438861070306839
+    second: multi_DemonSpawn_Processed_23
+  - first:
+      213: 2220031041255201232
+    second: multi_DemonSpawn_Processed_24
+  - first:
+      213: 4423739715256823049
+    second: multi_DemonSpawn_Processed_25
+  - first:
+      213: 4965715214446263295
+    second: multi_DemonSpawn_Processed_26
+  - first:
+      213: -273361142032116096
+    second: multi_DemonSpawn_Processed_idle_00
+  - first:
+      213: 6680839752951295220
+    second: multi_DemonSpawn_Processed_idle_01
+  - first:
+      213: 7146677960962150263
+    second: multi_DemonSpawn_Processed_idle_02
+  - first:
+      213: -3698991529911484865
+    second: multi_DemonSpawn_Processed_idle_03
+  - first:
+      213: 9195004851628708915
+    second: multi_DemonSpawn_Processed_walk_00
+  - first:
+      213: 7095447288654760717
+    second: multi_DemonSpawn_Processed_walk_01
+  - first:
+      213: 8183711137112067631
+    second: multi_DemonSpawn_Processed_walk_02
+  - first:
+      213: 1304438294311652374
+    second: multi_DemonSpawn_Processed_walk_03
+  - first:
+      213: -1478493752155597747
+    second: multi_DemonSpawn_Processed_attack_00
+  - first:
+      213: 3920709895631611848
+    second: multi_DemonSpawn_Processed_attack_01
+  - first:
+      213: -3549306603095999643
+    second: multi_DemonSpawn_Processed_attack_02
+  - first:
+      213: 9098634151699575717
+    second: multi_DemonSpawn_Processed_attack_03
+  - first:
+      213: 7983503236498275670
+    second: multi_DemonSpawn_Processed_die_00
+  - first:
+      213: -2279901531929795883
+    second: multi_DemonSpawn_Processed_die_01
+  - first:
+      213: 5089839094184611024
+    second: multi_DemonSpawn_Processed_die_02
+  - first:
+      213: -3963501401150883290
+    second: multi_DemonSpawn_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 561
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 086d7c95d73d43cf0800000000000000
+      internalID: -273361142032116096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 561
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fc68f3db5c17bc50800000000000000
+      internalID: 6680839752951295220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 561
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77f0343adb91e2360800000000000000
+      internalID: 7146677960962150263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 561
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3e72783dca8aacc0800000000000000
+      internalID: -3698991529911484865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 374
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 334925102383b9f70800000000000000
+      internalID: 9195004851628708915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 374
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0b86ca37b7187260800000000000000
+      internalID: 7095447288654760717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 374
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2e09f78be1629170800000000000000
+      internalID: 8183711137112067631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 374
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61cccdba7bb4a1210800000000000000
+      internalID: 1304438294311652374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 187
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d44912c04c55b7be0800000000000000
+      internalID: -1478493752155597747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 187
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c72b7490e8296630800000000000000
+      internalID: 3920709895631611848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 187
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56bb38313745ebec0800000000000000
+      internalID: -3549306603095999643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 187
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a37a49ed87d44e70800000000000000
+      internalID: 9098634151699575717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65d39aa25e91bce60800000000000000
+      internalID: 7983503236498275670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 0
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d2a47ad2a92c50e0800000000000000
+      internalID: -2279901531929795883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 0
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dc05c460bdb2a640800000000000000
+      internalID: 5089839094184611024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonSpawn_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 501
+        y: 0
+        width: 167
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62a73a5a970def8c0800000000000000
+      internalID: -3963501401150883290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_DemonSpawn_Processed_0: -7306550371955830480
+      multi_DemonSpawn_Processed_1: 6980151392388861193
+      multi_DemonSpawn_Processed_10: 5280902863638553615
+      multi_DemonSpawn_Processed_11: 2997887644001148636
+      multi_DemonSpawn_Processed_12: -2695750199898783995
+      multi_DemonSpawn_Processed_13: 8671881763635920000
+      multi_DemonSpawn_Processed_14: 7809416722873719681
+      multi_DemonSpawn_Processed_15: 2678700959018161593
+      multi_DemonSpawn_Processed_16: 790453115810207706
+      multi_DemonSpawn_Processed_17: -3641501825028070952
+      multi_DemonSpawn_Processed_18: 4806287122989866038
+      multi_DemonSpawn_Processed_19: 2683045199161399708
+      multi_DemonSpawn_Processed_2: -4701999539668453359
+      multi_DemonSpawn_Processed_20: -3879106355952524151
+      multi_DemonSpawn_Processed_21: 3069681125983844421
+      multi_DemonSpawn_Processed_22: 8528612099610958377
+      multi_DemonSpawn_Processed_23: 8593438861070306839
+      multi_DemonSpawn_Processed_24: 2220031041255201232
+      multi_DemonSpawn_Processed_25: 4423739715256823049
+      multi_DemonSpawn_Processed_26: 4965715214446263295
+      multi_DemonSpawn_Processed_3: -5836950150123185931
+      multi_DemonSpawn_Processed_4: -8447164269125346496
+      multi_DemonSpawn_Processed_5: 347028909457773901
+      multi_DemonSpawn_Processed_6: -7426418526511390598
+      multi_DemonSpawn_Processed_7: -7668026226339500182
+      multi_DemonSpawn_Processed_8: 1681237858877030359
+      multi_DemonSpawn_Processed_9: 8379644090943884911
+      multi_DemonSpawn_Processed_attack_00: -1478493752155597747
+      multi_DemonSpawn_Processed_attack_01: 3920709895631611848
+      multi_DemonSpawn_Processed_attack_02: -3549306603095999643
+      multi_DemonSpawn_Processed_attack_03: 9098634151699575717
+      multi_DemonSpawn_Processed_die_00: 7983503236498275670
+      multi_DemonSpawn_Processed_die_01: -2279901531929795883
+      multi_DemonSpawn_Processed_die_02: 5089839094184611024
+      multi_DemonSpawn_Processed_die_03: -3963501401150883290
+      multi_DemonSpawn_Processed_idle_00: -273361142032116096
+      multi_DemonSpawn_Processed_idle_01: 6680839752951295220
+      multi_DemonSpawn_Processed_idle_02: 7146677960962150263
+      multi_DemonSpawn_Processed_idle_03: -3698991529911484865
+      multi_DemonSpawn_Processed_walk_00: 9195004851628708915
+      multi_DemonSpawn_Processed_walk_01: 7095447288654760717
+      multi_DemonSpawn_Processed_walk_02: 8183711137112067631
+      multi_DemonSpawn_Processed_walk_03: 1304438294311652374
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

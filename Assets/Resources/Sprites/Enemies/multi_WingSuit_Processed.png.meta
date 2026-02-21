@@ -1,0 +1,622 @@
+fileFormatVersion: 2
+guid: 9b4fd50155b5b5b478d099a534a87624
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4071400805853742531
+    second: multi_WingSuit_Processed_0
+  - first:
+      213: -1268189591104666044
+    second: multi_WingSuit_Processed_1
+  - first:
+      213: -7893374472771130820
+    second: multi_WingSuit_Processed_2
+  - first:
+      213: 1122934830661833736
+    second: multi_WingSuit_Processed_3
+  - first:
+      213: -7809718065518206681
+    second: multi_WingSuit_Processed_4
+  - first:
+      213: 8965305233884261768
+    second: multi_WingSuit_Processed_5
+  - first:
+      213: 3725373900213991702
+    second: multi_WingSuit_Processed_6
+  - first:
+      213: -537524334956371064
+    second: multi_WingSuit_Processed_7
+  - first:
+      213: -4814314726814028775
+    second: multi_WingSuit_Processed_8
+  - first:
+      213: 8593221417556861721
+    second: multi_WingSuit_Processed_9
+  - first:
+      213: 5597066093102868276
+    second: multi_WingSuit_Processed_10
+  - first:
+      213: -4094168992014925295
+    second: multi_WingSuit_Processed_11
+  - first:
+      213: 382229206528252643
+    second: multi_WingSuit_Processed_12
+  - first:
+      213: -4010791382109538935
+    second: multi_WingSuit_Processed_13
+  - first:
+      213: 1070298922457131654
+    second: multi_WingSuit_Processed_14
+  - first:
+      213: -9029567389465761115
+    second: multi_WingSuit_Processed_15
+  - first:
+      213: -561357784616074737
+    second: multi_WingSuit_Processed_16
+  - first:
+      213: -1777251214445352028
+    second: multi_WingSuit_Processed_17
+  - first:
+      213: 6373485475702064688
+    second: multi_WingSuit_Processed_18
+  - first:
+      213: -5478792162192926244
+    second: multi_WingSuit_Processed_idle_00
+  - first:
+      213: -7916941394031768604
+    second: multi_WingSuit_Processed_idle_01
+  - first:
+      213: -7599709329110075120
+    second: multi_WingSuit_Processed_idle_02
+  - first:
+      213: 109968964880486833
+    second: multi_WingSuit_Processed_idle_03
+  - first:
+      213: 9205535382136196901
+    second: multi_WingSuit_Processed_walk_00
+  - first:
+      213: -6212447262960586534
+    second: multi_WingSuit_Processed_walk_01
+  - first:
+      213: 5750514306062556548
+    second: multi_WingSuit_Processed_walk_02
+  - first:
+      213: -1951043207633941320
+    second: multi_WingSuit_Processed_walk_03
+  - first:
+      213: -2231652159360967338
+    second: multi_WingSuit_Processed_attack_00
+  - first:
+      213: 5735661693124343531
+    second: multi_WingSuit_Processed_attack_01
+  - first:
+      213: -3107337045253254039
+    second: multi_WingSuit_Processed_attack_02
+  - first:
+      213: 3175309473218274477
+    second: multi_WingSuit_Processed_attack_03
+  - first:
+      213: 9184492488202239588
+    second: multi_WingSuit_Processed_die_00
+  - first:
+      213: -2473988834315255707
+    second: multi_WingSuit_Processed_die_01
+  - first:
+      213: -3691134865842953769
+    second: multi_WingSuit_Processed_die_02
+  - first:
+      213: -2420246017125531422
+    second: multi_WingSuit_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 504
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd9db4e6e8b67f3b0800000000000000
+      internalID: -5478792162192926244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 504
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eb86257fbf512290800000000000000
+      internalID: -7916941394031768604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 504
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 019fb2251a8688690800000000000000
+      internalID: -7599709329110075120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 504
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b1d400e030b68100800000000000000
+      internalID: 109968964880486833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 336
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52f848338a1a0cf70800000000000000
+      internalID: 9205535382136196901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 336
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad0f2691124f8c9a0800000000000000
+      internalID: -6212447262960586534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 336
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48d19a83b4eedcf40800000000000000
+      internalID: 5750514306062556548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 336
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bc4a8b2a808ce4e0800000000000000
+      internalID: -1951043207633941320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 168
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65d5e035f249701e0800000000000000
+      internalID: -2231652159360967338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 168
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be6fd7acbe9299f40800000000000000
+      internalID: 5735661693124343531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 168
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9649444bb6580e4d0800000000000000
+      internalID: -3107337045253254039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 168
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da4ab137427f01c20800000000000000
+      internalID: 3175309473218274477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46eb989a14fd57f70800000000000000
+      internalID: 9184492488202239588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 0
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5604b505340aaadd0800000000000000
+      internalID: -2473988834315255707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 0
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d12f5f556476ccc0800000000000000
+      internalID: -3691134865842953769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_WingSuit_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 0
+        width: 232
+        height: 168
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e0cd28021f896ed0800000000000000
+      internalID: -2420246017125531422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_WingSuit_Processed_0: 4071400805853742531
+      multi_WingSuit_Processed_1: -1268189591104666044
+      multi_WingSuit_Processed_10: 5597066093102868276
+      multi_WingSuit_Processed_11: -4094168992014925295
+      multi_WingSuit_Processed_12: 382229206528252643
+      multi_WingSuit_Processed_13: -4010791382109538935
+      multi_WingSuit_Processed_14: 1070298922457131654
+      multi_WingSuit_Processed_15: -9029567389465761115
+      multi_WingSuit_Processed_16: -561357784616074737
+      multi_WingSuit_Processed_17: -1777251214445352028
+      multi_WingSuit_Processed_18: 6373485475702064688
+      multi_WingSuit_Processed_2: -7893374472771130820
+      multi_WingSuit_Processed_3: 1122934830661833736
+      multi_WingSuit_Processed_4: -7809718065518206681
+      multi_WingSuit_Processed_5: 8965305233884261768
+      multi_WingSuit_Processed_6: 3725373900213991702
+      multi_WingSuit_Processed_7: -537524334956371064
+      multi_WingSuit_Processed_8: -4814314726814028775
+      multi_WingSuit_Processed_9: 8593221417556861721
+      multi_WingSuit_Processed_attack_00: -2231652159360967338
+      multi_WingSuit_Processed_attack_01: 5735661693124343531
+      multi_WingSuit_Processed_attack_02: -3107337045253254039
+      multi_WingSuit_Processed_attack_03: 3175309473218274477
+      multi_WingSuit_Processed_die_00: 9184492488202239588
+      multi_WingSuit_Processed_die_01: -2473988834315255707
+      multi_WingSuit_Processed_die_02: -3691134865842953769
+      multi_WingSuit_Processed_die_03: -2420246017125531422
+      multi_WingSuit_Processed_idle_00: -5478792162192926244
+      multi_WingSuit_Processed_idle_01: -7916941394031768604
+      multi_WingSuit_Processed_idle_02: -7599709329110075120
+      multi_WingSuit_Processed_idle_03: 109968964880486833
+      multi_WingSuit_Processed_walk_00: 9205535382136196901
+      multi_WingSuit_Processed_walk_01: -6212447262960586534
+      multi_WingSuit_Processed_walk_02: 5750514306062556548
+      multi_WingSuit_Processed_walk_03: -1951043207633941320
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

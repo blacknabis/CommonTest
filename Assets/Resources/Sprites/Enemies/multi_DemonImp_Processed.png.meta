@@ -1,0 +1,866 @@
+fileFormatVersion: 2
+guid: 9ffc1a67187bd384cb5fa306034714c1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6461256818133504397
+    second: multi_DemonImp_Processed_0
+  - first:
+      213: -8059068126853079709
+    second: multi_DemonImp_Processed_1
+  - first:
+      213: 8582041835337734134
+    second: multi_DemonImp_Processed_2
+  - first:
+      213: -9071819653886922064
+    second: multi_DemonImp_Processed_3
+  - first:
+      213: -8789341536990972011
+    second: multi_DemonImp_Processed_4
+  - first:
+      213: -4894378593965048346
+    second: multi_DemonImp_Processed_5
+  - first:
+      213: 1089465560792849197
+    second: multi_DemonImp_Processed_6
+  - first:
+      213: 79855179611445684
+    second: multi_DemonImp_Processed_7
+  - first:
+      213: -244695294841254396
+    second: multi_DemonImp_Processed_8
+  - first:
+      213: 7014796266765277426
+    second: multi_DemonImp_Processed_9
+  - first:
+      213: -4826293294463638674
+    second: multi_DemonImp_Processed_10
+  - first:
+      213: 6577023320177801549
+    second: multi_DemonImp_Processed_11
+  - first:
+      213: -8402626043990072707
+    second: multi_DemonImp_Processed_12
+  - first:
+      213: 5884301185754882893
+    second: multi_DemonImp_Processed_13
+  - first:
+      213: 2646993158221061878
+    second: multi_DemonImp_Processed_14
+  - first:
+      213: 2547354513259604674
+    second: multi_DemonImp_Processed_15
+  - first:
+      213: -5994655547871355427
+    second: multi_DemonImp_Processed_16
+  - first:
+      213: -3112891659795459247
+    second: multi_DemonImp_Processed_17
+  - first:
+      213: -7027099687719565437
+    second: multi_DemonImp_Processed_18
+  - first:
+      213: 4995887753596359494
+    second: multi_DemonImp_Processed_19
+  - first:
+      213: 6586322804155957148
+    second: multi_DemonImp_Processed_20
+  - first:
+      213: -8259261766825227696
+    second: multi_DemonImp_Processed_21
+  - first:
+      213: 2380314715499933490
+    second: multi_DemonImp_Processed_22
+  - first:
+      213: 1237989059242006674
+    second: multi_DemonImp_Processed_23
+  - first:
+      213: -1824443741763757671
+    second: multi_DemonImp_Processed_24
+  - first:
+      213: -6567532115627439596
+    second: multi_DemonImp_Processed_25
+  - first:
+      213: -3754195671009316805
+    second: multi_DemonImp_Processed_26
+  - first:
+      213: 3999308396348259167
+    second: multi_DemonImp_Processed_27
+  - first:
+      213: -3161633590904845010
+    second: multi_DemonImp_Processed_idle_00
+  - first:
+      213: 5976697289978619178
+    second: multi_DemonImp_Processed_idle_01
+  - first:
+      213: -7642693355578215375
+    second: multi_DemonImp_Processed_idle_02
+  - first:
+      213: 4796649539406290134
+    second: multi_DemonImp_Processed_idle_03
+  - first:
+      213: 148705330934210171
+    second: multi_DemonImp_Processed_walk_00
+  - first:
+      213: -6826135012475920369
+    second: multi_DemonImp_Processed_walk_01
+  - first:
+      213: 8030958105822442798
+    second: multi_DemonImp_Processed_walk_02
+  - first:
+      213: 3629506917889284013
+    second: multi_DemonImp_Processed_walk_03
+  - first:
+      213: 4224270884115611382
+    second: multi_DemonImp_Processed_attack_00
+  - first:
+      213: -1554273562366924839
+    second: multi_DemonImp_Processed_attack_01
+  - first:
+      213: -4894589073743690834
+    second: multi_DemonImp_Processed_attack_02
+  - first:
+      213: -6912188897379606019
+    second: multi_DemonImp_Processed_attack_03
+  - first:
+      213: 6350158523297152484
+    second: multi_DemonImp_Processed_die_00
+  - first:
+      213: 6182491583189039814
+    second: multi_DemonImp_Processed_die_01
+  - first:
+      213: 7446724502257765167
+    second: multi_DemonImp_Processed_die_02
+  - first:
+      213: -7837103576333658368
+    second: multi_DemonImp_Processed_die_03
+  - first:
+      213: 893603349529459892
+    second: multi_DemonImp_Processed_die_04
+  - first:
+      213: -7095273667705026218
+    second: multi_DemonImp_Processed_die_05
+  - first:
+      213: -2890353955570991188
+    second: multi_DemonImp_Processed_die_06
+  - first:
+      213: 3569143719076774595
+    second: multi_DemonImp_Processed_die_07
+  - first:
+      213: 3169553085322957331
+    second: multi_DemonImp_Processed_die_08
+  - first:
+      213: -2581925534592962259
+    second: multi_DemonImp_Processed_die_09
+  - first:
+      213: 7158994972326058579
+    second: multi_DemonImp_Processed_die_10
+  - first:
+      213: -3424393864610834756
+    second: multi_DemonImp_Processed_die_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 600
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2d8c28000f9f14d0800000000000000
+      internalID: -3161633590904845010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 600
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a252733f48e71f250800000000000000
+      internalID: 5976697289978619178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 600
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 134b585c2e2bfe590800000000000000
+      internalID: -7642693355578215375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 600
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dc5a54a75f119240800000000000000
+      internalID: 4796649539406290134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 600
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7e5a8ae5be401200800000000000000
+      internalID: 148705330934210171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 450
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0024806f52b441a0800000000000000
+      internalID: -6826135012475920369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 450
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e25379fe8d1b37f60800000000000000
+      internalID: 8030958105822442798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 450
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da71d96df499e5230800000000000000
+      internalID: 3629506917889284013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 450
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fe7cbaecff9f9a30800000000000000
+      internalID: 4224270884115611382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 450
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d7a65f0e6c1e6ae0800000000000000
+      internalID: -1554273562366924839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 300
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea3cff98b2de21cb0800000000000000
+      internalID: -4894589073743690834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 300
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df12a47f1d8f210a0800000000000000
+      internalID: -6912188897379606019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 300
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4edbb88488b402850800000000000000
+      internalID: 6350158523297152484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 300
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ca33d2b65f9cc550800000000000000
+      internalID: 6182491583189039814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 300
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2b8549fa74185760800000000000000
+      internalID: 7446724502257765167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 150
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00750b0f1d30d3390800000000000000
+      internalID: -7837103576333658368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_04
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 150
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bc7dca0387b66c00800000000000000
+      internalID: 893603349529459892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_05
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 150
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 659424c0136888d90800000000000000
+      internalID: -7095273667705026218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_06
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 150
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cafbb03246663e7d0800000000000000
+      internalID: -2890353955570991188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_07
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 150
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c243e76d45288130800000000000000
+      internalID: 3569143719076774595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_08
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3121b63fcb38cfb20800000000000000
+      internalID: 3169553085322957331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_09
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d21731ae7682b2cd0800000000000000
+      internalID: -2581925534592962259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_10
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35a5d425ffbd95360800000000000000
+      internalID: 7158994972326058579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DemonImp_Processed_die_11
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 0
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb618d06ceb1a70d0800000000000000
+      internalID: -3424393864610834756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_DemonImp_Processed_0: 6461256818133504397
+      multi_DemonImp_Processed_1: -8059068126853079709
+      multi_DemonImp_Processed_10: -4826293294463638674
+      multi_DemonImp_Processed_11: 6577023320177801549
+      multi_DemonImp_Processed_12: -8402626043990072707
+      multi_DemonImp_Processed_13: 5884301185754882893
+      multi_DemonImp_Processed_14: 2646993158221061878
+      multi_DemonImp_Processed_15: 2547354513259604674
+      multi_DemonImp_Processed_16: -5994655547871355427
+      multi_DemonImp_Processed_17: -3112891659795459247
+      multi_DemonImp_Processed_18: -7027099687719565437
+      multi_DemonImp_Processed_19: 4995887753596359494
+      multi_DemonImp_Processed_2: 8582041835337734134
+      multi_DemonImp_Processed_20: 6586322804155957148
+      multi_DemonImp_Processed_21: -8259261766825227696
+      multi_DemonImp_Processed_22: 2380314715499933490
+      multi_DemonImp_Processed_23: 1237989059242006674
+      multi_DemonImp_Processed_24: -1824443741763757671
+      multi_DemonImp_Processed_25: -6567532115627439596
+      multi_DemonImp_Processed_26: -3754195671009316805
+      multi_DemonImp_Processed_27: 3999308396348259167
+      multi_DemonImp_Processed_3: -9071819653886922064
+      multi_DemonImp_Processed_4: -8789341536990972011
+      multi_DemonImp_Processed_5: -4894378593965048346
+      multi_DemonImp_Processed_6: 1089465560792849197
+      multi_DemonImp_Processed_7: 79855179611445684
+      multi_DemonImp_Processed_8: -244695294841254396
+      multi_DemonImp_Processed_9: 7014796266765277426
+      multi_DemonImp_Processed_attack_00: 4224270884115611382
+      multi_DemonImp_Processed_attack_01: -1554273562366924839
+      multi_DemonImp_Processed_attack_02: -4894589073743690834
+      multi_DemonImp_Processed_attack_03: -6912188897379606019
+      multi_DemonImp_Processed_die_00: 6350158523297152484
+      multi_DemonImp_Processed_die_01: 6182491583189039814
+      multi_DemonImp_Processed_die_02: 7446724502257765167
+      multi_DemonImp_Processed_die_03: -7837103576333658368
+      multi_DemonImp_Processed_die_04: 893603349529459892
+      multi_DemonImp_Processed_die_05: -7095273667705026218
+      multi_DemonImp_Processed_die_06: -2890353955570991188
+      multi_DemonImp_Processed_die_07: 3569143719076774595
+      multi_DemonImp_Processed_die_08: 3169553085322957331
+      multi_DemonImp_Processed_die_09: -2581925534592962259
+      multi_DemonImp_Processed_die_10: 7158994972326058579
+      multi_DemonImp_Processed_die_11: -3424393864610834756
+      multi_DemonImp_Processed_idle_00: -3161633590904845010
+      multi_DemonImp_Processed_idle_01: 5976697289978619178
+      multi_DemonImp_Processed_idle_02: -7642693355578215375
+      multi_DemonImp_Processed_idle_03: 4796649539406290134
+      multi_DemonImp_Processed_walk_00: 148705330934210171
+      multi_DemonImp_Processed_walk_01: -6826135012475920369
+      multi_DemonImp_Processed_walk_02: 8030958105822442798
+      multi_DemonImp_Processed_walk_03: 3629506917889284013
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: Veznan
   DisplayName: Veznan
   EnemyType: 2
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/Veznan
+  RuntimeAnimatorControllerPath: Animations/Enemies/Veznan/Veznan
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 1
   MaxHp: 2000

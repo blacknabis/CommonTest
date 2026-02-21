@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: Jetpack
   DisplayName: Jetpack
   EnemyType: 1
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/Jetpack
+  RuntimeAnimatorControllerPath: Animations/Enemies/Jetpack/Jetpack
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.64
   MaxHp: 250

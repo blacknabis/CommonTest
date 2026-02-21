@@ -1,0 +1,650 @@
+fileFormatVersion: 2
+guid: 1978f5dd2adc79c43acdd1ea0028d05c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2395437937996541992
+    second: multi_Shaman_Processed_0
+  - first:
+      213: -1355840016025895760
+    second: multi_Shaman_Processed_1
+  - first:
+      213: -7040222680115627196
+    second: multi_Shaman_Processed_2
+  - first:
+      213: 1987568223170097963
+    second: multi_Shaman_Processed_3
+  - first:
+      213: -768203999979067924
+    second: multi_Shaman_Processed_4
+  - first:
+      213: -1442365476284791592
+    second: multi_Shaman_Processed_5
+  - first:
+      213: 4299209697649591084
+    second: multi_Shaman_Processed_6
+  - first:
+      213: -6469827607434676771
+    second: multi_Shaman_Processed_7
+  - first:
+      213: 6977859989827282400
+    second: multi_Shaman_Processed_8
+  - first:
+      213: 5375987877209717609
+    second: multi_Shaman_Processed_9
+  - first:
+      213: -4396527202035927959
+    second: multi_Shaman_Processed_10
+  - first:
+      213: 501844928924324355
+    second: multi_Shaman_Processed_11
+  - first:
+      213: 3379690304881303651
+    second: multi_Shaman_Processed_12
+  - first:
+      213: 5140143922127953429
+    second: multi_Shaman_Processed_13
+  - first:
+      213: -3613295672640799362
+    second: multi_Shaman_Processed_14
+  - first:
+      213: -6229512115383122968
+    second: multi_Shaman_Processed_15
+  - first:
+      213: -3446973267990001197
+    second: multi_Shaman_Processed_16
+  - first:
+      213: -8191874665253129412
+    second: multi_Shaman_Processed_17
+  - first:
+      213: 6059883940937167607
+    second: multi_Shaman_Processed_18
+  - first:
+      213: 8784518426593380096
+    second: multi_Shaman_Processed_19
+  - first:
+      213: -5075073288821772210
+    second: multi_Shaman_Processed_20
+  - first:
+      213: 7161811496169699161
+    second: multi_Shaman_Processed_21
+  - first:
+      213: -2635084234271173511
+    second: multi_Shaman_Processed_22
+  - first:
+      213: -5128055130497682160
+    second: multi_Shaman_Processed_23
+  - first:
+      213: 895141134361126330
+    second: multi_Shaman_Processed_24
+  - first:
+      213: -6476105174208999763
+    second: multi_Shaman_Processed_25
+  - first:
+      213: 8602526564333687960
+    second: multi_Shaman_Processed_idle_00
+  - first:
+      213: 5365379542270417786
+    second: multi_Shaman_Processed_idle_01
+  - first:
+      213: 9011332347611470428
+    second: multi_Shaman_Processed_idle_02
+  - first:
+      213: -5994273287812820260
+    second: multi_Shaman_Processed_idle_03
+  - first:
+      213: -2921724127278366746
+    second: multi_Shaman_Processed_walk_00
+  - first:
+      213: -8833677741127833124
+    second: multi_Shaman_Processed_walk_01
+  - first:
+      213: 5431449131605601810
+    second: multi_Shaman_Processed_walk_02
+  - first:
+      213: 1220400300088764235
+    second: multi_Shaman_Processed_walk_03
+  - first:
+      213: 508721317247752824
+    second: multi_Shaman_Processed_attack_00
+  - first:
+      213: 7319361444782034927
+    second: multi_Shaman_Processed_attack_01
+  - first:
+      213: -8678667091498006885
+    second: multi_Shaman_Processed_attack_02
+  - first:
+      213: -8598586261994473333
+    second: multi_Shaman_Processed_attack_03
+  - first:
+      213: -3304174144787123369
+    second: multi_Shaman_Processed_die_00
+  - first:
+      213: 3797343915063619373
+    second: multi_Shaman_Processed_die_01
+  - first:
+      213: 1083589611588146523
+    second: multi_Shaman_Processed_die_02
+  - first:
+      213: 3720320435981692095
+    second: multi_Shaman_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 519
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89498f50550526770800000000000000
+      internalID: 8602526564333687960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 519
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7b1d264448a57a40800000000000000
+      internalID: 5365379542270417786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 519
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5a5e5ca60fae0d70800000000000000
+      internalID: 9011332347611470428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 519
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd2dd49243010dca0800000000000000
+      internalID: -5994273287812820260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 346
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ef72edd263f377d0800000000000000
+      internalID: -2921724127278366746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 346
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd9ecc3b5e8786580800000000000000
+      internalID: -8833677741127833124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 346
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21ea4f84532606b40800000000000000
+      internalID: 5431449131605601810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 346
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4722926b9bbfe010800000000000000
+      internalID: 1220400300088764235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 173
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87a983cb7575f0700800000000000000
+      internalID: 508721317247752824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 173
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fef4ce25478939560800000000000000
+      internalID: 7319361444782034927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 173
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b968367034e2f8780800000000000000
+      internalID: -8678667091498006885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 173
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b88f34b1a5faba880800000000000000
+      internalID: -8598586261994473333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 753feef1f173522d0800000000000000
+      internalID: -3304174144787123369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 178
+        y: 0
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2fab5beb20e2b430800000000000000
+      internalID: 3797343915063619373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 0
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b55d309b20fa90f00800000000000000
+      internalID: 1083589611588146523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Shaman_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 0
+        width: 178
+        height: 173
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbca055b9bb31a330800000000000000
+      internalID: 3720320435981692095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Shaman_Processed_0: -2395437937996541992
+      multi_Shaman_Processed_1: -1355840016025895760
+      multi_Shaman_Processed_10: -4396527202035927959
+      multi_Shaman_Processed_11: 501844928924324355
+      multi_Shaman_Processed_12: 3379690304881303651
+      multi_Shaman_Processed_13: 5140143922127953429
+      multi_Shaman_Processed_14: -3613295672640799362
+      multi_Shaman_Processed_15: -6229512115383122968
+      multi_Shaman_Processed_16: -3446973267990001197
+      multi_Shaman_Processed_17: -8191874665253129412
+      multi_Shaman_Processed_18: 6059883940937167607
+      multi_Shaman_Processed_19: 8784518426593380096
+      multi_Shaman_Processed_2: -7040222680115627196
+      multi_Shaman_Processed_20: -5075073288821772210
+      multi_Shaman_Processed_21: 7161811496169699161
+      multi_Shaman_Processed_22: -2635084234271173511
+      multi_Shaman_Processed_23: -5128055130497682160
+      multi_Shaman_Processed_24: 895141134361126330
+      multi_Shaman_Processed_25: -6476105174208999763
+      multi_Shaman_Processed_3: 1987568223170097963
+      multi_Shaman_Processed_4: -768203999979067924
+      multi_Shaman_Processed_5: -1442365476284791592
+      multi_Shaman_Processed_6: 4299209697649591084
+      multi_Shaman_Processed_7: -6469827607434676771
+      multi_Shaman_Processed_8: 6977859989827282400
+      multi_Shaman_Processed_9: 5375987877209717609
+      multi_Shaman_Processed_attack_00: 508721317247752824
+      multi_Shaman_Processed_attack_01: 7319361444782034927
+      multi_Shaman_Processed_attack_02: -8678667091498006885
+      multi_Shaman_Processed_attack_03: -8598586261994473333
+      multi_Shaman_Processed_die_00: -3304174144787123369
+      multi_Shaman_Processed_die_01: 3797343915063619373
+      multi_Shaman_Processed_die_02: 1083589611588146523
+      multi_Shaman_Processed_die_03: 3720320435981692095
+      multi_Shaman_Processed_idle_00: 8602526564333687960
+      multi_Shaman_Processed_idle_01: 5365379542270417786
+      multi_Shaman_Processed_idle_02: 9011332347611470428
+      multi_Shaman_Processed_idle_03: -5994273287812820260
+      multi_Shaman_Processed_walk_00: -2921724127278366746
+      multi_Shaman_Processed_walk_01: -8833677741127833124
+      multi_Shaman_Processed_walk_02: 5431449131605601810
+      multi_Shaman_Processed_walk_03: 1220400300088764235
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

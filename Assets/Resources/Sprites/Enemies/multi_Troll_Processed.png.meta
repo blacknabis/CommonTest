@@ -1,0 +1,648 @@
+fileFormatVersion: 2
+guid: 7e6c78d437535c0468648a42b496021a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3109177344256779922
+    second: multi_Troll_Processed_0
+  - first:
+      213: -3441278317485105503
+    second: multi_Troll_Processed_1
+  - first:
+      213: 4968266255459696046
+    second: multi_Troll_Processed_2
+  - first:
+      213: -6195633072330943929
+    second: multi_Troll_Processed_3
+  - first:
+      213: 7085213340493970175
+    second: multi_Troll_Processed_4
+  - first:
+      213: 2757200453856260319
+    second: multi_Troll_Processed_5
+  - first:
+      213: 7386876786970832472
+    second: multi_Troll_Processed_6
+  - first:
+      213: 1088226318331510471
+    second: multi_Troll_Processed_7
+  - first:
+      213: 3340253316505663569
+    second: multi_Troll_Processed_8
+  - first:
+      213: 2863954465800497476
+    second: multi_Troll_Processed_9
+  - first:
+      213: -2057823741875632952
+    second: multi_Troll_Processed_10
+  - first:
+      213: -5608543495214633760
+    second: multi_Troll_Processed_11
+  - first:
+      213: -7351846061488623735
+    second: multi_Troll_Processed_12
+  - first:
+      213: -7045719681055329836
+    second: multi_Troll_Processed_13
+  - first:
+      213: 655544741596513650
+    second: multi_Troll_Processed_14
+  - first:
+      213: 6580815086828027252
+    second: multi_Troll_Processed_15
+  - first:
+      213: 7003571542845411067
+    second: multi_Troll_Processed_16
+  - first:
+      213: -1055345647251910024
+    second: multi_Troll_Processed_17
+  - first:
+      213: 5775776678109058937
+    second: multi_Troll_Processed_18
+  - first:
+      213: 5059208065141448974
+    second: multi_Troll_Processed_idle_00
+  - first:
+      213: 2411088375827701464
+    second: multi_Troll_Processed_idle_01
+  - first:
+      213: 4015782733032768120
+    second: multi_Troll_Processed_idle_02
+  - first:
+      213: -2305498018515251133
+    second: multi_Troll_Processed_idle_03
+  - first:
+      213: -6016501889366103486
+    second: multi_Troll_Processed_walk_00
+  - first:
+      213: 2156005266542266925
+    second: multi_Troll_Processed_walk_01
+  - first:
+      213: 6767743056667230256
+    second: multi_Troll_Processed_walk_02
+  - first:
+      213: 7545904181742809303
+    second: multi_Troll_Processed_walk_03
+  - first:
+      213: -3071676251190364778
+    second: multi_Troll_Processed_attack_00
+  - first:
+      213: -1892808292324911798
+    second: multi_Troll_Processed_attack_01
+  - first:
+      213: -4318851180031571741
+    second: multi_Troll_Processed_attack_02
+  - first:
+      213: 4692570583137182400
+    second: multi_Troll_Processed_attack_03
+  - first:
+      213: -9206505394481581102
+    second: multi_Troll_Processed_attack_04
+  - first:
+      213: 7741517001412555204
+    second: multi_Troll_Processed_die_00
+  - first:
+      213: -7991687319545169258
+    second: multi_Troll_Processed_die_01
+  - first:
+      213: 2371381180329181648
+    second: multi_Troll_Processed_die_02
+  - first:
+      213: 9041166232400264351
+    second: multi_Troll_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Troll_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 537
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e012c8f2eeae53640800000000000000
+      internalID: 5059208065141448974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 537
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8de98437a18e57120800000000000000
+      internalID: 2411088375827701464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 537
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 872c0918e1deab730800000000000000
+      internalID: 4015782733032768120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 537
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 340180864c93100e0800000000000000
+      internalID: -2305498018515251133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 537
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24aeddd8867118ca0800000000000000
+      internalID: -6016501889366103486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 358
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2a8f1eed5babed10800000000000000
+      internalID: 2156005266542266925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 358
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03044c7f37adbed50800000000000000
+      internalID: 6767743056667230256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 358
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d03ae59fdf68b860800000000000000
+      internalID: 7545904181742809303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 358
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6957bc659b63f55d0800000000000000
+      internalID: -3071676251190364778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 358
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a455f0cf2e46bb5e0800000000000000
+      internalID: -1892808292324911798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 179
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e80178ebbb5014c0800000000000000
+      internalID: -4318851180031571741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 179
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c2e653451c5f1140800000000000000
+      internalID: 4692570583137182400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_attack_04
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 179
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d335333f1ceb3080800000000000000
+      internalID: -9206505394481581102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 179
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c1b7db42b46f6b60800000000000000
+      internalID: 7741517001412555204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 948
+        y: 179
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69a348289b2d71190800000000000000
+      internalID: -7991687319545169258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d141909e96d8e020800000000000000
+      internalID: 2371381180329181648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Troll_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 0
+        width: 237
+        height: 179
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c797549cca87d70800000000000000
+      internalID: 9041166232400264351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Troll_Processed_0: 3109177344256779922
+      multi_Troll_Processed_1: -3441278317485105503
+      multi_Troll_Processed_10: -2057823741875632952
+      multi_Troll_Processed_11: -5608543495214633760
+      multi_Troll_Processed_12: -7351846061488623735
+      multi_Troll_Processed_13: -7045719681055329836
+      multi_Troll_Processed_14: 655544741596513650
+      multi_Troll_Processed_15: 6580815086828027252
+      multi_Troll_Processed_16: 7003571542845411067
+      multi_Troll_Processed_17: -1055345647251910024
+      multi_Troll_Processed_18: 5775776678109058937
+      multi_Troll_Processed_2: 4968266255459696046
+      multi_Troll_Processed_3: -6195633072330943929
+      multi_Troll_Processed_4: 7085213340493970175
+      multi_Troll_Processed_5: 2757200453856260319
+      multi_Troll_Processed_6: 7386876786970832472
+      multi_Troll_Processed_7: 1088226318331510471
+      multi_Troll_Processed_8: 3340253316505663569
+      multi_Troll_Processed_9: 2863954465800497476
+      multi_Troll_Processed_attack_00: -3071676251190364778
+      multi_Troll_Processed_attack_01: -1892808292324911798
+      multi_Troll_Processed_attack_02: -4318851180031571741
+      multi_Troll_Processed_attack_03: 4692570583137182400
+      multi_Troll_Processed_attack_04: -9206505394481581102
+      multi_Troll_Processed_die_00: 7741517001412555204
+      multi_Troll_Processed_die_01: -7991687319545169258
+      multi_Troll_Processed_die_02: 2371381180329181648
+      multi_Troll_Processed_die_03: 9041166232400264351
+      multi_Troll_Processed_idle_00: 5059208065141448974
+      multi_Troll_Processed_idle_01: 2411088375827701464
+      multi_Troll_Processed_idle_02: 4015782733032768120
+      multi_Troll_Processed_idle_03: -2305498018515251133
+      multi_Troll_Processed_walk_00: -6016501889366103486
+      multi_Troll_Processed_walk_01: 2156005266542266925
+      multi_Troll_Processed_walk_02: 6767743056667230256
+      multi_Troll_Processed_walk_03: 7545904181742809303
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

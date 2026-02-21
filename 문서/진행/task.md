@@ -28,6 +28,9 @@
 ### Phase Close. 스마트슬라이스 애니메이션 연동 마감
 - [x] 코드/검증/문서 정리 완료
 - [x] 마감 문서 이관 완료 (`문서/완료/2026_02_21`)
+- [x] Enemy Animator 전환 완료 (`RuntimeAnimatorControllerPath` 기준)
+- [x] 적 애니메이션 전부 적용 완료 (사용자 검증)
+- [x] Config 리소스 경로 표준화 및 물리 이동 완료 (`Assets/Resources/Kingdom/Configs/*`)
 
 ## 현재 메인 트랙: 적 유닛 구현 (Enemy Implementation)
 > 기준 문서: `문서/분석/적_유닛_상세_분석.md`

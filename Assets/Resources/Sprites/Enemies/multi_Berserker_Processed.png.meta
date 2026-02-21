@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: a26574c84e32c504d83c21e65d793061
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2684791107971829740
+    second: multi_Berserker_Processed_0
+  - first:
+      213: -1214515121586330762
+    second: multi_Berserker_Processed_1
+  - first:
+      213: -7148472799934129365
+    second: multi_Berserker_Processed_2
+  - first:
+      213: 3861783144280844901
+    second: multi_Berserker_Processed_3
+  - first:
+      213: 2333003553187555585
+    second: multi_Berserker_Processed_4
+  - first:
+      213: 6033740996912029254
+    second: multi_Berserker_Processed_5
+  - first:
+      213: -7089253853544279144
+    second: multi_Berserker_Processed_6
+  - first:
+      213: 5152827033276117090
+    second: multi_Berserker_Processed_7
+  - first:
+      213: -8441089888947653290
+    second: multi_Berserker_Processed_8
+  - first:
+      213: -2156482849031872370
+    second: multi_Berserker_Processed_9
+  - first:
+      213: 8729313513922609648
+    second: multi_Berserker_Processed_10
+  - first:
+      213: 3141980993935514607
+    second: multi_Berserker_Processed_11
+  - first:
+      213: 2806284487542020748
+    second: multi_Berserker_Processed_12
+  - first:
+      213: 878479579458939217
+    second: multi_Berserker_Processed_13
+  - first:
+      213: 368845488727905495
+    second: multi_Berserker_Processed_14
+  - first:
+      213: 7207874993956387197
+    second: multi_Berserker_Processed_15
+  - first:
+      213: 2152876220909936890
+    second: multi_Berserker_Processed_idle_00
+  - first:
+      213: -7908758389496354497
+    second: multi_Berserker_Processed_idle_01
+  - first:
+      213: -2755206647743044089
+    second: multi_Berserker_Processed_idle_02
+  - first:
+      213: -2918531441319161085
+    second: multi_Berserker_Processed_idle_03
+  - first:
+      213: 6882947946931120612
+    second: multi_Berserker_Processed_walk_00
+  - first:
+      213: -8925463841563690022
+    second: multi_Berserker_Processed_walk_01
+  - first:
+      213: -5502384924102180623
+    second: multi_Berserker_Processed_walk_02
+  - first:
+      213: -6823424467861212639
+    second: multi_Berserker_Processed_walk_03
+  - first:
+      213: -331949688893531512
+    second: multi_Berserker_Processed_attack_00
+  - first:
+      213: 885454194204802227
+    second: multi_Berserker_Processed_attack_01
+  - first:
+      213: 6800187538770407417
+    second: multi_Berserker_Processed_attack_02
+  - first:
+      213: -2081409471150621577
+    second: multi_Berserker_Processed_attack_03
+  - first:
+      213: 887961372229718053
+    second: multi_Berserker_Processed_die_00
+  - first:
+      213: -43074368155677086
+    second: multi_Berserker_Processed_die_01
+  - first:
+      213: -5532292769373583325
+    second: multi_Berserker_Processed_die_02
+  - first:
+      213: 4644019363375338271
+    second: multi_Berserker_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 564
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af0e8b8348d80ed10800000000000000
+      internalID: 2152876220909936890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 564
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f39edaba5227e3290800000000000000
+      internalID: -7908758389496354497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 564
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7062b7ec62a83c9d0800000000000000
+      internalID: -2755206647743044089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 564
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 303dc5efd1b4f77d0800000000000000
+      internalID: -2918531441319161085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 376
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e96558b0b4258f50800000000000000
+      internalID: 6882947946931120612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 376
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adbb00cdce1622480800000000000000
+      internalID: -8925463841563690022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 376
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f0cc6d701a93a3b0800000000000000
+      internalID: -5502384924102180623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 376
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1227c6939935e41a0800000000000000
+      internalID: -6823424467861212639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 188
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88a1336448da46bf0800000000000000
+      internalID: -331949688893531512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 188
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bcf476f5e3c94c00800000000000000
+      internalID: 885454194204802227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 188
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ffa27e998e1f5e50800000000000000
+      internalID: 6800187538770407417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 188
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77cfeef1d195d13e0800000000000000
+      internalID: -2081409471150621577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5205506d92ca25c00800000000000000
+      internalID: 887961372229718053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 0
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26e08232718f66ff0800000000000000
+      internalID: -43074368155677086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 0
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3288600a9095933b0800000000000000
+      internalID: -5532292769373583325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Berserker_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 0
+        width: 244
+        height: 188
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f13d504810fd27040800000000000000
+      internalID: 4644019363375338271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Berserker_Processed_0: 2684791107971829740
+      multi_Berserker_Processed_1: -1214515121586330762
+      multi_Berserker_Processed_10: 8729313513922609648
+      multi_Berserker_Processed_11: 3141980993935514607
+      multi_Berserker_Processed_12: 2806284487542020748
+      multi_Berserker_Processed_13: 878479579458939217
+      multi_Berserker_Processed_14: 368845488727905495
+      multi_Berserker_Processed_15: 7207874993956387197
+      multi_Berserker_Processed_2: -7148472799934129365
+      multi_Berserker_Processed_3: 3861783144280844901
+      multi_Berserker_Processed_4: 2333003553187555585
+      multi_Berserker_Processed_5: 6033740996912029254
+      multi_Berserker_Processed_6: -7089253853544279144
+      multi_Berserker_Processed_7: 5152827033276117090
+      multi_Berserker_Processed_8: -8441089888947653290
+      multi_Berserker_Processed_9: -2156482849031872370
+      multi_Berserker_Processed_attack_00: -331949688893531512
+      multi_Berserker_Processed_attack_01: 885454194204802227
+      multi_Berserker_Processed_attack_02: 6800187538770407417
+      multi_Berserker_Processed_attack_03: -2081409471150621577
+      multi_Berserker_Processed_die_00: 887961372229718053
+      multi_Berserker_Processed_die_01: -43074368155677086
+      multi_Berserker_Processed_die_02: -5532292769373583325
+      multi_Berserker_Processed_die_03: 4644019363375338271
+      multi_Berserker_Processed_idle_00: 2152876220909936890
+      multi_Berserker_Processed_idle_01: -7908758389496354497
+      multi_Berserker_Processed_idle_02: -2755206647743044089
+      multi_Berserker_Processed_idle_03: -2918531441319161085
+      multi_Berserker_Processed_walk_00: 6882947946931120612
+      multi_Berserker_Processed_walk_01: -8925463841563690022
+      multi_Berserker_Processed_walk_02: -5502384924102180623
+      multi_Berserker_Processed_walk_03: -6823424467861212639
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

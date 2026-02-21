@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: Shaman
   DisplayName: Shaman
   EnemyType: 0
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/Shaman
+  RuntimeAnimatorControllerPath: Animations/Enemies/Shaman/Shaman
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.6
   MaxHp: 170

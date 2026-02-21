@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: Bandit
   DisplayName: Bandit
   EnemyType: 0
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/Bandit
+  RuntimeAnimatorControllerPath: Animations/Enemies/Bandit/Bandit
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.58
   MaxHp: 140

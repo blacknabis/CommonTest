@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: ed146fef87e992c4eafedc112a51cc75
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8223191521991078580
+    second: multi_DarkKnight_Processed_0
+  - first:
+      213: 2296549539141863848
+    second: multi_DarkKnight_Processed_1
+  - first:
+      213: -5747228904126939387
+    second: multi_DarkKnight_Processed_2
+  - first:
+      213: 2956642761626412475
+    second: multi_DarkKnight_Processed_3
+  - first:
+      213: -3400575862087676815
+    second: multi_DarkKnight_Processed_4
+  - first:
+      213: -3306587944948713681
+    second: multi_DarkKnight_Processed_5
+  - first:
+      213: 5856799686414834359
+    second: multi_DarkKnight_Processed_6
+  - first:
+      213: 5041316365885546688
+    second: multi_DarkKnight_Processed_7
+  - first:
+      213: 3713481158531501040
+    second: multi_DarkKnight_Processed_8
+  - first:
+      213: 2011206395766194361
+    second: multi_DarkKnight_Processed_9
+  - first:
+      213: 548187487445199930
+    second: multi_DarkKnight_Processed_10
+  - first:
+      213: 4516027328894519768
+    second: multi_DarkKnight_Processed_11
+  - first:
+      213: 2770621967869540948
+    second: multi_DarkKnight_Processed_12
+  - first:
+      213: -6727645369244915113
+    second: multi_DarkKnight_Processed_13
+  - first:
+      213: -2553949633993580174
+    second: multi_DarkKnight_Processed_14
+  - first:
+      213: -1962161750220798903
+    second: multi_DarkKnight_Processed_15
+  - first:
+      213: 8097188434571739546
+    second: multi_DarkKnight_Processed_idle_00
+  - first:
+      213: -7651192194160630588
+    second: multi_DarkKnight_Processed_idle_01
+  - first:
+      213: 5361794470114274050
+    second: multi_DarkKnight_Processed_idle_02
+  - first:
+      213: -3285748935596233450
+    second: multi_DarkKnight_Processed_idle_03
+  - first:
+      213: -3996090953395429946
+    second: multi_DarkKnight_Processed_walk_00
+  - first:
+      213: 8793971876203300075
+    second: multi_DarkKnight_Processed_walk_01
+  - first:
+      213: -3295192930113769788
+    second: multi_DarkKnight_Processed_walk_02
+  - first:
+      213: 2182826806641756013
+    second: multi_DarkKnight_Processed_walk_03
+  - first:
+      213: -7514855897107842528
+    second: multi_DarkKnight_Processed_attack_00
+  - first:
+      213: 4475822991349354269
+    second: multi_DarkKnight_Processed_attack_01
+  - first:
+      213: 325489192296499292
+    second: multi_DarkKnight_Processed_attack_02
+  - first:
+      213: -6505013523556656997
+    second: multi_DarkKnight_Processed_attack_03
+  - first:
+      213: -3449897846817311356
+    second: multi_DarkKnight_Processed_die_00
+  - first:
+      213: 6614517795517165341
+    second: multi_DarkKnight_Processed_die_01
+  - first:
+      213: -6787323031750256157
+    second: multi_DarkKnight_Processed_die_02
+  - first:
+      213: 1492518467657584466
+    second: multi_DarkKnight_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 540
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91cc020bfdfe5070800000000000000
+      internalID: 8097188434571739546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 540
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c460d6bc3181d590800000000000000
+      internalID: -7651192194160630588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 540
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20ba0dd99abe86a40800000000000000
+      internalID: 5361794470114274050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 540
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61d2ba070cca662d0800000000000000
+      internalID: -3285748935596233450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 360
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cd96b833780b88c0800000000000000
+      internalID: -3996090953395429946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 360
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be48fd534d67a0a70800000000000000
+      internalID: 8793971876203300075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 360
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cea03e1d7f1542d0800000000000000
+      internalID: -3295192930113769788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 360
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6705106a65fa4e10800000000000000
+      internalID: 2182826806641756013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 180
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02a33a2806ed5b790800000000000000
+      internalID: -7514855897107842528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 180
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1f87e4fb415d1e30800000000000000
+      internalID: 4475822991349354269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 180
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c58cf0522be548400800000000000000
+      internalID: 325489192296499292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 180
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b981b455aac89b5a0800000000000000
+      internalID: -6505013523556656997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 485b119cf208f10d0800000000000000
+      internalID: -3449897846817311356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 0
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1fec4ac3ec7bcb50800000000000000
+      internalID: 6614517795517165341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 0
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e9d2b4d9a59ec1a0800000000000000
+      internalID: -6787323031750256157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_DarkKnight_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 0
+        width: 185
+        height: 180
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25fc07d73ad76b410800000000000000
+      internalID: 1492518467657584466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_DarkKnight_Processed_0: 8223191521991078580
+      multi_DarkKnight_Processed_1: 2296549539141863848
+      multi_DarkKnight_Processed_10: 548187487445199930
+      multi_DarkKnight_Processed_11: 4516027328894519768
+      multi_DarkKnight_Processed_12: 2770621967869540948
+      multi_DarkKnight_Processed_13: -6727645369244915113
+      multi_DarkKnight_Processed_14: -2553949633993580174
+      multi_DarkKnight_Processed_15: -1962161750220798903
+      multi_DarkKnight_Processed_2: -5747228904126939387
+      multi_DarkKnight_Processed_3: 2956642761626412475
+      multi_DarkKnight_Processed_4: -3400575862087676815
+      multi_DarkKnight_Processed_5: -3306587944948713681
+      multi_DarkKnight_Processed_6: 5856799686414834359
+      multi_DarkKnight_Processed_7: 5041316365885546688
+      multi_DarkKnight_Processed_8: 3713481158531501040
+      multi_DarkKnight_Processed_9: 2011206395766194361
+      multi_DarkKnight_Processed_attack_00: -7514855897107842528
+      multi_DarkKnight_Processed_attack_01: 4475822991349354269
+      multi_DarkKnight_Processed_attack_02: 325489192296499292
+      multi_DarkKnight_Processed_attack_03: -6505013523556656997
+      multi_DarkKnight_Processed_die_00: -3449897846817311356
+      multi_DarkKnight_Processed_die_01: 6614517795517165341
+      multi_DarkKnight_Processed_die_02: -6787323031750256157
+      multi_DarkKnight_Processed_die_03: 1492518467657584466
+      multi_DarkKnight_Processed_idle_00: 8097188434571739546
+      multi_DarkKnight_Processed_idle_01: -7651192194160630588
+      multi_DarkKnight_Processed_idle_02: 5361794470114274050
+      multi_DarkKnight_Processed_idle_03: -3285748935596233450
+      multi_DarkKnight_Processed_walk_00: -3996090953395429946
+      multi_DarkKnight_Processed_walk_01: 8793971876203300075
+      multi_DarkKnight_Processed_walk_02: -3295192930113769788
+      multi_DarkKnight_Processed_walk_03: 2182826806641756013
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

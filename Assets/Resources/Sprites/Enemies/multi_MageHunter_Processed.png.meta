@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: dd9d7cb74bbad69468d2b59aa4defbe8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5132378979000106264
+    second: multi_MageHunter_Processed_0
+  - first:
+      213: -6523365087188579489
+    second: multi_MageHunter_Processed_1
+  - first:
+      213: 1602563407945896974
+    second: multi_MageHunter_Processed_2
+  - first:
+      213: -5632460654286919439
+    second: multi_MageHunter_Processed_3
+  - first:
+      213: 6532319521445840487
+    second: multi_MageHunter_Processed_4
+  - first:
+      213: 7706688289954934203
+    second: multi_MageHunter_Processed_5
+  - first:
+      213: 2868620729857078419
+    second: multi_MageHunter_Processed_6
+  - first:
+      213: -7261071562026867294
+    second: multi_MageHunter_Processed_7
+  - first:
+      213: -4181408053060270857
+    second: multi_MageHunter_Processed_8
+  - first:
+      213: 5816516762666486165
+    second: multi_MageHunter_Processed_9
+  - first:
+      213: -5486012010784912451
+    second: multi_MageHunter_Processed_10
+  - first:
+      213: -186413536909386028
+    second: multi_MageHunter_Processed_11
+  - first:
+      213: -7336134296279888537
+    second: multi_MageHunter_Processed_12
+  - first:
+      213: 8872386606576709444
+    second: multi_MageHunter_Processed_13
+  - first:
+      213: -7104114770550749518
+    second: multi_MageHunter_Processed_14
+  - first:
+      213: -7935538547131863756
+    second: multi_MageHunter_Processed_15
+  - first:
+      213: -414191321633003328
+    second: multi_MageHunter_Processed_idle_00
+  - first:
+      213: 396835019652751276
+    second: multi_MageHunter_Processed_idle_01
+  - first:
+      213: 4216148190689987116
+    second: multi_MageHunter_Processed_idle_02
+  - first:
+      213: -8393423666220963554
+    second: multi_MageHunter_Processed_idle_03
+  - first:
+      213: 2826365463032965824
+    second: multi_MageHunter_Processed_walk_00
+  - first:
+      213: -8384536074109548699
+    second: multi_MageHunter_Processed_walk_01
+  - first:
+      213: 7513089740613717268
+    second: multi_MageHunter_Processed_walk_02
+  - first:
+      213: -1936037016233453876
+    second: multi_MageHunter_Processed_walk_03
+  - first:
+      213: -2657759314550013676
+    second: multi_MageHunter_Processed_attack_00
+  - first:
+      213: -6445713469901844607
+    second: multi_MageHunter_Processed_attack_01
+  - first:
+      213: 2579455060734078875
+    second: multi_MageHunter_Processed_attack_02
+  - first:
+      213: 5689622950373838624
+    second: multi_MageHunter_Processed_attack_03
+  - first:
+      213: 4343876236705542293
+    second: multi_MageHunter_Processed_die_00
+  - first:
+      213: -8821742714068476380
+    second: multi_MageHunter_Processed_die_01
+  - first:
+      213: 6292287861726519723
+    second: multi_MageHunter_Processed_die_02
+  - first:
+      213: 1405329647146428925
+    second: multi_MageHunter_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 576
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c8e30dff2f704af0800000000000000
+      internalID: -414191321633003328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 576
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caf56dc0957d18500800000000000000
+      internalID: 396835019652751276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 576
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2a8b7af074c28a30800000000000000
+      internalID: 4216148190689987116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 576
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e19ea8555a1948b80800000000000000
+      internalID: -8393423666220963554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ca2385f964493720800000000000000
+      internalID: 2826365463032965824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 384
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56780402dd424ab80800000000000000
+      internalID: -8384536074109548699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 384
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41d89e2205bd34860800000000000000
+      internalID: 7513089740613717268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 384
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc6d56f5790d125e0800000000000000
+      internalID: -1936037016233453876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 411c2cd1cfdbd1bd0800000000000000
+      internalID: -2657759314550013676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 192
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18fcc8effb93c86a0800000000000000
+      internalID: -6445713469901844607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 192
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9f632116b01cc320800000000000000
+      internalID: 2579455060734078875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 192
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02f41feade995fe40800000000000000
+      internalID: 5689622950373838624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59038152c6c884c30800000000000000
+      internalID: 4343876236705542293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 0
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42ede0cbdbfd29580800000000000000
+      internalID: -8821742714068476380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 0
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba126b6e872b25750800000000000000
+      internalID: 6292287861726519723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_MageHunter_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 0
+        width: 228
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df9ec7a4edbb08310800000000000000
+      internalID: 1405329647146428925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_MageHunter_Processed_0: -5132378979000106264
+      multi_MageHunter_Processed_1: -6523365087188579489
+      multi_MageHunter_Processed_10: -5486012010784912451
+      multi_MageHunter_Processed_11: -186413536909386028
+      multi_MageHunter_Processed_12: -7336134296279888537
+      multi_MageHunter_Processed_13: 8872386606576709444
+      multi_MageHunter_Processed_14: -7104114770550749518
+      multi_MageHunter_Processed_15: -7935538547131863756
+      multi_MageHunter_Processed_2: 1602563407945896974
+      multi_MageHunter_Processed_3: -5632460654286919439
+      multi_MageHunter_Processed_4: 6532319521445840487
+      multi_MageHunter_Processed_5: 7706688289954934203
+      multi_MageHunter_Processed_6: 2868620729857078419
+      multi_MageHunter_Processed_7: -7261071562026867294
+      multi_MageHunter_Processed_8: -4181408053060270857
+      multi_MageHunter_Processed_9: 5816516762666486165
+      multi_MageHunter_Processed_attack_00: -2657759314550013676
+      multi_MageHunter_Processed_attack_01: -6445713469901844607
+      multi_MageHunter_Processed_attack_02: 2579455060734078875
+      multi_MageHunter_Processed_attack_03: 5689622950373838624
+      multi_MageHunter_Processed_die_00: 4343876236705542293
+      multi_MageHunter_Processed_die_01: -8821742714068476380
+      multi_MageHunter_Processed_die_02: 6292287861726519723
+      multi_MageHunter_Processed_die_03: 1405329647146428925
+      multi_MageHunter_Processed_idle_00: -414191321633003328
+      multi_MageHunter_Processed_idle_01: 396835019652751276
+      multi_MageHunter_Processed_idle_02: 4216148190689987116
+      multi_MageHunter_Processed_idle_03: -8393423666220963554
+      multi_MageHunter_Processed_walk_00: 2826365463032965824
+      multi_MageHunter_Processed_walk_01: -8384536074109548699
+      multi_MageHunter_Processed_walk_02: 7513089740613717268
+      multi_MageHunter_Processed_walk_03: -1936037016233453876
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

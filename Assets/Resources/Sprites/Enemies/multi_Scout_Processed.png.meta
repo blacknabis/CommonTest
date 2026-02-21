@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: 0a92cdfc1adb46d42a53e0fd70c418af
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2093532657329222920
+    second: multi_Scout_Processed_0
+  - first:
+      213: -807641046398131137
+    second: multi_Scout_Processed_1
+  - first:
+      213: 631217874091072907
+    second: multi_Scout_Processed_2
+  - first:
+      213: 2031600412206552384
+    second: multi_Scout_Processed_3
+  - first:
+      213: -6954725999174978955
+    second: multi_Scout_Processed_4
+  - first:
+      213: -2790768364786955239
+    second: multi_Scout_Processed_5
+  - first:
+      213: 1380288902381862089
+    second: multi_Scout_Processed_6
+  - first:
+      213: 89153977399038911
+    second: multi_Scout_Processed_7
+  - first:
+      213: -157590487693788932
+    second: multi_Scout_Processed_8
+  - first:
+      213: -4667963983714096670
+    second: multi_Scout_Processed_9
+  - first:
+      213: 6920760556613444604
+    second: multi_Scout_Processed_10
+  - first:
+      213: 5783967776756646215
+    second: multi_Scout_Processed_11
+  - first:
+      213: 3405981685509833178
+    second: multi_Scout_Processed_12
+  - first:
+      213: 3832505103093011191
+    second: multi_Scout_Processed_13
+  - first:
+      213: 7566910626915336504
+    second: multi_Scout_Processed_14
+  - first:
+      213: 1969216887146915643
+    second: multi_Scout_Processed_15
+  - first:
+      213: 5418660491489681630
+    second: multi_Scout_Processed_idle_00
+  - first:
+      213: -5293091345011583913
+    second: multi_Scout_Processed_idle_01
+  - first:
+      213: 5793570070629855286
+    second: multi_Scout_Processed_idle_02
+  - first:
+      213: -6747203773003649489
+    second: multi_Scout_Processed_idle_03
+  - first:
+      213: 2359087234411029017
+    second: multi_Scout_Processed_walk_00
+  - first:
+      213: -6037695271088467830
+    second: multi_Scout_Processed_walk_01
+  - first:
+      213: -6293572349183962038
+    second: multi_Scout_Processed_walk_02
+  - first:
+      213: -302078612319659966
+    second: multi_Scout_Processed_walk_03
+  - first:
+      213: -7912625778689594294
+    second: multi_Scout_Processed_attack_00
+  - first:
+      213: -8405655767680862984
+    second: multi_Scout_Processed_attack_01
+  - first:
+      213: -3257177891282948809
+    second: multi_Scout_Processed_attack_02
+  - first:
+      213: 2508436295830665886
+    second: multi_Scout_Processed_attack_03
+  - first:
+      213: -3066531039375236768
+    second: multi_Scout_Processed_die_00
+  - first:
+      213: 3444263252217394584
+    second: multi_Scout_Processed_die_01
+  - first:
+      213: -6898417966397880722
+    second: multi_Scout_Processed_die_02
+  - first:
+      213: 6067056348348925454
+    second: multi_Scout_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Scout_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 555
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed0afa9f103f23b40800000000000000
+      internalID: 5418660491489681630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 555
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 754d3e837792b86b0800000000000000
+      internalID: -5293091345011583913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 555
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6303a399845e66050800000000000000
+      internalID: 5793570070629855286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 555
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2e21faaaed1d52a0800000000000000
+      internalID: -6747203773003649489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 370
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9126a3937592db020800000000000000
+      internalID: 2359087234411029017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 370
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8057b8d32cc53ca0800000000000000
+      internalID: -6037695271088467830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 370
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a445bae0b4db8a8a0800000000000000
+      internalID: -6293572349183962038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 370
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24891724a1dcecbf0800000000000000
+      internalID: -302078612319659966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 185
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4cab94f6c4b03290800000000000000
+      internalID: -7912625778689594294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 185
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f43b274d9c195b80800000000000000
+      internalID: -8405655767680862984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 185
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73de2d317fd2cc2d0800000000000000
+      internalID: -3257177891282948809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 185
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9afea25581cfc220800000000000000
+      internalID: 2508436295830665886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0616451544e7175d0800000000000000
+      internalID: -3066531039375236768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 0
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 895795ded2b7ccf20800000000000000
+      internalID: 3444263252217394584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 0
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e668ea0b865e340a0800000000000000
+      internalID: -6898417966397880722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Scout_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 573
+        y: 0
+        width: 191
+        height: 185
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e06cd9baa93823450800000000000000
+      internalID: 6067056348348925454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Scout_Processed_0: 2093532657329222920
+      multi_Scout_Processed_1: -807641046398131137
+      multi_Scout_Processed_10: 6920760556613444604
+      multi_Scout_Processed_11: 5783967776756646215
+      multi_Scout_Processed_12: 3405981685509833178
+      multi_Scout_Processed_13: 3832505103093011191
+      multi_Scout_Processed_14: 7566910626915336504
+      multi_Scout_Processed_15: 1969216887146915643
+      multi_Scout_Processed_2: 631217874091072907
+      multi_Scout_Processed_3: 2031600412206552384
+      multi_Scout_Processed_4: -6954725999174978955
+      multi_Scout_Processed_5: -2790768364786955239
+      multi_Scout_Processed_6: 1380288902381862089
+      multi_Scout_Processed_7: 89153977399038911
+      multi_Scout_Processed_8: -157590487693788932
+      multi_Scout_Processed_9: -4667963983714096670
+      multi_Scout_Processed_attack_00: -7912625778689594294
+      multi_Scout_Processed_attack_01: -8405655767680862984
+      multi_Scout_Processed_attack_02: -3257177891282948809
+      multi_Scout_Processed_attack_03: 2508436295830665886
+      multi_Scout_Processed_die_00: -3066531039375236768
+      multi_Scout_Processed_die_01: 3444263252217394584
+      multi_Scout_Processed_die_02: -6898417966397880722
+      multi_Scout_Processed_die_03: 6067056348348925454
+      multi_Scout_Processed_idle_00: 5418660491489681630
+      multi_Scout_Processed_idle_01: -5293091345011583913
+      multi_Scout_Processed_idle_02: 5793570070629855286
+      multi_Scout_Processed_idle_03: -6747203773003649489
+      multi_Scout_Processed_walk_00: 2359087234411029017
+      multi_Scout_Processed_walk_01: -6037695271088467830
+      multi_Scout_Processed_walk_02: -6293572349183962038
+      multi_Scout_Processed_walk_03: -302078612319659966
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

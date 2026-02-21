@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: 6e6f001558986bd44b4e13a6bb9ef825
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7619656209937578341
+    second: multi_Brigand_Processed_0
+  - first:
+      213: 5244622179150831789
+    second: multi_Brigand_Processed_1
+  - first:
+      213: -8032964272298369733
+    second: multi_Brigand_Processed_2
+  - first:
+      213: 570672468528459975
+    second: multi_Brigand_Processed_3
+  - first:
+      213: 1621286482863556370
+    second: multi_Brigand_Processed_4
+  - first:
+      213: 4486977751259554021
+    second: multi_Brigand_Processed_5
+  - first:
+      213: 5729629417229776011
+    second: multi_Brigand_Processed_6
+  - first:
+      213: 6707898110361240329
+    second: multi_Brigand_Processed_7
+  - first:
+      213: 8143832931219204231
+    second: multi_Brigand_Processed_8
+  - first:
+      213: 6515844917487469947
+    second: multi_Brigand_Processed_9
+  - first:
+      213: 2912310935276610658
+    second: multi_Brigand_Processed_10
+  - first:
+      213: 8244066098878591393
+    second: multi_Brigand_Processed_11
+  - first:
+      213: 5621020562968030743
+    second: multi_Brigand_Processed_12
+  - first:
+      213: -4930896177275450800
+    second: multi_Brigand_Processed_13
+  - first:
+      213: -3113578013572702509
+    second: multi_Brigand_Processed_14
+  - first:
+      213: -9087458856069584661
+    second: multi_Brigand_Processed_15
+  - first:
+      213: -6711500489267402687
+    second: multi_Brigand_Processed_idle_00
+  - first:
+      213: 7988784003570569393
+    second: multi_Brigand_Processed_idle_01
+  - first:
+      213: -697185374276083324
+    second: multi_Brigand_Processed_idle_02
+  - first:
+      213: 9141993987537317747
+    second: multi_Brigand_Processed_idle_03
+  - first:
+      213: 4322963944411843687
+    second: multi_Brigand_Processed_walk_00
+  - first:
+      213: 4566346911484353567
+    second: multi_Brigand_Processed_walk_01
+  - first:
+      213: 7625890870083973752
+    second: multi_Brigand_Processed_walk_02
+  - first:
+      213: 2606503388854618127
+    second: multi_Brigand_Processed_walk_03
+  - first:
+      213: 6958154050980360717
+    second: multi_Brigand_Processed_attack_00
+  - first:
+      213: -3484858453566315223
+    second: multi_Brigand_Processed_attack_01
+  - first:
+      213: -5371837447513287802
+    second: multi_Brigand_Processed_attack_02
+  - first:
+      213: -1733872235146474197
+    second: multi_Brigand_Processed_attack_03
+  - first:
+      213: 3144340930339680419
+    second: multi_Brigand_Processed_die_00
+  - first:
+      213: -1231510421284891857
+    second: multi_Brigand_Processed_die_01
+  - first:
+      213: 8338690527504280696
+    second: multi_Brigand_Processed_die_02
+  - first:
+      213: 8193906526993517349
+    second: multi_Brigand_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 534
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1482b533dd5fbd2a0800000000000000
+      internalID: -6711500489267402687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 534
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b0952099bcddde60800000000000000
+      internalID: 7988784003570569393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 534
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4812daf88991356f0800000000000000
+      internalID: -697185374276083324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 534
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37f2be56813eede70800000000000000
+      internalID: 9141993987537317747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 356
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76c4d7badc04efb30800000000000000
+      internalID: 4322963944411843687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 356
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1c1a3c825cee5f30800000000000000
+      internalID: 4566346911484353567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 356
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 872ff37b75b94d960800000000000000
+      internalID: 7625890870083973752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 356
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f080886b5092c2420800000000000000
+      internalID: 2606503388854618127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 178
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0231255e34509060800000000000000
+      internalID: 6958154050980360717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 178
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 925a9a633bb43afc0800000000000000
+      internalID: -3484858453566315223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 178
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68354dd7d466375b0800000000000000
+      internalID: -5371837447513287802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 178
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2d8e2a736c00f7e0800000000000000
+      internalID: -1733872235146474197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a03e9daa61f2ab20800000000000000
+      internalID: 3144340930339680419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 0
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f235f12fbcbc8eee0800000000000000
+      internalID: -1231510421284891857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 0
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87caecfbadaf8b370800000000000000
+      internalID: 8338690527504280696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Brigand_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 0
+        width: 242
+        height: 178
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b0438b29a96b170800000000000000
+      internalID: 8193906526993517349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Brigand_Processed_0: 7619656209937578341
+      multi_Brigand_Processed_1: 5244622179150831789
+      multi_Brigand_Processed_10: 2912310935276610658
+      multi_Brigand_Processed_11: 8244066098878591393
+      multi_Brigand_Processed_12: 5621020562968030743
+      multi_Brigand_Processed_13: -4930896177275450800
+      multi_Brigand_Processed_14: -3113578013572702509
+      multi_Brigand_Processed_15: -9087458856069584661
+      multi_Brigand_Processed_2: -8032964272298369733
+      multi_Brigand_Processed_3: 570672468528459975
+      multi_Brigand_Processed_4: 1621286482863556370
+      multi_Brigand_Processed_5: 4486977751259554021
+      multi_Brigand_Processed_6: 5729629417229776011
+      multi_Brigand_Processed_7: 6707898110361240329
+      multi_Brigand_Processed_8: 8143832931219204231
+      multi_Brigand_Processed_9: 6515844917487469947
+      multi_Brigand_Processed_attack_00: 6958154050980360717
+      multi_Brigand_Processed_attack_01: -3484858453566315223
+      multi_Brigand_Processed_attack_02: -5371837447513287802
+      multi_Brigand_Processed_attack_03: -1733872235146474197
+      multi_Brigand_Processed_die_00: 3144340930339680419
+      multi_Brigand_Processed_die_01: -1231510421284891857
+      multi_Brigand_Processed_die_02: 8338690527504280696
+      multi_Brigand_Processed_die_03: 8193906526993517349
+      multi_Brigand_Processed_idle_00: -6711500489267402687
+      multi_Brigand_Processed_idle_01: 7988784003570569393
+      multi_Brigand_Processed_idle_02: -697185374276083324
+      multi_Brigand_Processed_idle_03: 9141993987537317747
+      multi_Brigand_Processed_walk_00: 4322963944411843687
+      multi_Brigand_Processed_walk_01: 4566346911484353567
+      multi_Brigand_Processed_walk_02: 7625890870083973752
+      multi_Brigand_Processed_walk_03: 2606503388854618127
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

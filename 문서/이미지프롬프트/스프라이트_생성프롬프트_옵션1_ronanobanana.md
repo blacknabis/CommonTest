@@ -148,7 +148,21 @@ low quality, worst quality, blurry, deformed, 3d, realistic, painterly, realisti
 
 ---
 
-## 10) 특수 기믹 유닛 프롬프트 대처 가이드 (Special Units)
+## 10) 메이지 헌터 (Mage Hunter)
+
+**Positive Prompt:**
+```text
+pixel art, masterpiece, high quality, sprite sheet, 4x4 grid, 16 frames, isometric view, chibi style, cute, big head, small body, elite berserker mage hunter, anti-mage warrior, dark glowing tattoos, heavy fur hooded cloak, holding a glowing runic greatsword, aggressive posture, facing right, 3/4 view, full body, solid magenta background, clear pixel edges, equal cell size, top row idle animation, second row fast run cycle animation, third row greatsword attack animation, bottom row death falling animation, completely identical character design in all frames, no ui, no text, no shadow, flat shading
+```
+
+**Negative Prompt:**
+```text
+low quality, worst quality, blurry, deformed, 3d, realistic, painterly, realistic proportions, tall character, text, fonts, letters, watermark, signature, ui, words, shadow, cast shadow, drop shadow, multiple different characters, inconsistent outfit, changing weapons, unaligned grid
+```
+
+---
+
+## 11) 특수 기믹 유닛 프롬프트 대처 가이드 (Special Units)
 걷고, 때리고, 쓰러지는 일반적인 4x4 그리드(16프레임) 구조로는 처리하기 애매한 몬스터들(원거리 공격, 비행, 자폭 등)을 위한 패턴별 프롬프트 가이드입니다.
 
 ### A. 일반 중무장 보병/엘리트 (다크 나이트, 머로더, 다크 슬레이어 등)

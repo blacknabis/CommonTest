@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: Berserker
   DisplayName: Berserker
   EnemyType: 0
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/Berserker
+  RuntimeAnimatorControllerPath: Animations/Enemies/Berserker/Berserker
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.62
   MaxHp: 220

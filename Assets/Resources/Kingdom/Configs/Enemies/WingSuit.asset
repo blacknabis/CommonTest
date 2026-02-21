@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: WingSuit
   DisplayName: Wing Suit
   EnemyType: 1
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/WingSuit
+  RuntimeAnimatorControllerPath: Animations/Enemies/WingSuit/WingSuit
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.62
   MaxHp: 200

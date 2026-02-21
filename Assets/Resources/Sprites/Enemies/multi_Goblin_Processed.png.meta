@@ -3,101 +3,101 @@ guid: 3fcd265f8cf4319429497c73b3cd67fb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6605790298840329592
-    second: multi_Goblin_Processed_0
+      213: 8705236401650488572
+    second: multi_goblin_Processed_0
   - first:
-      213: -2555953455764695358
-    second: multi_Goblin_Processed_1
+      213: -7104175396105695632
+    second: multi_goblin_Processed_1
   - first:
-      213: 5815473922493564321
-    second: multi_Goblin_Processed_2
+      213: 7631271177147166156
+    second: multi_goblin_Processed_2
   - first:
-      213: 2936746419621609641
-    second: multi_Goblin_Processed_3
+      213: 4410388460643426928
+    second: multi_goblin_Processed_3
   - first:
-      213: 8551087739238242637
-    second: multi_Goblin_Processed_4
+      213: -7252032958931129095
+    second: multi_goblin_Processed_4
   - first:
-      213: -3224331796024385970
-    second: multi_Goblin_Processed_5
+      213: -1219708079316841010
+    second: multi_goblin_Processed_5
   - first:
-      213: -5871845061956453765
-    second: multi_Goblin_Processed_6
+      213: 8997801882662648291
+    second: multi_goblin_Processed_6
   - first:
-      213: -178416026119590768
-    second: multi_Goblin_Processed_7
+      213: 2344320234238078270
+    second: multi_goblin_Processed_7
   - first:
-      213: -452624756639933406
-    second: multi_Goblin_Processed_8
+      213: 6959025795906643648
+    second: multi_goblin_Processed_8
   - first:
-      213: 7330365403749084839
-    second: multi_Goblin_Processed_9
+      213: -2550159415696755845
+    second: multi_goblin_Processed_9
   - first:
-      213: 6403001358974968210
-    second: multi_Goblin_Processed_10
+      213: -6777398051617394755
+    second: multi_goblin_Processed_10
   - first:
-      213: -2483270737607455630
-    second: multi_Goblin_Processed_11
+      213: -2124479094084070967
+    second: multi_goblin_Processed_11
   - first:
-      213: -7311961331326378060
-    second: multi_Goblin_Processed_12
+      213: -5893822829205493450
+    second: multi_goblin_Processed_12
   - first:
-      213: 5861926258239700860
-    second: multi_Goblin_Processed_13
+      213: 6465677925091420467
+    second: multi_goblin_Processed_13
   - first:
-      213: -9079478009455830782
-    second: multi_Goblin_Processed_14
+      213: -75571376072473815
+    second: multi_goblin_Processed_14
   - first:
-      213: 4756671601721690039
-    second: multi_Goblin_Processed_15
+      213: 4725411681660490020
+    second: multi_goblin_Processed_15
   - first:
-      213: 7367541004438794095
-    second: multi_Goblin_Processed_idle_00
+      213: 4431512426632002614
+    second: multi_goblin_Processed_idle_00
   - first:
-      213: 941901863398764851
-    second: multi_Goblin_Processed_idle_01
+      213: 764172872126549809
+    second: multi_goblin_Processed_idle_01
   - first:
-      213: 754112038802115314
-    second: multi_Goblin_Processed_idle_02
+      213: 7654946319619653940
+    second: multi_goblin_Processed_idle_02
   - first:
-      213: -7841886371525210267
-    second: multi_Goblin_Processed_idle_03
+      213: -5415180908529639323
+    second: multi_goblin_Processed_idle_03
   - first:
-      213: -4679958940288278956
-    second: multi_Goblin_Processed_walk_00
+      213: 8703134622464559631
+    second: multi_goblin_Processed_walk_00
   - first:
-      213: 2807378963891298740
-    second: multi_Goblin_Processed_walk_01
+      213: -43013351053666919
+    second: multi_goblin_Processed_walk_01
   - first:
-      213: 5840869552830140580
-    second: multi_Goblin_Processed_walk_02
+      213: -8800048140213500951
+    second: multi_goblin_Processed_walk_02
   - first:
-      213: 8712189696288826405
-    second: multi_Goblin_Processed_walk_03
+      213: -623998336386023970
+    second: multi_goblin_Processed_walk_03
   - first:
-      213: 5231239273071137452
-    second: multi_Goblin_Processed_attack_00
+      213: 8407303245885475781
+    second: multi_goblin_Processed_attack_00
   - first:
-      213: 9148123498529487892
-    second: multi_Goblin_Processed_attack_01
+      213: 3009332274892501127
+    second: multi_goblin_Processed_attack_01
   - first:
-      213: 6405646500313635674
-    second: multi_Goblin_Processed_attack_02
+      213: -9078648205340971751
+    second: multi_goblin_Processed_attack_02
   - first:
-      213: 8949436528622585615
-    second: multi_Goblin_Processed_attack_03
+      213: -7139485637813143304
+    second: multi_goblin_Processed_attack_03
   - first:
-      213: 6472367992475639259
-    second: multi_Goblin_Processed_die_00
+      213: 849857801955754229
+    second: multi_goblin_Processed_die_00
   - first:
-      213: -5100368722478544624
-    second: multi_Goblin_Processed_die_01
+      213: 2895913446561277258
+    second: multi_goblin_Processed_die_01
   - first:
-      213: 4400968590703355999
-    second: multi_Goblin_Processed_die_02
+      213: 7980289137772053314
+    second: multi_goblin_Processed_die_02
   - first:
-      213: -4028879394361317127
-    second: multi_Goblin_Processed_die_03
+      213: 1693139665115315101
+    second: multi_goblin_Processed_die_03
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -206,13 +206,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: multi_Goblin_Processed_idle_00
+      name: multi_goblin_Processed_idle_00
       rect:
         serializedVersion: 2
         x: 0
-        y: 504
-        width: 199
-        height: 168
+        y: 549
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,20 +221,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f6fe2b53283ce3660800000000000000
-      internalID: 7367541004438794095
+      spriteID: 63c3127a215ef7d30800000000000000
+      internalID: 4431512426632002614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_idle_01
+      name: multi_goblin_Processed_idle_01
       rect:
         serializedVersion: 2
-        x: 199
-        y: 504
-        width: 199
-        height: 168
+        x: 212
+        y: 549
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,20 +243,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 331792d11ce421d00800000000000000
-      internalID: 941901863398764851
+      spriteID: 13fc71ead23ea9a00800000000000000
+      internalID: 764172872126549809
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_idle_02
+      name: multi_goblin_Processed_idle_02
       rect:
         serializedVersion: 2
-        x: 398
-        y: 504
-        width: 199
-        height: 168
+        x: 424
+        y: 549
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,20 +265,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2fa45a167e4277a00800000000000000
-      internalID: 754112038802115314
+      spriteID: 4310d9bbe15db3a60800000000000000
+      internalID: 7654946319619653940
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_idle_03
+      name: multi_goblin_Processed_idle_03
       rect:
         serializedVersion: 2
-        x: 597
-        y: 504
-        width: 199
-        height: 168
+        x: 636
+        y: 549
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -287,108 +287,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56f4348a4e50c2390800000000000000
-      internalID: -7841886371525210267
+      spriteID: 5602d9097a969d4b0800000000000000
+      internalID: -5415180908529639323
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_walk_00
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 336
-        width: 199
-        height: 168
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 45e14b8a3227d0fb0800000000000000
-      internalID: -4679958940288278956
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: multi_Goblin_Processed_walk_01
-      rect:
-        serializedVersion: 2
-        x: 199
-        y: 336
-        width: 199
-        height: 168
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b125a42b40d5f620800000000000000
-      internalID: 2807378963891298740
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: multi_Goblin_Processed_walk_02
-      rect:
-        serializedVersion: 2
-        x: 398
-        y: 336
-        width: 199
-        height: 168
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4a0d5db79efee0150800000000000000
-      internalID: 5840869552830140580
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: multi_Goblin_Processed_walk_03
-      rect:
-        serializedVersion: 2
-        x: 597
-        y: 336
-        width: 199
-        height: 168
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5242d1f9e5ae7e870800000000000000
-      internalID: 8712189696288826405
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: multi_Goblin_Processed_attack_00
+      name: multi_goblin_Processed_walk_00
       rect:
         serializedVersion: 2
         x: 0
-        y: 168
-        width: 199
-        height: 168
+        y: 366
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -397,20 +309,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca25a7e0768199840800000000000000
-      internalID: 5231239273071137452
+      spriteID: f0a4764f3deb7c870800000000000000
+      internalID: 8703134622464559631
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_attack_01
+      name: multi_goblin_Processed_walk_01
       rect:
         serializedVersion: 2
-        x: 199
-        y: 168
-        width: 199
-        height: 168
+        x: 212
+        y: 366
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -419,20 +331,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41cf0436ad9a4fe70800000000000000
-      internalID: 9148123498529487892
+      spriteID: 995d8d9c59f276ff0800000000000000
+      internalID: -43013351053666919
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_attack_02
+      name: multi_goblin_Processed_walk_02
       rect:
         serializedVersion: 2
-        x: 398
-        y: 168
-        width: 199
-        height: 168
+        x: 424
+        y: 366
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -441,20 +353,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a5b1befad8d65e850800000000000000
-      internalID: 6405646500313635674
+      spriteID: 9e3cc3457d2ffd580800000000000000
+      internalID: -8800048140213500951
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_attack_03
+      name: multi_goblin_Processed_walk_03
       rect:
         serializedVersion: 2
-        x: 597
-        y: 168
-        width: 199
-        height: 168
+        x: 636
+        y: 366
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -463,20 +375,108 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f07447c4b19c23c70800000000000000
-      internalID: 8949436528622585615
+      spriteID: eddb643b1dc1757f0800000000000000
+      internalID: -623998336386023970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_die_00
+      name: multi_goblin_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 183
+        width: 212
+        height: 183
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cb0ef122cdbca470800000000000000
+      internalID: 8407303245885475781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_goblin_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 183
+        width: 212
+        height: 183
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 780f51882cb43c920800000000000000
+      internalID: 3009332274892501127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_goblin_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 183
+        width: 212
+        height: 183
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91de9e7de89220280800000000000000
+      internalID: -9078648205340971751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_goblin_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 183
+        width: 212
+        height: 183
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f8f42793a37bec90800000000000000
+      internalID: -7139485637813143304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_goblin_Processed_die_00
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 199
-        height: 168
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -485,20 +485,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bdd5e17a56872d950800000000000000
-      internalID: 6472367992475639259
+      spriteID: 5f0ca2b0b2d4bcb00800000000000000
+      internalID: 849857801955754229
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_die_01
+      name: multi_goblin_Processed_die_01
       rect:
         serializedVersion: 2
-        x: 199
+        x: 212
         y: 0
-        width: 199
-        height: 168
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -507,20 +507,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 01947297ba9d739b0800000000000000
-      internalID: -5100368722478544624
+      spriteID: a45ef8abfe9503820800000000000000
+      internalID: 2895913446561277258
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_die_02
+      name: multi_goblin_Processed_die_02
       rect:
         serializedVersion: 2
-        x: 398
+        x: 424
         y: 0
-        width: 199
-        height: 168
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -529,20 +529,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f58668cad91631d30800000000000000
-      internalID: 4400968590703355999
+      spriteID: 243cfcd70beafbe60800000000000000
+      internalID: 7980289137772053314
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: multi_Goblin_Processed_die_03
+      name: multi_goblin_Processed_die_03
       rect:
         serializedVersion: 2
-        x: 597
+        x: 636
         y: 0
-        width: 199
-        height: 168
+        width: 212
+        height: 183
       alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -551,8 +551,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9f8e338698b8618c0800000000000000
-      internalID: -4028879394361317127
+      spriteID: d9b72560e8d3f7710800000000000000
+      internalID: 1693139665115315101
       vertices: []
       indices: 
       edges: []
@@ -571,38 +571,38 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      multi_Goblin_Processed_0: 6605790298840329592
-      multi_Goblin_Processed_1: -2555953455764695358
-      multi_Goblin_Processed_10: 6403001358974968210
-      multi_Goblin_Processed_11: -2483270737607455630
-      multi_Goblin_Processed_12: -7311961331326378060
-      multi_Goblin_Processed_13: 5861926258239700860
-      multi_Goblin_Processed_14: -9079478009455830782
-      multi_Goblin_Processed_15: 4756671601721690039
-      multi_Goblin_Processed_2: 5815473922493564321
-      multi_Goblin_Processed_3: 2936746419621609641
-      multi_Goblin_Processed_4: 8551087739238242637
-      multi_Goblin_Processed_5: -3224331796024385970
-      multi_Goblin_Processed_6: -5871845061956453765
-      multi_Goblin_Processed_7: -178416026119590768
-      multi_Goblin_Processed_8: -452624756639933406
-      multi_Goblin_Processed_9: 7330365403749084839
-      multi_Goblin_Processed_attack_00: 5231239273071137452
-      multi_Goblin_Processed_attack_01: 9148123498529487892
-      multi_Goblin_Processed_attack_02: 6405646500313635674
-      multi_Goblin_Processed_attack_03: 8949436528622585615
-      multi_Goblin_Processed_die_00: 6472367992475639259
-      multi_Goblin_Processed_die_01: -5100368722478544624
-      multi_Goblin_Processed_die_02: 4400968590703355999
-      multi_Goblin_Processed_die_03: -4028879394361317127
-      multi_Goblin_Processed_idle_00: 7367541004438794095
-      multi_Goblin_Processed_idle_01: 941901863398764851
-      multi_Goblin_Processed_idle_02: 754112038802115314
-      multi_Goblin_Processed_idle_03: -7841886371525210267
-      multi_Goblin_Processed_walk_00: -4679958940288278956
-      multi_Goblin_Processed_walk_01: 2807378963891298740
-      multi_Goblin_Processed_walk_02: 5840869552830140580
-      multi_Goblin_Processed_walk_03: 8712189696288826405
+      multi_goblin_Processed_0: 8705236401650488572
+      multi_goblin_Processed_1: -7104175396105695632
+      multi_goblin_Processed_10: -6777398051617394755
+      multi_goblin_Processed_11: -2124479094084070967
+      multi_goblin_Processed_12: -5893822829205493450
+      multi_goblin_Processed_13: 6465677925091420467
+      multi_goblin_Processed_14: -75571376072473815
+      multi_goblin_Processed_15: 4725411681660490020
+      multi_goblin_Processed_2: 7631271177147166156
+      multi_goblin_Processed_3: 4410388460643426928
+      multi_goblin_Processed_4: -7252032958931129095
+      multi_goblin_Processed_5: -1219708079316841010
+      multi_goblin_Processed_6: 8997801882662648291
+      multi_goblin_Processed_7: 2344320234238078270
+      multi_goblin_Processed_8: 6959025795906643648
+      multi_goblin_Processed_9: -2550159415696755845
+      multi_goblin_Processed_attack_00: 8407303245885475781
+      multi_goblin_Processed_attack_01: 3009332274892501127
+      multi_goblin_Processed_attack_02: -9078648205340971751
+      multi_goblin_Processed_attack_03: -7139485637813143304
+      multi_goblin_Processed_die_00: 849857801955754229
+      multi_goblin_Processed_die_01: 2895913446561277258
+      multi_goblin_Processed_die_02: 7980289137772053314
+      multi_goblin_Processed_die_03: 1693139665115315101
+      multi_goblin_Processed_idle_00: 4431512426632002614
+      multi_goblin_Processed_idle_01: 764172872126549809
+      multi_goblin_Processed_idle_02: 7654946319619653940
+      multi_goblin_Processed_idle_03: -5415180908529639323
+      multi_goblin_Processed_walk_00: 8703134622464559631
+      multi_goblin_Processed_walk_01: -43013351053666919
+      multi_goblin_Processed_walk_02: -8800048140213500951
+      multi_goblin_Processed_walk_03: -623998336386023970
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

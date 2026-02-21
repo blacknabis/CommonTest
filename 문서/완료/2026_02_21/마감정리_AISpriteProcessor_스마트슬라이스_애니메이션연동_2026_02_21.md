@@ -1,50 +1,60 @@
 # 마감정리: AISpriteProcessor 스마트슬라이스 애니메이션 연동 (2026-02-21)
 
 ## 목표
-- `AISpriteProcessor` SmartSlice 출력(`multi_*`)을 게임 런타임에서 액션(`idle/walk/attack/die`)으로 재생 가능하게 연결한다.
-- 기존 분리 파일(`idle_*`, `attack_*`, `die_*`) 방식과의 호환을 유지한다.
+- `AISpriteProcessor` SmartSlice 출력에서 `AnimationClip/AnimatorController`를 자동 생성한다.
+- 게임 런타임은 Enemy를 Animator 기반으로 재생한다.
+- EnemyConfig 전 종에 대해 Animator 적용을 완료한다.
 
 ## 반영 내용
-1. 런타임 액션 분해 로더 추가
+1. Animator 기반 Enemy 런타임 전환
 - 파일: `Assets/Scripts/Kingdom/Game/SpawnManager.cs`
 - 내용:
-  - `RuntimeSpriteResourcePath`가 단일 멀티 시트일 때 스프라이트 이름 토큰으로 액션 분해
-  - alias 지원: `walk/move/run`, `attack/atk`, `die/death/dead`
-  - 프레임 순서 정렬(숫자 suffix 기반)
+  - Enemy 스폰 시 `RuntimeAnimatorControllerPath` 우선 로드
+  - 미설정 시 관례 경로 `Animations/Enemies/<EnemyId>/<EnemyId>` 로드
+  - Animator 미해결 시 스폰 중단 및 에러 출력
 
-2. 분리 파일 회귀 방지
-- 파일: `Assets/Scripts/Kingdom/Game/SpawnManager.cs`
-- 내용:
-  - 액션 토큰이 2종 이상 검출될 때만 multi 분해로 인정
-  - 단일 액션 파일(`idle_*` 등)은 기존 후보 탐색 경로 유지
-
-3. 게임 시작 전 검증 보강
+2. 게임 시작 전 검증 보강(Animator 기준)
 - 파일: `Assets/Scripts/Kingdom/App/GameScene.cs`
 - 내용:
-  - `RequiredEnemyActions` 검증 시 multi 시트 내부 액션 토큰 검사 허용
-  - 누락 로그에 multi 파싱 사유(reason) 포함
+  - Enemy 검증을 Sprite 경로 기반에서 Animator 해석 기반으로 전환
+  - 누락 힌트를 `RuntimeAnimatorControllerPath`/관례 경로 기준으로 갱신
 
-4. 검증 시나리오 고정
-- 파일: `Assets/Scripts/Kingdom/KingdomAppManager.cs`
+3. AISpriteProcessor 자동 생성/바인딩 강화
+- 파일: `Assets/Scripts/Kingdom/Editor/AISpriteProcessor.cs`
 - 내용:
-  - Combat Integration Smoke Regression 실행 시 Stage 컨텍스트를 `Stage 1 / Normal`로 고정
+  - `Generate Animator + Clips` / `Run All` 파이프라인 제공
+  - Enemy 대상 생성 시 `RuntimeAnimatorControllerPath` 자동 반영
+  - Enemy 대상은 더 이상 `RuntimeSpriteResourcePath`를 사용하지 않음
+
+4. Config 경로 표준화 + 물리 마이그레이션
+- 파일:
+  - `Assets/Scripts/Kingdom/Game/ConfigResourcePaths.cs`
+  - `Assets/Resources/Kingdom/Configs/*`
+- 내용:
+  - 표준 경로 `Kingdom/Configs/<Category>` 도입
+  - 기존 `Data/*`, `Kingdom/Enemies/Config/*` 에셋을 표준 경로로 이동
+  - 런타임/에디터 로더는 표준 경로 우선 + legacy fallback 유지
 
 ## 검증 결과
-- `Combat integration smoke regression: success=1, fail=0, scenarios=1`
-- Stage 1 진입 후 Wave 진행/적 스폰/처치 로그 확인
-- Goblin(`Sprites/Enemies/multi_Goblin_Processed`) 전투 동작 확인
-- 기존 분리 파일 경로 회귀 방지 로직 적용 완료
+- Unity compile 에러 0건
+- Stage 1 진입 후 Enemy 스폰 시 Animator 로드 로그 확인
+  - 예: `[SpawnManager] Enemy animator resolve. enemyId=Goblin, configuredPath=Animations/Enemies/Goblin/Goblin, loaded=Goblin`
+- 적 애니메이션 전 종 적용 완료(사용자 검증 완료)
 
 ## 산출물
 - 코드:
+  - `Assets/Scripts/Kingdom/Game/ConfigResourcePaths.cs`
   - `Assets/Scripts/Kingdom/Game/SpawnManager.cs`
   - `Assets/Scripts/Kingdom/App/GameScene.cs`
+  - `Assets/Scripts/Kingdom/Editor/AISpriteProcessor.cs`
   - `Assets/Scripts/Kingdom/KingdomAppManager.cs`
 - 문서:
+  - `README.md`
+  - `문서/완료/2026_02_21/리소스_컨피그_경로_통일_마이그레이션_2026_02_21.md`
   - `문서/진행/AISpriteProcessor_스마트슬라이스_애니메이션연동_실행계획_2026_02_21.md`
   - `문서/진행/task.md`
   - `문서/완료/2026_02_21/마감정리_AISpriteProcessor_스마트슬라이스_애니메이션연동_2026_02_21.md`
 
 ## 후속 권장
-1. 필요 시 2차 확장으로 `Animator/AnimationClip` 자동 생성 트랙을 분리 추진
-2. EnemyConfig별 샘플 2~3종(분리형/멀티형 혼합) 회귀 러너를 별도 메뉴로 추가
+1. Enemy Animator 회귀 러너(전 EnemyConfig 순회)를 별도 메뉴로 추가
+2. legacy fallback 제거 시점 확정 후 `ConfigResourcePaths` 정리

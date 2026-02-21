@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: fbac77f1a99e8c7448717df3900b4106
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2936130195585322235
+    second: multi_Juggernaut_Processed_0
+  - first:
+      213: -8139571239152176883
+    second: multi_Juggernaut_Processed_1
+  - first:
+      213: -8264072184768248440
+    second: multi_Juggernaut_Processed_2
+  - first:
+      213: -1969110923504565660
+    second: multi_Juggernaut_Processed_3
+  - first:
+      213: 6014928155348297421
+    second: multi_Juggernaut_Processed_4
+  - first:
+      213: 316616453934238390
+    second: multi_Juggernaut_Processed_5
+  - first:
+      213: 3104460879139077809
+    second: multi_Juggernaut_Processed_6
+  - first:
+      213: -1386444951113204580
+    second: multi_Juggernaut_Processed_7
+  - first:
+      213: 1373070434012265229
+    second: multi_Juggernaut_Processed_8
+  - first:
+      213: 3878563051886158372
+    second: multi_Juggernaut_Processed_9
+  - first:
+      213: -4716722409125345979
+    second: multi_Juggernaut_Processed_10
+  - first:
+      213: 2570623447215434022
+    second: multi_Juggernaut_Processed_11
+  - first:
+      213: -8225389639932170530
+    second: multi_Juggernaut_Processed_12
+  - first:
+      213: -8886102499791298093
+    second: multi_Juggernaut_Processed_13
+  - first:
+      213: 5742224654526848549
+    second: multi_Juggernaut_Processed_14
+  - first:
+      213: -6668674821370481440
+    second: multi_Juggernaut_Processed_15
+  - first:
+      213: -5071064140981978
+    second: multi_Juggernaut_Processed_idle_00
+  - first:
+      213: -9159542462635851150
+    second: multi_Juggernaut_Processed_idle_01
+  - first:
+      213: -1509792130362681383
+    second: multi_Juggernaut_Processed_idle_02
+  - first:
+      213: -6234135987882264773
+    second: multi_Juggernaut_Processed_idle_03
+  - first:
+      213: 5954245305324514806
+    second: multi_Juggernaut_Processed_walk_00
+  - first:
+      213: 1914311477680199085
+    second: multi_Juggernaut_Processed_walk_01
+  - first:
+      213: 8668687509652947037
+    second: multi_Juggernaut_Processed_walk_02
+  - first:
+      213: 7949183748862235
+    second: multi_Juggernaut_Processed_walk_03
+  - first:
+      213: -4644998454585463105
+    second: multi_Juggernaut_Processed_attack_00
+  - first:
+      213: 8396583818230005475
+    second: multi_Juggernaut_Processed_attack_01
+  - first:
+      213: -6686675264002925497
+    second: multi_Juggernaut_Processed_attack_02
+  - first:
+      213: 8665513010734607042
+    second: multi_Juggernaut_Processed_attack_03
+  - first:
+      213: 1601378890157489725
+    second: multi_Juggernaut_Processed_die_00
+  - first:
+      213: -8933433299586999470
+    second: multi_Juggernaut_Processed_die_01
+  - first:
+      213: -1639859841561981296
+    second: multi_Juggernaut_Processed_die_02
+  - first:
+      213: -8403723249267889277
+    second: multi_Juggernaut_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 585
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6295e3fd4ebfdeff0800000000000000
+      internalID: -5071064140981978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 585
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 272cb79d8a4c2e080800000000000000
+      internalID: -9159542462635851150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 585
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d75d018e042c0be0800000000000000
+      internalID: -1509792130362681383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 585
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b377cc05956eb79a0800000000000000
+      internalID: -6234135987882264773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 390
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fda769ee8ab1a250800000000000000
+      internalID: 5954245305324514806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 390
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da5d4908520019a10800000000000000
+      internalID: 1914311477680199085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 390
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d50cab18c5d5d4870800000000000000
+      internalID: 8668687509652947037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 390
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b11fa919dbd3c1000800000000000000
+      internalID: 7949183748862235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 195
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fbee13c0486a98fb0800000000000000
+      internalID: -4644998454585463105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 195
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee7464ee78a68470800000000000000
+      internalID: 8396583818230005475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 195
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74cd6b066482433a0800000000000000
+      internalID: -6686675264002925497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 195
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2caac51eb26124870800000000000000
+      internalID: 8665513010734607042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3e75aabd9d393610800000000000000
+      internalID: 1601378890157489725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 0
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25b9871deb1160480800000000000000
+      internalID: -8933433299586999470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 0
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09e0546992c0e39e0800000000000000
+      internalID: -1639859841561981296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Juggernaut_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 0
+        width: 206
+        height: 195
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38b22b8ca3aff5b80800000000000000
+      internalID: -8403723249267889277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Juggernaut_Processed_0: -2936130195585322235
+      multi_Juggernaut_Processed_1: -8139571239152176883
+      multi_Juggernaut_Processed_10: -4716722409125345979
+      multi_Juggernaut_Processed_11: 2570623447215434022
+      multi_Juggernaut_Processed_12: -8225389639932170530
+      multi_Juggernaut_Processed_13: -8886102499791298093
+      multi_Juggernaut_Processed_14: 5742224654526848549
+      multi_Juggernaut_Processed_15: -6668674821370481440
+      multi_Juggernaut_Processed_2: -8264072184768248440
+      multi_Juggernaut_Processed_3: -1969110923504565660
+      multi_Juggernaut_Processed_4: 6014928155348297421
+      multi_Juggernaut_Processed_5: 316616453934238390
+      multi_Juggernaut_Processed_6: 3104460879139077809
+      multi_Juggernaut_Processed_7: -1386444951113204580
+      multi_Juggernaut_Processed_8: 1373070434012265229
+      multi_Juggernaut_Processed_9: 3878563051886158372
+      multi_Juggernaut_Processed_attack_00: -4644998454585463105
+      multi_Juggernaut_Processed_attack_01: 8396583818230005475
+      multi_Juggernaut_Processed_attack_02: -6686675264002925497
+      multi_Juggernaut_Processed_attack_03: 8665513010734607042
+      multi_Juggernaut_Processed_die_00: 1601378890157489725
+      multi_Juggernaut_Processed_die_01: -8933433299586999470
+      multi_Juggernaut_Processed_die_02: -1639859841561981296
+      multi_Juggernaut_Processed_die_03: -8403723249267889277
+      multi_Juggernaut_Processed_idle_00: -5071064140981978
+      multi_Juggernaut_Processed_idle_01: -9159542462635851150
+      multi_Juggernaut_Processed_idle_02: -1509792130362681383
+      multi_Juggernaut_Processed_idle_03: -6234135987882264773
+      multi_Juggernaut_Processed_walk_00: 5954245305324514806
+      multi_Juggernaut_Processed_walk_01: 1914311477680199085
+      multi_Juggernaut_Processed_walk_02: 8668687509652947037
+      multi_Juggernaut_Processed_walk_03: 7949183748862235
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

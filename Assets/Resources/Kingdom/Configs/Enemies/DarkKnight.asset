@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: DarkKnight
   DisplayName: Dark Knight
   EnemyType: 0
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/DarkKnight
+  RuntimeAnimatorControllerPath: Animations/Enemies/DarkKnight/DarkKnight
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.72
   MaxHp: 520

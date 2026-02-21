@@ -1,0 +1,614 @@
+fileFormatVersion: 2
+guid: 11fc10550fbbdaa4098917275284e389
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5729153601317048670
+    second: multi_Veznan_Processed_0
+  - first:
+      213: 5003988614536397421
+    second: multi_Veznan_Processed_1
+  - first:
+      213: -1878300646114880710
+    second: multi_Veznan_Processed_2
+  - first:
+      213: -187267947815401597
+    second: multi_Veznan_Processed_3
+  - first:
+      213: -1113947494752710053
+    second: multi_Veznan_Processed_4
+  - first:
+      213: -7901500453937538314
+    second: multi_Veznan_Processed_5
+  - first:
+      213: 4940679026732754452
+    second: multi_Veznan_Processed_6
+  - first:
+      213: -5966013692428200385
+    second: multi_Veznan_Processed_7
+  - first:
+      213: -5927905176404804702
+    second: multi_Veznan_Processed_8
+  - first:
+      213: 159108806808963227
+    second: multi_Veznan_Processed_9
+  - first:
+      213: -4038115703106350246
+    second: multi_Veznan_Processed_10
+  - first:
+      213: -1288786776681290863
+    second: multi_Veznan_Processed_11
+  - first:
+      213: -1593066000627805674
+    second: multi_Veznan_Processed_12
+  - first:
+      213: -1478239887802417537
+    second: multi_Veznan_Processed_13
+  - first:
+      213: 7557169745676405127
+    second: multi_Veznan_Processed_14
+  - first:
+      213: -3263169846112330969
+    second: multi_Veznan_Processed_15
+  - first:
+      213: -864807188566719405
+    second: multi_Veznan_Processed_16
+  - first:
+      213: 5177086398363525285
+    second: multi_Veznan_Processed_idle_00
+  - first:
+      213: 3108638421592959356
+    second: multi_Veznan_Processed_idle_01
+  - first:
+      213: 8369361990140044693
+    second: multi_Veznan_Processed_idle_02
+  - first:
+      213: -6274986593931583152
+    second: multi_Veznan_Processed_idle_03
+  - first:
+      213: 3007647255213215816
+    second: multi_Veznan_Processed_walk_00
+  - first:
+      213: 4785146447613602750
+    second: multi_Veznan_Processed_walk_01
+  - first:
+      213: 8872736865395278632
+    second: multi_Veznan_Processed_walk_02
+  - first:
+      213: -5625638375221046681
+    second: multi_Veznan_Processed_walk_03
+  - first:
+      213: 1926602726596836141
+    second: multi_Veznan_Processed_attack_00
+  - first:
+      213: -5980371115561213051
+    second: multi_Veznan_Processed_attack_01
+  - first:
+      213: 3444737875543257315
+    second: multi_Veznan_Processed_attack_02
+  - first:
+      213: -3731416996703533935
+    second: multi_Veznan_Processed_attack_03
+  - first:
+      213: -712901810503283988
+    second: multi_Veznan_Processed_die_00
+  - first:
+      213: -8414929573162187444
+    second: multi_Veznan_Processed_die_01
+  - first:
+      213: -144085908872720805
+    second: multi_Veznan_Processed_die_02
+  - first:
+      213: 8074137109801170671
+    second: multi_Veznan_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 576
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a0e6f166a4b8d740800000000000000
+      internalID: 5177086398363525285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 576
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c79ed269c2a142b20800000000000000
+      internalID: 3108638421592959356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 576
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59524f22362f52470800000000000000
+      internalID: 8369361990140044693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 576
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 051ae5a60f4cae8a0800000000000000
+      internalID: -6274986593931583152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 384
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84099a05e3f4db920800000000000000
+      internalID: 3007647255213215816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 384
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebb2b306751486240800000000000000
+      internalID: 4785146447613602750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 384
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82306675b2b422b70800000000000000
+      internalID: 8872736865395278632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 384
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 762d42224b7bde1b0800000000000000
+      internalID: -5625638375221046681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2b7a16e8faacba10800000000000000
+      internalID: 1926602726596836141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 192
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 583a7ffd724710da0800000000000000
+      internalID: -5980371115561213051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 192
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e0f618c8da2ecf20800000000000000
+      internalID: 3444737875543257315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 192
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19481aae208573cc0800000000000000
+      internalID: -3731416996703533935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cea083994934b16f0800000000000000
+      internalID: -712901810503283988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 0
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c450dbd232a283b80800000000000000
+      internalID: -8414929573162187444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 0
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5e808811aa100ef0800000000000000
+      internalID: -144085908872720805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Veznan_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 0
+        width: 232
+        height: 192
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe67f793ce81d0070800000000000000
+      internalID: 8074137109801170671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Veznan_Processed_0: -5729153601317048670
+      multi_Veznan_Processed_1: 5003988614536397421
+      multi_Veznan_Processed_10: -4038115703106350246
+      multi_Veznan_Processed_11: -1288786776681290863
+      multi_Veznan_Processed_12: -1593066000627805674
+      multi_Veznan_Processed_13: -1478239887802417537
+      multi_Veznan_Processed_14: 7557169745676405127
+      multi_Veznan_Processed_15: -3263169846112330969
+      multi_Veznan_Processed_16: -864807188566719405
+      multi_Veznan_Processed_2: -1878300646114880710
+      multi_Veznan_Processed_3: -187267947815401597
+      multi_Veznan_Processed_4: -1113947494752710053
+      multi_Veznan_Processed_5: -7901500453937538314
+      multi_Veznan_Processed_6: 4940679026732754452
+      multi_Veznan_Processed_7: -5966013692428200385
+      multi_Veznan_Processed_8: -5927905176404804702
+      multi_Veznan_Processed_9: 159108806808963227
+      multi_Veznan_Processed_attack_00: 1926602726596836141
+      multi_Veznan_Processed_attack_01: -5980371115561213051
+      multi_Veznan_Processed_attack_02: 3444737875543257315
+      multi_Veznan_Processed_attack_03: -3731416996703533935
+      multi_Veznan_Processed_die_00: -712901810503283988
+      multi_Veznan_Processed_die_01: -8414929573162187444
+      multi_Veznan_Processed_die_02: -144085908872720805
+      multi_Veznan_Processed_die_03: 8074137109801170671
+      multi_Veznan_Processed_idle_00: 5177086398363525285
+      multi_Veznan_Processed_idle_01: 3108638421592959356
+      multi_Veznan_Processed_idle_02: 8369361990140044693
+      multi_Veznan_Processed_idle_03: -6274986593931583152
+      multi_Veznan_Processed_walk_00: 3007647255213215816
+      multi_Veznan_Processed_walk_01: 4785146447613602750
+      multi_Veznan_Processed_walk_02: 8872736865395278632
+      multi_Veznan_Processed_walk_03: -5625638375221046681
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

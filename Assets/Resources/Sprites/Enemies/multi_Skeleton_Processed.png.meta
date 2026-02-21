@@ -1,0 +1,610 @@
+fileFormatVersion: 2
+guid: cdf99115b706d324db1d36b100eec7fa
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3439357184920200309
+    second: multi_Skeleton_Processed_0
+  - first:
+      213: 2040824868066767790
+    second: multi_Skeleton_Processed_1
+  - first:
+      213: -4274924939161694190
+    second: multi_Skeleton_Processed_2
+  - first:
+      213: -2051079303042124191
+    second: multi_Skeleton_Processed_3
+  - first:
+      213: -6780472984299751030
+    second: multi_Skeleton_Processed_4
+  - first:
+      213: -2607345682103644720
+    second: multi_Skeleton_Processed_5
+  - first:
+      213: 4679495308894650128
+    second: multi_Skeleton_Processed_6
+  - first:
+      213: 3108697141632294846
+    second: multi_Skeleton_Processed_7
+  - first:
+      213: -6541657852517566362
+    second: multi_Skeleton_Processed_8
+  - first:
+      213: -2493890974521891510
+    second: multi_Skeleton_Processed_9
+  - first:
+      213: 2749630099080587943
+    second: multi_Skeleton_Processed_10
+  - first:
+      213: 4040639336839031801
+    second: multi_Skeleton_Processed_11
+  - first:
+      213: -3477933438171713
+    second: multi_Skeleton_Processed_12
+  - first:
+      213: 2909391426158818840
+    second: multi_Skeleton_Processed_13
+  - first:
+      213: -8782671122732942095
+    second: multi_Skeleton_Processed_14
+  - first:
+      213: -7666565515902431277
+    second: multi_Skeleton_Processed_15
+  - first:
+      213: -8663171058528124448
+    second: multi_Skeleton_Processed_idle_00
+  - first:
+      213: 6011350649460405388
+    second: multi_Skeleton_Processed_idle_01
+  - first:
+      213: 1819441207236174542
+    second: multi_Skeleton_Processed_idle_02
+  - first:
+      213: 1880305434408310614
+    second: multi_Skeleton_Processed_idle_03
+  - first:
+      213: 689861600513046718
+    second: multi_Skeleton_Processed_walk_00
+  - first:
+      213: -864488117745632499
+    second: multi_Skeleton_Processed_walk_01
+  - first:
+      213: -5279475089213579951
+    second: multi_Skeleton_Processed_walk_02
+  - first:
+      213: 9171729191281388076
+    second: multi_Skeleton_Processed_walk_03
+  - first:
+      213: -989104866731121119
+    second: multi_Skeleton_Processed_attack_00
+  - first:
+      213: 7438003535129710162
+    second: multi_Skeleton_Processed_attack_01
+  - first:
+      213: -534933372746409712
+    second: multi_Skeleton_Processed_attack_02
+  - first:
+      213: -5570373051833470783
+    second: multi_Skeleton_Processed_attack_03
+  - first:
+      213: -5675985294944099613
+    second: multi_Skeleton_Processed_die_00
+  - first:
+      213: 5320654507161849892
+    second: multi_Skeleton_Processed_die_01
+  - first:
+      213: -7566858308499807676
+    second: multi_Skeleton_Processed_die_02
+  - first:
+      213: -7344653539170020347
+    second: multi_Skeleton_Processed_die_03
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 561
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e18cfb52db36c780800000000000000
+      internalID: -8663171058528124448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 561
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c84b661f09b9c6350800000000000000
+      internalID: 6011350649460405388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 561
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec2250f5324ff3910800000000000000
+      internalID: 1819441207236174542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 561
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 657d42f84df281a10800000000000000
+      internalID: 1880305434408310614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 374
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb833ca7871e29900800000000000000
+      internalID: 689861600513046718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 374
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0bb93d13a8b004f0800000000000000
+      internalID: -864488117745632499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 374
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15d96e2d0698bb6b0800000000000000
+      internalID: -5279475089213579951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 374
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2a68660b17884f70800000000000000
+      internalID: 9171729191281388076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 187
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 126a1ec3d5ef542f0800000000000000
+      internalID: -989104866731121119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 187
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25e81859ec8193760800000000000000
+      internalID: 7438003535129710162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 187
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 019d2f28ee88398f0800000000000000
+      internalID: -534933372746409712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 187
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c0be03f83f02b2b0800000000000000
+      internalID: -5570373051833470783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e224886279da31b0800000000000000
+      internalID: -5675985294944099613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 0
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42096ff8513c6d940800000000000000
+      internalID: 5320654507161849892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 0
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 442e728957e1df690800000000000000
+      internalID: -7566858308499807676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Skeleton_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 0
+        width: 189
+        height: 187
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 504947f058c821a90800000000000000
+      internalID: -7344653539170020347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Skeleton_Processed_0: -3439357184920200309
+      multi_Skeleton_Processed_1: 2040824868066767790
+      multi_Skeleton_Processed_10: 2749630099080587943
+      multi_Skeleton_Processed_11: 4040639336839031801
+      multi_Skeleton_Processed_12: -3477933438171713
+      multi_Skeleton_Processed_13: 2909391426158818840
+      multi_Skeleton_Processed_14: -8782671122732942095
+      multi_Skeleton_Processed_15: -7666565515902431277
+      multi_Skeleton_Processed_2: -4274924939161694190
+      multi_Skeleton_Processed_3: -2051079303042124191
+      multi_Skeleton_Processed_4: -6780472984299751030
+      multi_Skeleton_Processed_5: -2607345682103644720
+      multi_Skeleton_Processed_6: 4679495308894650128
+      multi_Skeleton_Processed_7: 3108697141632294846
+      multi_Skeleton_Processed_8: -6541657852517566362
+      multi_Skeleton_Processed_9: -2493890974521891510
+      multi_Skeleton_Processed_attack_00: -989104866731121119
+      multi_Skeleton_Processed_attack_01: 7438003535129710162
+      multi_Skeleton_Processed_attack_02: -534933372746409712
+      multi_Skeleton_Processed_attack_03: -5570373051833470783
+      multi_Skeleton_Processed_die_00: -5675985294944099613
+      multi_Skeleton_Processed_die_01: 5320654507161849892
+      multi_Skeleton_Processed_die_02: -7566858308499807676
+      multi_Skeleton_Processed_die_03: -7344653539170020347
+      multi_Skeleton_Processed_idle_00: -8663171058528124448
+      multi_Skeleton_Processed_idle_01: 6011350649460405388
+      multi_Skeleton_Processed_idle_02: 1819441207236174542
+      multi_Skeleton_Processed_idle_03: 1880305434408310614
+      multi_Skeleton_Processed_walk_00: 689861600513046718
+      multi_Skeleton_Processed_walk_01: -864488117745632499
+      multi_Skeleton_Processed_walk_02: -5279475089213579951
+      multi_Skeleton_Processed_walk_03: 9171729191281388076
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

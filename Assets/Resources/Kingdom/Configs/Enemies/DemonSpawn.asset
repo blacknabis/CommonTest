@@ -15,8 +15,7 @@ MonoBehaviour:
   EnemyId: DemonSpawn
   DisplayName: Demon Spawn
   EnemyType: 0
-  Sprite: {fileID: 0}
-  RuntimeSpriteResourcePath: Sprites/Enemies/DemonSpawn
+  RuntimeAnimatorControllerPath: Animations/Enemies/DemonSpawn/DemonSpawn
   Tint: {r: 1, g: 1, b: 1, a: 1}
   VisualScale: 0.66
   MaxHp: 300
