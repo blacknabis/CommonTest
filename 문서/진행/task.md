@@ -3,6 +3,27 @@
 > 기준 문서: `문서/완료/2026_02_16/월드맵_업그레이드_영웅관리소_플랜_2026_02_16.md`
 > 마지막 갱신: 2026-02-19 (타워·영웅 구현 진행)
 
+## 현재 메인 트랙: AISpriteProcessor 스마트슬라이스 애니메이션 연동
+> 기준 문서: `문서/진행/AISpriteProcessor_스마트슬라이스_애니메이션연동_실행계획_2026_02_21.md`
+
+### Phase 0. 문서/정책 동기화
+- [x] 실행계획 문서 생성
+- [x] `task.md` 트랙 동기화
+
+### Phase 1. 런타임 액션 분해 로더
+- [x] `SpawnManager`에서 `multi_*` 단일 시트 이름 기반 액션 분해(`idle/walk/attack/die`)
+- [x] 기존 액션 경로 후보 탐색은 폴백으로 유지
+
+### Phase 2. 게임 시작 전 검증 보강
+- [x] `GameScene` 누락 검증에서 `multi_*` 단일 시트 액션 포함 허용
+- [x] 누락 로그에 multi sheet 파싱 여부 표시
+
+### Phase 3. 실기동 회귀
+- [x] Combat Integration Smoke Regression 재실행 성공 (`success=1, fail=0, scenarios=1`)
+- [ ] Stage 1 Goblin 기준 전투 진입 성공
+- [ ] Goblin `idle/walk/attack/die` 상태 재생 확인
+- [ ] 기존 분리 파일 방식 회귀 없음 확인
+
 ## 현재 메인 트랙: 적 유닛 구현 (Enemy Implementation)
 > 기준 문서: `문서/분석/적_유닛_상세_분석.md`
 > 구현 계획: `문서/진행/적_유닛_구현_계획_2026_02_19.md`

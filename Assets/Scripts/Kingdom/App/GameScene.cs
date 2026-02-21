@@ -740,14 +740,14 @@ namespace Kingdom.App
             for (int i = 0; i < RequiredEnemyActions.Length; i++)
             {
                 string action = RequiredEnemyActions[i];
-                if (TryResolveEnemyActionSpriteBinding(config, action, out _, out _))
+                if (TryResolveEnemyActionSpriteBinding(config, action, out _, out string actionReason))
                 {
                     continue;
                 }
 
                 BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> actionCandidates);
                 string candidateText = actionCandidates.Count > 0 ? string.Join(", ", actionCandidates) : "(none)";
-                missingActions.Add($"action={action}, candidates={candidateText}");
+                missingActions.Add($"action={action}, reason={NormalizeForLog(actionReason)}, candidates={candidateText}");
             }
 
             if (missingActions.Count > 0)
@@ -828,6 +828,13 @@ namespace Kingdom.App
                 return false;
             }
 
+            if (TryResolveEnemyActionFromMultiSheet(config.RuntimeSpriteResourcePath, action, out string multiReason))
+            {
+                resolvedPath = config.RuntimeSpriteResourcePath;
+                reason = multiReason;
+                return true;
+            }
+
             // 런타임 경로 + enemyId 네이밍 규칙으로 후보 경로를 생성한다.
             BuildEnemyActionPathCandidates(action, config.RuntimeSpriteResourcePath, config.EnemyId, out List<string> candidates);
             for (int i = 0; i < candidates.Count; i++)
@@ -841,7 +848,83 @@ namespace Kingdom.App
                 return true;
             }
 
-            reason = candidates.Count > 0 ? $"candidates={string.Join(", ", candidates)}" : "no candidates";
+            reason = candidates.Count > 0
+                ? $"multi={NormalizeForLog(multiReason)}, candidates={string.Join(", ", candidates)}"
+                : $"multi={NormalizeForLog(multiReason)}, no candidates";
+            return false;
+        }
+
+        // 단일 시트(multi_*)에서 액션 토큰 기반으로 프레임 포함 여부를 확인한다.
+        private static bool TryResolveEnemyActionFromMultiSheet(string runtimePath, string action, out string reason)
+        {
+            reason = string.Empty;
+            if (string.IsNullOrWhiteSpace(runtimePath) || string.IsNullOrWhiteSpace(action))
+            {
+                reason = "runtimePath/action empty";
+                return false;
+            }
+
+            Sprite[] sprites = Resources.LoadAll<Sprite>(runtimePath);
+            if (sprites == null || sprites.Length <= 0)
+            {
+                reason = "no sprites at runtimePath";
+                return false;
+            }
+
+            string[] aliases = GetEnemyActionAliases(action);
+            int matched = 0;
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite == null)
+                {
+                    continue;
+                }
+
+                if (!ContainsEnemyActionAliasToken(sprite.name, aliases))
+                {
+                    continue;
+                }
+
+                matched++;
+            }
+
+            if (matched > 0)
+            {
+                reason = $"multi-sheet parsed ({action}={matched})";
+                return true;
+            }
+
+            reason = $"multi-sheet loaded but no {action} token";
+            return false;
+        }
+
+        // 스프라이트 이름 토큰에서 액션 alias 존재 여부를 확인한다.
+        private static bool ContainsEnemyActionAliasToken(string spriteName, string[] aliases)
+        {
+            if (string.IsNullOrWhiteSpace(spriteName) || aliases == null || aliases.Length <= 0)
+            {
+                return false;
+            }
+
+            string[] tokens = spriteName.Split('_');
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; tokenIndex++)
+            {
+                string token = tokens[tokenIndex];
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    continue;
+                }
+
+                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
+                {
+                    if (string.Equals(token, aliases[aliasIndex], System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 

@@ -346,7 +346,21 @@ namespace Kingdom.Game
             string runtimePath = config != null ? config.RuntimeSpriteResourcePath : string.Empty;
             string enemyId = config != null ? (config.EnemyId ?? string.Empty).Trim() : string.Empty;
 
-            if (TryLoadSprites(runtimePath, out Sprite[] byPath))
+            bool parsedFromMultiSheet = TrySplitEnemyActionFramesFromSingleSheet(
+                runtimePath,
+                out Sprite[] idleBySheet,
+                out Sprite[] moveBySheet,
+                out Sprite[] attackBySheet,
+                out Sprite[] dieBySheet);
+
+            if (parsedFromMultiSheet)
+            {
+                idleFrames = idleBySheet;
+                moveFrames = moveBySheet;
+                attackFrames = attackBySheet;
+                dieFrames = dieBySheet;
+            }
+            else if (TryLoadSprites(runtimePath, out Sprite[] byPath))
             {
                 moveFrames = byPath;
             }
@@ -370,9 +384,12 @@ namespace Kingdom.Game
                 }
             }
 
-            idleFrames = TryResolveEnemyActionFrames("idle", runtimePath, enemyId, moveFrames);
-            attackFrames = TryResolveEnemyActionFrames("attack", runtimePath, enemyId, moveFrames);
-            dieFrames = TryResolveEnemyActionFrames("die", runtimePath, enemyId, attackFrames);
+            if (!parsedFromMultiSheet)
+            {
+                idleFrames = TryResolveEnemyActionFrames("idle", runtimePath, enemyId, moveFrames);
+                attackFrames = TryResolveEnemyActionFrames("attack", runtimePath, enemyId, moveFrames);
+                dieFrames = TryResolveEnemyActionFrames("die", runtimePath, enemyId, attackFrames);
+            }
 
             if (moveFrames == null || moveFrames.Length <= 0)
             {
@@ -397,6 +414,31 @@ namespace Kingdom.Game
             }
         }
 
+        private static bool TrySplitEnemyActionFramesFromSingleSheet(
+            string resourcePath,
+            out Sprite[] idleFrames,
+            out Sprite[] moveFrames,
+            out Sprite[] attackFrames,
+            out Sprite[] dieFrames)
+        {
+            idleFrames = Array.Empty<Sprite>();
+            moveFrames = Array.Empty<Sprite>();
+            attackFrames = Array.Empty<Sprite>();
+            dieFrames = Array.Empty<Sprite>();
+
+            if (!TryLoadSprites(resourcePath, out Sprite[] allSprites) || allSprites.Length <= 0)
+            {
+                return false;
+            }
+
+            idleFrames = FilterSpritesByActionAliases(allSprites, "idle");
+            moveFrames = FilterSpritesByActionAliases(allSprites, "walk", "move", "run");
+            attackFrames = FilterSpritesByActionAliases(allSprites, "attack", "atk");
+            dieFrames = FilterSpritesByActionAliases(allSprites, "die", "death", "dead");
+
+            return idleFrames.Length > 0 || moveFrames.Length > 0 || attackFrames.Length > 0 || dieFrames.Length > 0;
+        }
+
         private static Sprite[] TryResolveEnemyActionFrames(string action, string runtimePath, string enemyId, Sprite[] fallback)
         {
             var candidates = BuildEnemyActionCandidates(action, runtimePath, enemyId);
@@ -409,6 +451,106 @@ namespace Kingdom.Game
             }
 
             return fallback ?? Array.Empty<Sprite>();
+        }
+
+        private static Sprite[] FilterSpritesByActionAliases(Sprite[] sprites, params string[] aliases)
+        {
+            if (sprites == null || sprites.Length <= 0 || aliases == null || aliases.Length <= 0)
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            var filtered = new List<Sprite>(sprites.Length);
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite == null || !SpriteNameContainsAnyAliasToken(sprite.name, aliases))
+                {
+                    continue;
+                }
+
+                filtered.Add(sprite);
+            }
+
+            if (filtered.Count <= 0)
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            filtered.Sort(CompareSpriteByActionFrame);
+            return filtered.ToArray();
+        }
+
+        private static bool SpriteNameContainsAnyAliasToken(string name, string[] aliases)
+        {
+            if (string.IsNullOrWhiteSpace(name) || aliases == null || aliases.Length <= 0)
+            {
+                return false;
+            }
+
+            string[] tokens = name.Split('_');
+            for (int tokenIndex = 0; tokenIndex < tokens.Length; tokenIndex++)
+            {
+                string token = tokens[tokenIndex];
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    continue;
+                }
+
+                for (int aliasIndex = 0; aliasIndex < aliases.Length; aliasIndex++)
+                {
+                    if (string.Equals(token, aliases[aliasIndex], StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static int CompareSpriteByActionFrame(Sprite a, Sprite b)
+        {
+            if (a == null && b == null)
+            {
+                return 0;
+            }
+
+            if (a == null)
+            {
+                return 1;
+            }
+
+            if (b == null)
+            {
+                return -1;
+            }
+
+            int aIndex = ParseTrailingFrameIndex(a.name);
+            int bIndex = ParseTrailingFrameIndex(b.name);
+            if (aIndex != bIndex)
+            {
+                return aIndex.CompareTo(bIndex);
+            }
+
+            return string.Compare(a.name, b.name, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static int ParseTrailingFrameIndex(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return int.MaxValue;
+            }
+
+            string[] tokens = name.Split('_');
+            if (tokens.Length <= 0)
+            {
+                return int.MaxValue;
+            }
+
+            string last = tokens[tokens.Length - 1];
+            return int.TryParse(last, out int parsed) ? parsed : int.MaxValue;
         }
 
         private static List<string> BuildEnemyActionCandidates(string action, string runtimePath, string enemyId)
