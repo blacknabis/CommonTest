@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using Common.Extensions;
 
 namespace Kingdom.Game.UI
@@ -14,7 +13,6 @@ namespace Kingdom.Game.UI
         [SerializeField] private Vector3 _offset = new Vector3(0, 0.08f, 0);
 
         private ISelectableTarget _target;
-        private CanvasGroup _canvasGroup;
         private Vector3 _originalFillScale;
         private Vector3 _originalFillLocalPosition;
 
@@ -23,12 +21,6 @@ namespace Kingdom.Game.UI
             if (_fillRenderer.IsNull())
             {
                 _fillRenderer = ResolveFillRenderer();
-            }
-
-            _canvasGroup = GetComponent<CanvasGroup>();
-            if (_canvasGroup.IsNull())
-            {
-                _canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
             if (_fillRenderer.IsNotNull())
@@ -104,11 +96,6 @@ namespace Kingdom.Game.UI
 
             UpdatePosition();
             UpdateHp();
-            
-            if (_canvasGroup.IsNotNull())
-            {
-                _canvasGroup.alpha = 1f;
-            }
         }
 
         private void UpdatePosition()

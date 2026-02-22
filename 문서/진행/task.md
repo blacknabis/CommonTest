@@ -312,16 +312,16 @@
 - [x] 상태 매트릭스/동기화 규칙/리스크 플레이북 추가
 
 ### Phase 1. Selection 프리팹 자산화
-- [ ] `SelectionSystem.prefab` 생성 (`SelectionController` + `SelectionCircleVisual`)
-- [ ] `SelectionController._circleVisual` 직렬화 연결
+- [x] `SelectionSystem.prefab` 생성 (`SelectionController` + `SelectionCircleVisual`)
+- [x] `SelectionController._circleVisual` 직렬화 연결
 
 ### Phase 2. GameScene 부트스트랩 정리
 - [x] `Resources/UI/SelectionSystem` 우선 로드
 - [x] 실패 시 런타임 생성 fallback 유지
 
 ### Phase 3. HP바 프리팹 정합성 고정
-- [ ] `WorldHpBar.prefab` 루트 컴포넌트/Fill 바인딩 확정
-- [ ] `WorldHpBarManager` 자동복구는 안전망으로만 유지
+- [x] `WorldHpBar.prefab` 루트 컴포넌트/Fill 바인딩 확정
+- [x] `WorldHpBarManager` 자동복구는 안전망으로만 유지
 
 ### Phase 4. UX 파라미터 확정
 - [x] HP바 좌측 고정 감소 반영
@@ -329,9 +329,17 @@
 - [ ] 선택 원 스케일 상한/하한 최종 튜닝
 
 ### Phase 4.5. 기술 부채 정리
-- [ ] `WorldHpBar`의 `CanvasGroup` 의존 제거
+- [x] `WorldHpBar`의 `CanvasGroup` 의존 제거
 - [x] 선택-타워 클릭 충돌 방지(방안 B) 반영
 
 ### Phase 5. 회귀 검증
 - [ ] 수동 시나리오(병사/적/영웅/타워 클릭 + HP바 동작) 완료
-- [ ] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0 재확인
+- [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0 재확인
+
+## 진행 메모 (2026-02-22 17:07:40)
+- [x] Selection/HP바 프리팹 실자산화
+    - [x] `Tools/Kingdom/Build SelectionSystem Prefab` 추가 및 `Assets/Resources/UI/SelectionSystem.prefab` 생성
+    - [x] `Tools/Kingdom/Build WorldHpBar Prefab` 추가 및 `Assets/Resources/UI/WorldHpBar.prefab` 재생성
+- [x] 런타임 기술 부채 정리
+    - [x] `WorldHpBar`의 `CanvasGroup` 의존 제거
+- [ ] 실기동 수동 시나리오 검증 남음
