@@ -1,14 +1,20 @@
 using Common;
+using Common.Extensions;
 using Common.Utils;
 using Cysharp.Threading.Tasks;
 using Kingdom.Audio;
 using Kingdom.Game;
+using Kingdom.Game.UI;
 using Kingdom.Save;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Kingdom.App
 {
@@ -25,6 +31,7 @@ namespace Kingdom.App
         [SerializeField] private bool isHeroRoleSmokeRegressionRunning;
         [SerializeField] private bool isCombatIntegrationSmokeRegressionRunning;
         [SerializeField] private bool isBarracksMeleeSmokeRegressionRunning;
+        [SerializeField] private bool isSelectionUiSmokeRegressionRunning;
 
         protected override string GetSceneNamespacePrefix()
         {
@@ -99,6 +106,12 @@ namespace Kingdom.App
             StartBarracksMeleeSmokeRegression();
         }
 
+        [ContextMenu("Run Selection + HP UI Smoke Regression")]
+        private void RunSelectionUiSmokeRegression()
+        {
+            StartSelectionUiSmokeRegression();
+        }
+
         public bool StartWorldMapMetaPopupRegression(int loopCount = 20, float dwellSeconds = 0.08f)
         {
             if (isWorldMapMetaRegressionRunning)
@@ -170,6 +183,18 @@ namespace Kingdom.App
             }
 
             RunBarracksMeleeSmokeRegressionAsync().Forget();
+            return true;
+        }
+
+        public bool StartSelectionUiSmokeRegression()
+        {
+            if (isSelectionUiSmokeRegressionRunning)
+            {
+                Debug.Log("[KingdomAppManager] Selection UI smoke regression is already running.");
+                return false;
+            }
+
+            RunSelectionUiSmokeRegressionAsync().Forget();
             return true;
         }
 
@@ -1036,6 +1061,420 @@ namespace Kingdom.App
 
                 isBarracksMeleeSmokeRegressionRunning = false;
             }
+        }
+
+        private async UniTaskVoid RunSelectionUiSmokeRegressionAsync()
+        {
+            isSelectionUiSmokeRegressionRunning = true;
+            int successCount = 0;
+            int failCount = 0;
+
+            try
+            {
+                Debug.Log("[KingdomAppManager] Selection UI smoke regression started.");
+                bool toGame = await EnsureSceneLoadedByNameAsync("GameScene", 12f);
+                if (toGame)
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                    Debug.Log("[KingdomAppManager] Selection UI smoke aborted. Failed to enter GameScene.");
+                    return;
+                }
+
+                Debug.Log("[KingdomAppManager] Selection UI smoke step: entered GameScene.");
+                SelectionUiRuntimeRefs runtimeRefs = await WaitForSelectionUiRuntimeRefsAsync(6f);
+                if (runtimeRefs.IsComplete)
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                    Debug.Log(
+                        $"[KingdomAppManager] Selection UI smoke missing refs. " +
+                        $"selection={runtimeRefs.SelectionController.IsNotNull()}, " +
+                        $"circle={runtimeRefs.CircleVisual.IsNotNull()}, " +
+                        $"infoPanel={runtimeRefs.InfoPanel.IsNotNull()}, " +
+                        $"hpBarMgr={runtimeRefs.HpBarManager.IsNotNull()}, " +
+                        $"state={runtimeRefs.StateController.IsNotNull()}, " +
+                        $"economy={runtimeRefs.EconomyManager.IsNotNull()}, " +
+                        $"tower={runtimeRefs.TowerManager.IsNotNull()}, " +
+                        $"hero={runtimeRefs.HeroController.IsNotNull()}.");
+                    Debug.Log("[KingdomAppManager] Selection UI smoke aborted. Missing runtime references.");
+                    return;
+                }
+
+                Debug.Log("[KingdomAppManager] Selection UI smoke step: runtime references resolved.");
+                SelectionController selectionController = runtimeRefs.SelectionController;
+                SelectionCircleVisual circleVisual = runtimeRefs.CircleVisual;
+                SelectionInfoPanel infoPanel = runtimeRefs.InfoPanel;
+                WorldHpBarManager hpBarManager = runtimeRefs.HpBarManager;
+                GameStateController stateController = runtimeRefs.StateController;
+                InGameEconomyManager economyManager = runtimeRefs.EconomyManager;
+                TowerManager towerManager = runtimeRefs.TowerManager;
+                HeroController heroController = runtimeRefs.HeroController;
+
+                economyManager.AddGold(3000);
+                bool barracksBuilt = towerManager.TryBuildNextTower(TowerType.Barracks);
+                if (barracksBuilt)
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                    Debug.Log("[KingdomAppManager] Selection UI smoke warning. Failed to build barracks.");
+                }
+
+                Debug.Log($"[KingdomAppManager] Selection UI smoke step: barracksBuilt={barracksBuilt}.");
+
+                ISelectableTarget heroTarget = heroController;
+                if (heroTarget.IsNotNull())
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                }
+
+                BarracksSoldierRuntime soldierTarget = FindFirstObjectByType<BarracksSoldierRuntime>();
+                if (soldierTarget.IsNotNull())
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                    Debug.Log("[KingdomAppManager] Selection UI smoke warning. Soldier target not found.");
+                }
+
+                Debug.Log($"[KingdomAppManager] Selection UI smoke step: soldierFound={soldierTarget.IsNotNull()}.");
+
+                ISelectableTarget towerTarget = FindFirstSelectableByUnitType("Tower");
+                if (towerTarget.IsNotNull())
+                {
+                    successCount++;
+                }
+                else
+                {
+                    failCount++;
+                    Debug.Log("[KingdomAppManager] Selection UI smoke warning. Tower target not found.");
+                }
+
+                Debug.Log($"[KingdomAppManager] Selection UI smoke step: towerFound={towerTarget.IsNotNull()}.");
+
+                if (stateController.CurrentState == GameFlowState.WaveReady)
+                {
+                    stateController.TryEarlyCallNextWave();
+                }
+
+                EnemyRuntime enemyTarget = FindFirstObjectByType<EnemyRuntime>();
+                if (enemyTarget.IsNotNull())
+                {
+                    successCount++;
+                }
+                else
+                {
+                    Debug.Log("[KingdomAppManager] Selection UI smoke warning. Enemy target not found.");
+                }
+
+                Debug.Log($"[KingdomAppManager] Selection UI smoke step: enemyFound={enemyTarget.IsNotNull()}.");
+
+                if (heroTarget.IsNotNull())
+                {
+                    if (ValidateSelectionUiForTarget(selectionController, circleVisual, infoPanel, hpBarManager, heroTarget, true, "Hero"))
+                    {
+                        successCount++;
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
+                }
+
+                if (enemyTarget.IsNotNull())
+                {
+                    if (ValidateSelectionUiForTarget(selectionController, circleVisual, infoPanel, hpBarManager, enemyTarget, true, "Enemy"))
+                    {
+                        successCount++;
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
+                }
+
+                if (soldierTarget.IsNotNull())
+                {
+                    if (ValidateSelectionUiForTarget(selectionController, circleVisual, infoPanel, hpBarManager, soldierTarget, true, "Soldier"))
+                    {
+                        successCount++;
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
+                }
+
+                if (towerTarget.IsNotNull())
+                {
+                    if (ValidateSelectionUiForTarget(selectionController, circleVisual, infoPanel, hpBarManager, towerTarget, false, "Tower"))
+                    {
+                        successCount++;
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
+                }
+
+                selectionController.Deselect();
+
+                Debug.Log($"[KingdomAppManager] Selection UI smoke regression finished. success={successCount}, fail={failCount}");
+            }
+            finally
+            {
+                isSelectionUiSmokeRegressionRunning = false;
+            }
+        }
+
+        private static async UniTask<SelectionUiRuntimeRefs> WaitForSelectionUiRuntimeRefsAsync(float timeoutSec)
+        {
+            float safeTimeout = Mathf.Max(0.5f, timeoutSec);
+            float startedAt = Time.realtimeSinceStartup;
+            SelectionUiRuntimeRefs runtimeRefs = CollectSelectionUiRuntimeRefs();
+
+            while (!runtimeRefs.IsComplete && Time.realtimeSinceStartup - startedAt < safeTimeout)
+            {
+                await UniTask.Delay(50, DelayType.UnscaledDeltaTime);
+                runtimeRefs = CollectSelectionUiRuntimeRefs();
+            }
+
+            return runtimeRefs;
+        }
+
+        private static SelectionUiRuntimeRefs CollectSelectionUiRuntimeRefs()
+        {
+            return new SelectionUiRuntimeRefs
+            {
+                SelectionController = FindFirstObjectByType<SelectionController>(),
+                CircleVisual = FindComponentIncludingInactive<SelectionCircleVisual>(),
+                InfoPanel = FindComponentIncludingInactive<SelectionInfoPanel>(),
+                HpBarManager = FindFirstObjectByType<WorldHpBarManager>(),
+                StateController = FindFirstObjectByType<GameStateController>(),
+                EconomyManager = FindFirstObjectByType<InGameEconomyManager>(),
+                TowerManager = FindFirstObjectByType<TowerManager>(),
+                HeroController = FindFirstObjectByType<HeroController>()
+            };
+        }
+
+        private static T FindComponentIncludingInactive<T>() where T : Component
+        {
+            T[] components = FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < components.Length; i++)
+            {
+                if (components[i].IsNotNull())
+                {
+                    return components[i];
+                }
+            }
+
+            return null;
+        }
+
+        private static async UniTask<bool> EnsureSceneLoadedByNameAsync(string sceneName, float timeoutSec)
+        {
+            if (string.IsNullOrWhiteSpace(sceneName))
+            {
+                return false;
+            }
+
+            Scene active = SceneManager.GetActiveScene();
+            if (string.Equals(active.name, sceneName, StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            if (loadOperation == null)
+            {
+                return false;
+            }
+
+            float startedAt = Time.realtimeSinceStartup;
+            float safeTimeout = Mathf.Max(0.5f, timeoutSec);
+            while (!loadOperation.isDone && Time.realtimeSinceStartup - startedAt < safeTimeout)
+            {
+                await UniTask.Delay(50, DelayType.UnscaledDeltaTime);
+            }
+
+            return string.Equals(SceneManager.GetActiveScene().name, sceneName, StringComparison.Ordinal);
+        }
+
+        private static ISelectableTarget FindFirstSelectableByUnitType(string unitType)
+        {
+            if (string.IsNullOrWhiteSpace(unitType))
+            {
+                return null;
+            }
+
+            MonoBehaviour[] allBehaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+            for (int i = 0; i < allBehaviours.Length; i++)
+            {
+                MonoBehaviour behaviour = allBehaviours[i];
+                if (behaviour.IsNull() || behaviour is not ISelectableTarget selectable)
+                {
+                    continue;
+                }
+
+                if (!selectable.IsAlive)
+                {
+                    continue;
+                }
+
+                if (!string.Equals(selectable.UnitType, unitType, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                return selectable;
+            }
+
+            return null;
+        }
+
+        private static bool ValidateSelectionUiForTarget(
+            SelectionController selectionController,
+            SelectionCircleVisual circleVisual,
+            SelectionInfoPanel infoPanel,
+            WorldHpBarManager hpBarManager,
+            ISelectableTarget target,
+            bool requireHpBar,
+            string label)
+        {
+            if (selectionController.IsNull() || circleVisual.IsNull() || infoPanel.IsNull() || target.IsNull())
+            {
+                Debug.Log($"[KingdomAppManager] Selection UI smoke {label} failed. missing references.");
+                return false;
+            }
+
+            selectionController.Select(target);
+
+            bool selectedOk = ReferenceEquals(selectionController.CurrentSelected, target);
+            bool circleOk = circleVisual.gameObject.activeInHierarchy;
+
+            SelectionPanelSnapshot snapshot = CaptureSelectionPanelSnapshot(infoPanel);
+            bool panelVisibleOk = snapshot.Visible;
+            bool nameOk = !string.IsNullOrWhiteSpace(snapshot.NameText)
+                          && string.Equals(snapshot.NameText.Trim(), target.DisplayName?.Trim(), StringComparison.Ordinal);
+            bool hpTextOk = !string.IsNullOrWhiteSpace(snapshot.HpText) && snapshot.HpText.Contains("/");
+            bool sliderOk = snapshot.SliderValue >= 0f
+                            && Mathf.Abs(snapshot.SliderValue - target.HpRatio) <= 0.08f;
+
+            bool hpBarOk = true;
+            float hpOffsetY = 0f;
+            if (requireHpBar)
+            {
+                hpBarOk = TryValidateActiveHpBarAboveTarget(hpBarManager, target, out hpOffsetY);
+            }
+
+            bool passed = selectedOk && circleOk && panelVisibleOk && nameOk && hpTextOk && sliderOk && hpBarOk;
+            Debug.Log(
+                $"[KingdomAppManager] Selection UI smoke {label}. pass={passed}, selected={selectedOk}, circle={circleOk}, " +
+                $"panel={panelVisibleOk}, name={nameOk}, hpText={hpTextOk}, slider={sliderOk}, hpBar={hpBarOk}, hpOffsetY={hpOffsetY:0.000}");
+            return passed;
+        }
+
+        private static SelectionPanelSnapshot CaptureSelectionPanelSnapshot(SelectionInfoPanel panel)
+        {
+            if (panel.IsNull())
+            {
+                return default;
+            }
+
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            FieldInfo panelRootField = typeof(SelectionInfoPanel).GetField("_panelRoot", flags);
+            FieldInfo txtNameField = typeof(SelectionInfoPanel).GetField("_txtName", flags);
+            FieldInfo txtHpField = typeof(SelectionInfoPanel).GetField("_txtHp", flags);
+            FieldInfo hpSliderField = typeof(SelectionInfoPanel).GetField("_hpSlider", flags);
+
+            GameObject panelRoot = panelRootField?.GetValue(panel) as GameObject;
+            TextMeshProUGUI txtName = txtNameField?.GetValue(panel) as TextMeshProUGUI;
+            TextMeshProUGUI txtHp = txtHpField?.GetValue(panel) as TextMeshProUGUI;
+            Slider hpSlider = hpSliderField?.GetValue(panel) as Slider;
+
+            return new SelectionPanelSnapshot
+            {
+                Visible = panelRoot.IsNotNull() && panelRoot.activeSelf,
+                NameText = txtName.IsNotNull() ? txtName.text : string.Empty,
+                HpText = txtHp.IsNotNull() ? txtHp.text : string.Empty,
+                SliderValue = hpSlider.IsNotNull() ? hpSlider.value : -1f
+            };
+        }
+
+        private static bool TryValidateActiveHpBarAboveTarget(WorldHpBarManager manager, ISelectableTarget target, out float offsetY)
+        {
+            offsetY = 0f;
+            if (manager.IsNull() || target.IsNull())
+            {
+                return false;
+            }
+
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.NonPublic;
+            FieldInfo activeBarsField = typeof(WorldHpBarManager).GetField("_activeBars", flags);
+            if (activeBarsField.IsNull())
+            {
+                return false;
+            }
+
+            IDictionary activeBars = activeBarsField.GetValue(manager) as IDictionary;
+            if (activeBars.IsNull() || !activeBars.Contains(target))
+            {
+                return false;
+            }
+
+            WorldHpBar bar = activeBars[target] as WorldHpBar;
+            if (bar.IsNull() || !bar.gameObject.activeInHierarchy)
+            {
+                return false;
+            }
+
+            offsetY = bar.transform.position.y - target.Position.y;
+            return offsetY > 0.02f;
+        }
+
+        private struct SelectionPanelSnapshot
+        {
+            public bool Visible;
+            public string NameText;
+            public string HpText;
+            public float SliderValue;
+        }
+
+        private struct SelectionUiRuntimeRefs
+        {
+            public SelectionController SelectionController;
+            public SelectionCircleVisual CircleVisual;
+            public SelectionInfoPanel InfoPanel;
+            public WorldHpBarManager HpBarManager;
+            public GameStateController StateController;
+            public InGameEconomyManager EconomyManager;
+            public TowerManager TowerManager;
+            public HeroController HeroController;
+
+            public bool IsComplete =>
+                SelectionController.IsNotNull()
+                && CircleVisual.IsNotNull()
+                && InfoPanel.IsNotNull()
+                && HpBarManager.IsNotNull()
+                && StateController.IsNotNull()
+                && EconomyManager.IsNotNull()
+                && TowerManager.IsNotNull()
+                && HeroController.IsNotNull();
         }
 
         private static int FindTowerIdByType(TowerManager towerManager, TowerType towerType)

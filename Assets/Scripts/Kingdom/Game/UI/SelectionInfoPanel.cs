@@ -45,6 +45,10 @@ namespace Kingdom.Game.UI
 
             if (_hpSlider.IsNull()) _hpSlider = GetComponentInChildren<Slider>();
             if (_panelRoot.IsNull()) _panelRoot = gameObject;
+            if (_txtHp.IsNull())
+            {
+                _txtHp = CreateRuntimeHpLabel();
+            }
 
             if (SelectionController.Instance.IsNotNull())
             {
@@ -150,6 +154,48 @@ namespace Kingdom.Game.UI
             {
                 _hpSlider.value = _currentTarget.HpRatio;
             }
+        }
+
+        private TextMeshProUGUI CreateRuntimeHpLabel()
+        {
+            Transform parent = _panelRoot.IsNotNull() ? _panelRoot.transform : transform;
+            if (parent.IsNull())
+            {
+                return null;
+            }
+
+            GameObject labelGo = new GameObject("txtHpRuntime", typeof(RectTransform), typeof(TextMeshProUGUI));
+            labelGo.transform.SetParent(parent, false);
+
+            TextMeshProUGUI hpLabel = labelGo.GetComponent<TextMeshProUGUI>();
+            if (hpLabel.IsNull())
+            {
+                return null;
+            }
+
+            if (_txtName.IsNotNull())
+            {
+                hpLabel.font = _txtName.font;
+                hpLabel.fontSharedMaterial = _txtName.fontSharedMaterial;
+                hpLabel.color = _txtName.color;
+            }
+            else
+            {
+                hpLabel.color = Color.white;
+            }
+
+            hpLabel.fontSize = 24f;
+            hpLabel.alignment = TextAlignmentOptions.Center;
+            hpLabel.raycastTarget = false;
+
+            RectTransform rect = hpLabel.rectTransform;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = new Vector2(0f, -26f);
+            rect.sizeDelta = new Vector2(220f, 32f);
+
+            return hpLabel;
         }
     }
 }

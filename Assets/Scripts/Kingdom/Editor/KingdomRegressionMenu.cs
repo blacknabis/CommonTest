@@ -100,5 +100,24 @@ namespace Kingdom.Editor
 
             manager.StartBarracksMeleeSmokeRegression();
         }
+
+        [MenuItem("Tools/Kingdom/Run Selection + HP UI Smoke Regression")]
+        private static void RunSelectionUiSmokeRegression()
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] Enter Play Mode first.");
+                return;
+            }
+
+            KingdomAppManager manager = Object.FindFirstObjectByType<KingdomAppManager>();
+            if (manager == null)
+            {
+                Debug.LogWarning("[KingdomRegressionMenu] KingdomAppManager not found in active scene.");
+                return;
+            }
+
+            manager.StartSelectionUiSmokeRegression();
+        }
     }
 }

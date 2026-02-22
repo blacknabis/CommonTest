@@ -345,3 +345,14 @@
 - [x] 자동 회귀 검증
     - [x] `Tools/Kingdom/Run Barracks Melee Smoke Regression` 결과 `success=10, fail=0`
 - [ ] 실기동 수동 시나리오 검증 남음
+
+## 진행 메모 (2026-02-22 17:52:15)
+- [x] Selection+HP UI 스모크 회귀 보강
+    - [x] 비활성 오브젝트 포함 runtime reference 수집(`SelectionInfoPanel`/`SelectionCircleVisual`)으로 누락 오탐 제거
+    - [x] `SelectionInfoPanel` 런타임 HP 라벨 자동 생성(`txtHpRuntime`)으로 HP 텍스트 표기 보강
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 통과 (`success=9, fail=0`)
+- [x] 코드 컴파일 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+- [ ] 수동 시나리오 마무리
+    - [ ] 적 선택 포함 수동 클릭 검증
+    - [ ] HP바 머리 위 위치 타입별 최종 튜닝
