@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Extensions;
 using UnityEngine;
+using Kingdom.Game.UI;
 
 namespace Kingdom.Game
 {
     /// <summary>
     /// Hero runtime loop: state machine + combat + progression.
     /// </summary>
-    public class HeroController : MonoBehaviour, IDamageable
+    public class HeroController : BaseUnit
     {
         private const string HeroInGameSpriteResourcePathPrefix = "UI/Sprites/Heroes/InGame/";
         private const string GeneratedHeroManifestResourcePath = "Sprites/Heroes/manifest";
@@ -34,7 +36,7 @@ namespace Kingdom.Game
         private float _activeSkillCooldownLeft;
         private float _attackVisualHoldLeft;
         private float _guardBuffLeft;
-        private float _currentHp;
+        // private float _currentHp; // BaseUnit에서 상속받음
         private float _respawnLeft;
 
         private int _level = 1;
@@ -65,7 +67,16 @@ namespace Kingdom.Game
         public int CurrentLevel => _level;
         public int CurrentXp => _xp;
         public HeroRuntimeState RuntimeState => _runtimeState;
-        public bool IsAlive => _currentHp > 0f;
+
+        // ISelectableTarget 오버라이드
+        public override string DisplayName => heroConfig != null ? heroConfig.DisplayName : name;
+        public override string UnitType => "Hero";
+
+        public override void OnSelected()
+        {
+            base.OnSelected();
+            // Hero 선택 시 전용 대사 사운드 등을 여기서 호출 가능
+        }
 
         public void Configure(SpawnManager spawnManager, HeroConfig config, Vector3 spawnPosition)
         {
@@ -85,6 +96,11 @@ namespace Kingdom.Game
 
             EnsureVisual();
             RebindSpawnEvents();
+
+            if (WorldHpBarManager.Instance.IsNotNull())
+            {
+                WorldHpBarManager.Instance.TrackTarget(this);
+            }
         }
 
         private void Update()
@@ -116,7 +132,7 @@ namespace Kingdom.Game
             ClearSummons();
         }
 
-        public void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
+        public override void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
         {
             if (!IsAlive)
             {
@@ -718,6 +734,15 @@ namespace Kingdom.Game
 
             _renderer.sortingOrder = 35;
             transform.localScale = new Vector3(0.55f, 0.55f, 1f);
+
+            CircleCollider2D selectionCollider = GetComponent<CircleCollider2D>();
+            if (selectionCollider.IsNull())
+            {
+                selectionCollider = gameObject.AddComponent<CircleCollider2D>();
+            }
+
+            selectionCollider.isTrigger = true;
+            selectionCollider.radius = 0.38f;
         }
 
         private void LoadHeroAnimationFrames(HeroConfig config)
@@ -1124,3 +1149,6 @@ namespace Kingdom.Game
         }
     }
 }
+
+
+

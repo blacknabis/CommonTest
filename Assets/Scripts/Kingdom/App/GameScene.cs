@@ -1,9 +1,11 @@
 ﻿using Common.UI;
 using Common.Utils;
 using Common.App;
+using Common.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 using Kingdom.Game;
+using Kingdom.Game.UI;
 using Kingdom.WorldMap;
 using Kingdom.Save;
 using UnityEngine.EventSystems;
@@ -29,6 +31,7 @@ namespace Kingdom.App
         private const int DebugGrantGoldAmount = 500; // 디버그 골드 지급량
         private const string WaveStartSfxResourcePath = "Audio/SFX/UI_WaveStart_Heroic"; // 웨이브 시작 사운드 경로
         private const string WaveStartSfxFallbackResourcePath = "Audio/SFX/UI_Common_Click"; // 웨이브 시작 대체 사운드 경로
+        private const string WorldHpBarPrefabResourcePath = "UI/WorldHpBar"; // 월드 HP바 프리팹 경로
         private const float WaveStartBannerDurationSec = 1.2f; // 웨이브 시작 배너 노출 시간
         private const float WaveStartSfxVolumeScale = 0.85f; // 웨이브 시작 사운드 볼륨 스케일
         private const bool RequireCompleteRuntimeVisualData = true; // 필수 비주얼 데이터 누락 시 씬 시작 중단
@@ -89,6 +92,9 @@ namespace Kingdom.App
         private int _waveStartAnnouncedWave = -1; // 마지막 웨이브 시작 안내 인덱스
         private bool _waveStartSfxResolved; // 웨이브 시작 사운드 해석 완료 여부
         private AudioClip _waveStartSfxClip; // 웨이브 시작 사운드 캐시
+        private WorldHpBarManager _worldHpBarManager;
+        private SelectionController _selectionController;
+        private SelectionCircleVisual _selectionCircleVisual;
 
         // 씬 초기화 시 UI를 준비한다.
         public override bool OnInit()
@@ -115,6 +121,9 @@ namespace Kingdom.App
             {
                 gameView.Bind(_stateController);
             }
+
+            EnsureWorldHpBarSystem();
+            EnsureSelectionSystems();
 
             _pathManager = FindFirstObjectByType<PathManager>();
             if (_pathManager == null)
@@ -190,6 +199,46 @@ namespace Kingdom.App
             ApplyEffectiveTimeScale();
 
             return true;
+        }
+
+        private void EnsureWorldHpBarSystem()
+        {
+            _worldHpBarManager = FindFirstObjectByType<WorldHpBarManager>();
+            if (_worldHpBarManager.IsNull())
+            {
+                _worldHpBarManager = new GameObject("WorldHpBarManager").AddComponent<WorldHpBarManager>();
+            }
+
+            GameObject hpBarPrefab = Resources.Load<GameObject>(WorldHpBarPrefabResourcePath);
+            if (hpBarPrefab.IsNotNull())
+            {
+                _worldHpBarManager.ConfigureRuntime(hpBarPrefab);
+            }
+            else
+            {
+                Debug.LogWarning($"[GameScene] WorldHpBar prefab missing: {WorldHpBarPrefabResourcePath}");
+            }
+        }
+
+        private void EnsureSelectionSystems()
+        {
+            _selectionController = FindFirstObjectByType<SelectionController>();
+            if (_selectionController.IsNull())
+            {
+                _selectionController = new GameObject("SelectionController").AddComponent<SelectionController>();
+            }
+
+            _selectionCircleVisual = FindFirstObjectByType<SelectionCircleVisual>();
+            if (_selectionCircleVisual.IsNull())
+            {
+                GameObject circleGo = new GameObject("SelectionCircleVisual");
+                _selectionCircleVisual = circleGo.AddComponent<SelectionCircleVisual>();
+            }
+
+            if (_selectionController.IsNotNull() && _selectionCircleVisual.IsNotNull())
+            {
+                _selectionController.SetCircleVisual(_selectionCircleVisual);
+            }
         }
 
         // 씬 종료 시 이벤트 구독과 상태를 정리한다.
@@ -2440,4 +2489,7 @@ namespace Kingdom.App
         }
     }
 }
+
+
+
 

@@ -25,6 +25,7 @@ namespace Kingdom.Game
         [SerializeField] private float waveReadyDuration = 3.0f;
         [SerializeField] private float waveDuration = 8.0f;
         [SerializeField] private float waveBreakDuration = 2.0f;
+        [SerializeField] private bool useLegacyWaveDurationAutoComplete = false;
 
         public GameFlowState CurrentState { get; private set; } = GameFlowState.Prepare;
         public int CurrentWave { get; private set; }
@@ -85,7 +86,10 @@ namespace Kingdom.Game
                     break;
 
                 case GameFlowState.WaveRunning:
-                    if (elapsed >= waveDuration)
+                    // 기본 흐름은 WaveManager가 "스폰 완료 + 생존 적 0"에서
+                    // TryCompleteCurrentWave()를 호출해 전이를 담당한다.
+                    // 아래 분기는 레거시 타임리밋 웨이브가 필요한 경우에만 사용한다.
+                    if (useLegacyWaveDurationAutoComplete && elapsed >= waveDuration)
                     {
                         if (CurrentWave >= TotalWaves)
                         {

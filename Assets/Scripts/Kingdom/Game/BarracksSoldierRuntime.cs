@@ -1,4 +1,5 @@
 using System;
+using Common.Extensions;
 using UnityEngine;
 
 namespace Kingdom.Game
@@ -20,22 +21,31 @@ namespace Kingdom.Game
     {
         private const float DefaultMoveSpeed = 5.5f;
         private const float ArriveDistance = 0.05f;
+        private const float AttackVisualHoldSec = 0.14f;
+        private static readonly int MotionStateHash = Animator.StringToHash("MotionState");
 
         private float _attackDamage = 1f;
         private float _attackCooldownSec = 1f;
         private float _attackCooldownLeft;
+        private float _attackVisualHoldLeft;
         private float _respawnSec = 10f;
         private float _respawnLeft;
         private float _moveSpeed = DefaultMoveSpeed;
         private Vector3 _rallyPoint;
         private EnemyRuntime _blockTarget;
         private SpriteRenderer _renderer;
+        private Animator _animator;
+        private bool _useAnimator;
+        private float _animAttackDuration = 0.14f;
 
         public int OwnerTowerId { get; private set; } = -1;
         public int SoldierIndex { get; private set; }
         public BarracksSoldierState State { get; private set; } = BarracksSoldierState.Idle;
         public EnemyRuntime BlockTarget => _blockTarget;
         public bool CanEngage => IsAlive && State != BarracksSoldierState.Respawning;
+
+        // ISelectableTarget 오버라이드
+        public override string UnitType => "Soldier";
 
         public event Action<BarracksSoldierRuntime> Died;
         public event Action<BarracksSoldierRuntime> Respawned;
@@ -48,22 +58,31 @@ namespace Kingdom.Game
             float attackCooldownSec,
             float respawnSec,
             Vector3 rallyPoint,
-            SpriteRenderer renderer)
+            SpriteRenderer renderer,
+            Animator animator = null)
         {
             OwnerTowerId = ownerTowerId;
             SoldierIndex = soldierIndex;
             _renderer = renderer;
+            _animator = animator.IsNotNull() ? animator : GetComponent<Animator>();
+            _useAnimator = _animator.IsNotNull() && _animator.runtimeAnimatorController.IsNotNull();
+            if (_useAnimator)
+            {
+                _animAttackDuration = ResolveAnimatorClipLength("attack", "atk", "slash");
+            }
 
             InitializeHealth(maxHp);
             _attackDamage = Mathf.Max(1f, attackDamage);
             _attackCooldownSec = Mathf.Max(0.1f, attackCooldownSec);
             _respawnSec = Mathf.Max(0.1f, respawnSec);
             _attackCooldownLeft = 0f;
+            _attackVisualHoldLeft = 0f;
             _respawnLeft = 0f;
             _rallyPoint = rallyPoint;
             _blockTarget = null;
             State = BarracksSoldierState.Idle;
             SetVisualAlive(true);
+            TickVisualAnimation(0f);
         }
 
         public void UpdateStats(float maxHp, float attackDamage, float attackCooldownSec, float respawnSec)
@@ -91,7 +110,7 @@ namespace Kingdom.Game
 
         public void SetSorting(int sortingLayerId, int sortingOrder)
         {
-            if (_renderer == null)
+            if (_renderer.IsNull())
             {
                 return;
             }
@@ -109,7 +128,7 @@ namespace Kingdom.Game
 
             _blockTarget = target;
             _attackCooldownLeft = 0f;
-            State = target != null ? BarracksSoldierState.Blocking : BarracksSoldierState.Idle;
+            State = target.IsNotNull() ? BarracksSoldierState.Blocking : BarracksSoldierState.Idle;
         }
 
         public void ClearBlockTarget()
@@ -132,10 +151,11 @@ namespace Kingdom.Game
             if (State == BarracksSoldierState.Dead || State == BarracksSoldierState.Respawning || !IsAlive)
             {
                 TickRespawn(deltaTime);
+                TickVisualAnimation(deltaTime);
                 return;
             }
 
-            if (_blockTarget == null || _blockTarget.IsDead)
+            if (_blockTarget.IsNull() || _blockTarget.IsDead)
             {
                 _blockTarget = null;
                 if (State == BarracksSoldierState.Blocking)
@@ -144,13 +164,14 @@ namespace Kingdom.Game
                 }
             }
 
-            if (_blockTarget != null)
+            if (_blockTarget.IsNotNull())
             {
                 State = BarracksSoldierState.Blocking;
                 TickAttack(deltaTime);
             }
 
             TickMovement(deltaTime, desiredPosition);
+            TickVisualAnimation(deltaTime);
         }
 
         public override void ApplyDamage(float amount, DamageType damageType = DamageType.Physical, bool halfPhysicalArmorPenetration = false)
@@ -183,15 +204,17 @@ namespace Kingdom.Game
 
             _blockTarget = null;
             _attackCooldownLeft = 0f;
+            _attackVisualHoldLeft = 0f;
             _respawnLeft = _respawnSec;
             State = BarracksSoldierState.Dead;
             SetVisualAlive(false);
+            TickVisualAnimation(0f);
             Died?.Invoke(this);
         }
 
         private void TickAttack(float deltaTime)
         {
-            if (_blockTarget == null || _blockTarget.IsDead)
+            if (_blockTarget.IsNull() || _blockTarget.IsDead)
             {
                 return;
             }
@@ -204,6 +227,7 @@ namespace Kingdom.Game
 
             _blockTarget.ApplyDamage(_attackDamage, DamageType.Physical, false);
             _attackCooldownLeft = _attackCooldownSec;
+            _attackVisualHoldLeft = Mathf.Max(AttackVisualHoldSec, _animAttackDuration);
         }
 
         private void TickMovement(float deltaTime, Vector3 desiredPosition)
@@ -213,7 +237,7 @@ namespace Kingdom.Game
             if (deltaTime <= 0f)
             {
                 transform.position = desiredPosition;
-                if ((_blockTarget == null || _blockTarget.IsDead) && (transform.position - desiredPosition).sqrMagnitude <= ArriveDistance * ArriveDistance)
+                if ((_blockTarget.IsNull() || _blockTarget.IsDead) && (transform.position - desiredPosition).sqrMagnitude <= ArriveDistance * ArriveDistance)
                 {
                     State = BarracksSoldierState.Idle;
                 }
@@ -221,7 +245,7 @@ namespace Kingdom.Game
             }
 
             transform.position = Vector3.MoveTowards(transform.position, desiredPosition, _moveSpeed * deltaTime);
-            if (_blockTarget == null || _blockTarget.IsDead)
+            if (_blockTarget.IsNull() || _blockTarget.IsDead)
             {
                 float sqr = (transform.position - desiredPosition).sqrMagnitude;
                 State = sqr <= ArriveDistance * ArriveDistance ? BarracksSoldierState.Idle : BarracksSoldierState.Moving;
@@ -249,18 +273,90 @@ namespace Kingdom.Game
             RestoreHealthToFull();
             _blockTarget = null;
             _attackCooldownLeft = 0f;
+            _attackVisualHoldLeft = 0f;
             transform.position = new Vector3(_rallyPoint.x, _rallyPoint.y, -0.5f);
             State = BarracksSoldierState.Idle;
             SetVisualAlive(true);
+            TickVisualAnimation(0f);
             Respawned?.Invoke(this);
         }
 
         private void SetVisualAlive(bool alive)
         {
-            if (_renderer != null)
+            if (_renderer.IsNotNull())
             {
                 _renderer.enabled = alive;
             }
+        }
+
+        private void TickVisualAnimation(float deltaTime)
+        {
+            _attackVisualHoldLeft = Mathf.Max(0f, _attackVisualHoldLeft - Mathf.Max(0f, deltaTime));
+            int motionState = ToAnimatorMotionState();
+            if (_useAnimator && _animator.IsNotNull())
+            {
+                _animator.SetInteger(MotionStateHash, motionState);
+            }
+        }
+
+        private int ToAnimatorMotionState()
+        {
+            if (State == BarracksSoldierState.Dead || State == BarracksSoldierState.Respawning || !IsAlive)
+            {
+                return 3; // Die
+            }
+
+            if (_attackVisualHoldLeft > 0f)
+            {
+                return 2; // Attack
+            }
+
+            return State switch
+            {
+                BarracksSoldierState.Moving => 1, // Walk
+                BarracksSoldierState.Blocking => 0, // Idle
+                _ => 0
+            };
+        }
+
+        private float ResolveAnimatorClipLength(params string[] nameTokens)
+        {
+            if (_animator.IsNull() || _animator.runtimeAnimatorController.IsNull())
+            {
+                return AttackVisualHoldSec;
+            }
+
+            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+            if (clips.IsNull() || clips.Length <= 0 || nameTokens.IsNull() || nameTokens.Length <= 0)
+            {
+                return AttackVisualHoldSec;
+            }
+
+            for (int i = 0; i < clips.Length; i++)
+            {
+                AnimationClip clip = clips[i];
+                if (clip.IsNull())
+                {
+                    continue;
+                }
+
+                string n = (clip.name ?? string.Empty).ToLowerInvariant();
+                for (int tokenIndex = 0; tokenIndex < nameTokens.Length; tokenIndex++)
+                {
+                    string token = nameTokens[tokenIndex];
+                    if (string.IsNullOrWhiteSpace(token))
+                    {
+                        continue;
+                    }
+
+                    if (n.Contains(token.ToLowerInvariant()))
+                    {
+                        return Mathf.Max(AttackVisualHoldSec, clip.length);
+                    }
+                }
+            }
+
+            return AttackVisualHoldSec;
         }
     }
 }

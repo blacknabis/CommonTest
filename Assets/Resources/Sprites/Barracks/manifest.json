@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "updatedAtUtc": "2026-02-22T04:08:36.3763198Z",
+    "sourceFiles": [
+        "Footman1.jpeg"
+    ],
+    "actions": [
+        {
+            "actionGroup": "idle",
+            "sourceFile": "Footman1.jpeg",
+            "outputTexture": "idle_Footman1_Processed.png",
+            "frameCount": 16,
+            "maxFrameWidth": 169,
+            "maxFrameHeight": 163,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "SmartSlice",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": false,
+                "tolerance": 0.3499999940395355,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 2,
+                "rows": 2,
+                "cols": 4,
+                "innerPadding": 4,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2,
+                "smartSliceSplitActionsByRows": false,
+                "smartSliceActionRowCount": 4
+            },
+            "warnings": [
+                "source=Footman1"
+            ]
+        },
+        {
+            "actionGroup": "multi",
+            "sourceFile": "Footman1.jpeg",
+            "outputTexture": "multi_Footman1_Processed.png",
+            "frameCount": 16,
+            "maxFrameWidth": 169,
+            "maxFrameHeight": 163,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "SmartSlice",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": false,
+                "tolerance": 0.3499999940395355,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 2,
+                "rows": 2,
+                "cols": 4,
+                "innerPadding": 4,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 64,
+                "smartSliceOuterPadding": 2,
+                "smartSliceSplitActionsByRows": true,
+                "smartSliceActionRowCount": 4
+            },
+            "warnings": [
+                "source=Footman1"
+            ]
+        }
+    ]
+}

@@ -6,7 +6,7 @@ namespace Kingdom.Game
     /// Base class for all combat units (Enemies, Soldiers, Heroes).
     /// Provides common HP management and IDamageable implementation.
     /// </summary>
-    public abstract class BaseUnit : MonoBehaviour, IDamageable
+    public abstract class BaseUnit : MonoBehaviour, IDamageable, ISelectableTarget
     {
         [SerializeField] protected float _currentHp;
         [SerializeField] protected float _maxHp;
@@ -14,6 +14,15 @@ namespace Kingdom.Game
         public float CurrentHp => _currentHp;
         public float MaxHp => _maxHp;
         public bool IsAlive => _currentHp > 0;
+
+        // ISelectableTarget 구현
+        public virtual string DisplayName => name;
+        public virtual Vector3 Position => transform.position;
+        public float HpRatio => _maxHp > 0 ? Mathf.Clamp01(_currentHp / _maxHp) : 0f;
+        public virtual string UnitType => "Unit";
+
+        public virtual void OnSelected() { }
+        public virtual void OnDeselected() { }
 
         /// <summary>
         /// Initialize the unit with MaxHP.

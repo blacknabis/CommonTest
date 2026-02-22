@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Common.Extensions;
 using UnityEngine;
+using Kingdom.Game.UI;
 
 namespace Kingdom.Game
 {
@@ -564,7 +566,24 @@ namespace Kingdom.Game
             sr.sortingOrder = 30;
             go.transform.localScale = new Vector3(initialScale, initialScale, 1f);
 
-            return new TowerRuntime(towerId, slotIndex, go.transform, towerType, config, _projectileManager, initialSpendGold);
+            CircleCollider2D selectionCollider = go.GetComponent<CircleCollider2D>();
+            if (selectionCollider.IsNull())
+            {
+                selectionCollider = go.AddComponent<CircleCollider2D>();
+            }
+
+            selectionCollider.isTrigger = true;
+            selectionCollider.radius = 0.55f;
+
+            TowerRuntime runtime = new TowerRuntime(towerId, slotIndex, go.transform, towerType, config, _projectileManager, initialSpendGold);
+            TowerSelectableProxy selectableProxy = go.GetComponent<TowerSelectableProxy>();
+            if (selectableProxy.IsNull())
+            {
+                selectableProxy = go.AddComponent<TowerSelectableProxy>();
+            }
+
+            selectableProxy.Bind(runtime);
+            return runtime;
         }
 
         private static TowerConfig CreateFallbackTowerConfig(TowerType type)
@@ -1029,6 +1048,18 @@ namespace Kingdom.Game
             return sprite != null;
         }
 
+        private static bool TryLoadAnimatorController(string resourcePath, out RuntimeAnimatorController controller)
+        {
+            controller = null;
+            if (string.IsNullOrWhiteSpace(resourcePath))
+            {
+                return false;
+            }
+
+            controller = Resources.Load<RuntimeAnimatorController>(resourcePath.Trim());
+            return controller.IsNotNull();
+        }
+
         private static Texture2D TryLoadTextureFromDisk(string resourcePath)
         {
             if (string.IsNullOrWhiteSpace(resourcePath))
@@ -1242,7 +1273,41 @@ namespace Kingdom.Game
             return null;
         }
 
-        private sealed class TowerRuntime
+        private sealed class TowerSelectableProxy : MonoBehaviour, ISelectableTarget
+        {
+            private TowerRuntime _runtime;
+
+            public string DisplayName => _runtime.IsNotNull() ? _runtime.DisplayName : name;
+            public Vector3 Position => _runtime.IsNotNull() ? _runtime.Position : transform.position;
+            public float HpRatio => _runtime.IsNotNull() ? _runtime.HpRatio : 1f;
+            public float CurrentHp => _runtime.IsNotNull() ? _runtime.CurrentHp : 1f;
+            public float MaxHp => _runtime.IsNotNull() ? _runtime.MaxHp : 1f;
+            public bool IsAlive => _runtime.IsNotNull() && _runtime.IsAlive;
+            public string UnitType => _runtime.IsNotNull() ? _runtime.UnitType : "Tower";
+
+            public void Bind(TowerRuntime runtime)
+            {
+                _runtime = runtime;
+            }
+
+            public void OnSelected()
+            {
+                if (_runtime.IsNotNull())
+                {
+                    _runtime.OnSelected();
+                }
+            }
+
+            public void OnDeselected()
+            {
+                if (_runtime.IsNotNull())
+                {
+                    _runtime.OnDeselected();
+                }
+            }
+        }
+
+        private sealed class TowerRuntime : ISelectableTarget
         {
             private const float ArcherSniperCooldownSec = 10f;
             private const float MageDeathRayCooldownSec = 12f;
@@ -1282,6 +1347,18 @@ namespace Kingdom.Game
             public int MaxLevel => _config != null && _config.Levels != null ? _config.Levels.Length : 3;
             public bool CanUpgrade => _config != null && _config.Levels != null && _level < _config.Levels.Length;
             public Vector3 RallyPoint => _rallyPoint;
+
+            // ISelectableTarget 구현
+            public string DisplayName => _config != null ? _config.DisplayName : _towerType.ToString();
+            public Vector3 Position => _transform != null ? _transform.position : Vector3.zero;
+            public float HpRatio => 1f; // 타워는 파괴되지 않음
+            public float CurrentHp => 1f;
+            public float MaxHp => 1f;
+            public string UnitType => "Tower";
+            public bool IsAlive => true;
+
+            public void OnSelected() { }
+            public void OnDeselected() { }
 
             public TowerRuntime(
                 int towerId,
@@ -1890,6 +1967,15 @@ namespace Kingdom.Game
                     go.transform.position = initPosition;
                     go.transform.localScale = Vector3.one * 0.62f;
 
+                    CircleCollider2D selectionCollider = go.GetComponent<CircleCollider2D>();
+                    if (selectionCollider.IsNull())
+                    {
+                        selectionCollider = go.AddComponent<CircleCollider2D>();
+                    }
+
+                    selectionCollider.isTrigger = true;
+                    selectionCollider.radius = 0.32f;
+
                     var renderer = go.AddComponent<SpriteRenderer>();
                     Sprite soldierSprite = ResolveBarracksSoldierSprite(_config);
                     renderer.sprite = soldierSprite;
@@ -1906,6 +1992,14 @@ namespace Kingdom.Game
                         renderer.sortingOrder = 200;
                     }
 
+                    RuntimeAnimatorController soldierController = ResolveBarracksSoldierAnimatorController();
+                    Animator animator = null;
+                    if (soldierController.IsNotNull())
+                    {
+                        animator = go.AddComponent<Animator>();
+                        animator.runtimeAnimatorController = soldierController;
+                    }
+
                     var soldier = go.AddComponent<BarracksSoldierRuntime>();
                     soldier.Initialize(
                         TowerId,
@@ -1915,7 +2009,14 @@ namespace Kingdom.Game
                         _config.BarracksData.SoldierAttackCooldown,
                         _config.BarracksData.SoldierRespawnSec,
                         _rallyPoint,
-                        renderer);
+                        renderer,
+                        animator);
+
+                    if (WorldHpBarManager.Instance.IsNotNull())
+                    {
+                        WorldHpBarManager.Instance.TrackTarget(soldier);
+                    }
+
                     soldier.Died += HandleSoldierDied;
                     soldier.Respawned += HandleSoldierRespawned;
                     _barracksSoldiers.Add(soldier);
@@ -2017,6 +2118,55 @@ namespace Kingdom.Game
                 Vector3 anchor = rallyOrigin + offset;
                 anchor.z = rallyOrigin.z;
                 return anchor;
+            }
+
+            private RuntimeAnimatorController ResolveBarracksSoldierAnimatorController()
+            {
+                if (_config.IsNotNull() && _config.BarracksSoldierConfig.IsNotNull())
+                {
+                    if (TryLoadAnimatorController(_config.BarracksSoldierConfig.RuntimeAnimatorControllerPath, out RuntimeAnimatorController byConfig))
+                    {
+                        return byConfig;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(_config.BarracksSoldierConfig.SoldierId))
+                    {
+                        string soldierId = _config.BarracksSoldierConfig.SoldierId.Trim();
+                        string[] byIdCandidates =
+                        {
+                            $"Animations/Barracks/{soldierId}/{soldierId}",
+                            $"Animations/Barracks/{soldierId}",
+                            $"Animations/Units/{soldierId}/{soldierId}",
+                            $"Animations/Units/{soldierId}"
+                        };
+
+                        for (int i = 0; i < byIdCandidates.Length; i++)
+                        {
+                            if (TryLoadAnimatorController(byIdCandidates[i], out RuntimeAnimatorController byId))
+                            {
+                                return byId;
+                            }
+                        }
+                    }
+                }
+
+                string[] genericCandidates =
+                {
+                    "Animations/Barracks/Barracks_Soldier/Barracks_Soldier",
+                    "Animations/Barracks/Barracks_Soldier",
+                    "Animations/Barracks/Soldier/Soldier",
+                    "Animations/Barracks/Soldier"
+                };
+
+                for (int i = 0; i < genericCandidates.Length; i++)
+                {
+                    if (TryLoadAnimatorController(genericCandidates[i], out RuntimeAnimatorController loaded))
+                    {
+                        return loaded;
+                    }
+                }
+
+                return null;
             }
 
             private EnemyRuntime FindClosestGroundEnemy(

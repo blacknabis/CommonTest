@@ -79,6 +79,7 @@ namespace Kingdom.Game
     public class TowerConfig : ScriptableObject
     {
         public string TowerId = "BasicTower";
+        public string DisplayName = "Tower";
         public TowerType TowerType = TowerType.Archer;
         [Tooltip("Optional fallback Resources path (without extension) for runtime tower sprite. Supports {level} and {tower} tokens.")]
         public string RuntimeSpriteResourcePath;

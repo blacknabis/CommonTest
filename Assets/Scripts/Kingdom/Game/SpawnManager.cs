@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Common.Extensions;
 using UnityEngine;
+using Kingdom.Game.UI;
 
 namespace Kingdom.Game
 {
@@ -86,20 +88,29 @@ namespace Kingdom.Game
 
             // Assigns a default sprite renderer for combat visibility.
             var renderer = enemyGo.AddComponent<SpriteRenderer>();
+            CircleCollider2D selectionCollider = enemyGo.GetComponent<CircleCollider2D>();
+            if (selectionCollider.IsNull())
+            {
+                selectionCollider = enemyGo.AddComponent<CircleCollider2D>();
+            }
+
+            selectionCollider.isTrigger = true;
+            selectionCollider.radius = 0.35f;
+
             EnemyConfig config = entry.Enemy;
             Sprite resolvedSprite = ResolveEnemySprite(config);
             RuntimeAnimatorController animatorController = ResolveEnemyAnimatorController(config);
-            if (animatorController == null)
+            if (animatorController.IsNull())
             {
                 string enemyId = config != null ? config.EnemyId : "(null)";
                 Debug.LogError($"[SpawnManager] Animator is required but not found. enemyId={enemyId}");
                 return;
             }
 
-            if (animatorController != null)
+            if (animatorController.IsNotNull())
             {
                 Animator animator = enemyGo.GetComponent<Animator>();
-                if (animator == null)
+                if (animator.IsNull())
                 {
                     animator = enemyGo.AddComponent<Animator>();
                 }
@@ -124,6 +135,12 @@ namespace Kingdom.Game
             enemy.ReachedGoal += OnEnemyReachedGoal;
             enemy.Killed += OnEnemyKilled;
             enemy.DeathBurstTriggered += OnEnemyDeathBurstTriggered;
+
+            if (WorldHpBarManager.Instance.IsNotNull())
+            {
+                WorldHpBarManager.Instance.TrackTarget(enemy);
+            }
+
             _enemyConfigMap[enemy] = config;
 
             EnemySpawned?.Invoke(enemy, config);

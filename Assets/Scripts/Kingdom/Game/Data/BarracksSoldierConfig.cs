@@ -12,5 +12,8 @@ namespace Kingdom.Game
         [Header("Visual")]
         [Tooltip("Resources path without extension, e.g. Sprites/Barracks/Soldiers/BarracksSoldier_Default")]
         public string RuntimeSpriteResourcePath;
+
+        [Tooltip("Resources path without extension, e.g. Animations/Barracks/Barracks_Soldier/Barracks_Soldier")]
+        public string RuntimeAnimatorControllerPath;
     }
 }

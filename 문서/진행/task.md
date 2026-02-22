@@ -278,3 +278,60 @@
 - [x] Phase F: 데이터 마이그레이션 및 하위 호환성 (Fallback) 대응
 - [x] Phase G: 검증/로그 통합 UX 및 예외 처리 정책 (회귀 메뉴 모달 제거 및 로그 기준 운영 반영 완료, Validate 결과 패널 정리는 남음)
 - [x] Phase H: 실제 샘플(에셋) 적용 테스트
+
+## 진행 메모 (2026-02-22 13:31:58)
+- [x] VICTORY 조기 노출 버그 수정 (WaveRunning 시간 기반 자동 종료 기본 비활성)
+- [ ] 실기동 재현 확인: 마지막 웨이브에서 적 잔존 시 Result 미진입 검증
+
+- [x] 오브젝트 클릭 정보 및 HP 게이지 시스템 구현 (2026-02-22)
+    - [x] ISelectableTarget 인프라 구축
+    - [x] 월드 HP 바 (풀링 시스템) 연동
+    - [x] HUD 선택 정보 패널 구현
+
+## 진행 메모 (2026-02-22 14:14:07)
+- [x] 오브젝트 클릭 선택 동작 보강
+    - [x] 적/영웅/타워/배럭 병사에 선택용 `CircleCollider2D(isTrigger)` 보강
+    - [x] 타워 선택 프록시(`TowerSelectableProxy`) 추가로 `ISelectableTarget` 클릭 연결
+    - [x] `SelectionController` LayerMask 미설정/미매치 시 all-layer fallback 추가
+- [x] 선택 정보 패널/HP바 null 체크 스타일 통일
+    - [x] `Common.Extensions`의 `IsNull()/IsNotNull()` 사용으로 null 체크 일관화
+    - [x] `SelectionInfoPanel`의 `_txtHp` 자동 바인딩 누락 보강
+- [ ] 실기동 검증: 클릭 선택 + HP바 + 정보패널 동시 동작 확인
+
+## 진행 메모 (2026-02-22 14:23:23)
+- [x] 선택 시스템 런타임 부트스트랩 누락 보강
+    - [x] `GameScene` 시작 시 `SelectionController`/`SelectionCircleVisual` 자동 생성 및 바인딩
+    - [x] `SelectionCircleVisual` 기본 스프라이트(`UI/Sprites/Common/SelectionCircle`) 자동 로드
+- [ ] 실기동 재검증: `BarracksSoldier_1_3` 포함 모든 오브젝트 클릭 시 정보 패널 노출 확인
+
+## 현재 메인 트랙: SelectionSystem 프리팹 전환 + HP바 안정화
+> 기준 문서: `문서/진행/SelectionSystem_프리팹전환_및_HP바_안정화_계획_2026_02_22.md`
+
+### Phase 0. 문서 동기화 (Rev.2)
+- [x] 계획서 Rev.2 보완 반영
+- [x] 상태 매트릭스/동기화 규칙/리스크 플레이북 추가
+
+### Phase 1. Selection 프리팹 자산화
+- [ ] `SelectionSystem.prefab` 생성 (`SelectionController` + `SelectionCircleVisual`)
+- [ ] `SelectionController._circleVisual` 직렬화 연결
+
+### Phase 2. GameScene 부트스트랩 정리
+- [ ] `Resources/UI/SelectionSystem` 우선 로드
+- [ ] 실패 시 런타임 생성 fallback 유지
+
+### Phase 3. HP바 프리팹 정합성 고정
+- [ ] `WorldHpBar.prefab` 루트 컴포넌트/Fill 바인딩 확정
+- [ ] `WorldHpBarManager` 자동복구는 안전망으로만 유지
+
+### Phase 4. UX 파라미터 확정
+- [x] HP바 좌측 고정 감소 반영
+- [ ] HP바 머리 위 위치 타입별 최종 튜닝
+- [ ] 선택 원 스케일 상한/하한 최종 튜닝
+
+### Phase 4.5. 기술 부채 정리
+- [ ] `WorldHpBar`의 `CanvasGroup` 의존 제거
+- [ ] 선택-타워 클릭 충돌 방지(방안 B) 반영
+
+### Phase 5. 회귀 검증
+- [ ] 수동 시나리오(병사/적/영웅/타워 클릭 + HP바 동작) 완료
+- [ ] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0 재확인

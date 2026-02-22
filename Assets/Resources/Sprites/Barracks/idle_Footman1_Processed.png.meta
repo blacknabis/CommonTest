@@ -1,0 +1,586 @@
+fileFormatVersion: 2
+guid: ef30b46944e63074183742eaa85a353e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2560868452681462566
+    second: idle_Footman1_Processed_0
+  - first:
+      213: 2708088608815179571
+    second: idle_Footman1_Processed_1
+  - first:
+      213: -3618298755794063633
+    second: idle_Footman1_Processed_2
+  - first:
+      213: 8568923488741966404
+    second: idle_Footman1_Processed_3
+  - first:
+      213: 4362409638657100802
+    second: idle_Footman1_Processed_4
+  - first:
+      213: 6805629282318476113
+    second: idle_Footman1_Processed_5
+  - first:
+      213: 5098424990834243222
+    second: idle_Footman1_Processed_6
+  - first:
+      213: 1547393244975583841
+    second: idle_Footman1_Processed_7
+  - first:
+      213: 7264540200769825504
+    second: idle_Footman1_Processed_8
+  - first:
+      213: -238044506613745515
+    second: idle_Footman1_Processed_9
+  - first:
+      213: 7795838433518427009
+    second: idle_Footman1_Processed_10
+  - first:
+      213: -145498271193012821
+    second: idle_Footman1_Processed_11
+  - first:
+      213: 7526923167006093574
+    second: idle_Footman1_Processed_12
+  - first:
+      213: 7234521320256313558
+    second: idle_Footman1_Processed_13
+  - first:
+      213: 2527158258530508768
+    second: idle_Footman1_Processed_14
+  - first:
+      213: -7968722466987599770
+    second: idle_Footman1_Processed_15
+  - first:
+      213: 836944619179974014
+    second: idle_Footman1_Processed_00
+  - first:
+      213: 8373985952977782988
+    second: idle_Footman1_Processed_01
+  - first:
+      213: 4563385742046963196
+    second: idle_Footman1_Processed_02
+  - first:
+      213: -8697317789029784280
+    second: idle_Footman1_Processed_03
+  - first:
+      213: 6199518417504492481
+    second: idle_Footman1_Processed_04
+  - first:
+      213: 6986353329278147587
+    second: idle_Footman1_Processed_05
+  - first:
+      213: -798404538957647933
+    second: idle_Footman1_Processed_06
+  - first:
+      213: -3034730186802492245
+    second: idle_Footman1_Processed_07
+  - first:
+      213: -8786312596880235935
+    second: idle_Footman1_Processed_08
+  - first:
+      213: -1229877488221170457
+    second: idle_Footman1_Processed_09
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 489
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7d95e262bc6d9b00800000000000000
+      internalID: 836944619179974014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_01
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 489
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc80a516bdf563470800000000000000
+      internalID: 8373985952977782988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_02
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 489
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf5aacf8727645f30800000000000000
+      internalID: 4563385742046963196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_03
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 489
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 825a13e1d8bec4780800000000000000
+      internalID: -8697317789029784280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_04
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 326
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cbd8dd772d190650800000000000000
+      internalID: 6199518417504492481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_05
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 326
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30cddf2765384f060800000000000000
+      internalID: 6986353329278147587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_06
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 326
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cfae5c4d4f7be4f0800000000000000
+      internalID: -798404538957647933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_07
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 326
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bac8b7a49f872e5d0800000000000000
+      internalID: -3034730186802492245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_08
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 163
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 162e969be3fb01680800000000000000
+      internalID: -8786312596880235935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_09
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 163
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e4d35dc0f89eeee0800000000000000
+      internalID: -1229877488221170457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_10
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 163
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18b143c40c1603c60800000000000000
+      internalID: 7795838433518427009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_11
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 163
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba56b1ed7161bfdf0800000000000000
+      internalID: -145498271193012821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6017e05bdb0057860800000000000000
+      internalID: 7526923167006093574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_13
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 0
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d81ed58fce266460800000000000000
+      internalID: 7234521320256313558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_14
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 0
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0efd7e2fb05421320800000000000000
+      internalID: 2527158258530508768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle_Footman1_Processed_15
+      rect:
+        serializedVersion: 2
+        x: 507
+        y: 0
+        width: 169
+        height: 163
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6689789e229696190800000000000000
+      internalID: -7968722466987599770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      idle_Footman1_Processed_0: 2560868452681462566
+      idle_Footman1_Processed_00: 836944619179974014
+      idle_Footman1_Processed_01: 8373985952977782988
+      idle_Footman1_Processed_02: 4563385742046963196
+      idle_Footman1_Processed_03: -8697317789029784280
+      idle_Footman1_Processed_04: 6199518417504492481
+      idle_Footman1_Processed_05: 6986353329278147587
+      idle_Footman1_Processed_06: -798404538957647933
+      idle_Footman1_Processed_07: -3034730186802492245
+      idle_Footman1_Processed_08: -8786312596880235935
+      idle_Footman1_Processed_09: -1229877488221170457
+      idle_Footman1_Processed_1: 2708088608815179571
+      idle_Footman1_Processed_10: 7795838433518427009
+      idle_Footman1_Processed_11: -145498271193012821
+      idle_Footman1_Processed_12: 7526923167006093574
+      idle_Footman1_Processed_13: 7234521320256313558
+      idle_Footman1_Processed_14: 2527158258530508768
+      idle_Footman1_Processed_15: -7968722466987599770
+      idle_Footman1_Processed_2: -3618298755794063633
+      idle_Footman1_Processed_3: 8568923488741966404
+      idle_Footman1_Processed_4: 4362409638657100802
+      idle_Footman1_Processed_5: 6805629282318476113
+      idle_Footman1_Processed_6: 5098424990834243222
+      idle_Footman1_Processed_7: 1547393244975583841
+      idle_Footman1_Processed_8: 7264540200769825504
+      idle_Footman1_Processed_9: -238044506613745515
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -60,6 +60,10 @@ namespace Kingdom.Game
         public EnemyMotionState MotionState => _motionState;
         public bool IsBlocked => _blockerTowerId >= 0;
 
+        // ISelectableTarget 오버라이드
+        public override string DisplayName => _config != null ? _config.DisplayName : name;
+        public override string UnitType => "Enemy";
+
         public float GetDeathVisualDuration()
         {
             if (_useAnimator)

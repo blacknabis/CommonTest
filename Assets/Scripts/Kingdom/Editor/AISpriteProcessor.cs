@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using Common.Extensions;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Animations;
@@ -1978,6 +1979,25 @@ namespace Kingdom.Editor
             var attackFrames = FilterSpritesByActionAliases(sprites, "attack", "atk");
             var dieFrames = FilterSpritesByActionAliases(sprites, "die", "death", "dead");
 
+            // Grid slice fallback:
+            // If sprite names are row/column-based (..._r_c), infer 4 actions by row order.
+            if (TryInferFourActionRows(
+                    sprites,
+                    out List<Sprite> inferredIdle,
+                    out List<Sprite> inferredWalk,
+                    out List<Sprite> inferredAttack,
+                    out List<Sprite> inferredDie))
+            {
+                if (walkFrames.Count <= 0 || attackFrames.Count <= 0 || dieFrames.Count <= 0)
+                {
+                    idleFrames = inferredIdle;
+                    walkFrames = inferredWalk;
+                    attackFrames = inferredAttack;
+                    dieFrames = inferredDie;
+                    Debug.Log($"[AISpriteProcessor] Action inference fallback applied by row index. target={targetId}");
+                }
+            }
+
             if (idleFrames.Count <= 0 && walkFrames.Count <= 0 && attackFrames.Count <= 0 && dieFrames.Count <= 0)
             {
                 error = $"Could not detect action groups from sprite names at: {spriteAssetPath}";
@@ -2281,6 +2301,107 @@ namespace Kingdom.Editor
             }
 
             return int.TryParse(tokens[tokens.Length - 1], out int parsed) ? parsed : int.MaxValue;
+        }
+
+        private static bool TryInferFourActionRows(
+            Sprite[] sprites,
+            out List<Sprite> idleFrames,
+            out List<Sprite> walkFrames,
+            out List<Sprite> attackFrames,
+            out List<Sprite> dieFrames)
+        {
+            idleFrames = new List<Sprite>();
+            walkFrames = new List<Sprite>();
+            attackFrames = new List<Sprite>();
+            dieFrames = new List<Sprite>();
+
+            if (sprites.IsNull() || sprites.Length <= 0)
+            {
+                return false;
+            }
+
+            var rows = new SortedDictionary<int, List<(int col, Sprite sprite)>>();
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite.IsNull() || !TryParseRowColFromSpriteName(sprite.name, out int row, out int col))
+                {
+                    continue;
+                }
+
+                if (!rows.TryGetValue(row, out List<(int col, Sprite sprite)> rowList))
+                {
+                    rowList = new List<(int col, Sprite sprite)>();
+                    rows[row] = rowList;
+                }
+
+                rowList.Add((col, sprite));
+            }
+
+            if (rows.Count < 4)
+            {
+                return false;
+            }
+
+            var orderedRows = new List<int>(rows.Keys);
+            for (int i = 0; i < orderedRows.Count; i++)
+            {
+                rows[orderedRows[i]].Sort((a, b) => a.col.CompareTo(b.col));
+            }
+
+            idleFrames = ExtractSpritesFromRow(rows[orderedRows[0]]);
+            walkFrames = ExtractSpritesFromRow(rows[orderedRows[1]]);
+            attackFrames = ExtractSpritesFromRow(rows[orderedRows[2]]);
+            dieFrames = ExtractSpritesFromRow(rows[orderedRows[3]]);
+
+            return idleFrames.Count > 0 && walkFrames.Count > 0 && attackFrames.Count > 0 && dieFrames.Count > 0;
+        }
+
+        private static List<Sprite> ExtractSpritesFromRow(List<(int col, Sprite sprite)> rowFrames)
+        {
+            var result = new List<Sprite>();
+            if (rowFrames.IsNull() || rowFrames.Count <= 0)
+            {
+                return result;
+            }
+
+            for (int i = 0; i < rowFrames.Count; i++)
+            {
+                if (rowFrames[i].sprite.IsNotNull())
+                {
+                    result.Add(rowFrames[i].sprite);
+                }
+            }
+
+            return result;
+        }
+
+        private static bool TryParseRowColFromSpriteName(string spriteName, out int row, out int col)
+        {
+            row = -1;
+            col = -1;
+            if (string.IsNullOrWhiteSpace(spriteName))
+            {
+                return false;
+            }
+
+            string[] tokens = spriteName.Split('_');
+            if (tokens.Length < 2)
+            {
+                return false;
+            }
+
+            if (!int.TryParse(tokens[tokens.Length - 2], out row))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(tokens[tokens.Length - 1], out col))
+            {
+                return false;
+            }
+
+            return row >= 0 && col >= 0;
         }
 
         // 대상 타입/ID 기준 Animator 출력 폴더를 보장한다.

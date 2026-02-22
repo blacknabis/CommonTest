@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.BarracksSoldierConfig
   SoldierId: Barracks_Soldier
   DisplayName: Barracks Soldier
-  RuntimeSpriteResourcePath: Sprites/Barracks/Soldier
+  RuntimeSpriteResourcePath: Sprites/Barracks/multi_Footman1_Processed
+  RuntimeAnimatorControllerPath: Animations/Barracks/Barracks_Soldier/Barracks_Soldier
