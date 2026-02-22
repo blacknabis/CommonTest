@@ -3,6 +3,7 @@ using Common.Extensions;
 using Common.UI;
 using Common.Utils;
 using Kingdom.Game;
+using Kingdom.Game.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace Kingdom.App
         private const float HudMargin = 24f;
         private const string HeroPortraitWidgetResourcePath = "UI/Widgets/HeroPortraitWidget";
         private const string AudioOptionsPopupResourcePath = "UI/WorldMap/AudioOptionsPopup";
+        private const string SelectionInfoPanelResourcePath = "UI/SelectionInfoPanel";
         private static readonly Color TopLeftBackdropColor = new(0f, 0f, 0f, 0.32f);
         private static readonly Color BottomLeftBackdropColor = new(0f, 0f, 0f, 0.30f);
         private static readonly Color RightBackdropColor = new(0f, 0f, 0f, 0.28f);
@@ -59,6 +61,7 @@ namespace Kingdom.App
         [SerializeField] private Image imgSpellReinforceCooldown;
         [SerializeField] private Image imgSpellRainCooldown;
         [SerializeField] private TextMeshProUGUI txtTowerInfo;
+        [SerializeField] private SelectionInfoPanel selectionInfoPanel;
 
         [Header("Result UI")]
         [SerializeField] private GameObject resultRoot;
@@ -99,6 +102,7 @@ namespace Kingdom.App
             EnsureHudRoot();
             CleanupLegacyRootChildren();
             EnsureCoreSlots();
+            EnsureSelectionInfoPanel();
             EnsureHudBackdrops();
             NormalizeLayout();
             EnsureResultSlot();
@@ -622,6 +626,11 @@ namespace Kingdom.App
                 var tr = transform.Find("TowerActionMenuRoot");
                 if (tr != null) towerActionRoot = tr.gameObject;
             }
+
+            if (selectionInfoPanel.IsNull())
+            {
+                selectionInfoPanel = GetComponentInChildren<SelectionInfoPanel>(true);
+            }
         }
 
         private void EnsureHudRoot()
@@ -666,6 +675,43 @@ namespace Kingdom.App
             txtTowerInfo ??= CreateText("txtTowerInfo");
             EnsureTowerRingMenu();
             EnsureTowerActionMenu();
+        }
+
+        private void EnsureSelectionInfoPanel()
+        {
+            RemoveLegacySelectionInfoPanels();
+
+            GameObject panelPrefab = Resources.Load<GameObject>(SelectionInfoPanelResourcePath);
+            if (panelPrefab.IsNull())
+            {
+                Debug.LogError($"[GameView] SelectionInfoPanel prefab missing: {SelectionInfoPanelResourcePath}");
+                return;
+            }
+
+            GameObject instance = Instantiate(panelPrefab, _hudRoot, false);
+            instance.name = "SelectionInfoPanel";
+            selectionInfoPanel = instance.GetComponent<SelectionInfoPanel>();
+            if (selectionInfoPanel.IsNull())
+            {
+                Debug.LogError("[GameView] SelectionInfoPanel component missing on prefab instance.");
+            }
+        }
+
+        private void RemoveLegacySelectionInfoPanels()
+        {
+            SelectionInfoPanel[] panels = GetComponentsInChildren<SelectionInfoPanel>(true);
+            for (int i = 0; i < panels.Length; i++)
+            {
+                SelectionInfoPanel panel = panels[i];
+                if (panel.IsNull())
+                {
+                    continue;
+                }
+
+                Destroy(panel.gameObject);
+            }
+
+            selectionInfoPanel = null;
         }
 
         private void NormalizeLayout()

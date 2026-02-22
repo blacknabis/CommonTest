@@ -356,3 +356,14 @@
 - [ ] 수동 시나리오 마무리
     - [ ] 적 선택 포함 수동 클릭 검증
     - [ ] HP바 머리 위 위치 타입별 최종 튜닝
+
+## 진행 메모 (2026-02-22 18:00:00)
+- [x] SelectionInfoPanel 별도 프리팹 분리
+    - [x] `Assets/Resources/UI/SelectionInfoPanel.prefab` 생성
+    - [x] `GameView`가 SelectionInfoPanel 프리팹을 런타임 인스턴스화하도록 연결
+- [x] 레거시 내장 패널 제거
+    - [x] `GameView.prefab` 내 내장 `SelectionInfoPanel` 제거(분리 구조 고정)
+    - [x] 폴백 런타임 생성 대신 프리팹 누락 시 오류 로그(fail-fast)로 전환
+- [x] 회귀 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 재통과 (`success=9, fail=0`)

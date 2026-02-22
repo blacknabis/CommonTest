@@ -71,8 +71,11 @@ namespace Kingdom.Game.UI
                 }
 
                 image.raycastTarget = false;
-                image.color = new Color(0f, 0f, 0f, 0f);
-                image.enabled = false;
+                if (image.sprite.IsNull())
+                {
+                    image.color = new Color(0f, 0f, 0f, 0f);
+                    image.enabled = false;
+                }
             }
 
             TextMeshProUGUI[] labels = GetComponentsInChildren<TextMeshProUGUI>(true);
