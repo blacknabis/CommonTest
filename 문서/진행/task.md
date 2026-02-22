@@ -342,4 +342,6 @@
     - [x] `Tools/Kingdom/Build WorldHpBar Prefab` 추가 및 `Assets/Resources/UI/WorldHpBar.prefab` 재생성
 - [x] 런타임 기술 부채 정리
     - [x] `WorldHpBar`의 `CanvasGroup` 의존 제거
+- [x] 자동 회귀 검증
+    - [x] `Tools/Kingdom/Run Barracks Melee Smoke Regression` 결과 `success=10, fail=0`
 - [ ] 실기동 수동 시나리오 검증 남음
