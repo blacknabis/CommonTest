@@ -367,3 +367,110 @@
 - [x] 회귀 검증
     - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
     - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 재통과 (`success=9, fail=0`)
+
+## 진행 메모 (2026-02-22 19:24:16)
+- [x] 정보 패널 UI 겹침 위치 조정
+    - [x] `SelectionInfoPanel.prefab` 기본 앵커를 우상단 사이드 영역으로 이동
+    - [x] 다른 좌측 HUD(`WAVE/LIVES/GOLD/TOWER`)와 겹침 제거
+- [x] 검증
+    - [x] `Tools/Kingdom/Build SelectionInfoPanel Prefab` 재생성 완료
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 통과 (`success=9, fail=0`)
+
+## 진행 메모 (2026-02-22 19:30:20)
+- [x] 병영 병사 DisplayName 경로 보정
+    - [x] `BarracksSoldierRuntime.DisplayName` 오버라이드 추가 (기본 오브젝트명 대신 런타임 표시명 사용)
+    - [x] 병사 생성 시 `BarracksSoldierConfig.DisplayName`을 병사 런타임에 주입
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 통과 (`success=9, fail=0`)
+
+## 진행 메모 (2026-02-22 19:33:40)
+- [x] 병영 병사 선택 DisplayName 점검/보강
+    - [x] BarracksSoldierRuntime 표시명 fallback을 Common.Extensions.IsNullOrWhiteSpace() 기반으로 통일
+    - [x] TowerManager 병사 생성 시 표시명 주입 공백 체크를 Common.Extensions 스타일로 통일
+- [x] 검증
+    - [x] dotnet build Assembly-CSharp.csproj -v minimal 오류 0
+
+## 진행 메모 (2026-02-22 20:05:56)
+- [x] 선택 정보 패널 공격력/방어력 표기 추가
+    - [x] ISelectableTarget에 AttackPower/DefensePower 확장
+    - [x] 영웅/적/배럭병사/타워 런타임 수치 연결
+    - [x] SelectionInfoPanel에 전투 스탯 라벨(ATK/DEF) 표기 추가 (프리팹 미연결 시 런타임 자동 생성)
+    - [x] SelectionInfoPanelPrefabBuilder에 txtCombat 생성/직렬화 바인딩 반영
+- [x] 검증
+    - [x] dotnet build Assembly-CSharp.csproj -v minimal 오류 0
+
+
+## 진행 메모 (2026-02-22 20:07:27)
+- [x] Selection+HP UI 자동 회귀 재검증 (ATK/DEF 패널 반영 이후)
+    - [x] Tools/Kingdom/Build SelectionInfoPanel Prefab 실행
+    - [x] Tools/Kingdom/Run Selection + HP UI Smoke Regression 통과 (success=11, fail=0)
+
+## 진행 메모 (2026-02-22 20:14:47)
+- [x] 선택 패널 전투 수치 줄바꿈 레이아웃 개선
+    - [x] HP 텍스트를 `HP 현재/최대` 형식으로 명시
+    - [x] 공격/방어를 1줄 요약에서 2줄(`ATK`, `DEF`) 표기로 변경
+    - [x] 우측 상단 사이드 패널 기준으로 라벨/슬라이더 위치 재배치 및 패널 높이 확장
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+    - [x] `Tools/Kingdom/Build SelectionInfoPanel Prefab` 실행
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 통과 (`success=11, fail=0`)
+
+## 진행 메모 (2026-02-22 20:24:55)
+- [x] SelectionInfoPanel 텍스트 겹침 개선 + HP 슬라이더 제거
+    - [x] HP를 텍스트만 유지하고 `hpSlider` 제거
+    - [x] 이름 2줄 허용 시 HP/ATK/DEF와 겹치지 않도록 레이아웃 재배치
+    - [x] 패널 높이 확장(사이드 패널용) 및 이름 라벨 2줄 제한/말줄임 적용
+    - [x] Selection UI 스모크 검증에서 슬라이더 의존 제거
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+    - [x] `Tools/Kingdom/Build SelectionInfoPanel Prefab` 실행
+    - [x] `Tools/Kingdom/Run Selection + HP UI Smoke Regression` 통과 (`success=9, fail=0`)
+
+## 진행 메모 (2026-02-22 20:27:33)
+- [x] AISpriteProcessor 메뉴 경로 충돌 수정
+    - [x] `Tools/Common/AI Sprite Processor`가 하위 폴더로 변환되던 문제 해소
+    - [x] 회귀 메뉴를 별도 경로(`Tools/Common/AI Sprite Processor - Run Preset Load Regression`)로 분리
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+
+## 진행 메모 (2026-02-22 20:42:41)
+- [x] 제거 후보 툴 메뉴 정리(1차)
+    - [x] 일회성 `Build* Prefab`/`CoreDataBuilder`/`ComfyUI 생성 파이프라인` 스크립트 삭제
+    - [x] `KingdomSpriteBindingTools`에서 일회성 2개 메뉴(`Apply Sample Runtime Paths`, `Migrate Barracks Soldier Config References`) 제거
+    - [x] 유지 대상(`Tools/Common/*`, Kingdom 회귀 메뉴, Sprite Validate/Hint, Check Available Models) 보존
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+    - [x] 삭제 후 `Tools` 메뉴 등록 재스캔 완료
+
+## 진행 메모 (2026-02-22 20:48:27)
+- [x] 회귀(Regression) 메뉴를 개발 전용 폴더로 이동
+    - [x] `Tools/Kingdom/Developer/Regression/*`로 Kingdom 회귀 6종 이동
+    - [x] `Tools/Common/Developer/AI Sprite Processor/Run Preset Load Regression`로 이동
+    - [x] `Tools/Kingdom/Sprites/Developer/Run Missing Hint Regression`로 이동
+- [x] 검증
+    - [x] `dotnet build Assembly-CSharp.csproj -v minimal` 오류 0
+
+## 진행 메모 (2026-02-22 20:58:05)
+- [x] Hero 매니페스트 multi 액션 호환 보강
+    - [x] GameScene 런타임 검증에서 ctionGroup=multi를 idle/walk/attack/die 후보로 허용
+    - [x] multi 텍스처 내 액션 라벨 프레임(_idle_/_walk_/_attack_/_die_) 존재 검증 추가
+    - [x] HeroController에서 multi 텍스처 로드시 액션별 프레임 필터링 후 애니메이션 적용
+- [x] 검증
+    - [x] dotnet build Assembly-CSharp.csproj -v minimal 오류 0
+
+## 진행 메모 (2026-02-22 21:06:39)
+- [x] 타워 선택 누락 보강
+    - [x] SelectionController에서 레이어 필터 탐색 결과 선택 대상이 없을 때 전체 레이어 재탐색 추가
+- [x] 영웅 HP 표기/월드 HP바 0 고정 현상 보정
+    - [x] HeroController.Configure()에서 InitializeHealth() 사용으로 _maxHp/_currentHp 동기화
+    - [x] 레벨업/부활 시 _maxHp 갱신 경로 정리
+- [x] 검증
+    - [x] dotnet build Assembly-CSharp.csproj -v minimal 오류 0
+
+## 진행 메모 (2026-02-22 21:09:32)
+- [x] 타워 클릭 시 SelectionInfoPanel 미노출 추가 수정
+    - [x] GameScene 타워 클릭 분기에서 액션 메뉴 오픈과 함께 SelectionController.Select(towerTarget) 호출
+    - [x] TowerManager.TryGetTowerSelectableTarget() 추가로 타워 프록시(ISelectableTarget) 안전 획득
+- [x] 검증
+    - [x] dotnet build Assembly-CSharp.csproj -v minimal 오류 0

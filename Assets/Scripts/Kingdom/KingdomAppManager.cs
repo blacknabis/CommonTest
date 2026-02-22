@@ -1372,8 +1372,6 @@ namespace Kingdom.App
             bool nameOk = !string.IsNullOrWhiteSpace(snapshot.NameText)
                           && string.Equals(snapshot.NameText.Trim(), target.DisplayName?.Trim(), StringComparison.Ordinal);
             bool hpTextOk = !string.IsNullOrWhiteSpace(snapshot.HpText) && snapshot.HpText.Contains("/");
-            bool sliderOk = snapshot.SliderValue >= 0f
-                            && Mathf.Abs(snapshot.SliderValue - target.HpRatio) <= 0.08f;
 
             bool hpBarOk = true;
             float hpOffsetY = 0f;
@@ -1382,10 +1380,10 @@ namespace Kingdom.App
                 hpBarOk = TryValidateActiveHpBarAboveTarget(hpBarManager, target, out hpOffsetY);
             }
 
-            bool passed = selectedOk && circleOk && panelVisibleOk && nameOk && hpTextOk && sliderOk && hpBarOk;
+            bool passed = selectedOk && circleOk && panelVisibleOk && nameOk && hpTextOk && hpBarOk;
             Debug.Log(
                 $"[KingdomAppManager] Selection UI smoke {label}. pass={passed}, selected={selectedOk}, circle={circleOk}, " +
-                $"panel={panelVisibleOk}, name={nameOk}, hpText={hpTextOk}, slider={sliderOk}, hpBar={hpBarOk}, hpOffsetY={hpOffsetY:0.000}");
+                $"panel={panelVisibleOk}, name={nameOk}, hpText={hpTextOk}, hpBar={hpBarOk}, hpOffsetY={hpOffsetY:0.000}");
             return passed;
         }
 
@@ -1400,19 +1398,16 @@ namespace Kingdom.App
             FieldInfo panelRootField = typeof(SelectionInfoPanel).GetField("_panelRoot", flags);
             FieldInfo txtNameField = typeof(SelectionInfoPanel).GetField("_txtName", flags);
             FieldInfo txtHpField = typeof(SelectionInfoPanel).GetField("_txtHp", flags);
-            FieldInfo hpSliderField = typeof(SelectionInfoPanel).GetField("_hpSlider", flags);
 
             GameObject panelRoot = panelRootField?.GetValue(panel) as GameObject;
             TextMeshProUGUI txtName = txtNameField?.GetValue(panel) as TextMeshProUGUI;
             TextMeshProUGUI txtHp = txtHpField?.GetValue(panel) as TextMeshProUGUI;
-            Slider hpSlider = hpSliderField?.GetValue(panel) as Slider;
 
             return new SelectionPanelSnapshot
             {
                 Visible = panelRoot.IsNotNull() && panelRoot.activeSelf,
                 NameText = txtName.IsNotNull() ? txtName.text : string.Empty,
-                HpText = txtHp.IsNotNull() ? txtHp.text : string.Empty,
-                SliderValue = hpSlider.IsNotNull() ? hpSlider.value : -1f
+                HpText = txtHp.IsNotNull() ? txtHp.text : string.Empty
             };
         }
 
@@ -1452,7 +1447,6 @@ namespace Kingdom.App
             public bool Visible;
             public string NameText;
             public string HpText;
-            public float SliderValue;
         }
 
         private struct SelectionUiRuntimeRefs

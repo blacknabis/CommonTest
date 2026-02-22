@@ -33,6 +33,16 @@ namespace Kingdom.Game
         float MaxHp { get; }
 
         /// <summary>
+        /// 현재 선택 대상의 공격력 표기값
+        /// </summary>
+        float AttackPower { get; }
+
+        /// <summary>
+        /// 현재 선택 대상의 방어력 표기값
+        /// </summary>
+        float DefensePower { get; }
+
+        /// <summary>
         /// 생존 여부
         /// </summary>
         bool IsAlive { get; }

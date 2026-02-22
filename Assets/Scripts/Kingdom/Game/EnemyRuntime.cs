@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Common.Extensions;
 using UnityEngine;
 
 namespace Kingdom.Game
@@ -61,7 +62,13 @@ namespace Kingdom.Game
         public bool IsBlocked => _blockerTowerId >= 0;
 
         // ISelectableTarget 오버라이드
-        public override string DisplayName => _config != null ? _config.DisplayName : name;
+        public override string DisplayName => _config.IsNotNull() ? _config.DisplayName : name;
+        public override float AttackPower => _config.IsNotNull()
+            ? Mathf.Max(0f, (_config.AttackDamageMin + _config.AttackDamageMax) * 0.5f)
+            : 0f;
+        public override float DefensePower => _config.IsNotNull()
+            ? Mathf.Max(0f, _config.GetResistancePercent(DamageType.Physical) * 100f)
+            : 0f;
         public override string UnitType => "Enemy";
 
         public float GetDeathVisualDuration()

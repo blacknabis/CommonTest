@@ -70,6 +70,10 @@ namespace Kingdom.Game
 
         // ISelectableTarget 오버라이드
         public override string DisplayName => heroConfig != null ? heroConfig.DisplayName : name;
+        public override float AttackPower => heroConfig.IsNotNull()
+            ? Mathf.Max(0f, (heroConfig.GetDamageMin(_level) + heroConfig.GetDamageMax(_level)) * 0.5f)
+            : 0f;
+        public override float DefensePower => Mathf.Max(0f, _armorPercent * 100f);
         public override string UnitType => "Hero";
 
         public override void OnSelected()
@@ -87,7 +91,7 @@ namespace Kingdom.Game
             transform.position = spawnPosition;
 
             InitializeProgression();
-            _currentHp = heroConfig.GetMaxHp(_level);
+            InitializeHealth(heroConfig.GetMaxHp(_level));
             _respawnLeft = 0f;
             _attackCooldownLeft = 0f;
             _activeSkillCooldownLeft = 0f;
@@ -194,7 +198,7 @@ namespace Kingdom.Game
         private void Respawn()
         {
             _runtimeState = HeroRuntimeState.Respawn;
-            _currentHp = heroConfig.GetMaxHp(_level);
+            InitializeHealth(heroConfig.GetMaxHp(_level));
             _currentTarget = null;
             _respawnLeft = 0f;
             _attackCooldownLeft = 0.15f;
@@ -373,10 +377,11 @@ namespace Kingdom.Game
                 _xpToNext = heroConfig.GetRequiredXpForNextLevel(_level);
                 _armorPercent = heroConfig.GetArmorPercent(_level);
                 _magicResistPercent = heroConfig.GetMagicResistPercent(_level);
+                _maxHp = heroConfig.GetMaxHp(_level);
 
                 if (IsAlive)
                 {
-                    float newMaxHp = heroConfig.GetMaxHp(_level);
+                    float newMaxHp = _maxHp;
                     float healBonus = (newMaxHp - prevMaxHp) * 0.5f;
                     _currentHp = Mathf.Min(newMaxHp, _currentHp + healBonus);
                 }
@@ -504,7 +509,7 @@ namespace Kingdom.Game
             if (hitCount > 0)
             {
                 _guardBuffLeft = Mathf.Max(_guardBuffLeft, TankGuardBuffSeconds);
-                float maxHp = heroConfig.GetMaxHp(_level);
+                float maxHp = Mathf.Max(1f, _maxHp);
                 _currentHp = Mathf.Min(maxHp, _currentHp + maxHp * 0.04f);
             }
 
@@ -916,7 +921,7 @@ namespace Kingdom.Game
                     continue;
                 }
 
-                if (!string.Equals(candidate.actionGroup, actionLower, StringComparison.OrdinalIgnoreCase))
+                if (!IsManifestActionMatch(candidate.actionGroup, actionLower))
                 {
                     continue;
                 }
@@ -945,8 +950,18 @@ namespace Kingdom.Game
                 return Array.Empty<Sprite>();
             }
 
+            if (IsMultiActionGroup(best.actionGroup))
+            {
+                loaded = FilterActionSprites(loaded, actionLower);
+                if (loaded == null || loaded.Length <= 0)
+                {
+                    Debug.LogWarning($"[HeroController] Manifest actionGroup=multi but no frames matched action={actionLower}, texture={textureResourcePath}");
+                    return Array.Empty<Sprite>();
+                }
+            }
+
             Array.Sort(loaded, CompareSpriteByFrameName);
-            Debug.Log($"[HeroController] Loaded generated animation frames via manifest. heroId={heroId}, action={actionLower}, texture={textureResourcePath}, count={loaded.Length}");
+            Debug.Log($"[HeroController] Loaded generated animation frames via manifest. heroId={heroId}, action={actionLower}, actionGroup={best.actionGroup}, texture={textureResourcePath}, count={loaded.Length}");
             return loaded;
         }
 
@@ -982,6 +997,52 @@ namespace Kingdom.Game
             }
 
             return source.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsManifestActionMatch(string actionGroup, string action)
+        {
+            if (string.IsNullOrWhiteSpace(actionGroup) || string.IsNullOrWhiteSpace(action))
+            {
+                return false;
+            }
+
+            if (string.Equals(actionGroup, action, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return IsMultiActionGroup(actionGroup);
+        }
+
+        private static bool IsMultiActionGroup(string actionGroup)
+        {
+            return string.Equals(actionGroup, "multi", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static Sprite[] FilterActionSprites(Sprite[] sprites, string action)
+        {
+            if (sprites == null || sprites.Length <= 0 || string.IsNullOrWhiteSpace(action))
+            {
+                return Array.Empty<Sprite>();
+            }
+
+            string token = $"_{action}_";
+            var filtered = new List<Sprite>(sprites.Length);
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite.IsNull() || string.IsNullOrWhiteSpace(sprite.name))
+                {
+                    continue;
+                }
+
+                if (sprite.name.IndexOf(token, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    filtered.Add(sprite);
+                }
+            }
+
+            return filtered.ToArray();
         }
 
         private static string StripExtension(string fileName)

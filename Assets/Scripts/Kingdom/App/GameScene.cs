@@ -372,6 +372,13 @@ namespace Kingdom.App
                         towerInfo.UpgradeCost,
                         towerInfo.SellRefund,
                         towerInfo.SupportsRally);
+
+                    if (_selectionController.IsNotNull()
+                        && _towerManager.TryGetTowerSelectableTarget(towerId, out ISelectableTarget towerTarget)
+                        && towerTarget.IsNotNull())
+                    {
+                        _selectionController.Select(towerTarget);
+                    }
                 }
 
                 SelectionController.SuppressSelectionForCurrentFrame();
@@ -695,7 +702,7 @@ namespace Kingdom.App
                     continue;
                 }
 
-                if (!string.Equals(candidate.actionGroup, action, System.StringComparison.OrdinalIgnoreCase))
+                if (!IsManifestActionMatch(candidate.actionGroup, action))
                 {
                     continue;
                 }
@@ -731,7 +738,64 @@ namespace Kingdom.App
                 return false;
             }
 
+            if (IsMultiActionGroup(best.actionGroup) && !HasActionFramesInTexture(textureResourcePath, action))
+            {
+                reason = $"multi action record exists but no frames matched action={action} in texture={textureResourcePath}.";
+                return false;
+            }
+
             return true;
+        }
+
+        private static bool IsManifestActionMatch(string actionGroup, string action)
+        {
+            if (string.IsNullOrWhiteSpace(actionGroup) || string.IsNullOrWhiteSpace(action))
+            {
+                return false;
+            }
+
+            if (string.Equals(actionGroup, action, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return IsMultiActionGroup(actionGroup);
+        }
+
+        private static bool IsMultiActionGroup(string actionGroup)
+        {
+            return string.Equals(actionGroup, "multi", System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool HasActionFramesInTexture(string textureResourcePath, string action)
+        {
+            if (string.IsNullOrWhiteSpace(textureResourcePath) || string.IsNullOrWhiteSpace(action))
+            {
+                return false;
+            }
+
+            Sprite[] sprites = Resources.LoadAll<Sprite>(textureResourcePath);
+            if (sprites == null || sprites.Length <= 0)
+            {
+                return false;
+            }
+
+            string token = $"_{action.ToLowerInvariant()}_";
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite.IsNull() || string.IsNullOrWhiteSpace(sprite.name))
+                {
+                    continue;
+                }
+
+                if (sprite.name.IndexOf(token, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // 웨이브에 등장하는 적의 비주얼 바인딩을 검증한다.

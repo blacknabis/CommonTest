@@ -260,7 +260,7 @@ namespace Kingdom.Editor
             window.Show();
         }
 
-        [MenuItem("Tools/Common/AI Sprite Processor/Run Preset Load Regression")]
+        [MenuItem("Tools/Common/Developer/AI Sprite Processor/Run Preset Load Regression")]
         // 저장된 모든 프리셋에 대해 로드 회귀 검증을 일괄 실행한다.
         public static void RunPresetLoadRegressionMenu()
         {

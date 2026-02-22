@@ -19,6 +19,8 @@ namespace Kingdom.Game
         public virtual string DisplayName => name;
         public virtual Vector3 Position => transform.position;
         public float HpRatio => _maxHp > 0 ? Mathf.Clamp01(_currentHp / _maxHp) : 0f;
+        public virtual float AttackPower => 0f;
+        public virtual float DefensePower => 0f;
         public virtual string UnitType => "Unit";
 
         public virtual void OnSelected() { }

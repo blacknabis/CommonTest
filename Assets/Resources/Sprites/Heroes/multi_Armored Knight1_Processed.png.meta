@@ -1,0 +1,1090 @@
+fileFormatVersion: 2
+guid: 605d5e55110781546b62bab41c171e99
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9186884532204832102
+    second: multi_Armored Knight1_Processed_0
+  - first:
+      213: 7521866011847694412
+    second: multi_Armored Knight1_Processed_1
+  - first:
+      213: 4780641366670813841
+    second: multi_Armored Knight1_Processed_2
+  - first:
+      213: 5185101874147605815
+    second: multi_Armored Knight1_Processed_3
+  - first:
+      213: -3385478271908851198
+    second: multi_Armored Knight1_Processed_4
+  - first:
+      213: -7967815801600501525
+    second: multi_Armored Knight1_Processed_5
+  - first:
+      213: -1883239591380494757
+    second: multi_Armored Knight1_Processed_6
+  - first:
+      213: -1850831104877142200
+    second: multi_Armored Knight1_Processed_7
+  - first:
+      213: -3319712743876510945
+    second: multi_Armored Knight1_Processed_8
+  - first:
+      213: 2437957627623775236
+    second: multi_Armored Knight1_Processed_9
+  - first:
+      213: -5703202615726400569
+    second: multi_Armored Knight1_Processed_10
+  - first:
+      213: -4690368104659384688
+    second: multi_Armored Knight1_Processed_11
+  - first:
+      213: 461759379873477290
+    second: multi_Armored Knight1_Processed_12
+  - first:
+      213: 4880997844859228448
+    second: multi_Armored Knight1_Processed_13
+  - first:
+      213: -89750278683155532
+    second: multi_Armored Knight1_Processed_14
+  - first:
+      213: 5196197052609743830
+    second: multi_Armored Knight1_Processed_15
+  - first:
+      213: -883112892099731513
+    second: multi_Armored Knight1_Processed_16
+  - first:
+      213: 5557603173435429749
+    second: multi_Armored Knight1_Processed_17
+  - first:
+      213: -8208063867053646129
+    second: multi_Armored Knight1_Processed_18
+  - first:
+      213: -2651225746623101165
+    second: multi_Armored Knight1_Processed_19
+  - first:
+      213: 5798924376194909334
+    second: multi_Armored Knight1_Processed_20
+  - first:
+      213: 5268028020334307296
+    second: multi_Armored Knight1_Processed_21
+  - first:
+      213: 405001226245120326
+    second: multi_Armored Knight1_Processed_22
+  - first:
+      213: -8642728111324178061
+    second: multi_Armored Knight1_Processed_23
+  - first:
+      213: -6289006992030480807
+    second: multi_Armored Knight1_Processed_24
+  - first:
+      213: -4820521423246303317
+    second: multi_Armored Knight1_Processed_25
+  - first:
+      213: -3454928575087003759
+    second: multi_Armored Knight1_Processed_26
+  - first:
+      213: -656007674726351596
+    second: multi_Armored Knight1_Processed_27
+  - first:
+      213: -4092295561208033309
+    second: multi_Armored Knight1_Processed_28
+  - first:
+      213: 5878163426416334211
+    second: multi_Armored Knight1_Processed_29
+  - first:
+      213: 8884427373711784072
+    second: multi_Armored Knight1_Processed_30
+  - first:
+      213: 1709802040220944148
+    second: multi_Armored Knight1_Processed_31
+  - first:
+      213: -776574136207565512
+    second: multi_Armored Knight1_Processed_idle_00
+  - first:
+      213: -8306355578348401543
+    second: multi_Armored Knight1_Processed_idle_01
+  - first:
+      213: -5215844599812037491
+    second: multi_Armored Knight1_Processed_idle_02
+  - first:
+      213: -2233367794409714380
+    second: multi_Armored Knight1_Processed_idle_03
+  - first:
+      213: 6199977644196109421
+    second: multi_Armored Knight1_Processed_idle_04
+  - first:
+      213: 279211944214466488
+    second: multi_Armored Knight1_Processed_idle_05
+  - first:
+      213: 255761509719914874
+    second: multi_Armored Knight1_Processed_idle_06
+  - first:
+      213: 6014938170238671026
+    second: multi_Armored Knight1_Processed_idle_07
+  - first:
+      213: 9113684979482259352
+    second: multi_Armored Knight1_Processed_walk_00
+  - first:
+      213: 5343887715966822972
+    second: multi_Armored Knight1_Processed_walk_01
+  - first:
+      213: 1512423894942333252
+    second: multi_Armored Knight1_Processed_walk_02
+  - first:
+      213: -3604309891663758188
+    second: multi_Armored Knight1_Processed_walk_03
+  - first:
+      213: 4156494452562427798
+    second: multi_Armored Knight1_Processed_walk_04
+  - first:
+      213: -3534395378371341827
+    second: multi_Armored Knight1_Processed_walk_05
+  - first:
+      213: -8034474010823575747
+    second: multi_Armored Knight1_Processed_walk_06
+  - first:
+      213: 5913999511575455679
+    second: multi_Armored Knight1_Processed_walk_07
+  - first:
+      213: -9090738182880574291
+    second: multi_Armored Knight1_Processed_attack_00
+  - first:
+      213: 4256491851866155538
+    second: multi_Armored Knight1_Processed_attack_01
+  - first:
+      213: 4172072079738896169
+    second: multi_Armored Knight1_Processed_attack_02
+  - first:
+      213: 9182575359772929477
+    second: multi_Armored Knight1_Processed_attack_03
+  - first:
+      213: -6881072091241795928
+    second: multi_Armored Knight1_Processed_attack_04
+  - first:
+      213: 2965718104226280832
+    second: multi_Armored Knight1_Processed_attack_05
+  - first:
+      213: 4827872720093334079
+    second: multi_Armored Knight1_Processed_attack_06
+  - first:
+      213: -8449417921159646586
+    second: multi_Armored Knight1_Processed_attack_07
+  - first:
+      213: -6230443045701607587
+    second: multi_Armored Knight1_Processed_die_00
+  - first:
+      213: 7876383696707832655
+    second: multi_Armored Knight1_Processed_die_01
+  - first:
+      213: -204803400416422867
+    second: multi_Armored Knight1_Processed_die_02
+  - first:
+      213: -7478029394123746664
+    second: multi_Armored Knight1_Processed_die_03
+  - first:
+      213: -6340653410492063571
+    second: multi_Armored Knight1_Processed_die_04
+  - first:
+      213: -3967402808848588415
+    second: multi_Armored Knight1_Processed_die_05
+  - first:
+      213: -6528235414350754151
+    second: multi_Armored Knight1_Processed_die_06
+  - first:
+      213: 221096053309396008
+    second: multi_Armored Knight1_Processed_die_07
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83d979500fd0935f0800000000000000
+      internalID: -776574136207565512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_01
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97c85764c95e9bc80800000000000000
+      internalID: -8306355578348401543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_02
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d846090a8f89d97b0800000000000000
+      internalID: -5215844599812037491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_03
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43d4969e2db7101e0800000000000000
+      internalID: -2233367794409714380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_04
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6c1ca981deba0650800000000000000
+      internalID: 6199977644196109421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_05
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 855
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bf03ffa8c5ffd300800000000000000
+      internalID: 279211944214466488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_06
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a79b21eecb5ac8300800000000000000
+      internalID: 255761509719914874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_idle_07
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b89307b56a597350800000000000000
+      internalID: 6014938170238671026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_00
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89f6ad4d3305a7e70800000000000000
+      internalID: 9113684979482259352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_01
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3aa6c5809d492a40800000000000000
+      internalID: 5343887715966822972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_02
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 449b9dfe4853df410800000000000000
+      internalID: 1512423894942333252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_03
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 684
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49c74feff3beafdc0800000000000000
+      internalID: -3604309891663758188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_04
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69f7ddbbea5dea930800000000000000
+      internalID: 4156494452562427798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_05
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df1d460212e43fec0800000000000000
+      internalID: -3534395378371341827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_06
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d37b0c3a470df7090800000000000000
+      internalID: -8034474010823575747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_walk_07
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb7e949d83fb21250800000000000000
+      internalID: 5913999511575455679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_00
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da4c25799c537d180800000000000000
+      internalID: -9090738182880574291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_01
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 513
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21aa3d399c8121b30800000000000000
+      internalID: 4256491851866155538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_02
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92f7922b37d26e930800000000000000
+      internalID: 4172072079738896169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_03
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5cd258a63af0f6f70800000000000000
+      internalID: 9182575359772929477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_04
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8aeada7f3658180a0800000000000000
+      internalID: -6881072091241795928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_05
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0853a5a17e8582920800000000000000
+      internalID: 2965718104226280832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_06
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3a46f5e8ac000340800000000000000
+      internalID: 4827872720093334079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_attack_07
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 342
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 682b57aea23adba80800000000000000
+      internalID: -8449417921159646586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5f17ab6f050989a0800000000000000
+      internalID: -6230443045701607587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_01
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4bc2f4cd398e4d60800000000000000
+      internalID: 7876383696707832655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_02
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2413657464682df0800000000000000
+      internalID: -204803400416422867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_03
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8921357e2e3b83890800000000000000
+      internalID: -7478029394123746664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_04
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da060cf31597108a0800000000000000
+      internalID: -6340653410492063571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_05
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 171
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18161b16a24f0f8c0800000000000000
+      internalID: -3967402808848588415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_06
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99e8f7d8a7c0765a0800000000000000
+      internalID: -6528235414350754151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_Armored Knight1_Processed_die_07
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 0
+        width: 149
+        height: 171
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8245fb660bd711300800000000000000
+      internalID: 221096053309396008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_Armored Knight1_Processed_0: -9186884532204832102
+      multi_Armored Knight1_Processed_1: 7521866011847694412
+      multi_Armored Knight1_Processed_10: -5703202615726400569
+      multi_Armored Knight1_Processed_11: -4690368104659384688
+      multi_Armored Knight1_Processed_12: 461759379873477290
+      multi_Armored Knight1_Processed_13: 4880997844859228448
+      multi_Armored Knight1_Processed_14: -89750278683155532
+      multi_Armored Knight1_Processed_15: 5196197052609743830
+      multi_Armored Knight1_Processed_16: -883112892099731513
+      multi_Armored Knight1_Processed_17: 5557603173435429749
+      multi_Armored Knight1_Processed_18: -8208063867053646129
+      multi_Armored Knight1_Processed_19: -2651225746623101165
+      multi_Armored Knight1_Processed_2: 4780641366670813841
+      multi_Armored Knight1_Processed_20: 5798924376194909334
+      multi_Armored Knight1_Processed_21: 5268028020334307296
+      multi_Armored Knight1_Processed_22: 405001226245120326
+      multi_Armored Knight1_Processed_23: -8642728111324178061
+      multi_Armored Knight1_Processed_24: -6289006992030480807
+      multi_Armored Knight1_Processed_25: -4820521423246303317
+      multi_Armored Knight1_Processed_26: -3454928575087003759
+      multi_Armored Knight1_Processed_27: -656007674726351596
+      multi_Armored Knight1_Processed_28: -4092295561208033309
+      multi_Armored Knight1_Processed_29: 5878163426416334211
+      multi_Armored Knight1_Processed_3: 5185101874147605815
+      multi_Armored Knight1_Processed_30: 8884427373711784072
+      multi_Armored Knight1_Processed_31: 1709802040220944148
+      multi_Armored Knight1_Processed_4: -3385478271908851198
+      multi_Armored Knight1_Processed_5: -7967815801600501525
+      multi_Armored Knight1_Processed_6: -1883239591380494757
+      multi_Armored Knight1_Processed_7: -1850831104877142200
+      multi_Armored Knight1_Processed_8: -3319712743876510945
+      multi_Armored Knight1_Processed_9: 2437957627623775236
+      multi_Armored Knight1_Processed_attack_00: -9090738182880574291
+      multi_Armored Knight1_Processed_attack_01: 4256491851866155538
+      multi_Armored Knight1_Processed_attack_02: 4172072079738896169
+      multi_Armored Knight1_Processed_attack_03: 9182575359772929477
+      multi_Armored Knight1_Processed_attack_04: -6881072091241795928
+      multi_Armored Knight1_Processed_attack_05: 2965718104226280832
+      multi_Armored Knight1_Processed_attack_06: 4827872720093334079
+      multi_Armored Knight1_Processed_attack_07: -8449417921159646586
+      multi_Armored Knight1_Processed_die_00: -6230443045701607587
+      multi_Armored Knight1_Processed_die_01: 7876383696707832655
+      multi_Armored Knight1_Processed_die_02: -204803400416422867
+      multi_Armored Knight1_Processed_die_03: -7478029394123746664
+      multi_Armored Knight1_Processed_die_04: -6340653410492063571
+      multi_Armored Knight1_Processed_die_05: -3967402808848588415
+      multi_Armored Knight1_Processed_die_06: -6528235414350754151
+      multi_Armored Knight1_Processed_die_07: 221096053309396008
+      multi_Armored Knight1_Processed_idle_00: -776574136207565512
+      multi_Armored Knight1_Processed_idle_01: -8306355578348401543
+      multi_Armored Knight1_Processed_idle_02: -5215844599812037491
+      multi_Armored Knight1_Processed_idle_03: -2233367794409714380
+      multi_Armored Knight1_Processed_idle_04: 6199977644196109421
+      multi_Armored Knight1_Processed_idle_05: 279211944214466488
+      multi_Armored Knight1_Processed_idle_06: 255761509719914874
+      multi_Armored Knight1_Processed_idle_07: 6014938170238671026
+      multi_Armored Knight1_Processed_walk_00: 9113684979482259352
+      multi_Armored Knight1_Processed_walk_01: 5343887715966822972
+      multi_Armored Knight1_Processed_walk_02: 1512423894942333252
+      multi_Armored Knight1_Processed_walk_03: -3604309891663758188
+      multi_Armored Knight1_Processed_walk_04: 4156494452562427798
+      multi_Armored Knight1_Processed_walk_05: -3534395378371341827
+      multi_Armored Knight1_Processed_walk_06: -8034474010823575747
+      multi_Armored Knight1_Processed_walk_07: 5913999511575455679
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

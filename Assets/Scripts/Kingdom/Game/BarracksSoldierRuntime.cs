@@ -33,6 +33,7 @@ namespace Kingdom.Game
         private float _moveSpeed = DefaultMoveSpeed;
         private Vector3 _rallyPoint;
         private EnemyRuntime _blockTarget;
+        private string _displayName = "Barracks Soldier";
         private SpriteRenderer _renderer;
         private Animator _animator;
         private bool _useAnimator;
@@ -43,8 +44,9 @@ namespace Kingdom.Game
         public BarracksSoldierState State { get; private set; } = BarracksSoldierState.Idle;
         public EnemyRuntime BlockTarget => _blockTarget;
         public bool CanEngage => IsAlive && State != BarracksSoldierState.Respawning;
-
-        // ISelectableTarget 오버라이드
+        public override string DisplayName => _displayName.IsNullOrWhiteSpace() ? name : _displayName;
+        public override float AttackPower => _attackDamage;
+        public override float DefensePower => 0f;
         public override string UnitType => "Soldier";
 
         public event Action<BarracksSoldierRuntime> Died;
@@ -59,10 +61,12 @@ namespace Kingdom.Game
             float respawnSec,
             Vector3 rallyPoint,
             SpriteRenderer renderer,
-            Animator animator = null)
+            Animator animator = null,
+            string displayName = null)
         {
             OwnerTowerId = ownerTowerId;
             SoldierIndex = soldierIndex;
+            _displayName = displayName.IsNullOrWhiteSpace() ? name : displayName.Trim();
             _renderer = renderer;
             _animator = animator.IsNotNull() ? animator : GetComponent<Animator>();
             _useAnimator = _animator.IsNotNull() && _animator.runtimeAnimatorController.IsNotNull();

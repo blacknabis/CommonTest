@@ -15,7 +15,6 @@ namespace Kingdom.Editor
         private const string TowerConfigFolder = ConfigResourcePaths.TowerAssetFolder;
         private const string BarracksSoldierConfigFolder = ConfigResourcePaths.BarracksSoldierAssetFolder;
 
-        [MenuItem("Tools/Kingdom/Sprites/Apply Sample Runtime Paths")]
         public static void ApplySampleRuntimePaths()
         {
             int changedCount = 0;
@@ -225,7 +224,7 @@ namespace Kingdom.Editor
             }
         }
 
-        [MenuItem("Tools/Kingdom/Sprites/Run Missing Hint Regression")]
+        [MenuItem("Tools/Kingdom/Sprites/Developer/Run Missing Hint Regression")]
         public static void RunMissingHintRegression()
         {
             MethodInfo appendHintMethod = typeof(GameScene).GetMethod(
@@ -291,7 +290,6 @@ namespace Kingdom.Editor
             Debug.LogWarning($"[KingdomSpriteBindingTools] Missing hint regression failed. missing={missingHints.Count}\n{string.Join("\n", missingHints)}\n--- output ---\n{output}");
         }
 
-        [MenuItem("Tools/Kingdom/Sprites/Migrate Barracks Soldier Config References")]
         public static void MigrateBarracksSoldierConfigReferences()
         {
             int towerCount = 0;

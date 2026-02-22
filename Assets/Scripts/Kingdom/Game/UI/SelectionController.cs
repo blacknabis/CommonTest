@@ -90,25 +90,51 @@ namespace Kingdom.Game.UI
             {
                 colliders = Physics2D.OverlapCircleAll(mousePos, _clickRadius, Physics2D.AllLayers);
             }
-            
-            ISelectableTarget targetFound = null;
-            float closestDist = float.MaxValue;
 
-            foreach (var col in colliders)
+            ISelectableTarget targetFound = FindClosestSelectable(mousePos, colliders);
+            if (targetFound.IsNull() && layerMask != Physics2D.AllLayers)
             {
-                var selectable = col.GetComponentInParent<ISelectableTarget>();
-                if (selectable.IsNotNull() && selectable.IsAlive)
-                {
-                    float dist = Vector2.Distance(mousePos, col.transform.position);
-                    if (dist < closestDist)
-                    {
-                        closestDist = dist;
-                        targetFound = selectable;
-                    }
-                }
+                Collider2D[] allLayerColliders = Physics2D.OverlapCircleAll(mousePos, _clickRadius, Physics2D.AllLayers);
+                targetFound = FindClosestSelectable(mousePos, allLayerColliders);
             }
 
             Select(targetFound);
+        }
+
+        private static ISelectableTarget FindClosestSelectable(Vector3 mousePos, Collider2D[] colliders)
+        {
+            if (colliders.IsNull() || colliders.Length <= 0)
+            {
+                return null;
+            }
+
+            ISelectableTarget targetFound = null;
+            float closestDist = float.MaxValue;
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Collider2D col = colliders[i];
+                if (col.IsNull())
+                {
+                    continue;
+                }
+
+                ISelectableTarget selectable = col.GetComponentInParent<ISelectableTarget>();
+                if (selectable.IsNull() || !selectable.IsAlive)
+                {
+                    continue;
+                }
+
+                float dist = Vector2.Distance(mousePos, col.transform.position);
+                if (dist >= closestDist)
+                {
+                    continue;
+                }
+
+                closestDist = dist;
+                targetFound = selectable;
+            }
+
+            return targetFound;
         }
 
         public void Select(ISelectableTarget target)

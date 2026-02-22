@@ -333,6 +333,25 @@ namespace Kingdom.Game
             return true;
         }
 
+        public bool TryGetTowerSelectableTarget(int towerId, out ISelectableTarget selectableTarget)
+        {
+            selectableTarget = null;
+            TowerRuntime tower = FindTowerById(towerId);
+            if (tower == null || tower.Transform.IsNull())
+            {
+                return false;
+            }
+
+            TowerSelectableProxy proxy = tower.Transform.GetComponent<TowerSelectableProxy>();
+            if (proxy.IsNotNull())
+            {
+                selectableTarget = proxy;
+                return true;
+            }
+
+            return false;
+        }
+
         public bool TryGetBarracksDebugInfo(int towerId, out BarracksDebugInfo info)
         {
             info = default;
@@ -1282,6 +1301,8 @@ namespace Kingdom.Game
             public float HpRatio => _runtime.IsNotNull() ? _runtime.HpRatio : 1f;
             public float CurrentHp => _runtime.IsNotNull() ? _runtime.CurrentHp : 1f;
             public float MaxHp => _runtime.IsNotNull() ? _runtime.MaxHp : 1f;
+            public float AttackPower => _runtime.IsNotNull() ? _runtime.AttackPower : 0f;
+            public float DefensePower => _runtime.IsNotNull() ? _runtime.DefensePower : 0f;
             public bool IsAlive => _runtime.IsNotNull() && _runtime.IsAlive;
             public string UnitType => _runtime.IsNotNull() ? _runtime.UnitType : "Tower";
 
@@ -1354,6 +1375,30 @@ namespace Kingdom.Game
             public float HpRatio => 1f; // 타워는 파괴되지 않음
             public float CurrentHp => 1f;
             public float MaxHp => 1f;
+            public float AttackPower
+            {
+                get
+                {
+                    if (_config.IsNull())
+                    {
+                        return 0f;
+                    }
+
+                    if (_towerType == TowerType.Barracks)
+                    {
+                        return Mathf.Max(0f, _config.BarracksData.SoldierDamage);
+                    }
+
+                    if (_config.Levels.IsNull() || _config.Levels.Length <= 0)
+                    {
+                        return 0f;
+                    }
+
+                    int levelIndex = Mathf.Clamp(_level - 1, 0, _config.Levels.Length - 1);
+                    return Mathf.Max(0f, _config.Levels[levelIndex].Damage);
+                }
+            }
+            public float DefensePower => 0f;
             public string UnitType => "Tower";
             public bool IsAlive => true;
 
@@ -2000,6 +2045,14 @@ namespace Kingdom.Game
                         animator.runtimeAnimatorController = soldierController;
                     }
 
+                    string soldierDisplayName = "Barracks Soldier";
+                    if (_config.IsNotNull()
+                        && _config.BarracksSoldierConfig.IsNotNull()
+                        && !_config.BarracksSoldierConfig.DisplayName.IsNullOrWhiteSpace())
+                    {
+                        soldierDisplayName = _config.BarracksSoldierConfig.DisplayName.Trim();
+                    }
+
                     var soldier = go.AddComponent<BarracksSoldierRuntime>();
                     soldier.Initialize(
                         TowerId,
@@ -2010,7 +2063,8 @@ namespace Kingdom.Game
                         _config.BarracksData.SoldierRespawnSec,
                         _rallyPoint,
                         renderer,
-                        animator);
+                        animator,
+                        soldierDisplayName);
 
                     if (WorldHpBarManager.Instance.IsNotNull())
                     {
