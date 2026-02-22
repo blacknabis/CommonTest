@@ -12,6 +12,7 @@ namespace Kingdom.Game.UI
     public class SelectionController : MonoBehaviour
     {
         public static SelectionController Instance { get; private set; }
+        private static int _suppressedFrame = -1;
 
         [Header("Settings")]
         [SerializeField] private LayerMask _selectionLayer;
@@ -26,6 +27,11 @@ namespace Kingdom.Game.UI
         /// Selection change event. Passes the newly selected target (null if deselected).
         /// </summary>
         public event System.Action<ISelectableTarget> SelectionChanged;
+
+        public static void SuppressSelectionForCurrentFrame()
+        {
+            _suppressedFrame = Time.frameCount;
+        }
 
         public void SetCircleVisual(SelectionCircleVisual visual)
         {
@@ -49,6 +55,11 @@ namespace Kingdom.Game.UI
 
         private void Update()
         {
+            if (_suppressedFrame == Time.frameCount)
+            {
+                return;
+            }
+
             // 빈 공간 클릭 시 선택 해제, 오브젝트 클릭 시 선택
             if (Input.GetMouseButtonDown(0))
             {

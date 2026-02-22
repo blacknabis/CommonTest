@@ -316,8 +316,8 @@
 - [ ] `SelectionController._circleVisual` 직렬화 연결
 
 ### Phase 2. GameScene 부트스트랩 정리
-- [ ] `Resources/UI/SelectionSystem` 우선 로드
-- [ ] 실패 시 런타임 생성 fallback 유지
+- [x] `Resources/UI/SelectionSystem` 우선 로드
+- [x] 실패 시 런타임 생성 fallback 유지
 
 ### Phase 3. HP바 프리팹 정합성 고정
 - [ ] `WorldHpBar.prefab` 루트 컴포넌트/Fill 바인딩 확정
@@ -330,7 +330,7 @@
 
 ### Phase 4.5. 기술 부채 정리
 - [ ] `WorldHpBar`의 `CanvasGroup` 의존 제거
-- [ ] 선택-타워 클릭 충돌 방지(방안 B) 반영
+- [x] 선택-타워 클릭 충돌 방지(방안 B) 반영
 
 ### Phase 5. 회귀 검증
 - [ ] 수동 시나리오(병사/적/영웅/타워 클릭 + HP바 동작) 완료

@@ -32,6 +32,7 @@ namespace Kingdom.App
         private const string WaveStartSfxResourcePath = "Audio/SFX/UI_WaveStart_Heroic"; // 웨이브 시작 사운드 경로
         private const string WaveStartSfxFallbackResourcePath = "Audio/SFX/UI_Common_Click"; // 웨이브 시작 대체 사운드 경로
         private const string WorldHpBarPrefabResourcePath = "UI/WorldHpBar"; // 월드 HP바 프리팹 경로
+        private const string SelectionSystemPrefabResourcePath = "UI/SelectionSystem"; // 선택 시스템 프리팹 경로
         private const float WaveStartBannerDurationSec = 1.2f; // 웨이브 시작 배너 노출 시간
         private const float WaveStartSfxVolumeScale = 0.85f; // 웨이브 시작 사운드 볼륨 스케일
         private const bool RequireCompleteRuntimeVisualData = true; // 필수 비주얼 데이터 누락 시 씬 시작 중단
@@ -223,12 +224,36 @@ namespace Kingdom.App
         private void EnsureSelectionSystems()
         {
             _selectionController = FindFirstObjectByType<SelectionController>();
+            _selectionCircleVisual = FindFirstObjectByType<SelectionCircleVisual>();
+
+            if (_selectionController.IsNull() || _selectionCircleVisual.IsNull())
+            {
+                GameObject selectionSystemPrefab = Resources.Load<GameObject>(SelectionSystemPrefabResourcePath);
+                if (selectionSystemPrefab.IsNotNull())
+                {
+                    GameObject selectionSystemInstance = Instantiate(selectionSystemPrefab);
+                    if (_selectionController.IsNull())
+                    {
+                        _selectionController = selectionSystemInstance.GetComponentInChildren<SelectionController>(true);
+                    }
+
+                    if (_selectionCircleVisual.IsNull())
+                    {
+                        _selectionCircleVisual = selectionSystemInstance.GetComponentInChildren<SelectionCircleVisual>(true);
+                    }
+
+                    if (_selectionController.IsNull() || _selectionCircleVisual.IsNull())
+                    {
+                        Debug.LogWarning($"[GameScene] SelectionSystem prefab is missing required components. path={SelectionSystemPrefabResourcePath}");
+                    }
+                }
+            }
+
             if (_selectionController.IsNull())
             {
                 _selectionController = new GameObject("SelectionController").AddComponent<SelectionController>();
             }
 
-            _selectionCircleVisual = FindFirstObjectByType<SelectionCircleVisual>();
             if (_selectionCircleVisual.IsNull())
             {
                 GameObject circleGo = new GameObject("SelectionCircleVisual");
@@ -326,6 +351,7 @@ namespace Kingdom.App
 
                 RefreshAfterTowerAction();
                 TickSpellCooldowns();
+                SelectionController.SuppressSelectionForCurrentFrame();
                 return;
             }
 
@@ -348,6 +374,7 @@ namespace Kingdom.App
                         towerInfo.SupportsRally);
                 }
 
+                SelectionController.SuppressSelectionForCurrentFrame();
                 return;
             }
 
@@ -358,6 +385,7 @@ namespace Kingdom.App
                 _isRallyPlacementMode = false;
                 gameView.HideTowerActionMenuPublic();
                 gameView.OpenTowerRingMenuAtWorldPosition(slotWorld);
+                SelectionController.SuppressSelectionForCurrentFrame();
                 return;
             }
 
