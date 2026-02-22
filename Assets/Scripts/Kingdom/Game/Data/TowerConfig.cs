@@ -83,6 +83,8 @@ namespace Kingdom.Game
         public TowerType TowerType = TowerType.Archer;
         [Tooltip("Optional fallback Resources path (without extension) for runtime tower sprite. Supports {level} and {tower} tokens.")]
         public string RuntimeSpriteResourcePath;
+        [Tooltip("Optional Resources path (without extension) for runtime tower animator controller. Example: Animations/Towers/Archer/Archer")]
+        public string RuntimeAnimatorControllerPath;
         
         [Header("Damage Settings")]
         public DamageType DamageType = DamageType.Physical;

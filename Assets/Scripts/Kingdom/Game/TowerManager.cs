@@ -585,6 +585,18 @@ namespace Kingdom.Game
             sr.sortingOrder = 30;
             go.transform.localScale = new Vector3(initialScale, initialScale, 1f);
 
+            RuntimeAnimatorController towerController = ResolveTowerAnimatorController(config, towerType);
+            if (towerController.IsNotNull())
+            {
+                Animator animator = go.GetComponent<Animator>();
+                if (animator.IsNull())
+                {
+                    animator = go.AddComponent<Animator>();
+                }
+
+                animator.runtimeAnimatorController = towerController;
+            }
+
             CircleCollider2D selectionCollider = go.GetComponent<CircleCollider2D>();
             if (selectionCollider.IsNull())
             {
@@ -1079,6 +1091,36 @@ namespace Kingdom.Game
             return controller.IsNotNull();
         }
 
+        private static RuntimeAnimatorController ResolveTowerAnimatorController(TowerConfig config, TowerType towerType)
+        {
+            if (config.IsNotNull() && TryLoadAnimatorController(config.RuntimeAnimatorControllerPath, out RuntimeAnimatorController byConfig))
+            {
+                return byConfig;
+            }
+
+            string towerId = config.IsNotNull() && !string.IsNullOrWhiteSpace(config.TowerId)
+                ? config.TowerId.Trim()
+                : towerType.ToString();
+            string towerTypeName = towerType.ToString();
+            string[] candidates =
+            {
+                $"Animations/Towers/{towerId}/{towerId}",
+                $"Animations/Towers/{towerTypeName}/{towerTypeName}",
+                $"Animations/Towers/{towerId}",
+                $"Animations/Towers/{towerTypeName}"
+            };
+
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (TryLoadAnimatorController(candidates[i], out RuntimeAnimatorController loaded))
+                {
+                    return loaded;
+                }
+            }
+
+            return null;
+        }
+
         private static Texture2D TryLoadTextureFromDisk(string resourcePath)
         {
             if (string.IsNullOrWhiteSpace(resourcePath))
@@ -1338,6 +1380,9 @@ namespace Kingdom.Game
             private const float BarracksSoldierIdleRadius = 0.58f;
             private const float BarracksSoldierCombatRadius = 0.42f;
             private const float BarracksEnemyBlockRadius = 0.52f;
+            private static readonly int MotionStateHash = Animator.StringToHash("MotionState");
+            private const int MotionStateIdle = 0;
+            private const int MotionStateAttack = 2;
 
             private readonly Transform _transform;
             private readonly TowerType _towerType;
@@ -1359,6 +1404,11 @@ namespace Kingdom.Game
             private Vector3 _baseScale;
             private Coroutine _visualRoutine;
             private SpriteRenderer _sr;
+            private Animator _animator;
+            private bool _useAnimator;
+            private bool _hasMotionStateParameter;
+            private float _animAttackDuration = 0.2f;
+            private float _animAttackTimer;
 
             public int TowerId { get; }
             public int SlotIndex { get; }
@@ -1427,6 +1477,14 @@ namespace Kingdom.Game
                 {
                     _baseScale = _transform.localScale;
                     _sr = _transform.GetComponent<SpriteRenderer>();
+                    _animator = _transform.GetComponent<Animator>();
+                    _useAnimator = _animator.IsNotNull() && _animator.runtimeAnimatorController.IsNotNull();
+                    if (_useAnimator)
+                    {
+                        _hasMotionStateParameter = HasIntParameter(_animator, MotionStateHash);
+                        _animAttackDuration = ResolveAnimatorClipLength("attack", "atk", "fire", "shot");
+                        RefreshTowerAnimationState();
+                    }
                 }
 
                 if (_towerType == TowerType.Barracks)
@@ -1504,6 +1562,7 @@ namespace Kingdom.Game
                     return;
                 }
 
+                TickTowerAnimation(deltaTime);
                 _skillCooldownLeft = Mathf.Max(0f, _skillCooldownLeft - deltaTime);
                 if (_towerType == TowerType.Barracks)
                 {
@@ -1514,6 +1573,7 @@ namespace Kingdom.Game
                 _cooldownLeft -= deltaTime;
                 if (_cooldownLeft > 0f)
                 {
+                    RefreshTowerAnimationState();
                     return;
                 }
 
@@ -1525,6 +1585,7 @@ namespace Kingdom.Game
                 EnemyRuntime target = FindClosestTarget(enemies, levelData.Range, config);
                 if (target == null)
                 {
+                    RefreshTowerAnimationState();
                     return;
                 }
 
@@ -1536,6 +1597,7 @@ namespace Kingdom.Game
                 // Advanced tier hooks: each tower type gets one distinct skill behavior.
                 if (TryExecuteAdvancedSingleTargetSkill(target, baseDamage, levelData, levelIndex))
                 {
+                    MarkTowerAttack(levelData.Cooldown);
                     return;
                 }
 
@@ -1545,6 +1607,7 @@ namespace Kingdom.Game
                     target.ApplyDamage(baseDamage, damageType, halfPhysicalPen);
                     TryExecuteArtilleryCluster(enemies, target, target.transform.position, baseDamage, levelIndex);
                     _cooldownLeft = Mathf.Max(0.1f, levelData.Cooldown);
+                    MarkTowerAttack(levelData.Cooldown);
                     return;
                 }
 
@@ -1566,6 +1629,93 @@ namespace Kingdom.Game
                 _projectileManager.SpawnProjectile(spawnData);
                 TryExecuteArtilleryCluster(enemies, target, targetPoint, baseDamage, levelIndex);
                 _cooldownLeft = Mathf.Max(0.1f, levelData.Cooldown);
+                MarkTowerAttack(levelData.Cooldown);
+            }
+
+            private void TickTowerAnimation(float deltaTime)
+            {
+                if (!_useAnimator)
+                {
+                    return;
+                }
+
+                _animAttackTimer = Mathf.Max(0f, _animAttackTimer - deltaTime);
+            }
+
+            private void MarkTowerAttack(float attackCooldown)
+            {
+                if (!_useAnimator)
+                {
+                    return;
+                }
+
+                float fallbackWindow = Mathf.Clamp(attackCooldown * 0.45f, 0.08f, 0.35f);
+                _animAttackTimer = Mathf.Max(_animAttackDuration, fallbackWindow);
+                RefreshTowerAnimationState();
+            }
+
+            private void RefreshTowerAnimationState()
+            {
+                if (!_useAnimator || _animator.IsNull() || !_hasMotionStateParameter)
+                {
+                    return;
+                }
+
+                int state = _animAttackTimer > 0f ? MotionStateAttack : MotionStateIdle;
+                _animator.SetInteger(MotionStateHash, state);
+            }
+
+            private static bool HasIntParameter(Animator animator, int parameterHash)
+            {
+                if (animator.IsNull())
+                {
+                    return false;
+                }
+
+                AnimatorControllerParameter[] parameters = animator.parameters;
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    if (parameters[i].nameHash == parameterHash && parameters[i].type == AnimatorControllerParameterType.Int)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            private float ResolveAnimatorClipLength(params string[] nameTokens)
+            {
+                if (_animator.IsNull() || _animator.runtimeAnimatorController.IsNull())
+                {
+                    return 0.2f;
+                }
+
+                AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+                if (clips == null || clips.Length <= 0)
+                {
+                    return 0.2f;
+                }
+
+                for (int i = 0; i < clips.Length; i++)
+                {
+                    AnimationClip clip = clips[i];
+                    if (clip == null || string.IsNullOrWhiteSpace(clip.name))
+                    {
+                        continue;
+                    }
+
+                    string lowerName = clip.name.ToLowerInvariant();
+                    for (int j = 0; j < nameTokens.Length; j++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(nameTokens[j]) && lowerName.Contains(nameTokens[j].ToLowerInvariant()))
+                        {
+                            return Mathf.Max(0.05f, clip.length);
+                        }
+                    }
+                }
+
+                return 0.2f;
             }
 
             public void HandleEnemyRemoved(EnemyRuntime enemy)
