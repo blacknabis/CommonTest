@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "updatedAtUtc": "2026-02-22T16:11:11.0465839Z",
+    "sourceFiles": [
+        "ArcherTower.png"
+    ],
+    "actions": [
+        {
+            "actionGroup": "multi",
+            "sourceFile": "ArcherTower.png",
+            "outputTexture": "multi_ArcherTower_Processed.png",
+            "frameCount": 8,
+            "maxFrameWidth": 204,
+            "maxFrameHeight": 335,
+            "pivotX": 0.5,
+            "pivotY": 0.0,
+            "normalizedFrames": true,
+            "slicingMode": "SmartSlice",
+            "options": {
+                "removeBackground": true,
+                "useRgbRangeFilter": false,
+                "tolerance": 0.15000000596046449,
+                "thresholdR": 150,
+                "thresholdG": 50,
+                "thresholdB": 150,
+                "compareR": 1,
+                "compareG": 2,
+                "compareB": 1,
+                "cropToSelection": true,
+                "normalizeFrames": true,
+                "slicingMode": 2,
+                "rows": 2,
+                "cols": 4,
+                "innerPadding": 4,
+                "smartSliceAlphaThreshold": 0.10000000149011612,
+                "smartSliceMinPixels": 62,
+                "smartSliceOuterPadding": 2,
+                "smartSliceSplitActionsByRows": true,
+                "smartSliceActionRowCount": 4
+            },
+            "warnings": [
+                "source=ArcherTower",
+                "SmartSlice action-row split skipped: one or more rows are empty."
+            ]
+        }
+    ]
+}

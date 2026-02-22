@@ -12,20 +12,19 @@ Unity 기반 2D 전략/디펜스 프로젝트입니다.
 2. 메뉴 `Kingdom/Setup/Register Scenes in Build Settings` 실행
 3. `Assets/Scenes/InitScene.unity`를 열고 Play
 
-## 현재 진행 트랙
+## 문서 운영
+### 현재 진행 트랙
 - 메인 작업 보드: `문서/진행/task.md`
-- AI Sprite Processor 고도화: `문서/진행/AISpriteProcessor_BaseUnit_TowerBase_고도화_계획_2026_02_20.md`
-- ComfyUI 자동화(분리 트랙): `문서/진행/ComfyUI_자동화_트랙_관리_2026_02_20.md`
-- 스프라이트 회귀 운영: `문서/진행/스프라이트_회귀_운영_가이드_2026_02_20.md`
+- 그 외 문서는 완료 처리되어 `문서/완료/2026_02_22`로 이관됨
 
-## 최근 반영 요약 (2026-02-20)
-- `AISpriteProcessor` BaseUnit/TowerBase 워크플로우 운영
-- `BarracksSoldierConfig` 도입 및 `TowerConfig` 참조 연결
-- 배럭 병사 스프라이트 로딩 우선순위 정리  
-  `BarracksSoldierConfig -> legacy(SoldierSpriteResourcePath) -> 관용 경로`
-- 마이그레이션 메뉴 추가  
-  `Tools/Kingdom/Sprites/Migrate Barracks Soldier Config References`
-- 회귀 메뉴 실행 시 모달 다이얼로그 제거(자동 검증 중단 방지)
+### 최근 완료 문서 (2026-02-22)
+- 타워 본체 2액션 적용 계획: `문서/완료/2026_02_22/타워본체_애니메이션_2액션_적용계획_2026_02_22.md`
+- 타워 본체 스프라이트 프롬프트: `문서/완료/2026_02_22/타워본체_스프라이트_프롬프트_2026_02_22.md`
+
+### 문서 보관 규칙
+- 진행 중인 문서는 `문서/진행`에 유지합니다.
+- 완료된 산출물은 날짜 폴더(`문서/완료/YYYY_MM_DD`)로 이관합니다.
+- `task.md`는 진행 상태의 단일 기준 문서로 사용합니다.
 
 ## 주요 코드 경로
 - `Assets/Scripts/Kingdom/App/`: 씬/게임 흐름(`GameScene`, `WorldMapScene` 등)

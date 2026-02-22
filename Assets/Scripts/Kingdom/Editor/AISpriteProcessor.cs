@@ -234,6 +234,7 @@ namespace Kingdom.Editor
         private const string ComfyUiRembgNodeType = "Image Remove Background (rembg)";
         private float _animatorClipFps = 8f;
         private bool _showBaseUnitAdvancedActions;
+        private bool _showTowerAdvancedActions;
 
         // 자동 검증/회귀 환경에서 모달로 멈추지 않도록 기본적으로 로그 알림을 사용한다.
         private static void NotifyInfo(string title, string message)
@@ -828,30 +829,68 @@ namespace Kingdom.Editor
                 EditorGUILayout.LabelField("Last Output", _lastProcessedAssetPath, EditorStyles.miniLabel);
             }
 
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Process & Slice"))
+            EditorGUILayout.Space(4f);
+            _animatorClipFps = EditorGUILayout.FloatField("Clip FPS", Mathf.Max(1f, _animatorClipFps));
+            if (GUILayout.Button("Run All (Process + Apply + Generate)", GUILayout.Height(28f)))
             {
-                ProcessWithContext(_towerContext.autoApplyAfterProcess);
-            }
-
-            GUI.enabled = !string.IsNullOrEmpty(_lastProcessedAssetPath);
-            if (GUILayout.Button("Apply Binding"))
-            {
-                if (!TryApplyTowerBinding(_lastProcessedAssetPath, out string bindError))
+                if (!TryRunTowerFullPipeline(out string pipelineError))
                 {
-                    NotifyError("TowerBase Apply Failed", bindError);
+                    NotifyError("Tower Run All Failed", pipelineError);
                 }
                 else
                 {
-                    NotifyInfo("TowerBase Apply Success", _lastProcessedAssetPath);
+                    NotifyInfo("Tower Run All Success", "Process, binding, and animator generation completed.");
                 }
             }
-            GUI.enabled = true;
-            EditorGUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Process + Apply"))
+            _showTowerAdvancedActions = EditorGUILayout.Foldout(_showTowerAdvancedActions, "Advanced Actions");
+            if (_showTowerAdvancedActions)
             {
-                ProcessWithContext(true);
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Process & Slice"))
+                {
+                    ProcessWithContext(_towerContext.autoApplyAfterProcess);
+                }
+
+                GUI.enabled = !string.IsNullOrEmpty(_lastProcessedAssetPath);
+                if (GUILayout.Button("Apply Binding"))
+                {
+                    if (!TryApplyTowerBinding(_lastProcessedAssetPath, out string bindError))
+                    {
+                        NotifyError("TowerBase Apply Failed", bindError);
+                    }
+                    else
+                    {
+                        NotifyInfo("TowerBase Apply Success", _lastProcessedAssetPath);
+                    }
+                }
+                GUI.enabled = true;
+                EditorGUILayout.EndHorizontal();
+
+                if (GUILayout.Button("Process + Apply"))
+                {
+                    ProcessWithContext(true);
+                }
+
+                bool canGenerateTowerAnimator = _towerContext.targetAsset != null;
+                GUI.enabled = canGenerateTowerAnimator;
+                if (GUILayout.Button("Generate Animator + Clips"))
+                {
+                    if (!TryRunTowerFullPipeline(out string animatorError))
+                    {
+                        NotifyError("Tower Animator Generate Failed", animatorError);
+                    }
+                    else
+                    {
+                        NotifyInfo("Tower Animator Generate Success", "Process, binding, and animator generation completed.");
+                    }
+                }
+                GUI.enabled = true;
+
+                if (!canGenerateTowerAnimator)
+                {
+                    EditorGUILayout.HelpBox("Tower Config를 먼저 지정해야 Animator 생성 버튼이 활성화됩니다.", MessageType.Info);
+                }
             }
 
             if (GUILayout.Button("Validate Current"))
@@ -1505,7 +1544,17 @@ namespace Kingdom.Editor
                 case AISpriteProcessorTab.BaseUnit:
                     return TryApplyBaseUnitBinding(processedAssetPath, out error);
                 case AISpriteProcessorTab.TowerBase:
-                    return TryApplyTowerBinding(processedAssetPath, out error);
+                    if (!TryApplyTowerBinding(processedAssetPath, out error))
+                    {
+                        return false;
+                    }
+
+                    if (!TryGenerateTowerAnimatorAssets(out error))
+                    {
+                        return false;
+                    }
+
+                    return true;
                 default:
                     error = "Binding is supported only on BaseUnit/TowerBase tabs.";
                     return false;
@@ -1943,6 +1992,48 @@ namespace Kingdom.Editor
             return true;
         }
 
+        // TowerBase에서 처리/바인딩/애니메이터 생성을 한 번에 실행한다.
+        private bool TryRunTowerFullPipeline(out string error)
+        {
+            if (!TryValidateTowerContext(out error))
+            {
+                return false;
+            }
+
+            if (!TryValidateInputs(out error))
+            {
+                return false;
+            }
+
+            bool useManualGroup = _useManualActionGroup;
+            SpriteActionGroup actionGroup = _singleSourceActionGroup;
+            if (IsSmartSliceActionSplitMode())
+            {
+                useManualGroup = false;
+                actionGroup = SpriteActionGroup.Unknown;
+            }
+
+            bool processed = ProcessSingleTexture(_sourceTexture, true, useManualGroup, actionGroup);
+            if (!processed)
+            {
+                error = "Process failed. Check previous log for details.";
+                return false;
+            }
+
+            if (!TryApplyTowerBinding(_lastProcessedAssetPath, out error))
+            {
+                return false;
+            }
+
+            if (!TryGenerateTowerAnimatorAssets(out error))
+            {
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
         // 베이스 유닛 대상의 액션 스프라이트에서 AnimationClip/AnimatorController를 생성한다.
         private bool TryGenerateBaseUnitAnimatorAssets(out string error)
         {
@@ -2039,6 +2130,195 @@ namespace Kingdom.Editor
 
             error = null;
             return true;
+        }
+
+        // 타워 본체 대상의 Idle/Attack 스프라이트에서 AnimationClip/AnimatorController를 생성한다.
+        private bool TryGenerateTowerAnimatorAssets(out string error)
+        {
+            if (!TryValidateTowerContext(out error))
+            {
+                return false;
+            }
+
+            if (!TryResolveTowerTargetId(_towerContext.targetAsset, out string towerId, out error))
+            {
+                return false;
+            }
+
+            if (!TryResolveTowerAnimatorSourceSpriteAssetPath(_towerContext.targetAsset, towerId, out string spriteAssetPath, out error))
+            {
+                return false;
+            }
+
+            Sprite[] sprites = LoadSpritesFromAssetPath(spriteAssetPath);
+            if (sprites == null || sprites.Length <= 0)
+            {
+                error = $"No sprites were found at: {spriteAssetPath}";
+                return false;
+            }
+
+            var idleFrames = FilterSpritesByActionAliases(sprites, "idle");
+            var attackFrames = FilterSpritesByActionAliases(sprites, "attack", "atk", "fire", "shot");
+
+            if (TryInferTwoActionRows(
+                    sprites,
+                    out List<Sprite> inferredIdle,
+                    out List<Sprite> inferredAttack))
+            {
+                if (idleFrames.Count <= 0)
+                {
+                    idleFrames = inferredIdle;
+                }
+
+                if (attackFrames.Count <= 0)
+                {
+                    attackFrames = inferredAttack;
+                }
+
+                Debug.Log($"[AISpriteProcessor] Tower action inference fallback applied by row index. towerId={towerId}");
+            }
+
+            if (idleFrames.Count <= 0)
+            {
+                idleFrames = new List<Sprite>(sprites);
+                idleFrames.Sort(CompareSpriteByActionFrame);
+                NotifyWarning(
+                    "Tower Idle Fallback",
+                    $"Idle frames not detected. Using all sprites as idle. towerId={towerId}, source={spriteAssetPath}");
+            }
+
+            if (attackFrames.Count <= 0)
+            {
+                NotifyWarning("Tower Attack Fallback", $"Attack frames not detected. Idle frames will be reused. towerId={towerId}");
+                attackFrames = idleFrames;
+            }
+
+            if (!TryEnsureTowerAnimatorOutputFolder(towerId, out string outputFolder, out error))
+            {
+                return false;
+            }
+
+            AnimationClip idleClip = CreateOrUpdateActionClip(outputFolder, towerId, "idle", idleFrames, true, _animatorClipFps);
+            AnimationClip attackClip = CreateOrUpdateActionClip(outputFolder, towerId, "attack", attackFrames, false, _animatorClipFps);
+
+            string controllerPath = $"{outputFolder}/{towerId}.controller";
+            AnimatorController controller = CreateOrUpdateTowerAnimatorController(controllerPath, idleClip, attackClip);
+            if (controller == null)
+            {
+                error = $"Failed to create tower animator controller at: {controllerPath}";
+                return false;
+            }
+
+            if (TryConvertAssetPathToResourcePath(controllerPath, out string controllerResourcePath, out _) &&
+                !TryAssignStringProperty(_towerContext.targetAsset, "RuntimeAnimatorControllerPath", controllerResourcePath, out string assignError))
+            {
+                NotifyWarning("Tower Animator Path Bind Warning", assignError);
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log(
+                $"[AISpriteProcessor] Tower animator generated. towerId={towerId}, source={spriteAssetPath}, controller={controllerPath}, " +
+                $"idle={idleFrames.Count}, attack={attackFrames.Count}");
+
+            error = null;
+            return true;
+        }
+
+        private bool TryResolveTowerAnimatorSourceSpriteAssetPath(UnityEngine.Object targetAsset, string towerId, out string spriteAssetPath, out string error)
+        {
+            spriteAssetPath = string.Empty;
+
+            if (_towerContext.levelIndex > 0 && TryReadTowerLevelSpriteResourcePath(targetAsset, _towerContext.levelIndex, out string levelResourcePath))
+            {
+                if (TryResolveResourcePathToSpriteAssetPath(levelResourcePath, out spriteAssetPath))
+                {
+                    error = null;
+                    return true;
+                }
+            }
+
+            if (_sourceTexture != null)
+            {
+                string sourceTexturePath = AssetDatabase.GetAssetPath(_sourceTexture);
+                if (!string.IsNullOrWhiteSpace(sourceTexturePath) && File.Exists(sourceTexturePath))
+                {
+                    Sprite[] sourceSprites = LoadSpritesFromAssetPath(sourceTexturePath);
+                    if (sourceSprites.Length > 0)
+                    {
+                        spriteAssetPath = sourceTexturePath.Replace('\\', '/');
+                        error = null;
+                        return true;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(_lastProcessedAssetPath) && File.Exists(_lastProcessedAssetPath))
+            {
+                string lastProcessedNormalized = _lastProcessedAssetPath.Replace('\\', '/');
+                bool towerMatched = !string.IsNullOrWhiteSpace(towerId) &&
+                    lastProcessedNormalized.IndexOf(towerId, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (towerMatched)
+                {
+                    spriteAssetPath = lastProcessedNormalized;
+                    error = null;
+                    return true;
+                }
+            }
+
+            error = "No tower source sprite path found. Run Process first for this tower or provide a valid level sprite resource path.";
+            return false;
+        }
+
+        private static bool TryResolveTowerTargetId(UnityEngine.Object targetAsset, out string towerId, out string error)
+        {
+            towerId = string.Empty;
+            if (targetAsset == null)
+            {
+                error = "Tower target asset is null.";
+                return false;
+            }
+
+            if (!TryReadTrimmedStringProperty(targetAsset, "TowerId", out towerId) || string.IsNullOrWhiteSpace(towerId))
+            {
+                towerId = targetAsset.name?.Trim() ?? string.Empty;
+            }
+
+            if (string.IsNullOrWhiteSpace(towerId))
+            {
+                error = "TowerConfig.TowerId is required.";
+                return false;
+            }
+
+            error = null;
+            return true;
+        }
+
+        private static bool TryReadTowerLevelSpriteResourcePath(UnityEngine.Object towerAsset, int levelIndexOneBased, out string resourcePath)
+        {
+            resourcePath = string.Empty;
+            if (towerAsset == null || levelIndexOneBased <= 0)
+            {
+                return false;
+            }
+
+            SerializedObject so = new SerializedObject(towerAsset);
+            SerializedProperty levels = so.FindProperty("Levels");
+            if (levels == null || !levels.isArray || levels.arraySize <= 0)
+            {
+                return false;
+            }
+
+            int targetIndex = Mathf.Clamp(levelIndexOneBased - 1, 0, levels.arraySize - 1);
+            SerializedProperty levelData = levels.GetArrayElementAtIndex(targetIndex);
+            SerializedProperty spritePathProp = levelData.FindPropertyRelative("SpriteResourcePath");
+            if (spritePathProp == null || spritePathProp.propertyType != SerializedPropertyType.String)
+            {
+                return false;
+            }
+
+            resourcePath = (spritePathProp.stringValue ?? string.Empty).Trim();
+            return !string.IsNullOrWhiteSpace(resourcePath);
         }
 
         // 대상 타입에 맞는 식별자(HeroId/EnemyId/SoldierId)를 가져온다.
@@ -2357,6 +2637,100 @@ namespace Kingdom.Editor
             return idleFrames.Count > 0 && walkFrames.Count > 0 && attackFrames.Count > 0 && dieFrames.Count > 0;
         }
 
+        private static bool TryInferTwoActionRows(
+            Sprite[] sprites,
+            out List<Sprite> idleFrames,
+            out List<Sprite> attackFrames)
+        {
+            idleFrames = new List<Sprite>();
+            attackFrames = new List<Sprite>();
+
+            if (sprites.IsNull() || sprites.Length <= 0)
+            {
+                return false;
+            }
+
+            var rows = new SortedDictionary<int, List<(int col, Sprite sprite)>>();
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite.IsNull() || !TryParseRowColFromSpriteName(sprite.name, out int row, out int col))
+                {
+                    continue;
+                }
+
+                if (!rows.TryGetValue(row, out List<(int col, Sprite sprite)> rowList))
+                {
+                    rowList = new List<(int col, Sprite sprite)>();
+                    rows[row] = rowList;
+                }
+
+                rowList.Add((col, sprite));
+            }
+
+            if (rows.Count == 2)
+            {
+                var orderedRows = new List<int>(rows.Keys);
+                for (int i = 0; i < orderedRows.Count; i++)
+                {
+                    rows[orderedRows[i]].Sort((a, b) => a.col.CompareTo(b.col));
+                }
+
+                idleFrames = ExtractSpritesFromRow(rows[orderedRows[0]]);
+                attackFrames = ExtractSpritesFromRow(rows[orderedRows[1]]);
+                return idleFrames.Count > 0 && attackFrames.Count > 0;
+            }
+
+            // TowerBase 2-action policy:
+            // If row parsing is ambiguous (e.g. row count != 2 or names like _00..07),
+            // split frames evenly by vertical order to keep 2-row output deterministic.
+            var orderedByVertical = new List<Sprite>(sprites.Length);
+            for (int i = 0; i < sprites.Length; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite == null)
+                {
+                    continue;
+                }
+
+                orderedByVertical.Add(sprite);
+            }
+
+            if (orderedByVertical.Count < 2)
+            {
+                return false;
+            }
+
+            orderedByVertical.Sort((a, b) =>
+            {
+                int yCompare = b.rect.center.y.CompareTo(a.rect.center.y);
+                if (yCompare != 0)
+                {
+                    return yCompare;
+                }
+
+                int xCompare = a.rect.x.CompareTo(b.rect.x);
+                if (xCompare != 0)
+                {
+                    return xCompare;
+                }
+                
+                return string.Compare(a.name, b.name, StringComparison.OrdinalIgnoreCase);
+            });
+
+            int splitIndex = orderedByVertical.Count / 2;
+            if (splitIndex <= 0 || splitIndex >= orderedByVertical.Count)
+            {
+                return false;
+            }
+
+            idleFrames = orderedByVertical.GetRange(0, splitIndex);
+            attackFrames = orderedByVertical.GetRange(splitIndex, orderedByVertical.Count - splitIndex);
+            idleFrames.Sort((a, b) => a.rect.x.CompareTo(b.rect.x));
+            attackFrames.Sort((a, b) => a.rect.x.CompareTo(b.rect.x));
+            return idleFrames.Count > 0 && attackFrames.Count > 0;
+        }
+
         private static List<Sprite> ExtractSpritesFromRow(List<(int col, Sprite sprite)> rowFrames)
         {
             var result = new List<Sprite>();
@@ -2391,9 +2765,18 @@ namespace Kingdom.Editor
                 return false;
             }
 
-            if (!int.TryParse(tokens[tokens.Length - 2], out row))
+            string rowToken = tokens[tokens.Length - 2];
+            if (!int.TryParse(rowToken, out row))
             {
-                return false;
+                if (rowToken.StartsWith("row", StringComparison.OrdinalIgnoreCase) &&
+                    int.TryParse(rowToken.Substring(3), out int parsedRow))
+                {
+                    row = parsedRow;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             if (!int.TryParse(tokens[tokens.Length - 1], out col))
@@ -2418,6 +2801,17 @@ namespace Kingdom.Editor
             }
 
             folderPath = $"Assets/Resources/Animations/{typeFolder}/{targetId}";
+            return TryEnsureFolderPath(folderPath, out error);
+        }
+
+        private static bool TryEnsureTowerAnimatorOutputFolder(string towerId, out string folderPath, out string error)
+        {
+            folderPath = $"Assets/Resources/Animations/Towers/{towerId}";
+            return TryEnsureFolderPath(folderPath, out error);
+        }
+
+        private static bool TryEnsureFolderPath(string folderPath, out string error)
+        {
             string current = "Assets";
             string[] segments = folderPath.Split('/');
             for (int i = 1; i < segments.Length; i++)
@@ -2544,6 +2938,36 @@ namespace Kingdom.Editor
             AddAnyStateTransition(stateMachine, walkState, "MotionState", 1);
             AddAnyStateTransition(stateMachine, attackState, "MotionState", 2);
             AddAnyStateTransition(stateMachine, dieState, "MotionState", 3);
+            EditorUtility.SetDirty(controller);
+            return controller;
+        }
+
+        private static AnimatorController CreateOrUpdateTowerAnimatorController(
+            string controllerPath,
+            AnimationClip idleClip,
+            AnimationClip attackClip)
+        {
+            if (File.Exists(controllerPath))
+            {
+                AssetDatabase.DeleteAsset(controllerPath);
+            }
+
+            AnimatorController controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
+            if (controller == null)
+            {
+                return null;
+            }
+
+            controller.AddParameter("MotionState", AnimatorControllerParameterType.Int);
+            AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
+            stateMachine.states = Array.Empty<ChildAnimatorState>();
+
+            AnimatorState idleState = AddStateIfClipExists(stateMachine, "Idle", idleClip);
+            AnimatorState attackState = AddStateIfClipExists(stateMachine, "Attack", attackClip);
+            stateMachine.defaultState = idleState ?? attackState;
+
+            AddAnyStateTransition(stateMachine, idleState, "MotionState", 0);
+            AddAnyStateTransition(stateMachine, attackState, "MotionState", 2);
             EditorUtility.SetDirty(controller);
             return controller;
         }

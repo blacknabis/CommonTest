@@ -13,16 +13,23 @@ MonoBehaviour:
   m_Name: Artillery
   m_EditorClassIdentifier: Assembly-CSharp::Kingdom.Game.TowerConfig
   TowerId: Artillery
+  DisplayName: Tower
   TowerType: 3
   RuntimeSpriteResourcePath: Sprites/Towers/Artillery/L{level}
+  RuntimeAnimatorControllerPath: Animations/Towers/Artillery/Artillery
   DamageType: 0
   TargetType: 0
   HalfPhysicalArmorPenetration: 1
   CanTargetAir: 0
+  BarracksSoldierConfig: {fileID: 0}
   BarracksData:
     SquadSize: 0
     RallyRange: 0
     SoldierSpriteResourcePath: 
+    SoldierMaxHp: 0
+    SoldierDamage: 0
+    SoldierAttackCooldown: 0
+    SoldierRespawnSec: 0
   Levels:
   - Cost: 126
     Damage: 25
@@ -31,7 +38,7 @@ MonoBehaviour:
     AttackDeliveryType: 0
     ProjectileProfileId: Artillery_Shell
     SpriteOverride: {fileID: 0}
-    SpriteResourcePath: Sprites/Towers/Artillery/L1
+    SpriteResourcePath: Sprites/Towers/Artillery/multi_ArtilleryTower_Processed
     VisualScale: 0.65
   - Cost: 170
     Damage: 32.5

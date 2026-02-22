@@ -24,6 +24,8 @@ namespace Kingdom.Game
         private const float SupportSummonAttackCooldown = 0.8f;
         private const float SupportSummonDamageRatio = 0.45f;
         private const float SupportSummonOrbitRadius = 1.2f;
+        private const float MoveCommandStopDistance = 0.12f;
+        private const float MoveCommandEngageLeash = 2.4f;
 
         [SerializeField] private HeroConfig heroConfig;
 
@@ -59,6 +61,8 @@ namespace Kingdom.Game
         private bool _useAnimatedSprites;
         private HeroVisualState _visualState = HeroVisualState.Idle;
         private HeroRuntimeState _runtimeState = HeroRuntimeState.Idle;
+        private bool _hasMoveCommand;
+        private Vector3 _moveCommandTarget;
         private static Sprite _fallbackSummonSprite;
         private static GeneratedHeroManifest _cachedGeneratedHeroManifest;
         private static string _cachedGeneratedHeroManifestRaw;
@@ -82,6 +86,21 @@ namespace Kingdom.Game
             // Hero 선택 시 전용 대사 사운드 등을 여기서 호출 가능
         }
 
+        public bool TrySetMoveTarget(Vector3 worldPoint)
+        {
+            if (!IsAlive || heroConfig == null)
+            {
+                return false;
+            }
+
+            worldPoint.z = 0f;
+            _moveCommandTarget = worldPoint;
+            _hasMoveCommand = true;
+            _currentTarget = null;
+            _runtimeState = HeroRuntimeState.Move;
+            return true;
+        }
+
         public void Configure(SpawnManager spawnManager, HeroConfig config, Vector3 spawnPosition)
         {
             ClearSummons();
@@ -96,6 +115,7 @@ namespace Kingdom.Game
             _attackCooldownLeft = 0f;
             _activeSkillCooldownLeft = 0f;
             _guardBuffLeft = 0f;
+            _hasMoveCommand = false;
             _runtimeState = HeroRuntimeState.Idle;
 
             EnsureVisual();
@@ -202,6 +222,7 @@ namespace Kingdom.Game
             _currentTarget = null;
             _respawnLeft = 0f;
             _attackCooldownLeft = 0.15f;
+            _hasMoveCommand = false;
 
             transform.position = _homePosition;
             if (_renderer != null)
@@ -219,17 +240,49 @@ namespace Kingdom.Game
             bool isMoving = false;
             bool didAttack = false;
 
-            if (_currentTarget == null)
+            if (_hasMoveCommand && IsAtMoveCommandTarget())
             {
-                _currentTarget = FindNearestEnemy(heroConfig.GetAttackRange(_level) * 2.4f);
+                _hasMoveCommand = false;
             }
 
             if (_currentTarget == null)
             {
-                isMoving = MoveTowards(_homePosition, heroConfig.GetMoveSpeed(_level) * 0.75f);
+                float acquireRange = _hasMoveCommand
+                    ? heroConfig.GetAttackRange(_level) * 1.2f
+                    : heroConfig.GetAttackRange(_level) * 2.4f;
+                _currentTarget = FindNearestEnemy(acquireRange);
+            }
+
+            if (_currentTarget == null)
+            {
+                if (_hasMoveCommand)
+                {
+                    Vector3 moveTarget = _moveCommandTarget;
+                    float moveSpeed = heroConfig.GetMoveSpeed(_level);
+                    isMoving = MoveTowards(moveTarget, moveSpeed);
+                    if (IsAtMoveCommandTarget())
+                    {
+                        _hasMoveCommand = false;
+                        isMoving = false;
+                    }
+                }
+
                 _runtimeState = isMoving ? HeroRuntimeState.Move : HeroRuntimeState.Idle;
                 UpdateVisualState(isMoving, didAttack);
                 return;
+            }
+
+            if (_hasMoveCommand)
+            {
+                float leashSqr = MoveCommandEngageLeash * MoveCommandEngageLeash;
+                if ((_currentTarget.transform.position - _moveCommandTarget).sqrMagnitude > leashSqr)
+                {
+                    _currentTarget = null;
+                    isMoving = MoveTowards(_moveCommandTarget, heroConfig.GetMoveSpeed(_level));
+                    _runtimeState = isMoving ? HeroRuntimeState.Move : HeroRuntimeState.Idle;
+                    UpdateVisualState(isMoving, didAttack);
+                    return;
+                }
             }
 
             Vector3 targetPos = _currentTarget.transform.position;
@@ -709,6 +762,18 @@ namespace Kingdom.Game
             to.z = 0f;
             transform.position = to;
             return (to - from).sqrMagnitude > 0.000001f;
+        }
+
+        private bool IsAtMoveCommandTarget()
+        {
+            if (!_hasMoveCommand)
+            {
+                return true;
+            }
+
+            Vector3 delta = _moveCommandTarget - transform.position;
+            delta.z = 0f;
+            return delta.sqrMagnitude <= MoveCommandStopDistance * MoveCommandStopDistance;
         }
 
         private void EnsureVisual()

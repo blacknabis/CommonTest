@@ -1,0 +1,398 @@
+fileFormatVersion: 2
+guid: 81e3eaf739b32914a880e82e03c580de
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2621472751880323016
+    second: multi_ArtilleryTower_Processed_0
+  - first:
+      213: -4865208858085234266
+    second: multi_ArtilleryTower_Processed_1
+  - first:
+      213: 7078204552001291687
+    second: multi_ArtilleryTower_Processed_2
+  - first:
+      213: 372233089933715781
+    second: multi_ArtilleryTower_Processed_3
+  - first:
+      213: -39069344313943754
+    second: multi_ArtilleryTower_Processed_4
+  - first:
+      213: -6273299115658676819
+    second: multi_ArtilleryTower_Processed_5
+  - first:
+      213: 5659738190496213669
+    second: multi_ArtilleryTower_Processed_6
+  - first:
+      213: -5411015284483009461
+    second: multi_ArtilleryTower_Processed_7
+  - first:
+      213: -6158608227533300529
+    second: multi_ArtilleryTower_Processed_8
+  - first:
+      213: 2145662191070529401
+    second: multi_ArtilleryTower_Processed_9
+  - first:
+      213: 5592011205123911944
+    second: multi_ArtilleryTower_Processed_10
+  - first:
+      213: -3570339926156104669
+    second: multi_ArtilleryTower_Processed_11
+  - first:
+      213: 6945635134887530223
+    second: multi_ArtilleryTower_Processed_12
+  - first:
+      213: 2634974085475648269
+    second: multi_ArtilleryTower_Processed_13
+  - first:
+      213: 475971135198297746
+    second: multi_ArtilleryTower_Processed_14
+  - first:
+      213: -6437088837473730137
+    second: multi_ArtilleryTower_Processed_00
+  - first:
+      213: -6500491279458693689
+    second: multi_ArtilleryTower_Processed_01
+  - first:
+      213: -1175629465134571392
+    second: multi_ArtilleryTower_Processed_02
+  - first:
+      213: -1361119366651358588
+    second: multi_ArtilleryTower_Processed_03
+  - first:
+      213: 8349870689671292111
+    second: multi_ArtilleryTower_Processed_04
+  - first:
+      213: -1118011076666834319
+    second: multi_ArtilleryTower_Processed_05
+  - first:
+      213: 2473229695658403960
+    second: multi_ArtilleryTower_Processed_06
+  - first:
+      213: 904401795360426779
+    second: multi_ArtilleryTower_Processed_07
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 746
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a10fb6becddaa6a0800000000000000
+      internalID: -6437088837473730137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_01
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 746
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cd07565f9d99c5a0800000000000000
+      internalID: -6500491279458693689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_02
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 746
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 080eb2fea335fafe0800000000000000
+      internalID: -1175629465134571392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_03
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 373
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48257d5c5255c1de0800000000000000
+      internalID: -1361119366651358588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_04
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 373
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc4ad4a1723b0e370800000000000000
+      internalID: 8349870689671292111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_05
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 373
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 172425869d60c70f0800000000000000
+      internalID: -1118011076666834319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_06
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 878aaa1fd4da25220800000000000000
+      internalID: 2473229695658403960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_ArtilleryTower_Processed_07
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 0
+        width: 405
+        height: 373
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1b0fa224a41d8c00800000000000000
+      internalID: 904401795360426779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_ArtilleryTower_Processed_0: -2621472751880323016
+      multi_ArtilleryTower_Processed_00: -6437088837473730137
+      multi_ArtilleryTower_Processed_01: -6500491279458693689
+      multi_ArtilleryTower_Processed_02: -1175629465134571392
+      multi_ArtilleryTower_Processed_03: -1361119366651358588
+      multi_ArtilleryTower_Processed_04: 8349870689671292111
+      multi_ArtilleryTower_Processed_05: -1118011076666834319
+      multi_ArtilleryTower_Processed_06: 2473229695658403960
+      multi_ArtilleryTower_Processed_07: 904401795360426779
+      multi_ArtilleryTower_Processed_1: -4865208858085234266
+      multi_ArtilleryTower_Processed_10: 5592011205123911944
+      multi_ArtilleryTower_Processed_11: -3570339926156104669
+      multi_ArtilleryTower_Processed_12: 6945635134887530223
+      multi_ArtilleryTower_Processed_13: 2634974085475648269
+      multi_ArtilleryTower_Processed_14: 475971135198297746
+      multi_ArtilleryTower_Processed_2: 7078204552001291687
+      multi_ArtilleryTower_Processed_3: 372233089933715781
+      multi_ArtilleryTower_Processed_4: -39069344313943754
+      multi_ArtilleryTower_Processed_5: -6273299115658676819
+      multi_ArtilleryTower_Processed_6: 5659738190496213669
+      multi_ArtilleryTower_Processed_7: -5411015284483009461
+      multi_ArtilleryTower_Processed_8: -6158608227533300529
+      multi_ArtilleryTower_Processed_9: 2145662191070529401
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,370 @@
+fileFormatVersion: 2
+guid: 4ef2dc3ad9c082b4eb51578a84060f19
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4569595798001867822
+    second: multi_BarracksTower_Processed_0
+  - first:
+      213: -7173565986138390072
+    second: multi_BarracksTower_Processed_1
+  - first:
+      213: 6160021658244932741
+    second: multi_BarracksTower_Processed_2
+  - first:
+      213: -3223838243681548774
+    second: multi_BarracksTower_Processed_3
+  - first:
+      213: -2194759544980500889
+    second: multi_BarracksTower_Processed_4
+  - first:
+      213: 2299001755678438033
+    second: multi_BarracksTower_Processed_5
+  - first:
+      213: -7353122584900657815
+    second: multi_BarracksTower_Processed_6
+  - first:
+      213: 4693504697985875106
+    second: multi_BarracksTower_Processed_7
+  - first:
+      213: -9116693282709405402
+    second: multi_BarracksTower_Processed_00
+  - first:
+      213: -2442916192395494454
+    second: multi_BarracksTower_Processed_01
+  - first:
+      213: 6497778952678162564
+    second: multi_BarracksTower_Processed_02
+  - first:
+      213: 8818932695855681584
+    second: multi_BarracksTower_Processed_03
+  - first:
+      213: 7187521466541911742
+    second: multi_BarracksTower_Processed_04
+  - first:
+      213: 5796126802980115827
+    second: multi_BarracksTower_Processed_05
+  - first:
+      213: 4688299668201963238
+    second: multi_BarracksTower_Processed_06
+  - first:
+      213: -7162921736037026918
+    second: multi_BarracksTower_Processed_07
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_00
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 642
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6218aedf2cffa7180800000000000000
+      internalID: -9116693282709405402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_01
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 642
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acb77388aa4091ed0800000000000000
+      internalID: -2442916192395494454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_02
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 642
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 480446fd78fbc2a50800000000000000
+      internalID: 6497778952678162564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_03
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 321
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0305e8aef84236a70800000000000000
+      internalID: 8818932695855681584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_04
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 321
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebea9b451b43fb360800000000000000
+      internalID: 7187521466541911742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_05
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 321
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37510cc3e9aff6050800000000000000
+      internalID: 5796126802980115827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_06
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ee72c365bf201140800000000000000
+      internalID: 4688299668201963238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: multi_BarracksTower_Processed_07
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 0
+        width: 344
+        height: 321
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a93b691c1a0389c90800000000000000
+      internalID: -7162921736037026918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      multi_BarracksTower_Processed_0: -4569595798001867822
+      multi_BarracksTower_Processed_00: -9116693282709405402
+      multi_BarracksTower_Processed_01: -2442916192395494454
+      multi_BarracksTower_Processed_02: 6497778952678162564
+      multi_BarracksTower_Processed_03: 8818932695855681584
+      multi_BarracksTower_Processed_04: 7187521466541911742
+      multi_BarracksTower_Processed_05: 5796126802980115827
+      multi_BarracksTower_Processed_06: 4688299668201963238
+      multi_BarracksTower_Processed_07: -7162921736037026918
+      multi_BarracksTower_Processed_1: -7173565986138390072
+      multi_BarracksTower_Processed_2: 6160021658244932741
+      multi_BarracksTower_Processed_3: -3223838243681548774
+      multi_BarracksTower_Processed_4: -2194759544980500889
+      multi_BarracksTower_Processed_5: 2299001755678438033
+      multi_BarracksTower_Processed_6: -7353122584900657815
+      multi_BarracksTower_Processed_7: 4693504697985875106
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

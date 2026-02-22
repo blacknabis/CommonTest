@@ -313,6 +313,7 @@ namespace Kingdom.App
         private void Update()
         {
             HandleDebugGrantGoldInput();
+            HandleHeroMoveCommandInput();
 
             if (_towerManager == null || MainUI is not GameView gameView)
             {
@@ -409,6 +410,55 @@ namespace Kingdom.App
             }
 
             TickSpellCooldowns();
+        }
+
+        private void HandleHeroMoveCommandInput()
+        {
+            if (!Input.GetMouseButtonDown(1))
+            {
+                return;
+            }
+
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
+            if (_selectionController.IsNull() || _heroController.IsNull())
+            {
+                return;
+            }
+
+            if (!(_selectionController.CurrentSelected is HeroController selectedHero) || selectedHero != _heroController)
+            {
+                return;
+            }
+
+            Camera cam = Camera.main;
+            if (cam == null)
+            {
+                return;
+            }
+
+            Vector3 world = cam.ScreenToWorldPoint(Input.mousePosition);
+            world.z = 0f;
+            if (!_heroController.TrySetMoveTarget(world))
+            {
+                return;
+            }
+
+            _isRallyPlacementMode = false;
+            _selectedTowerId = -1;
+            _pendingBuildSlotIndex = -1;
+
+            if (MainUI is GameView gameView)
+            {
+                gameView.HideTowerRingMenuPublic();
+                gameView.HideTowerActionMenuPublic();
+            }
+
+            SelectionController.SuppressSelectionForCurrentFrame();
+            Debug.Log($"[GameScene] Hero move command accepted. target={world}");
         }
 
         // Update에서 문자열 보간 할당을 피하기 위한 타워 정보 텍스트 생성 헬퍼.
